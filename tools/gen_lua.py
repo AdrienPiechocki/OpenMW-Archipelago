@@ -14,7 +14,7 @@ def gen_quest_completions(qc_path, out_path):
             fail = q.get('fail') or []
             group = q.get('group', 'misc')
             # Tous les groupes gardent leurs ids : le mod n'envoie ceux des quetes
-            # d'objectif que si l'objectif est choisi (scripts/ap/goal_checks.lua).
+            # d'objectif que si l'objectif est choisi.
             ids = q.get('ids') or []
             fail_lua = ', '.join(str(int(x)) for x in fail)
             ids_lua = ', '.join(str(int(x)) for x in ids)

@@ -8,7 +8,23 @@ local ap    = require('scripts.ap.io')
 local json  = require('scripts.ap.json')
 local config = require('scripts.ap.config')
 local levelUp = require('scripts.ap.level_up')
-local goalChecks = require('scripts.ap.goal_checks')
+local goalChecks = {
+  GROUP_GOALS = { main = 'main_quest', daedric = 'daedric_quests' },
+  goalOfGroup = function(group)
+    local m = { main = 'main_quest', daedric = 'daedric_quests' }
+    return m[group] or group
+  end,
+  allowed = function(group, goalList)
+    if group == nil or group == 'misc' then return true end
+    if type(goalList) ~= 'table' then return false end
+    local m = { main = 'main_quest', daedric = 'daedric_quests' }
+    local key = m[group] or group
+    for _, k in ipairs(goalList) do
+      if k == key then return true end
+    end
+    return false
+  end,
+}
 local notify = require('scripts.ap.notify')
 local storage = require('openmw.storage')
 

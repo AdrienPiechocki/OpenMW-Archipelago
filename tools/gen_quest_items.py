@@ -489,18 +489,37 @@ def main():
             print(f'  {l}')
 
     if args.apply and cands:
+        # Index record -> id deja attribue (dans quest_items.yaml ou dans cands).
+        # Un meme record peut appartenir a plusieurs goals (ex. bk_chroniclesnchuleft
+        # pour mages_guild et telvanni) : il doit alors partager le meme id AP,
+        # sinon recevoir l'item d'un goal ne marque pas l'autre comme possede et
+        # le mod supprime la copie vanilla.
+        record_to_id = {}
+        for e in existing:
+            for r in e.get('suppress', []) or []:
+                record_to_id[str(r).lower()] = e['id']
+            if e.get('give'):
+                record_to_id[str(e['give'][0]).lower()] = e['id']
+
         lines = []
         for c in cands:
             name = c['name']
+            rec = c['record']
+            rec_low = rec.lower()
+            if rec_low in record_to_id:
+                # Doublon : reutiliser l'id existant, ne pas incrementer next_id.
+                item_id = record_to_id[rec_low]
+            else:
+                next_id += 1
+                if next_id >= ITEMS_LIMIT:
+                    raise SystemExit('plage d\'IDs d\'items epuisee')
+                item_id = next_id
+                record_to_id[rec_low] = item_id
             if name.lower() in known_names:
                 name = f"{name} ({c['goal']})"
             known_names.add(name.lower())
-            next_id += 1
-            if next_id >= ITEMS_LIMIT:
-                raise SystemExit('plage d\'IDs d\'items epuisee')
-            rec = c['record']
             lines.append('- {name: %s, id: %d, goal: %s, give: [%s, %d], suppress: [%s]}' % (
-                json.dumps(name, ensure_ascii=False), next_id, c['goal'],
+                json.dumps(name, ensure_ascii=False), item_id, c['goal'],
                 json.dumps(rec), c['count'], json.dumps(rec)))
         with open(qi_path, 'a', encoding='utf-8') as f:
             f.write('\n# --- ajoutes par tools/gen_quest_items.py --apply ---\n' + '\n'.join(lines) + '\n')

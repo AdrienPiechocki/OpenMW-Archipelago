@@ -86,196 +86,196 @@
 - {name: "The Five Far Stars", id: 7702084, goal: main_quest, give: ["bk_five_far_stars", 1], suppress: ["bk_five_far_stars"]}
 - {name: "Progress of Truth", id: 7702085, goal: main_quest, give: ["bk_progressoftruth", 1], suppress: ["bk_progressoftruth"]}
 - {name: "note from the Archcanon", id: 7702086, goal: main_quest, give: ["bk_saryoni_note", 1], suppress: ["bk_saryoni_note"]}
-- {name: "Construction Contract (main_quest)", id: 7702087, goal: main_quest, give: ["bk_stronghold_c_hlaalu", 1], suppress: ["bk_stronghold_c_hlaalu"]}
-- {name: "The Lost Prophecy", id: 7702088, goal: main_quest, give: ["bk_thelostprophecy", 1], suppress: ["bk_thelostprophecy"]}
-- {name: "Words of the Wind", id: 7702089, goal: main_quest, give: ["bk_words_of_the_wind", 1], suppress: ["bk_words_of_the_wind"]}
-- {name: "Bonebiter Bow of Sul-Senipul", id: 7702090, goal: main_quest, give: ["bonebiter_bow_unique", 1], suppress: ["bonebiter_bow_unique"]}
-- {name: "Dwemer Boots", id: 7702091, goal: main_quest, give: ["dwemer_boots", 1], suppress: ["dwemer_boots"]}
-- {name: "Dwemer Boots of Flying", id: 7702092, goal: main_quest, give: ["dwemer_boots of flying", 1], suppress: ["dwemer_boots of flying"]}
-- {name: "Exquisite Shirt", id: 7702093, goal: main_quest, give: ["exquisite_shirt_01", 1], suppress: ["exquisite_shirt_01"]}
-- {name: "Exquisite Shoes", id: 7702094, goal: main_quest, give: ["exquisite_shoes_01", 1], suppress: ["exquisite_shoes_01"]}
-- {name: "Exquisite Skirt", id: 7702095, goal: main_quest, give: ["exquisite_skirt_01", 1], suppress: ["exquisite_skirt_01"]}
-- {name: "Sanit-Kil's Heart of Fire", id: 7702096, goal: main_quest, give: ["heart_of_fire", 1], suppress: ["heart_of_fire"]}
-- {name: "Indoril Cuirass", id: 7702097, goal: main_quest, give: ["indoril cuirass", 1], suppress: ["indoril cuirass"]}
-- {name: "Indoril Helmet", id: 7702098, goal: main_quest, give: ["indoril helmet", 1], suppress: ["indoril helmet"]}
-- {name: "Indoril Left Pauldron", id: 7702099, goal: main_quest, give: ["indoril pauldron left", 1], suppress: ["indoril pauldron left"]}
-- {name: "Indoril Right Pauldron", id: 7702100, goal: main_quest, give: ["indoril pauldron right", 1], suppress: ["indoril pauldron right"]}
-- {name: "Keening", id: 7702101, goal: main_quest, give: ["keening", 1], suppress: ["keening"]}
-- {name: "Ministry of Truth Key", id: 7702102, goal: main_quest, give: ["key_ministry_ext", 1], suppress: ["key_ministry_ext"]}
-- {name: "Ministry of Truth Sector Key", id: 7702103, goal: main_quest, give: ["key_ministry_sectors", 1], suppress: ["key_ministry_sectors"]}
-- {name: "Secret Palace Entrance Key", id: 7702104, goal: main_quest, give: ["key_vivec_secret", 1], suppress: ["key_vivec_secret"]}
-- {name: "Malipu-Ataman's Belt ", id: 7702105, goal: main_quest, give: ["malipu_ataman's_belt", 1], suppress: ["malipu_ataman's_belt"]}
-- {name: "Ash Statue", id: 7702106, goal: main_quest, give: ["misc_6th_ash_statue_01", 1], suppress: ["misc_6th_ash_statue_01"]}
-- {name: "Guarskin Drum", id: 7702107, goal: main_quest, give: ["misc_de_drum_02", 1], suppress: ["misc_de_drum_02"]}
-- {name: "Dwemer puzzle box", id: 7702108, goal: main_quest, give: ["misc_dwrv_ark_cube00", 1], suppress: ["misc_dwrv_ark_cube00"]}
-- {name: "Key to Lower Arkngthand", id: 7702109, goal: main_quest, give: ["misc_dwrv_ark_key00", 1], suppress: ["misc_dwrv_ark_key00"]}
-- {name: "Dwemer Coherer", id: 7702110, goal: main_quest, give: ["misc_dwrv_artifact50", 1], suppress: ["misc_dwrv_artifact50"]}
-- {name: "House Dagoth cup", id: 7702111, goal: main_quest, give: ["misc_goblet_dagoth", 1], suppress: ["misc_goblet_dagoth"]}
-- {name: "Skull of Llevule Andrano", id: 7702112, goal: main_quest, give: ["misc_skull_llevule", 1], suppress: ["misc_skull_llevule"]}
-- {name: "Unique Dwemer Artifact", id: 7702113, goal: main_quest, give: ["misc_wraithguard_no_equip", 1], suppress: ["misc_wraithguard_no_equip"]}
-- {name: "Robe of Erur-Dan the Wise", id: 7702114, goal: main_quest, give: ["robe_of_erur_dan", 1], suppress: ["robe_of_erur_dan"]}
-- {name: "Scroll of Divine Intervention (main_quest)", id: 7702115, goal: main_quest, give: ["sc_divineintervention", 1], suppress: ["sc_divineintervention"]}
-- {name: "Shadow Shield", id: 7702116, goal: main_quest, give: ["shadow_shield", 1], suppress: ["shadow_shield"]}
-- {name: "Sunder", id: 7702117, goal: main_quest, give: ["sunder", 1], suppress: ["sunder"]}
-- {name: "War Axe of Airan Ammu", id: 7702118, goal: main_quest, give: ["war_axe_airan_ammu", 1], suppress: ["war_axe_airan_ammu"]}
-- {name: "Wraithguard", id: 7702119, goal: main_quest, give: ["wraithguard", 1], suppress: ["wraithguard"]}
-- {name: "Amulet of Ashamanu", id: 7702120, goal: misc, give: ["amulet of ashamanu (unique)", 1], suppress: ["amulet of ashamanu (unique)"]}
-- {name: "Augustus' Amulet", id: 7702121, goal: misc, give: ["amulet_agustas_unique", 1], suppress: ["amulet_agustas_unique"]}
-- {name: "Tsiya's Skooma Pipe", id: 7702122, goal: misc, give: ["apparatus_a_spipe_tsiya", 1], suppress: ["apparatus_a_spipe_tsiya"]}
-- {name: "Tarer's Aedra and Daedra", id: 7702123, goal: misc, give: ["bk_aedra_tarer_unique", 1], suppress: ["bk_aedra_tarer_unique"]}
-- {name: "Kagrenac's Journal", id: 7702124, goal: misc, give: ["bk_kagrenac'sjournal_excl", 1], suppress: ["bk_kagrenac'sjournal_excl"]}
-- {name: "Kagrenac's Planbook", id: 7702125, goal: misc, give: ["bk_kagrenac'splans_excl", 1], suppress: ["bk_kagrenac'splans_excl"]}
-- {name: "Note from Bashuk", id: 7702126, goal: misc, give: ["bk_notefrombashuk", 1], suppress: ["bk_notefrombashuk"]}
-- {name: "Note from Bugrol", id: 7702127, goal: misc, give: ["bk_notefrombugrol", 1], suppress: ["bk_notefrombugrol"]}
-- {name: "Note From Ernil", id: 7702128, goal: misc, give: ["bk_notefromernil", 1], suppress: ["bk_notefromernil"]}
-- {name: "Note from Nelos", id: 7702129, goal: misc, give: ["bk_notefromnelos", 1], suppress: ["bk_notefromnelos"]}
-- {name: "Tax Record", id: 7702130, goal: misc, give: ["bk_seydaneentaxrecord", 1], suppress: ["bk_seydaneentaxrecord"]}
-- {name: "A Dance in Fire, Chapter 2", id: 7702131, goal: misc, give: ["bookskill_block3", 1], suppress: ["bookskill_block3"]}
-- {name: "2920, Second Seed", id: 7702132, goal: misc, give: ["bookskill_speechcraft3", 1], suppress: ["bookskill_speechcraft3"]}
-- {name: "Cloudcleaver", id: 7702133, goal: misc, give: ["cloudcleaver_unique", 1], suppress: ["cloudcleaver_unique"]}
-- {name: "Common Pants", id: 7702134, goal: misc, give: ["common_pants_02", 1], suppress: ["common_pants_02"]}
-- {name: "Hentus Pants", id: 7702135, goal: misc, give: ["common_pants_02_hentus", 1], suppress: ["common_pants_02_hentus"]}
-- {name: "Expensive Amulet", id: 7702136, goal: misc, give: ["expensive_amulet_aeta", 1], suppress: ["expensive_amulet_aeta"]}
-- {name: "Expensive Ring", id: 7702137, goal: misc, give: ["expensive_ring_01_bill", 1], suppress: ["expensive_ring_01_bill"]}
-- {name: "Expensive Ring (misc)", id: 7702138, goal: misc, give: ["expensive_ring_aeta", 1], suppress: ["expensive_ring_aeta"]}
-- {name: "Processus Vitellius' Ring", id: 7702139, goal: misc, give: ["exquisite_ring_processus", 1], suppress: ["exquisite_ring_processus"]}
-- {name: "Exquisite Shirt (misc)", id: 7702140, goal: misc, give: ["exquisite_shirt_01_rasha", 5], suppress: ["exquisite_shirt_01_rasha"]}
-- {name: "Maurrie's Left Glove", id: 7702141, goal: misc, give: ["extravagant_glove_left_maur", 1], suppress: ["extravagant_glove_left_maur"]}
-- {name: "Extravagant Skirt", id: 7702142, goal: misc, give: ["extravagant_skirt_02", 1], suppress: ["extravagant_skirt_02"]}
-- {name: "Colovian Fur Helm", id: 7702143, goal: misc, give: ["fur_colovian_helm", 1], suppress: ["fur_colovian_helm"]}
-- {name: "The Icecap", id: 7702144, goal: misc, give: ["icecap_unique", 1], suppress: ["icecap_unique"]}
-- {name: "Arenim burial key", id: 7702145, goal: misc, give: ["key_arenim", 1], suppress: ["key_arenim"]}
-- {name: "Beluelle's Silver bowl", id: 7702146, goal: misc, give: ["misc_beluelle_silver_bowl", 1], suppress: ["misc_beluelle_silver_bowl"]}
-- {name: "Unique Dwemer Artifact (misc)", id: 7702147, goal: misc, give: ["misc_wraithguard_no_equip", 1], suppress: ["misc_wraithguard_no_equip"]}
-- {name: "Nuccius's Cursed Ring", id: 7702148, goal: misc, give: ["nuccius_ring", 1], suppress: ["nuccius_ring"]}
-- {name: "Silver Flameblade", id: 7702149, goal: misc, give: ["silver flameblade", 1], suppress: ["silver flameblade"]}
-- {name: "Silver Staff", id: 7702150, goal: misc, give: ["silver staff", 1], suppress: ["silver staff"]}
-- {name: "Silver War Axe", id: 7702151, goal: misc, give: ["silver war axe", 1], suppress: ["silver war axe"]}
-- {name: "Steel Shortsword", id: 7702152, goal: misc, give: ["steel shortsword", 1], suppress: ["steel shortsword"]}
-- {name: "Steel Staff", id: 7702153, goal: misc, give: ["steel staff", 1], suppress: ["steel staff"]}
-- {name: "Widowmaker", id: 7702154, goal: misc, give: ["widowmaker_unique", 1], suppress: ["widowmaker_unique"]}
-- {name: "Letter from Tsrazami", id: 7702155, goal: morag_tong, give: ["bk_miungei", 1], suppress: ["bk_miungei"]}
-- {name: "Amulet of Sanguine Glib Speech", id: 7702156, goal: morag_tong, give: ["sanguineamuletglibspeech", 1], suppress: ["sanguineamuletglibspeech"]}
-- {name: "Amulet of Sanguine Nimble Armor", id: 7702157, goal: morag_tong, give: ["sanguineamuletnimblearmor", 1], suppress: ["sanguineamuletnimblearmor"]}
-- {name: "Belt of Sanguine Balanced Armor", id: 7702158, goal: morag_tong, give: ["sanguinebeltbalancedarmor", 1], suppress: ["sanguinebeltbalancedarmor"]}
-- {name: "Belt of Sanguine Deep Biting", id: 7702159, goal: morag_tong, give: ["sanguinebeltdeepbiting", 1], suppress: ["sanguinebeltdeepbiting"]}
-- {name: "Belt of Sanguine Denial", id: 7702160, goal: morag_tong, give: ["sanguinebeltdenial", 1], suppress: ["sanguinebeltdenial"]}
-- {name: "Belt of Sanguine Fleetness", id: 7702161, goal: morag_tong, give: ["sanguinebeltfleetness", 1], suppress: ["sanguinebeltfleetness"]}
-- {name: "Belt of Sanguine Hewing", id: 7702162, goal: morag_tong, give: ["sanguinebelthewing", 1], suppress: ["sanguinebelthewing"]}
-- {name: "Belt of Sanguine Impaling Thrus", id: 7702163, goal: morag_tong, give: ["sanguinebeltimpaling", 1], suppress: ["sanguinebeltimpaling"]}
-- {name: "Belt of Sanguine Martial Craft", id: 7702164, goal: morag_tong, give: ["sanguinebeltmartialcraft", 1], suppress: ["sanguinebeltmartialcraft"]}
-- {name: "Belt of Sanguine Smiting", id: 7702165, goal: morag_tong, give: ["sanguinebeltsmiting", 1], suppress: ["sanguinebeltsmiting"]}
-- {name: "Belt of Sanguine Stolid Armor", id: 7702166, goal: morag_tong, give: ["sanguinebeltstolidarmor", 1], suppress: ["sanguinebeltstolidarmor"]}
-- {name: "Belt of Sanguine Sureflight", id: 7702167, goal: morag_tong, give: ["sanguinebeltsureflight", 1], suppress: ["sanguinebeltsureflight"]}
-- {name: "Glove of Sanguine Safekeeping", id: 7702168, goal: morag_tong, give: ["sanguinelglovesafekeeping", 1], suppress: ["sanguinelglovesafekeeping"]}
-- {name: "Glove of Sanguine Horny Fist", id: 7702169, goal: morag_tong, give: ["sanguinerglovehornyfist", 1], suppress: ["sanguinerglovehornyfist"]}
-- {name: "Glove of Sanguine Swiftblade", id: 7702170, goal: morag_tong, give: ["sanguinergloveswiftblade", 1], suppress: ["sanguinergloveswiftblade"]}
-- {name: "Ring of Sanguine Fluid Evasion", id: 7702171, goal: morag_tong, give: ["sanguineringfluidevasion", 1], suppress: ["sanguineringfluidevasion"]}
-- {name: "Ring of Sanguine Golden Wisdom", id: 7702172, goal: morag_tong, give: ["sanguineringgoldenw", 1], suppress: ["sanguineringgoldenw"]}
-- {name: "Ring of Sanguine Green Wisdom", id: 7702173, goal: morag_tong, give: ["sanguineringgreenw", 1], suppress: ["sanguineringgreenw"]}
-- {name: "Ring of Sanguine Red Wisdom", id: 7702174, goal: morag_tong, give: ["sanguineringredw", 1], suppress: ["sanguineringredw"]}
-- {name: "Ring of Sanguine Silver Wisdom", id: 7702175, goal: morag_tong, give: ["sanguineringsilverw", 1], suppress: ["sanguineringsilverw"]}
-- {name: "Ring of Sanguine Sublime Wisdom", id: 7702176, goal: morag_tong, give: ["sanguineringsublimew", 1], suppress: ["sanguineringsublimew"]}
-- {name: "Ring of Sanguine Transcendence", id: 7702177, goal: morag_tong, give: ["sanguineringtranscendw", 1], suppress: ["sanguineringtranscendw"]}
-- {name: "Ring of Sanguine Transfiguring", id: 7702178, goal: morag_tong, give: ["sanguineringtransfigurw", 1], suppress: ["sanguineringtransfigurw"]}
-- {name: "Ring of Sanguine Unseen Wisdom", id: 7702179, goal: morag_tong, give: ["sanguineringunseenw", 1], suppress: ["sanguineringunseenw"]}
-- {name: "Shoes of Sanguine Leaping", id: 7702180, goal: morag_tong, give: ["sanguineshoesleaping", 1], suppress: ["sanguineshoesleaping"]}
-- {name: "Shoes of Sanguine Stalking", id: 7702181, goal: morag_tong, give: ["sanguineshoesstalking", 1], suppress: ["sanguineshoesstalking"]}
-- {name: "Honorable Writ of Execution", id: 7702182, goal: morag_tong, give: ["writ_baladas", 1], suppress: ["writ_baladas"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702183, goal: morag_tong, give: ["writ_belvayn", 1], suppress: ["writ_belvayn"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702184, goal: morag_tong, give: ["writ_bemis", 1], suppress: ["writ_bemis"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702185, goal: morag_tong, give: ["writ_bero", 1], suppress: ["writ_bero"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702186, goal: morag_tong, give: ["writ_brilnosu", 1], suppress: ["writ_brilnosu"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702187, goal: morag_tong, give: ["writ_galasa", 1], suppress: ["writ_galasa"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702188, goal: morag_tong, give: ["writ_guril", 1], suppress: ["writ_guril"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702189, goal: morag_tong, give: ["writ_mavon", 1], suppress: ["writ_mavon"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702190, goal: morag_tong, give: ["writ_navil", 1], suppress: ["writ_navil"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702191, goal: morag_tong, give: ["writ_sadus", 1], suppress: ["writ_sadus"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702192, goal: morag_tong, give: ["writ_saren", 1], suppress: ["writ_saren"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702193, goal: morag_tong, give: ["writ_therana", 1], suppress: ["writ_therana"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702194, goal: morag_tong, give: ["writ_varro", 1], suppress: ["writ_varro"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702195, goal: morag_tong, give: ["writ_vendu", 1], suppress: ["writ_vendu"]}
-- {name: "Honorable Writ of Execution (morag_tong)", id: 7702196, goal: morag_tong, give: ["writ_yasalmibaal", 1], suppress: ["writ_yasalmibaal"]}
-- {name: "Secret Caldera Ledger (redoran)", id: 7702197, goal: redoran, give: ["bk_calderarecordbook2", 1], suppress: ["bk_calderarecordbook2"]}
-- {name: "Galtis Guvron's Note", id: 7702198, goal: redoran, give: ["bk_galtisguvronsnote", 1], suppress: ["bk_galtisguvronsnote"]}
-- {name: "Shishi Report", id: 7702199, goal: redoran, give: ["bk_shishireport", 1], suppress: ["bk_shishireport"]}
-- {name: "Construction Contract (redoran)", id: 7702200, goal: redoran, give: ["bk_stronghold_c_hlaalu", 1], suppress: ["bk_stronghold_c_hlaalu"]}
-- {name: "Redoran Founder's Helm", id: 7702201, goal: redoran, give: ["bonemold_founders_helm", 1], suppress: ["bonemold_founders_helm"]}
-- {name: "Redoran Banner Shield", id: 7702202, goal: redoran, give: ["bonemold_tshield_hrlb", 4], suppress: ["bonemold_tshield_hrlb"]}
-- {name: "Delyna's Locket", id: 7702203, goal: redoran, give: ["expensive_amulet_delyna", 1], suppress: ["expensive_amulet_delyna"]}
-- {name: "Nervion Ancestor Ring", id: 7702204, goal: redoran, give: ["expensive_ring_01_hrdt", 1], suppress: ["expensive_ring_01_hrdt"]}
-- {name: "Redas Robe of Deeds", id: 7702205, goal: redoran, give: ["extravagant_robe_01_red", 1], suppress: ["extravagant_robe_01_red"]}
-- {name: "Hlaalu Compound Cell Key", id: 7702206, goal: redoran, give: ["key_vivec_hlaalu_cell", 1], suppress: ["key_vivec_hlaalu_cell"]}
-- {name: "Suspicious Ash Statue", id: 7702207, goal: redoran, give: ["misc_6th_ash_hrcs", 1], suppress: ["misc_6th_ash_hrcs"]}
-- {name: "Morvayn Ash Statue", id: 7702208, goal: redoran, give: ["misc_6th_ash_hrmm", 1], suppress: ["misc_6th_ash_hrmm"]}
-- {name: "Ash Statue (redoran)", id: 7702209, goal: redoran, give: ["misc_6th_ash_statue_01", 1], suppress: ["misc_6th_ash_statue_01"]}
-- {name: "Redas Goblet", id: 7702210, goal: redoran, give: ["misc_de_goblet_01_redas", 1], suppress: ["misc_de_goblet_01_redas"]}
-- {name: "Amulet of Flesh Made Whole", id: 7702211, goal: telvanni, give: ["amuletfleshmadewhole_uniq", 1], suppress: ["amuletfleshmadewhole_uniq"]}
-- {name: "Antecedants of Dwemer Law", id: 7702212, goal: telvanni, give: ["bk_antecedantsdwemerlaw", 1], suppress: ["bk_antecedantsdwemerlaw"]}
-- {name: "Chronicles of Nchuleft (telvanni)", id: 7702213, goal: telvanni, give: ["bk_chroniclesnchuleft", 1], suppress: ["bk_chroniclesnchuleft"]}
-- {name: "Nchunak's Fire and Faith", id: 7702214, goal: telvanni, give: ["bk_nchunaksfireandfaith", 1], suppress: ["bk_nchunaksfireandfaith"]}
-- {name: "Response from Divayth Fyr", id: 7702215, goal: telvanni, give: ["bk_responsefromdivaythfyr", 1], suppress: ["bk_responsefromdivaythfyr"]}
-- {name: "Secrets of Dwemer Animunculi", id: 7702216, goal: telvanni, give: ["bk_secretsdwemeranimunculi", 1], suppress: ["bk_secretsdwemeranimunculi"]}
-- {name: "Construction Contract (telvanni)", id: 7702217, goal: telvanni, give: ["bk_stronghold_c_hlaalu", 1], suppress: ["bk_stronghold_c_hlaalu"]}
-- {name: "The Lunar Lorkhan", id: 7702218, goal: telvanni, give: ["bookskill_alteration5", 1], suppress: ["bookskill_alteration5"]}
-- {name: "A Hypothetical Treachery", id: 7702219, goal: telvanni, give: ["bookskill_destruction3", 1], suppress: ["bookskill_destruction3"]}
-- {name: "Auriel's Bow", id: 7702220, goal: telvanni, give: ["ebony_bow_auriel", 1], suppress: ["ebony_bow_auriel"]}
-- {name: "Robe of the Drake's Pride", id: 7702221, goal: telvanni, give: ["exquisite_robe_drake's pride", 1], suppress: ["exquisite_robe_drake's pride"]}
-- {name: "Abebaal Slave Key", id: 7702222, goal: telvanni, give: ["key_abebaalslaves_01", 1], suppress: ["key_abebaalslaves_01"]}
-- {name: "Key to Tel Naga", id: 7702223, goal: telvanni, give: ["key_nelothtelnaga", 1], suppress: ["key_nelothtelnaga"]}
-- {name: "Dwemer Scarab Schematics", id: 7702224, goal: telvanni, give: ["misc_dwrv_artifact40", 1], suppress: ["misc_dwrv_artifact40"]}
-- {name: "Dwemer Schematic", id: 7702225, goal: telvanni, give: ["misc_dwrv_artifact70", 1], suppress: ["misc_dwrv_artifact70"]}
-- {name: "Black Jinx", id: 7702226, goal: telvanni, give: ["ring_blackjinx_uniq", 1], suppress: ["ring_blackjinx_uniq"]}
-- {name: "Ring of Dahrk Mezalf", id: 7702227, goal: telvanni, give: ["ring_dahrkmezalf_uniq", 1], suppress: ["ring_dahrkmezalf_uniq"]}
-- {name: "Ring of Equity", id: 7702228, goal: telvanni, give: ["ring_equity_uniq", 1], suppress: ["ring_equity_uniq"]}
-- {name: "Silver Staff (telvanni)", id: 7702229, goal: telvanni, give: ["silver_staff_dawn_uniq", 1], suppress: ["silver_staff_dawn_uniq"]}
-- {name: "Therana's Skirt", id: 7702230, goal: telvanni, give: ["therana's skirt", 1], suppress: ["therana's skirt"]}
-- {name: "Saryoni's Sermons", id: 7702231, goal: temple, give: ["bk_saryonissermons", 1], suppress: ["bk_saryonissermons"]}
-- {name: "Cleaver of St. Felms", id: 7702232, goal: temple, give: ["cleaverstfelms", 1], suppress: ["cleaverstfelms"]}
-- {name: "Crosier of St. Llothis", id: 7702233, goal: temple, give: ["crosierstllothis", 1], suppress: ["crosierstllothis"]}
-- {name: "Ebony Mail", id: 7702234, goal: temple, give: ["ebon_plate_cuirass_unique", 1], suppress: ["ebon_plate_cuirass_unique"]}
-- {name: "Hair Shirt of Saint Aralor", id: 7702235, goal: temple, give: ["expensive_shirt_hair", 1], suppress: ["expensive_shirt_hair"]}
-- {name: "Gambolpuddy", id: 7702236, goal: temple, give: ["extravagant_rt_art_wild", 1], suppress: ["extravagant_rt_art_wild"]}
-- {name: "Common Soul Gem", id: 7702237, goal: temple, give: ["misc_soulgem_common", 1], suppress: ["misc_soulgem_common"]}
-- {name: "Grand Soul Gem", id: 7702238, goal: temple, give: ["misc_soulgem_grand", 1], suppress: ["misc_soulgem_grand"]}
-- {name: "Greater Soul Gem", id: 7702239, goal: temple, give: ["misc_soulgem_greater", 1], suppress: ["misc_soulgem_greater"]}
-- {name: "Lesser Soul Gem", id: 7702240, goal: temple, give: ["misc_soulgem_lesser", 1], suppress: ["misc_soulgem_lesser"]}
-- {name: "Petty Soul Gem", id: 7702241, goal: temple, give: ["misc_soulgem_petty", 1], suppress: ["misc_soulgem_petty"]}
-- {name: "Moon-and-Star", id: 7702242, goal: temple, give: ["moon_and_star", 1], suppress: ["moon_and_star"]}
-- {name: "Shoes of St. Rilms", id: 7702243, goal: temple, give: ["shoes of st. rilms", 1], suppress: ["shoes of st. rilms"]}
-- {name: "Grandmaster's Retort", id: 7702244, goal: thieves_guild, give: ["apparatus_g_retort_01", 1], suppress: ["apparatus_g_retort_01"]}
-- {name: "Bittercup", id: 7702245, goal: thieves_guild, give: ["artifact_bittercup_01", 1], suppress: ["artifact_bittercup_01"]}
-- {name: "Boethiah's Pillow Book", id: 7702246, goal: thieves_guild, give: ["bk_boethiahpillowbook", 1], suppress: ["bk_boethiahpillowbook"]}
-- {name: "Brief History of the Empire v 1", id: 7702247, goal: thieves_guild, give: ["bk_briefhistoryempire1", 1], suppress: ["bk_briefhistoryempire1"]}
-- {name: "Odral's History of the Empire 1", id: 7702248, goal: thieves_guild, give: ["bk_briefhistoryempire1_oh", 1], suppress: ["bk_briefhistoryempire1_oh"]}
-- {name: "Brief History of the Empire v 2", id: 7702249, goal: thieves_guild, give: ["bk_briefhistoryempire2", 1], suppress: ["bk_briefhistoryempire2"]}
-- {name: "Odral's History of the Empire 2", id: 7702250, goal: thieves_guild, give: ["bk_briefhistoryempire2_oh", 1], suppress: ["bk_briefhistoryempire2_oh"]}
-- {name: "Brief History of the Empire v 3", id: 7702251, goal: thieves_guild, give: ["bk_briefhistoryempire3", 1], suppress: ["bk_briefhistoryempire3"]}
-- {name: "Odral's History of the Empire 3", id: 7702252, goal: thieves_guild, give: ["bk_briefhistoryempire3_oh", 1], suppress: ["bk_briefhistoryempire3_oh"]}
-- {name: "Brief History of the Empire v 4", id: 7702253, goal: thieves_guild, give: ["bk_briefhistoryempire4", 1], suppress: ["bk_briefhistoryempire4"]}
-- {name: "Odral's History of the Empire 4", id: 7702254, goal: thieves_guild, give: ["bk_briefhistoryempire4_oh", 1], suppress: ["bk_briefhistoryempire4_oh"]}
-- {name: "Dispel Potion Formula", id: 7702255, goal: thieves_guild, give: ["bk_dispelrecipe_tgca", 1], suppress: ["bk_dispelrecipe_tgca"]}
-- {name: "Deed to Indrele's House", id: 7702256, goal: thieves_guild, give: ["bk_indreledeed", 1], suppress: ["bk_indreledeed"]}
-- {name: "Redoran Cooking Secrets", id: 7702257, goal: thieves_guild, give: ["bk_redorancookingsecrets", 1], suppress: ["bk_redorancookingsecrets"]}
-- {name: "Yngling's Ledger", id: 7702258, goal: thieves_guild, give: ["bk_ynglingledger", 1], suppress: ["bk_ynglingledger"]}
-- {name: "Withershins", id: 7702259, goal: thieves_guild, give: ["bookskill_restoration1", 1], suppress: ["bookskill_restoration1"]}
-- {name: "Left Bal Molagmer Glove", id: 7702260, goal: thieves_guild, give: ["common_glove_l_balmolagmer", 1], suppress: ["common_glove_l_balmolagmer"]}
-- {name: "Black Left Glove", id: 7702261, goal: thieves_guild, give: ["common_glove_l_moragtong", 1], suppress: ["common_glove_l_moragtong"]}
-- {name: "Right Bal Molagmer Glove", id: 7702262, goal: thieves_guild, give: ["common_glove_r_balmolagmer", 1], suppress: ["common_glove_r_balmolagmer"]}
-- {name: "Dart of Judgment", id: 7702263, goal: thieves_guild, give: ["dart_uniq_judgement", 4], suppress: ["dart_uniq_judgement"]}
-- {name: "Anarenen's Devil Tanto", id: 7702264, goal: thieves_guild, give: ["devil_tanto_tgamg", 1], suppress: ["devil_tanto_tgamg"]}
-- {name: "Felen's Ebony Staff", id: 7702265, goal: thieves_guild, give: ["ebony staff caper", 1], suppress: ["ebony staff caper"]}
-- {name: "Hlervu Locket", id: 7702266, goal: thieves_guild, give: ["exquisite_amulet_hlervu1", 1], suppress: ["exquisite_amulet_hlervu1"]}
-- {name: "Brallion's Exquisite Ring", id: 7702267, goal: thieves_guild, give: ["exquisite_ring_brallion", 1], suppress: ["exquisite_ring_brallion"]}
-- {name: "Exquisite Shoes (thieves_guild)", id: 7702268, goal: thieves_guild, give: ["exquisite_shoes_01", 1], suppress: ["exquisite_shoes_01"]}
-- {name: "Diamond", id: 7702269, goal: thieves_guild, give: ["ingred_diamond_01", 1], suppress: ["ingred_diamond_01"]}
-- {name: "Key to Nerano Manor", id: 7702270, goal: thieves_guild, give: ["key_neranomanor", 1], suppress: ["key_neranomanor"]}
-- {name: "Nads Tharen's Key", id: 7702271, goal: thieves_guild, give: ["key_tgbt", 1], suppress: ["key_tgbt"]}
-- {name: "Dwemer Coherer (thieves_guild)", id: 7702272, goal: thieves_guild, give: ["misc_dwrv_artifact50", 1], suppress: ["misc_dwrv_artifact50"]}
-- {name: "Dwemer Tube (thieves_guild)", id: 7702273, goal: thieves_guild, give: ["misc_dwrv_artifact60", 1], suppress: ["misc_dwrv_artifact60"]}
-- {name: "Ornate Dwemer Bowl", id: 7702274, goal: thieves_guild, give: ["misc_dwrv_bowl00", 1], suppress: ["misc_dwrv_bowl00"]}
-- {name: "Ornate Dwemer Goblet", id: 7702275, goal: thieves_guild, give: ["misc_dwrv_goblet00", 1], suppress: ["misc_dwrv_goblet00"]}
-- {name: "Large Dewmer Goblet", id: 7702276, goal: thieves_guild, give: ["misc_dwrv_goblet10_tgcp", 1], suppress: ["misc_dwrv_goblet10_tgcp"]}
-- {name: "Master's Lockpick", id: 7702277, goal: thieves_guild, give: ["pick_master", 2], suppress: ["pick_master"]}
-- {name: "Redoran Master Helm", id: 7702278, goal: thieves_guild, give: ["redoran_master_helm", 1], suppress: ["redoran_master_helm"]}
-- {name: "Orvas Dren's Key", id: 7702279, goal: hlaalu, give: ["key_orvas_dren", 1], suppress: ["key_orvas_dren"]}
+- {name: "Construction Contract (main_quest)", id: 7702020, goal: main_quest, give: ["bk_stronghold_c_hlaalu", 1], suppress: ["bk_stronghold_c_hlaalu"]}
+- {name: "The Lost Prophecy", id: 7702087, goal: main_quest, give: ["bk_thelostprophecy", 1], suppress: ["bk_thelostprophecy"]}
+- {name: "Words of the Wind", id: 7702088, goal: main_quest, give: ["bk_words_of_the_wind", 1], suppress: ["bk_words_of_the_wind"]}
+- {name: "Bonebiter Bow of Sul-Senipul", id: 7702089, goal: main_quest, give: ["bonebiter_bow_unique", 1], suppress: ["bonebiter_bow_unique"]}
+- {name: "Dwemer Boots", id: 7702090, goal: main_quest, give: ["dwemer_boots", 1], suppress: ["dwemer_boots"]}
+- {name: "Dwemer Boots of Flying", id: 7702091, goal: main_quest, give: ["dwemer_boots of flying", 1], suppress: ["dwemer_boots of flying"]}
+- {name: "Exquisite Shirt", id: 7702092, goal: main_quest, give: ["exquisite_shirt_01", 1], suppress: ["exquisite_shirt_01"]}
+- {name: "Exquisite Shoes", id: 7702093, goal: main_quest, give: ["exquisite_shoes_01", 1], suppress: ["exquisite_shoes_01"]}
+- {name: "Exquisite Skirt", id: 7702094, goal: main_quest, give: ["exquisite_skirt_01", 1], suppress: ["exquisite_skirt_01"]}
+- {name: "Sanit-Kil's Heart of Fire", id: 7702095, goal: main_quest, give: ["heart_of_fire", 1], suppress: ["heart_of_fire"]}
+- {name: "Indoril Cuirass", id: 7702096, goal: main_quest, give: ["indoril cuirass", 1], suppress: ["indoril cuirass"]}
+- {name: "Indoril Helmet", id: 7702097, goal: main_quest, give: ["indoril helmet", 1], suppress: ["indoril helmet"]}
+- {name: "Indoril Left Pauldron", id: 7702098, goal: main_quest, give: ["indoril pauldron left", 1], suppress: ["indoril pauldron left"]}
+- {name: "Indoril Right Pauldron", id: 7702099, goal: main_quest, give: ["indoril pauldron right", 1], suppress: ["indoril pauldron right"]}
+- {name: "Keening", id: 7702100, goal: main_quest, give: ["keening", 1], suppress: ["keening"]}
+- {name: "Ministry of Truth Key", id: 7702101, goal: main_quest, give: ["key_ministry_ext", 1], suppress: ["key_ministry_ext"]}
+- {name: "Ministry of Truth Sector Key", id: 7702102, goal: main_quest, give: ["key_ministry_sectors", 1], suppress: ["key_ministry_sectors"]}
+- {name: "Secret Palace Entrance Key", id: 7702103, goal: main_quest, give: ["key_vivec_secret", 1], suppress: ["key_vivec_secret"]}
+- {name: "Malipu-Ataman's Belt ", id: 7702104, goal: main_quest, give: ["malipu_ataman's_belt", 1], suppress: ["malipu_ataman's_belt"]}
+- {name: "Ash Statue", id: 7702105, goal: main_quest, give: ["misc_6th_ash_statue_01", 1], suppress: ["misc_6th_ash_statue_01"]}
+- {name: "Guarskin Drum", id: 7702106, goal: main_quest, give: ["misc_de_drum_02", 1], suppress: ["misc_de_drum_02"]}
+- {name: "Dwemer puzzle box", id: 7702107, goal: main_quest, give: ["misc_dwrv_ark_cube00", 1], suppress: ["misc_dwrv_ark_cube00"]}
+- {name: "Key to Lower Arkngthand", id: 7702108, goal: main_quest, give: ["misc_dwrv_ark_key00", 1], suppress: ["misc_dwrv_ark_key00"]}
+- {name: "Dwemer Coherer", id: 7702109, goal: main_quest, give: ["misc_dwrv_artifact50", 1], suppress: ["misc_dwrv_artifact50"]}
+- {name: "House Dagoth cup", id: 7702110, goal: main_quest, give: ["misc_goblet_dagoth", 1], suppress: ["misc_goblet_dagoth"]}
+- {name: "Skull of Llevule Andrano", id: 7702111, goal: main_quest, give: ["misc_skull_llevule", 1], suppress: ["misc_skull_llevule"]}
+- {name: "Unique Dwemer Artifact", id: 7702112, goal: main_quest, give: ["misc_wraithguard_no_equip", 1], suppress: ["misc_wraithguard_no_equip"]}
+- {name: "Robe of Erur-Dan the Wise", id: 7702113, goal: main_quest, give: ["robe_of_erur_dan", 1], suppress: ["robe_of_erur_dan"]}
+- {name: "Scroll of Divine Intervention (main_quest)", id: 7702037, goal: main_quest, give: ["sc_divineintervention", 1], suppress: ["sc_divineintervention"]}
+- {name: "Shadow Shield", id: 7702114, goal: main_quest, give: ["shadow_shield", 1], suppress: ["shadow_shield"]}
+- {name: "Sunder", id: 7702115, goal: main_quest, give: ["sunder", 1], suppress: ["sunder"]}
+- {name: "War Axe of Airan Ammu", id: 7702116, goal: main_quest, give: ["war_axe_airan_ammu", 1], suppress: ["war_axe_airan_ammu"]}
+- {name: "Wraithguard", id: 7702117, goal: main_quest, give: ["wraithguard", 1], suppress: ["wraithguard"]}
+- {name: "Amulet of Ashamanu", id: 7702118, goal: misc, give: ["amulet of ashamanu (unique)", 1], suppress: ["amulet of ashamanu (unique)"]}
+- {name: "Augustus' Amulet", id: 7702119, goal: misc, give: ["amulet_agustas_unique", 1], suppress: ["amulet_agustas_unique"]}
+- {name: "Tsiya's Skooma Pipe", id: 7702120, goal: misc, give: ["apparatus_a_spipe_tsiya", 1], suppress: ["apparatus_a_spipe_tsiya"]}
+- {name: "Tarer's Aedra and Daedra", id: 7702121, goal: misc, give: ["bk_aedra_tarer_unique", 1], suppress: ["bk_aedra_tarer_unique"]}
+- {name: "Kagrenac's Journal", id: 7702122, goal: misc, give: ["bk_kagrenac'sjournal_excl", 1], suppress: ["bk_kagrenac'sjournal_excl"]}
+- {name: "Kagrenac's Planbook", id: 7702123, goal: misc, give: ["bk_kagrenac'splans_excl", 1], suppress: ["bk_kagrenac'splans_excl"]}
+- {name: "Note from Bashuk", id: 7702124, goal: misc, give: ["bk_notefrombashuk", 1], suppress: ["bk_notefrombashuk"]}
+- {name: "Note from Bugrol", id: 7702125, goal: misc, give: ["bk_notefrombugrol", 1], suppress: ["bk_notefrombugrol"]}
+- {name: "Note From Ernil", id: 7702126, goal: misc, give: ["bk_notefromernil", 1], suppress: ["bk_notefromernil"]}
+- {name: "Note from Nelos", id: 7702127, goal: misc, give: ["bk_notefromnelos", 1], suppress: ["bk_notefromnelos"]}
+- {name: "Tax Record", id: 7702128, goal: misc, give: ["bk_seydaneentaxrecord", 1], suppress: ["bk_seydaneentaxrecord"]}
+- {name: "A Dance in Fire, Chapter 2", id: 7702129, goal: misc, give: ["bookskill_block3", 1], suppress: ["bookskill_block3"]}
+- {name: "2920, Second Seed", id: 7702130, goal: misc, give: ["bookskill_speechcraft3", 1], suppress: ["bookskill_speechcraft3"]}
+- {name: "Cloudcleaver", id: 7702131, goal: misc, give: ["cloudcleaver_unique", 1], suppress: ["cloudcleaver_unique"]}
+- {name: "Common Pants", id: 7702132, goal: misc, give: ["common_pants_02", 1], suppress: ["common_pants_02"]}
+- {name: "Hentus Pants", id: 7702133, goal: misc, give: ["common_pants_02_hentus", 1], suppress: ["common_pants_02_hentus"]}
+- {name: "Expensive Amulet", id: 7702134, goal: misc, give: ["expensive_amulet_aeta", 1], suppress: ["expensive_amulet_aeta"]}
+- {name: "Expensive Ring", id: 7702135, goal: misc, give: ["expensive_ring_01_bill", 1], suppress: ["expensive_ring_01_bill"]}
+- {name: "Expensive Ring (misc)", id: 7702136, goal: misc, give: ["expensive_ring_aeta", 1], suppress: ["expensive_ring_aeta"]}
+- {name: "Processus Vitellius' Ring", id: 7702137, goal: misc, give: ["exquisite_ring_processus", 1], suppress: ["exquisite_ring_processus"]}
+- {name: "Exquisite Shirt (misc)", id: 7702138, goal: misc, give: ["exquisite_shirt_01_rasha", 5], suppress: ["exquisite_shirt_01_rasha"]}
+- {name: "Maurrie's Left Glove", id: 7702139, goal: misc, give: ["extravagant_glove_left_maur", 1], suppress: ["extravagant_glove_left_maur"]}
+- {name: "Extravagant Skirt", id: 7702140, goal: misc, give: ["extravagant_skirt_02", 1], suppress: ["extravagant_skirt_02"]}
+- {name: "Colovian Fur Helm", id: 7702141, goal: misc, give: ["fur_colovian_helm", 1], suppress: ["fur_colovian_helm"]}
+- {name: "The Icecap", id: 7702142, goal: misc, give: ["icecap_unique", 1], suppress: ["icecap_unique"]}
+- {name: "Arenim burial key", id: 7702143, goal: misc, give: ["key_arenim", 1], suppress: ["key_arenim"]}
+- {name: "Beluelle's Silver bowl", id: 7702144, goal: misc, give: ["misc_beluelle_silver_bowl", 1], suppress: ["misc_beluelle_silver_bowl"]}
+- {name: "Unique Dwemer Artifact (misc)", id: 7702112, goal: misc, give: ["misc_wraithguard_no_equip", 1], suppress: ["misc_wraithguard_no_equip"]}
+- {name: "Nuccius's Cursed Ring", id: 7702145, goal: misc, give: ["nuccius_ring", 1], suppress: ["nuccius_ring"]}
+- {name: "Silver Flameblade", id: 7702146, goal: misc, give: ["silver flameblade", 1], suppress: ["silver flameblade"]}
+- {name: "Silver Staff", id: 7702147, goal: misc, give: ["silver staff", 1], suppress: ["silver staff"]}
+- {name: "Silver War Axe", id: 7702148, goal: misc, give: ["silver war axe", 1], suppress: ["silver war axe"]}
+- {name: "Steel Shortsword", id: 7702149, goal: misc, give: ["steel shortsword", 1], suppress: ["steel shortsword"]}
+- {name: "Steel Staff", id: 7702150, goal: misc, give: ["steel staff", 1], suppress: ["steel staff"]}
+- {name: "Widowmaker", id: 7702151, goal: misc, give: ["widowmaker_unique", 1], suppress: ["widowmaker_unique"]}
+- {name: "Letter from Tsrazami", id: 7702152, goal: morag_tong, give: ["bk_miungei", 1], suppress: ["bk_miungei"]}
+- {name: "Amulet of Sanguine Glib Speech", id: 7702153, goal: morag_tong, give: ["sanguineamuletglibspeech", 1], suppress: ["sanguineamuletglibspeech"]}
+- {name: "Amulet of Sanguine Nimble Armor", id: 7702154, goal: morag_tong, give: ["sanguineamuletnimblearmor", 1], suppress: ["sanguineamuletnimblearmor"]}
+- {name: "Belt of Sanguine Balanced Armor", id: 7702155, goal: morag_tong, give: ["sanguinebeltbalancedarmor", 1], suppress: ["sanguinebeltbalancedarmor"]}
+- {name: "Belt of Sanguine Deep Biting", id: 7702156, goal: morag_tong, give: ["sanguinebeltdeepbiting", 1], suppress: ["sanguinebeltdeepbiting"]}
+- {name: "Belt of Sanguine Denial", id: 7702157, goal: morag_tong, give: ["sanguinebeltdenial", 1], suppress: ["sanguinebeltdenial"]}
+- {name: "Belt of Sanguine Fleetness", id: 7702158, goal: morag_tong, give: ["sanguinebeltfleetness", 1], suppress: ["sanguinebeltfleetness"]}
+- {name: "Belt of Sanguine Hewing", id: 7702159, goal: morag_tong, give: ["sanguinebelthewing", 1], suppress: ["sanguinebelthewing"]}
+- {name: "Belt of Sanguine Impaling Thrus", id: 7702160, goal: morag_tong, give: ["sanguinebeltimpaling", 1], suppress: ["sanguinebeltimpaling"]}
+- {name: "Belt of Sanguine Martial Craft", id: 7702161, goal: morag_tong, give: ["sanguinebeltmartialcraft", 1], suppress: ["sanguinebeltmartialcraft"]}
+- {name: "Belt of Sanguine Smiting", id: 7702162, goal: morag_tong, give: ["sanguinebeltsmiting", 1], suppress: ["sanguinebeltsmiting"]}
+- {name: "Belt of Sanguine Stolid Armor", id: 7702163, goal: morag_tong, give: ["sanguinebeltstolidarmor", 1], suppress: ["sanguinebeltstolidarmor"]}
+- {name: "Belt of Sanguine Sureflight", id: 7702164, goal: morag_tong, give: ["sanguinebeltsureflight", 1], suppress: ["sanguinebeltsureflight"]}
+- {name: "Glove of Sanguine Safekeeping", id: 7702165, goal: morag_tong, give: ["sanguinelglovesafekeeping", 1], suppress: ["sanguinelglovesafekeeping"]}
+- {name: "Glove of Sanguine Horny Fist", id: 7702166, goal: morag_tong, give: ["sanguinerglovehornyfist", 1], suppress: ["sanguinerglovehornyfist"]}
+- {name: "Glove of Sanguine Swiftblade", id: 7702167, goal: morag_tong, give: ["sanguinergloveswiftblade", 1], suppress: ["sanguinergloveswiftblade"]}
+- {name: "Ring of Sanguine Fluid Evasion", id: 7702168, goal: morag_tong, give: ["sanguineringfluidevasion", 1], suppress: ["sanguineringfluidevasion"]}
+- {name: "Ring of Sanguine Golden Wisdom", id: 7702169, goal: morag_tong, give: ["sanguineringgoldenw", 1], suppress: ["sanguineringgoldenw"]}
+- {name: "Ring of Sanguine Green Wisdom", id: 7702170, goal: morag_tong, give: ["sanguineringgreenw", 1], suppress: ["sanguineringgreenw"]}
+- {name: "Ring of Sanguine Red Wisdom", id: 7702171, goal: morag_tong, give: ["sanguineringredw", 1], suppress: ["sanguineringredw"]}
+- {name: "Ring of Sanguine Silver Wisdom", id: 7702172, goal: morag_tong, give: ["sanguineringsilverw", 1], suppress: ["sanguineringsilverw"]}
+- {name: "Ring of Sanguine Sublime Wisdom", id: 7702173, goal: morag_tong, give: ["sanguineringsublimew", 1], suppress: ["sanguineringsublimew"]}
+- {name: "Ring of Sanguine Transcendence", id: 7702174, goal: morag_tong, give: ["sanguineringtranscendw", 1], suppress: ["sanguineringtranscendw"]}
+- {name: "Ring of Sanguine Transfiguring", id: 7702175, goal: morag_tong, give: ["sanguineringtransfigurw", 1], suppress: ["sanguineringtransfigurw"]}
+- {name: "Ring of Sanguine Unseen Wisdom", id: 7702176, goal: morag_tong, give: ["sanguineringunseenw", 1], suppress: ["sanguineringunseenw"]}
+- {name: "Shoes of Sanguine Leaping", id: 7702177, goal: morag_tong, give: ["sanguineshoesleaping", 1], suppress: ["sanguineshoesleaping"]}
+- {name: "Shoes of Sanguine Stalking", id: 7702178, goal: morag_tong, give: ["sanguineshoesstalking", 1], suppress: ["sanguineshoesstalking"]}
+- {name: "Honorable Writ of Execution", id: 7702179, goal: morag_tong, give: ["writ_baladas", 1], suppress: ["writ_baladas"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702180, goal: morag_tong, give: ["writ_belvayn", 1], suppress: ["writ_belvayn"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702181, goal: morag_tong, give: ["writ_bemis", 1], suppress: ["writ_bemis"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702182, goal: morag_tong, give: ["writ_bero", 1], suppress: ["writ_bero"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702183, goal: morag_tong, give: ["writ_brilnosu", 1], suppress: ["writ_brilnosu"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702184, goal: morag_tong, give: ["writ_galasa", 1], suppress: ["writ_galasa"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702185, goal: morag_tong, give: ["writ_guril", 1], suppress: ["writ_guril"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702186, goal: morag_tong, give: ["writ_mavon", 1], suppress: ["writ_mavon"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702187, goal: morag_tong, give: ["writ_navil", 1], suppress: ["writ_navil"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702188, goal: morag_tong, give: ["writ_sadus", 1], suppress: ["writ_sadus"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702189, goal: morag_tong, give: ["writ_saren", 1], suppress: ["writ_saren"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702190, goal: morag_tong, give: ["writ_therana", 1], suppress: ["writ_therana"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702191, goal: morag_tong, give: ["writ_varro", 1], suppress: ["writ_varro"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702192, goal: morag_tong, give: ["writ_vendu", 1], suppress: ["writ_vendu"]}
+- {name: "Honorable Writ of Execution (morag_tong)", id: 7702193, goal: morag_tong, give: ["writ_yasalmibaal", 1], suppress: ["writ_yasalmibaal"]}
+- {name: "Secret Caldera Ledger (redoran)", id: 7702028, goal: redoran, give: ["bk_calderarecordbook2", 1], suppress: ["bk_calderarecordbook2"]}
+- {name: "Galtis Guvron's Note", id: 7702194, goal: redoran, give: ["bk_galtisguvronsnote", 1], suppress: ["bk_galtisguvronsnote"]}
+- {name: "Shishi Report", id: 7702195, goal: redoran, give: ["bk_shishireport", 1], suppress: ["bk_shishireport"]}
+- {name: "Construction Contract (redoran)", id: 7702020, goal: redoran, give: ["bk_stronghold_c_hlaalu", 1], suppress: ["bk_stronghold_c_hlaalu"]}
+- {name: "Redoran Founder's Helm", id: 7702196, goal: redoran, give: ["bonemold_founders_helm", 1], suppress: ["bonemold_founders_helm"]}
+- {name: "Redoran Banner Shield", id: 7702197, goal: redoran, give: ["bonemold_tshield_hrlb", 4], suppress: ["bonemold_tshield_hrlb"]}
+- {name: "Delyna's Locket", id: 7702198, goal: redoran, give: ["expensive_amulet_delyna", 1], suppress: ["expensive_amulet_delyna"]}
+- {name: "Nervion Ancestor Ring", id: 7702199, goal: redoran, give: ["expensive_ring_01_hrdt", 1], suppress: ["expensive_ring_01_hrdt"]}
+- {name: "Redas Robe of Deeds", id: 7702200, goal: redoran, give: ["extravagant_robe_01_red", 1], suppress: ["extravagant_robe_01_red"]}
+- {name: "Hlaalu Compound Cell Key", id: 7702201, goal: redoran, give: ["key_vivec_hlaalu_cell", 1], suppress: ["key_vivec_hlaalu_cell"]}
+- {name: "Suspicious Ash Statue", id: 7702202, goal: redoran, give: ["misc_6th_ash_hrcs", 1], suppress: ["misc_6th_ash_hrcs"]}
+- {name: "Morvayn Ash Statue", id: 7702203, goal: redoran, give: ["misc_6th_ash_hrmm", 1], suppress: ["misc_6th_ash_hrmm"]}
+- {name: "Ash Statue (redoran)", id: 7702105, goal: redoran, give: ["misc_6th_ash_statue_01", 1], suppress: ["misc_6th_ash_statue_01"]}
+- {name: "Redas Goblet", id: 7702204, goal: redoran, give: ["misc_de_goblet_01_redas", 1], suppress: ["misc_de_goblet_01_redas"]}
+- {name: "Amulet of Flesh Made Whole", id: 7702205, goal: telvanni, give: ["amuletfleshmadewhole_uniq", 1], suppress: ["amuletfleshmadewhole_uniq"]}
+- {name: "Antecedants of Dwemer Law", id: 7702206, goal: telvanni, give: ["bk_antecedantsdwemerlaw", 1], suppress: ["bk_antecedantsdwemerlaw"]}
+- {name: "Chronicles of Nchuleft (telvanni)", id: 7702054, goal: telvanni, give: ["bk_chroniclesnchuleft", 1], suppress: ["bk_chroniclesnchuleft"]}
+- {name: "Nchunak's Fire and Faith", id: 7702207, goal: telvanni, give: ["bk_nchunaksfireandfaith", 1], suppress: ["bk_nchunaksfireandfaith"]}
+- {name: "Response from Divayth Fyr", id: 7702208, goal: telvanni, give: ["bk_responsefromdivaythfyr", 1], suppress: ["bk_responsefromdivaythfyr"]}
+- {name: "Secrets of Dwemer Animunculi", id: 7702209, goal: telvanni, give: ["bk_secretsdwemeranimunculi", 1], suppress: ["bk_secretsdwemeranimunculi"]}
+- {name: "Construction Contract (telvanni)", id: 7702020, goal: telvanni, give: ["bk_stronghold_c_hlaalu", 1], suppress: ["bk_stronghold_c_hlaalu"]}
+- {name: "The Lunar Lorkhan", id: 7702210, goal: telvanni, give: ["bookskill_alteration5", 1], suppress: ["bookskill_alteration5"]}
+- {name: "A Hypothetical Treachery", id: 7702211, goal: telvanni, give: ["bookskill_destruction3", 1], suppress: ["bookskill_destruction3"]}
+- {name: "Auriel's Bow", id: 7702212, goal: telvanni, give: ["ebony_bow_auriel", 1], suppress: ["ebony_bow_auriel"]}
+- {name: "Robe of the Drake's Pride", id: 7702213, goal: telvanni, give: ["exquisite_robe_drake's pride", 1], suppress: ["exquisite_robe_drake's pride"]}
+- {name: "Abebaal Slave Key", id: 7702214, goal: telvanni, give: ["key_abebaalslaves_01", 1], suppress: ["key_abebaalslaves_01"]}
+- {name: "Key to Tel Naga", id: 7702215, goal: telvanni, give: ["key_nelothtelnaga", 1], suppress: ["key_nelothtelnaga"]}
+- {name: "Dwemer Scarab Schematics", id: 7702216, goal: telvanni, give: ["misc_dwrv_artifact40", 1], suppress: ["misc_dwrv_artifact40"]}
+- {name: "Dwemer Schematic", id: 7702217, goal: telvanni, give: ["misc_dwrv_artifact70", 1], suppress: ["misc_dwrv_artifact70"]}
+- {name: "Black Jinx", id: 7702218, goal: telvanni, give: ["ring_blackjinx_uniq", 1], suppress: ["ring_blackjinx_uniq"]}
+- {name: "Ring of Dahrk Mezalf", id: 7702219, goal: telvanni, give: ["ring_dahrkmezalf_uniq", 1], suppress: ["ring_dahrkmezalf_uniq"]}
+- {name: "Ring of Equity", id: 7702220, goal: telvanni, give: ["ring_equity_uniq", 1], suppress: ["ring_equity_uniq"]}
+- {name: "Silver Staff (telvanni)", id: 7702221, goal: telvanni, give: ["silver_staff_dawn_uniq", 1], suppress: ["silver_staff_dawn_uniq"]}
+- {name: "Therana's Skirt", id: 7702222, goal: telvanni, give: ["therana's skirt", 1], suppress: ["therana's skirt"]}
+- {name: "Saryoni's Sermons", id: 7702223, goal: temple, give: ["bk_saryonissermons", 1], suppress: ["bk_saryonissermons"]}
+- {name: "Cleaver of St. Felms", id: 7702224, goal: temple, give: ["cleaverstfelms", 1], suppress: ["cleaverstfelms"]}
+- {name: "Crosier of St. Llothis", id: 7702225, goal: temple, give: ["crosierstllothis", 1], suppress: ["crosierstllothis"]}
+- {name: "Ebony Mail", id: 7702226, goal: temple, give: ["ebon_plate_cuirass_unique", 1], suppress: ["ebon_plate_cuirass_unique"]}
+- {name: "Hair Shirt of Saint Aralor", id: 7702227, goal: temple, give: ["expensive_shirt_hair", 1], suppress: ["expensive_shirt_hair"]}
+- {name: "Gambolpuddy", id: 7702228, goal: temple, give: ["extravagant_rt_art_wild", 1], suppress: ["extravagant_rt_art_wild"]}
+- {name: "Common Soul Gem", id: 7702229, goal: temple, give: ["misc_soulgem_common", 1], suppress: ["misc_soulgem_common"]}
+- {name: "Grand Soul Gem", id: 7702230, goal: temple, give: ["misc_soulgem_grand", 1], suppress: ["misc_soulgem_grand"]}
+- {name: "Greater Soul Gem", id: 7702231, goal: temple, give: ["misc_soulgem_greater", 1], suppress: ["misc_soulgem_greater"]}
+- {name: "Lesser Soul Gem", id: 7702232, goal: temple, give: ["misc_soulgem_lesser", 1], suppress: ["misc_soulgem_lesser"]}
+- {name: "Petty Soul Gem", id: 7702233, goal: temple, give: ["misc_soulgem_petty", 1], suppress: ["misc_soulgem_petty"]}
+- {name: "Moon-and-Star", id: 7702234, goal: temple, give: ["moon_and_star", 1], suppress: ["moon_and_star"]}
+- {name: "Shoes of St. Rilms", id: 7702235, goal: temple, give: ["shoes of st. rilms", 1], suppress: ["shoes of st. rilms"]}
+- {name: "Grandmaster's Retort", id: 7702236, goal: thieves_guild, give: ["apparatus_g_retort_01", 1], suppress: ["apparatus_g_retort_01"]}
+- {name: "Bittercup", id: 7702237, goal: thieves_guild, give: ["artifact_bittercup_01", 1], suppress: ["artifact_bittercup_01"]}
+- {name: "Boethiah's Pillow Book", id: 7702238, goal: thieves_guild, give: ["bk_boethiahpillowbook", 1], suppress: ["bk_boethiahpillowbook"]}
+- {name: "Brief History of the Empire v 1", id: 7702239, goal: thieves_guild, give: ["bk_briefhistoryempire1", 1], suppress: ["bk_briefhistoryempire1"]}
+- {name: "Odral's History of the Empire 1", id: 7702240, goal: thieves_guild, give: ["bk_briefhistoryempire1_oh", 1], suppress: ["bk_briefhistoryempire1_oh"]}
+- {name: "Brief History of the Empire v 2", id: 7702241, goal: thieves_guild, give: ["bk_briefhistoryempire2", 1], suppress: ["bk_briefhistoryempire2"]}
+- {name: "Odral's History of the Empire 2", id: 7702242, goal: thieves_guild, give: ["bk_briefhistoryempire2_oh", 1], suppress: ["bk_briefhistoryempire2_oh"]}
+- {name: "Brief History of the Empire v 3", id: 7702243, goal: thieves_guild, give: ["bk_briefhistoryempire3", 1], suppress: ["bk_briefhistoryempire3"]}
+- {name: "Odral's History of the Empire 3", id: 7702244, goal: thieves_guild, give: ["bk_briefhistoryempire3_oh", 1], suppress: ["bk_briefhistoryempire3_oh"]}
+- {name: "Brief History of the Empire v 4", id: 7702245, goal: thieves_guild, give: ["bk_briefhistoryempire4", 1], suppress: ["bk_briefhistoryempire4"]}
+- {name: "Odral's History of the Empire 4", id: 7702246, goal: thieves_guild, give: ["bk_briefhistoryempire4_oh", 1], suppress: ["bk_briefhistoryempire4_oh"]}
+- {name: "Dispel Potion Formula", id: 7702247, goal: thieves_guild, give: ["bk_dispelrecipe_tgca", 1], suppress: ["bk_dispelrecipe_tgca"]}
+- {name: "Deed to Indrele's House", id: 7702248, goal: thieves_guild, give: ["bk_indreledeed", 1], suppress: ["bk_indreledeed"]}
+- {name: "Redoran Cooking Secrets", id: 7702249, goal: thieves_guild, give: ["bk_redorancookingsecrets", 1], suppress: ["bk_redorancookingsecrets"]}
+- {name: "Yngling's Ledger", id: 7702250, goal: thieves_guild, give: ["bk_ynglingledger", 1], suppress: ["bk_ynglingledger"]}
+- {name: "Withershins", id: 7702251, goal: thieves_guild, give: ["bookskill_restoration1", 1], suppress: ["bookskill_restoration1"]}
+- {name: "Left Bal Molagmer Glove", id: 7702252, goal: thieves_guild, give: ["common_glove_l_balmolagmer", 1], suppress: ["common_glove_l_balmolagmer"]}
+- {name: "Black Left Glove", id: 7702253, goal: thieves_guild, give: ["common_glove_l_moragtong", 1], suppress: ["common_glove_l_moragtong"]}
+- {name: "Right Bal Molagmer Glove", id: 7702254, goal: thieves_guild, give: ["common_glove_r_balmolagmer", 1], suppress: ["common_glove_r_balmolagmer"]}
+- {name: "Dart of Judgment", id: 7702255, goal: thieves_guild, give: ["dart_uniq_judgement", 4], suppress: ["dart_uniq_judgement"]}
+- {name: "Anarenen's Devil Tanto", id: 7702256, goal: thieves_guild, give: ["devil_tanto_tgamg", 1], suppress: ["devil_tanto_tgamg"]}
+- {name: "Felen's Ebony Staff", id: 7702257, goal: thieves_guild, give: ["ebony staff caper", 1], suppress: ["ebony staff caper"]}
+- {name: "Hlervu Locket", id: 7702258, goal: thieves_guild, give: ["exquisite_amulet_hlervu1", 1], suppress: ["exquisite_amulet_hlervu1"]}
+- {name: "Brallion's Exquisite Ring", id: 7702259, goal: thieves_guild, give: ["exquisite_ring_brallion", 1], suppress: ["exquisite_ring_brallion"]}
+- {name: "Exquisite Shoes (thieves_guild)", id: 7702093, goal: thieves_guild, give: ["exquisite_shoes_01", 1], suppress: ["exquisite_shoes_01"]}
+- {name: "Diamond", id: 7702260, goal: thieves_guild, give: ["ingred_diamond_01", 1], suppress: ["ingred_diamond_01"]}
+- {name: "Key to Nerano Manor", id: 7702261, goal: thieves_guild, give: ["key_neranomanor", 1], suppress: ["key_neranomanor"]}
+- {name: "Nads Tharen's Key", id: 7702262, goal: thieves_guild, give: ["key_tgbt", 1], suppress: ["key_tgbt"]}
+- {name: "Dwemer Coherer (thieves_guild)", id: 7702109, goal: thieves_guild, give: ["misc_dwrv_artifact50", 1], suppress: ["misc_dwrv_artifact50"]}
+- {name: "Dwemer Tube (thieves_guild)", id: 7702069, goal: thieves_guild, give: ["misc_dwrv_artifact60", 1], suppress: ["misc_dwrv_artifact60"]}
+- {name: "Ornate Dwemer Bowl", id: 7702263, goal: thieves_guild, give: ["misc_dwrv_bowl00", 1], suppress: ["misc_dwrv_bowl00"]}
+- {name: "Ornate Dwemer Goblet", id: 7702264, goal: thieves_guild, give: ["misc_dwrv_goblet00", 1], suppress: ["misc_dwrv_goblet00"]}
+- {name: "Large Dewmer Goblet", id: 7702265, goal: thieves_guild, give: ["misc_dwrv_goblet10_tgcp", 1], suppress: ["misc_dwrv_goblet10_tgcp"]}
+- {name: "Master's Lockpick", id: 7702266, goal: thieves_guild, give: ["pick_master", 2], suppress: ["pick_master"]}
+- {name: "Redoran Master Helm", id: 7702267, goal: thieves_guild, give: ["redoran_master_helm", 1], suppress: ["redoran_master_helm"]}
+- {name: "Orvas Dren's Key", id: 7702268, goal: hlaalu, give: ["key_orvas_dren", 1], suppress: ["key_orvas_dren"]}
