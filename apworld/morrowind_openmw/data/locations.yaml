@@ -1,0 +1,120 @@
+- id: 7700001
+  name: "Main Quest Step 1"
+  category: quest
+  trigger: {quest: MQ_1, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700002
+  name: "Main Quest Step 2"
+  category: quest
+  trigger: {quest: MQ_2, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700003
+  name: "Main Quest Step 3"
+  category: quest
+  trigger: {quest: MQ_3, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700004
+  name: "Main Quest Step 4"
+  category: quest
+  trigger: {quest: MQ_4, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700005
+  name: "Main Quest Step 5"
+  category: quest
+  trigger: {quest: MQ_5, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700006
+  name: "Main Quest Step 6"
+  category: quest
+  trigger: {quest: MQ_6, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700007
+  name: "Main Quest Step 7"
+  category: quest
+  trigger: {quest: MQ_7, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700008
+  name: "Main Quest Step 8"
+  category: quest
+  trigger: {quest: MQ_8, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700009
+  name: "Main Quest Step 9"
+  category: quest
+  trigger: {quest: MQ_9, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700010
+  name: "Main Quest Step 10"
+  category: quest
+  trigger: {quest: MQ_10, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700011
+  name: "Main Quest Step 11"
+  category: quest
+  trigger: {quest: MQ_11, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700012
+  name: "Main Quest Step 12"
+  category: quest
+  trigger: {quest: MQ_12, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700013
+  name: "Main Quest Step 13"
+  category: quest
+  trigger: {quest: MQ_13, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700014
+  name: "Main Quest Step 14"
+  category: quest
+  trigger: {quest: MQ_14, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700015
+  name: "Main Quest Step 15"
+  category: quest
+  trigger: {quest: MQ_15, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700016
+  name: "Main Quest Step 16"
+  category: quest
+  trigger: {quest: MQ_16, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700017
+  name: "Main Quest Step 17"
+  category: quest
+  trigger: {quest: MQ_17, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700018
+  name: "Main Quest Step 18"
+  category: quest
+  trigger: {quest: MQ_18, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700019
+  name: "Main Quest Step 19"
+  category: quest
+  trigger: {quest: MQ_19, stage: 10}
+  region: "Seyda Neen"
+  rule: {}
+- id: 7700020
+  name: "Main Quest Step 20"
+  category: quest
+  trigger: {quest: MQ_20, stage: 10}
+  region: "Seyda Neen"
+  rule: {}

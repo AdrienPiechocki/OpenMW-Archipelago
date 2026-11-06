@@ -1,0 +1,5 @@
+# Morrowind Archipelago mod
+MENU: scripts/ap/settings.lua
+PLAYER: scripts/ap/player.lua
+GLOBAL: scripts/ap/global.lua
+CREATURE: scripts/ap/actor.lua

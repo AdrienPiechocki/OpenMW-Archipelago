@@ -1,0 +1,12 @@
+-- Genere par tools/gen_lua.py (data/quest_locks.yaml)
+return {
+  daedric_quests = {
+    { id = 7701400, quest = 'da_azura' },
+    { id = 7701401, quest = 'da_boethiah' },
+    { id = 7701402, quest = 'da_malacath' },
+    { id = 7701403, quest = 'da_mehrunes' },
+    { id = 7701404, quest = 'da_mephala' },
+    { id = 7701405, quest = 'da_molagbal' },
+    { id = 7701406, quest = 'da_sheogorath' },
+  },
+}

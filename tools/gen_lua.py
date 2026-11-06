@@ -1,0 +1,150 @@
+#!/usr/bin/env python3
+"""Genere les tables Lua depuis les YAML de data/."""
+import argparse, yaml, pathlib
+
+
+def gen_quest_completions(qc_path, out_path):
+    data = yaml.safe_load(open(qc_path)) or []
+    lines = ['-- Genere par tools/gen_lua.py', 'return {']
+    n = 0
+    if data and isinstance(data[0], dict) and 'stage' in data[0]:
+        for q in data:
+            qid = str(q['quest']).replace("'", "\\'").lower()
+            stage = int(q.get('stage', 0))
+            fail = q.get('fail') or []
+            group = q.get('group', 'misc')
+            # Tous les groupes gardent leurs ids : le mod n'envoie ceux des quetes
+            # d'objectif que si l'objectif est choisi (scripts/ap/goal_checks.lua).
+            ids = q.get('ids') or []
+            fail_lua = ', '.join(str(int(x)) for x in fail)
+            ids_lua = ', '.join(str(int(x)) for x in ids)
+            lines.append(
+                "  ['%s'] = { %d, { %s }, { %s }, '%s' }," % (qid, stage, fail_lua, ids_lua, group)
+            )
+            n += 1
+    else:
+        groups = {}
+        for q in data:
+            qid = str(q['trigger']['quest']).lower().replace("'", "\\'")
+            groups.setdefault(qid, []).append(q['id'])
+        for qid in sorted(groups):
+            ids = groups[qid]
+            lines.append(
+                "  ['%s'] = { 0, {}, { %s } }," % (qid, ', '.join(str(i) for i in ids))
+            )
+            n += 1
+    lines.append('}')
+    pathlib.Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+    pathlib.Path(out_path).write_text('\n'.join(lines) + '\n')
+    print(f'quest completions: {n} entries -> {out_path}')
+
+
+def gen_goals(goals_path, out_path):
+    goals = yaml.safe_load(open(goals_path)) or {}
+    lines = ['-- Genere par tools/gen_lua.py', 'return {']
+    for name, g in goals.items():
+        parts = []
+        if g.get('faction'):
+            parts.append("faction = '%s'" % str(g['faction']).lower().replace("'", "\\\\'"))
+            parts.append('rank = %d' % int(g.get('rank', 10)))
+        if g.get('group'):
+            parts.append("group = '%s'" % g['group'])
+        if g.get('quests'):
+            qs = ', '.join("{ quest = '%s', stage = %d }" % (str(e['quest']).lower(), int(e['stage']))
+                           for e in g['quests'])
+            parts.append('quests = { %s }' % qs)
+        lines.append('  %s = { %s },' % (name, ', '.join(parts)))
+    lines.append('}')
+    pathlib.Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+    pathlib.Path(out_path).write_text('\n'.join(lines) + '\n')
+    print(f'goals: {len(goals)} entries -> {out_path}')
+
+
+def _lq(x):
+    return "'" + str(x).replace('\\', '\\\\').replace("'", "\\'") + "'"
+
+
+def gen_quest_items(path, out_path):
+    items = yaml.safe_load(open(path)) or []
+    by_goal = {}
+    for it in items:
+        by_goal.setdefault(it['goal'], []).append(it)
+    lines = ['-- Genere par tools/gen_lua.py (data/quest_items.yaml)', 'return {']
+    for goal, lst in by_goal.items():
+        lines.append('  %s = {' % goal)
+        for it in lst:
+            parts = ['id = %d' % it['id']]
+            if it.get('give'):
+                parts.append('give = { %s, %d }' % (_lq(it['give'][0]), int(it['give'][1])))
+            if it.get('spells'):
+                parts.append('spells = { %s }' % ', '.join(_lq(x) for x in it['spells']))
+            if it.get('suppress'):
+                parts.append('suppress = { %s }' % ', '.join(_lq(x) for x in it['suppress']))
+            lines.append('    { %s },' % ', '.join(parts))
+        lines.append('  },')
+    lines.append('}')
+    pathlib.Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+    pathlib.Path(out_path).write_text('\n'.join(lines) + '\n')
+    print(f'quest items: {len(items)} entries -> {out_path}')
+
+
+def gen_quest_locks(path, out_path):
+    locks = yaml.safe_load(open(path)) or []
+    by_goal = {}
+    for lk in locks:
+        by_goal.setdefault(lk['goal'], []).append(lk)
+    lines = ['-- Genere par tools/gen_lua.py (data/quest_locks.yaml)', 'return {']
+    for goal, lst in by_goal.items():
+        lines.append('  %s = {' % goal)
+        for lk in lst:
+            lines.append("    { id = %d, quest = %s }," % (lk['id'], _lq(str(lk['quest']).lower())))
+        lines.append('  },')
+    lines.append('}')
+    pathlib.Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+    pathlib.Path(out_path).write_text('\n'.join(lines) + '\n')
+    print(f'quest locks: {len(locks)} entries -> {out_path}')
+
+
+def gen_quest_lock_activators(path, out_path):
+    locks = yaml.safe_load(open(path)) or []
+    by_script, by_record = {}, {}
+    for lk in locks:
+        entry = "id = %d, quest = %s, goal = %s, name = %s" % (
+            lk['id'], _lq(str(lk['quest']).lower()), _lq(lk['goal']), _lq(lk['name']))
+        for script in lk.get('scripts') or []:
+            by_script[script] = entry
+        for record in lk.get('activators') or []:
+            by_record[record] = entry
+    lines = ['-- Genere par tools/gen_lua.py (data/quest_locks.yaml)', 'return {']
+    for key, table in (('by_script', by_script), ('by_record', by_record)):
+        lines.append('  %s = {' % key)
+        for name in sorted(table):
+            lines.append("    [%s] = { %s }," % (_lq(name), table[name]))
+        lines.append('  },')
+    lines.append('}')
+    pathlib.Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+    pathlib.Path(out_path).write_text('\n'.join(lines) + '\n')
+    print(f'quest lock activators: {len(by_script)} scripts, {len(by_record)} records -> {out_path}')
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--qc', default='data/quest_finals.yaml')
+    ap.add_argument('--qc-out', default='mod/scripts/ap/quest_completions.lua')
+    ap.add_argument('--goals', default='data/goals.yaml')
+    ap.add_argument('--goals-out', default='mod/scripts/ap/goals.lua')
+    ap.add_argument('--quest-locks', default='data/quest_locks.yaml')
+    ap.add_argument('--quest-locks-out', default='mod/scripts/ap/quest_locks.lua')
+    ap.add_argument('--quest-lock-activators-out', default='mod/scripts/ap/quest_lock_activators.lua')
+    ap.add_argument('--quest-items', default='data/quest_items.yaml')
+    ap.add_argument('--quest-items-out', default='mod/scripts/ap/quest_items.lua')
+    args = ap.parse_args()
+    gen_quest_items(args.quest_items, args.quest_items_out)
+    gen_quest_locks(args.quest_locks, args.quest_locks_out)
+    gen_quest_lock_activators(args.quest_locks, args.quest_lock_activators_out)
+    gen_goals(args.goals, args.goals_out)
+    gen_quest_completions(args.qc, args.qc_out)
+
+
+if __name__ == '__main__':
+    main()

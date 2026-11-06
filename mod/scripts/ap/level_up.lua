@@ -1,0 +1,28 @@
+-- Item Archipelago "+10 niveaux".
+--
+-- On ne modifie pas directement le niveau courant : on ajoute la progression
+-- de niveau vanilla. Le joueur obtient ainsi les vraies fenetres de montee de
+-- niveau (choix des attributs, gain de vie) en dormant, au lieu d'un simple
+-- numero de niveau sans benefices.
+local M = {}
+
+-- Doit rester synchronise avec apworld/morrowind_openmw/items.py.
+M.ITEM_ID = 7703000
+M.LEVELS = 10
+M.DEFAULT_LEVEL_UP_TOTAL = 10
+
+function M.progressGain(levels, levelUpTotal)
+  levels = tonumber(levels) or 0
+  levelUpTotal = tonumber(levelUpTotal) or M.DEFAULT_LEVEL_UP_TOTAL
+  if levels < 0 then levels = 0 end
+  if levelUpTotal <= 0 then levelUpTotal = M.DEFAULT_LEVEL_UP_TOTAL end
+  return levels * levelUpTotal
+end
+
+function M.newProgress(current, levels, levelUpTotal)
+  current = tonumber(current) or 0
+  if current < 0 then current = 0 end
+  return current + M.progressGain(levels, levelUpTotal)
+end
+
+return M

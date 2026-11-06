@@ -1,0 +1,23 @@
+name: TestMW
+game: Morrowind OpenMW
+
+Morrowind OpenMW:
+  # Objectifs : la quete principale (tuer Dagoth Ur) est un objectif par defaut. Tu peux y
+  # ajouter une grande maison, une guilde et une faction : chacune doit etre terminee
+  # (rang 10, chef) pour gagner, et ses objets de quete viennent d'Archipelago.
+  # Mets main_quest: false pour retirer la quete principale de l'objectif (il faut alors
+  # au moins une maison, une guilde, une faction ou daedric_quests: true).
+  main_quest: true
+  great_house: none     # none | hlaalu | redoran | telvanni
+  guild: none           # none | fighters_guild | mages_guild | thieves_guild
+  faction: none         # none | imperial_cult | imperial_legion | temple | morag_tong
+
+  # Ajoute les 7 quetes daedriques a l'objectif. Chacune est verrouillee tant que son
+  # item Archipelago ("Daedric Quest: <prince>") n'est pas recu.
+  daedric_quests: false
+
+  # Les quetes des objectifs choisis (principale, maison / guilde / faction, daedriques)
+  # donnent aussi un check a leur completion (les quetes "Miscellaneous" en donnent
+  # toujours un chacune).
+  goal_quest_checks: true      # true | false
+  death_link: true

@@ -1,0 +1,15 @@
+-- Genere par tools/gen_lua.py
+return {
+  main_quest = { quests = { { quest = 'c3_destroydagoth', stage = 50 } } },
+  hlaalu = { faction = 'hlaalu', rank = 10 },
+  telvanni = { faction = 'telvanni', rank = 10 },
+  redoran = { faction = 'redoran', rank = 10 },
+  fighters_guild = { faction = 'fighters guild', rank = 10 },
+  mages_guild = { faction = 'mages guild', rank = 10 },
+  thieves_guild = { faction = 'thieves guild', rank = 10 },
+  imperial_cult = { faction = 'imperial cult', rank = 10 },
+  imperial_legion = { faction = 'imperial legion', rank = 10 },
+  temple = { faction = 'temple', rank = 10 },
+  morag_tong = { faction = 'morag tong', rank = 10, quests = { { quest = 'mt_grandmaster', stage = 100 } } },
+  daedric_quests = { group = 'daedric' },
+}

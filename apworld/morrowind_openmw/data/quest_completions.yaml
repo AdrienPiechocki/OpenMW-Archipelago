@@ -1,0 +1,4319 @@
+- id: 7720001
+  name: A1_10_MehraMilo (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_10_MehraMilo
+  group: main
+  region: Seyda Neen
+- id: 7720002
+  name: A1_11_ZainsubaniGift (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_11_ZainsubaniGift
+  group: main
+  region: Seyda Neen
+- id: 7720003
+  name: A1_11_ZainsubaniInformant (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_11_ZainsubaniInformant
+  group: main
+  region: Seyda Neen
+- id: 7720004
+  name: A1_1_FindSpymaster (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_1_FindSpymaster
+  group: main
+  region: Seyda Neen
+- id: 7720005
+  name: A1_2_AntabolisInformant (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_2_AntabolisInformant
+  group: main
+  region: Seyda Neen
+- id: 7720006
+  name: A1_4_MuzgobInformant (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_4_MuzgobInformant
+  group: main
+  region: Seyda Neen
+- id: 7720007
+  name: A1_6_AddhiranirrInformant (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_6_AddhiranirrInformant
+  group: main
+  region: Seyda Neen
+- id: 7720008
+  name: A1_7HuleeyaInformant (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_7HuleeyaInformant
+  group: main
+  region: Seyda Neen
+- id: 7720009
+  name: A1_Dreams (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Dreams
+  group: main
+  region: Seyda Neen
+- id: 7720010
+  name: A1_SleeperDreamer02 (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_SleeperDreamer02
+  group: main
+  region: Seyda Neen
+- id: 7720011
+  name: A1_Sleepers_Alvura (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Alvura
+  group: main
+  region: Seyda Neen
+- id: 7720012
+  name: A1_Sleepers_Assi (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Assi
+  group: main
+  region: Seyda Neen
+- id: 7720013
+  name: A1_Sleepers_Daynasa (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Daynasa
+  group: main
+  region: Seyda Neen
+- id: 7720014
+  name: A1_Sleepers_Dralas (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Dralas
+  group: main
+  region: Seyda Neen
+- id: 7720015
+  name: A1_Sleepers_Drarayne (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Drarayne
+  group: main
+  region: Seyda Neen
+- id: 7720016
+  name: A1_Sleepers_Dravasa (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Dravasa
+  group: main
+  region: Seyda Neen
+- id: 7720017
+  name: A1_Sleepers_Endris (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Endris
+  group: main
+  region: Seyda Neen
+- id: 7720018
+  name: A1_Sleepers_Eralane (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Eralane
+  group: main
+  region: Seyda Neen
+- id: 7720019
+  name: A1_Sleepers_Llandras (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Llandras
+  group: main
+  region: Seyda Neen
+- id: 7720020
+  name: A1_Sleepers_Neldris (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Neldris
+  group: main
+  region: Seyda Neen
+- id: 7720021
+  name: A1_Sleepers_Nelmil (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Nelmil
+  group: main
+  region: Seyda Neen
+- id: 7720022
+  name: A1_Sleepers_Rararyn (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Rararyn
+  group: main
+  region: Seyda Neen
+- id: 7720023
+  name: A1_Sleepers_Relur (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Relur
+  group: main
+  region: Seyda Neen
+- id: 7720024
+  name: A1_Sleepers_Vireveri (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Vireveri
+  group: main
+  region: Seyda Neen
+- id: 7720025
+  name: A1_Sleepers_Vivyne (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_Sleepers_Vivyne
+  group: main
+  region: Seyda Neen
+- id: 7720026
+  name: A1_SleepersAwake (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_SleepersAwake
+  group: main
+  region: Seyda Neen
+- id: 7720027
+  name: A1_V_VivecInformants (complete)
+  category: quest_complete
+  trigger:
+    quest: A1_V_VivecInformants
+  group: main
+  region: Seyda Neen
+- id: 7720028
+  name: A2_1_Kurapli_Zallay (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_1_Kurapli_Zallay
+  group: main
+  region: Seyda Neen
+- id: 7720029
+  name: A2_1_MeetSulMatuul (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_1_MeetSulMatuul
+  group: main
+  region: Seyda Neen
+- id: 7720030
+  name: A2_1_Supplies (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_1_Supplies
+  group: main
+  region: Seyda Neen
+- id: 7720031
+  name: A2_1_Supplies2 (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_1_Supplies2
+  group: main
+  region: Seyda Neen
+- id: 7720032
+  name: A2_2_6thHouse (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_2_6thHouse
+  group: main
+  region: Seyda Neen
+- id: 7720033
+  name: A2_3_Corprus_Vistha (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_3_Corprus_Vistha
+  group: main
+  region: Seyda Neen
+- id: 7720034
+  name: A2_3_CorprusCure (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_3_CorprusCure
+  group: main
+  region: Seyda Neen
+- id: 7720035
+  name: A2_3_CorprusKiller (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_3_CorprusKiller
+  group: main
+  region: Seyda Neen
+- id: 7720036
+  name: A2_3_CorprusSafe (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_3_CorprusSafe
+  group: main
+  region: Seyda Neen
+- id: 7720037
+  name: A2_4_Milo_hola_go (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_4_Milo_hola_go
+  group: main
+  region: Seyda Neen
+- id: 7720038
+  name: A2_4_MiloCaiusGone (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_4_MiloCaiusGone
+  group: main
+  region: Seyda Neen
+- id: 7720039
+  name: A2_4_MiloGone (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_4_MiloGone
+  group: main
+  region: Seyda Neen
+- id: 7720040
+  name: A2_4_MiloGone_books (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_4_MiloGone_books
+  group: main
+  region: Seyda Neen
+- id: 7720041
+  name: A2_4_MiloPrisonSafe (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_4_MiloPrisonSafe
+  group: main
+  region: Seyda Neen
+- id: 7720042
+  name: A2_6_Ane_Teria (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_6_Ane_Teria
+  group: main
+  region: Seyda Neen
+- id: 7720043
+  name: A2_6_Conoon (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_6_Conoon
+  group: main
+  region: Seyda Neen
+- id: 7720044
+  name: A2_6_Erur-Dan (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_6_Erur-Dan
+  group: main
+  region: Seyda Neen
+- id: 7720045
+  name: A2_6_Hort-Ledd (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_6_Hort-Ledd
+  group: main
+  region: Seyda Neen
+- id: 7720046
+  name: A2_6_Idrenie (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_6_Idrenie
+  group: main
+  region: Seyda Neen
+- id: 7720047
+  name: A2_6_Incarnate (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_6_Incarnate
+  group: main
+  region: Seyda Neen
+- id: 7720048
+  name: A2_6_Peakstar (complete)
+  category: quest_complete
+  trigger:
+    quest: A2_6_Peakstar
+  group: main
+  region: Seyda Neen
+- id: 7720049
+  name: B1_UnifyUrshilaku (complete)
+  category: quest_complete
+  trigger:
+    quest: B1_UnifyUrshilaku
+  group: main
+  region: Seyda Neen
+- id: 7720050
+  name: B1_UrshilakuKill (complete)
+  category: quest_complete
+  trigger:
+    quest: B1_UrshilakuKill
+  group: main
+  region: Seyda Neen
+- id: 7720051
+  name: B2_AhemmusaKill (complete)
+  category: quest_complete
+  trigger:
+    quest: B2_AhemmusaKill
+  group: main
+  region: Seyda Neen
+- id: 7720052
+  name: B2_AhemmusaSafe (complete)
+  category: quest_complete
+  trigger:
+    quest: B2_AhemmusaSafe
+  group: main
+  region: Seyda Neen
+- id: 7720053
+  name: B2_AhemmusaWalk (complete)
+  category: quest_complete
+  trigger:
+    quest: B2_AhemmusaWalk
+  group: main
+  region: Seyda Neen
+- id: 7720054
+  name: B2a_Kausi (complete)
+  category: quest_complete
+  trigger:
+    quest: B2a_Kausi
+  group: main
+  region: Seyda Neen
+- id: 7720055
+  name: B2b_Dutadalk (complete)
+  category: quest_complete
+  trigger:
+    quest: B2b_Dutadalk
+  group: main
+  region: Seyda Neen
+- id: 7720056
+  name: B2c_Yenammu (complete)
+  category: quest_complete
+  trigger:
+    quest: B2c_Yenammu
+  group: main
+  region: Seyda Neen
+- id: 7720057
+  name: B3_ZainabBride (complete)
+  category: quest_complete
+  trigger:
+    quest: B3_ZainabBride
+  group: main
+  region: Seyda Neen
+- id: 7720058
+  name: B3_ZainabKill (complete)
+  category: quest_complete
+  trigger:
+    quest: B3_ZainabKill
+  group: main
+  region: Seyda Neen
+- id: 7720059
+  name: B4_ErabenimsunKill (complete)
+  category: quest_complete
+  trigger:
+    quest: B4_ErabenimsunKill
+  group: main
+  region: Seyda Neen
+- id: 7720060
+  name: B4_HeartFire (complete)
+  category: quest_complete
+  trigger:
+    quest: B4_HeartFire
+  group: main
+  region: Seyda Neen
+- id: 7720061
+  name: B4_KillWarLovers (complete)
+  category: quest_complete
+  trigger:
+    quest: B4_KillWarLovers
+  group: main
+  region: Seyda Neen
+- id: 7720062
+  name: B4_Robe (complete)
+  category: quest_complete
+  trigger:
+    quest: B4_Robe
+  group: main
+  region: Seyda Neen
+- id: 7720063
+  name: B4_WarAxe (complete)
+  category: quest_complete
+  trigger:
+    quest: B4_WarAxe
+  group: main
+  region: Seyda Neen
+- id: 7720064
+  name: B4_WarLoverKill (complete)
+  category: quest_complete
+  trigger:
+    quest: B4_WarLoverKill
+  group: main
+  region: Seyda Neen
+- id: 7720065
+  name: B5_ArobarHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B5_ArobarHort
+  group: main
+  region: Seyda Neen
+- id: 7720066
+  name: B5_LlethriHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B5_LlethriHort
+  group: main
+  region: Seyda Neen
+- id: 7720067
+  name: B5_MorvaynHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B5_MorvaynHort
+  group: main
+  region: Seyda Neen
+- id: 7720068
+  name: B5_RamoranHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B5_RamoranHort
+  group: main
+  region: Seyda Neen
+- id: 7720069
+  name: B5_RedoranBook (complete)
+  category: quest_complete
+  trigger:
+    quest: B5_RedoranBook
+  group: main
+  region: Seyda Neen
+- id: 7720070
+  name: B5_RedoranHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B5_RedoranHort
+  group: main
+  region: Seyda Neen
+- id: 7720071
+  name: B5_SarethiHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B5_SarethiHort
+  group: main
+  region: Seyda Neen
+- id: 7720072
+  name: B5_VenimHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B5_VenimHort
+  group: main
+  region: Seyda Neen
+- id: 7720073
+  name: B6_BeroHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B6_BeroHort
+  group: main
+  region: Seyda Neen
+- id: 7720074
+  name: B6_CurioHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B6_CurioHort
+  group: main
+  region: Seyda Neen
+- id: 7720075
+  name: B6_DrenHortator (complete)
+  category: quest_complete
+  trigger:
+    quest: B6_DrenHortator
+  group: main
+  region: Seyda Neen
+- id: 7720076
+  name: B6_HlaaluBook (complete)
+  category: quest_complete
+  trigger:
+    quest: B6_HlaaluBook
+  group: main
+  region: Seyda Neen
+- id: 7720077
+  name: B6_HlaaluHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B6_HlaaluHort
+  group: main
+  region: Seyda Neen
+- id: 7720078
+  name: B6_OmaniHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B6_OmaniHort
+  group: main
+  region: Seyda Neen
+- id: 7720079
+  name: B6_UlesHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B6_UlesHort
+  group: main
+  region: Seyda Neen
+- id: 7720080
+  name: B6_YnglingHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B6_YnglingHort
+  group: main
+  region: Seyda Neen
+- id: 7720081
+  name: B7_AryonHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B7_AryonHort
+  group: main
+  region: Seyda Neen
+- id: 7720082
+  name: B7_BaladasHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B7_BaladasHort
+  group: main
+  region: Seyda Neen
+- id: 7720083
+  name: B7_DrathaHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B7_DrathaHort
+  group: main
+  region: Seyda Neen
+- id: 7720084
+  name: B7_GothrenHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B7_GothrenHort
+  group: main
+  region: Seyda Neen
+- id: 7720085
+  name: B7_NelothHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B7_NelothHort
+  group: main
+  region: Seyda Neen
+- id: 7720086
+  name: B7_TelvanniBook (complete)
+  category: quest_complete
+  trigger:
+    quest: B7_TelvanniBook
+  group: main
+  region: Seyda Neen
+- id: 7720087
+  name: B7_TelvanniHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B7_TelvanniHort
+  group: main
+  region: Seyda Neen
+- id: 7720088
+  name: B7_TheranaHort (complete)
+  category: quest_complete
+  trigger:
+    quest: B7_TheranaHort
+  group: main
+  region: Seyda Neen
+- id: 7720089
+  name: B8_All_Hortator (complete)
+  category: quest_complete
+  trigger:
+    quest: B8_All_Hortator
+  group: main
+  region: Seyda Neen
+- id: 7720090
+  name: B8_All_Nerevarine (complete)
+  category: quest_complete
+  trigger:
+    quest: B8_All_Nerevarine
+  group: main
+  region: Seyda Neen
+- id: 7720091
+  name: B8_BackDoor1 (complete)
+  category: quest_complete
+  trigger:
+    quest: B8_BackDoor1
+  group: main
+  region: Seyda Neen
+- id: 7720092
+  name: B8_BackDoor2 (complete)
+  category: quest_complete
+  trigger:
+    quest: B8_BackDoor2
+  group: main
+  region: Seyda Neen
+- id: 7720093
+  name: B8_BackDoor3 (complete)
+  category: quest_complete
+  trigger:
+    quest: B8_BackDoor3
+  group: main
+  region: Seyda Neen
+- id: 7720094
+  name: B8_BackDoor4 (complete)
+  category: quest_complete
+  trigger:
+    quest: B8_BackDoor4
+  group: main
+  region: Seyda Neen
+- id: 7720095
+  name: B8_BackDoor5 (complete)
+  category: quest_complete
+  trigger:
+    quest: B8_BackDoor5
+  group: main
+  region: Seyda Neen
+- id: 7720096
+  name: B8_BackDoor6 (complete)
+  category: quest_complete
+  trigger:
+    quest: B8_BackDoor6
+  group: main
+  region: Seyda Neen
+- id: 7720097
+  name: B8_Failed_Nerevarine (complete)
+  category: quest_complete
+  trigger:
+    quest: B8_Failed_Nerevarine
+  group: main
+  region: Seyda Neen
+- id: 7720098
+  name: B8_MeetVivec (complete)
+  category: quest_complete
+  trigger:
+    quest: B8_MeetVivec
+  group: main
+  region: Seyda Neen
+- id: 7720099
+  name: B8_Nibani_2_Vivec (complete)
+  category: quest_complete
+  trigger:
+    quest: B8_Nibani_2_Vivec
+  group: main
+  region: Seyda Neen
+- id: 7720100
+  name: blades_Elone (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_Elone
+  group: blades
+  region: Seyda Neen
+- id: 7720101
+  name: blades_elone2 (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_elone2
+  group: blades
+  region: Seyda Neen
+- id: 7720102
+  name: blades_Gildan (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_Gildan
+  group: blades
+  region: Seyda Neen
+- id: 7720103
+  name: blades_gildan2 (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_gildan2
+  group: blades
+  region: Seyda Neen
+- id: 7720104
+  name: blades_Nine_Toes (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_Nine_Toes
+  group: blades
+  region: Seyda Neen
+- id: 7720105
+  name: blades_nine_toes2 (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_nine_toes2
+  group: blades
+  region: Seyda Neen
+- id: 7720106
+  name: blades_rithleen (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_rithleen
+  group: blades
+  region: Seyda Neen
+- id: 7720107
+  name: blades_rithleen2 (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_rithleen2
+  group: blades
+  region: Seyda Neen
+- id: 7720108
+  name: blades_Sjorvar (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_Sjorvar
+  group: blades
+  region: Seyda Neen
+- id: 7720109
+  name: blades_sjorvar2 (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_sjorvar2
+  group: blades
+  region: Seyda Neen
+- id: 7720110
+  name: blades_Surane (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_Surane
+  group: blades
+  region: Seyda Neen
+- id: 7720111
+  name: blades_surane2 (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_surane2
+  group: blades
+  region: Seyda Neen
+- id: 7720112
+  name: blades_tyermaillin (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_tyermaillin
+  group: blades
+  region: Seyda Neen
+- id: 7720113
+  name: blades_tyermaillin2 (complete)
+  category: quest_complete
+  trigger:
+    quest: blades_tyermaillin2
+  group: blades
+  region: Seyda Neen
+- id: 7720114
+  name: book_history (complete)
+  category: quest_complete
+  trigger:
+    quest: book_history
+  group: non_quest
+  region: Seyda Neen
+- id: 7720115
+  name: book_OnMorrowind (complete)
+  category: quest_complete
+  trigger:
+    quest: book_OnMorrowind
+  group: non_quest
+  region: Seyda Neen
+- id: 7720116
+  name: C0_Act_C (complete)
+  category: quest_complete
+  trigger:
+    quest: C0_Act_C
+  group: main
+  region: Seyda Neen
+- id: 7720117
+  name: C0_Act_C_Expo (complete)
+  category: quest_complete
+  trigger:
+    quest: C0_Act_C_Expo
+  group: main
+  region: Seyda Neen
+- id: 7720118
+  name: C2_Sunder (complete)
+  category: quest_complete
+  trigger:
+    quest: C2_Sunder
+  group: main
+  region: Seyda Neen
+- id: 7720119
+  name: C3_DestroyDagoth (complete)
+  category: quest_complete
+  trigger:
+    quest: C3_DestroyDagoth
+  group: main
+  region: Seyda Neen
+- id: 7720120
+  name: CX_BackPath (complete)
+  category: quest_complete
+  trigger:
+    quest: CX_BackPath
+  group: misc
+  region: Seyda Neen
+- id: 7720121
+  name: DA_Azura (complete)
+  category: quest_complete
+  trigger:
+    quest: DA_Azura
+  group: daedric
+  region: Seyda Neen
+- id: 7720122
+  name: DA_Boethiah (complete)
+  category: quest_complete
+  trigger:
+    quest: DA_Boethiah
+  group: daedric
+  region: Seyda Neen
+- id: 7720123
+  name: DA_Malacath (complete)
+  category: quest_complete
+  trigger:
+    quest: DA_Malacath
+  group: daedric
+  region: Seyda Neen
+- id: 7720124
+  name: DA_Mehrunes (complete)
+  category: quest_complete
+  trigger:
+    quest: DA_Mehrunes
+  group: daedric
+  region: Seyda Neen
+- id: 7720125
+  name: DA_Mephala (complete)
+  category: quest_complete
+  trigger:
+    quest: DA_Mephala
+  group: daedric
+  region: Seyda Neen
+- id: 7720126
+  name: DA_MolagBal (complete)
+  category: quest_complete
+  trigger:
+    quest: DA_MolagBal
+  group: daedric
+  region: Seyda Neen
+- id: 7720127
+  name: DA_Sheogorath (complete)
+  category: quest_complete
+  trigger:
+    quest: DA_Sheogorath
+  group: daedric
+  region: Seyda Neen
+- id: 7720128
+  name: EB_Actor (complete)
+  category: quest_complete
+  trigger:
+    quest: EB_Actor
+  group: east_empire
+  region: Seyda Neen
+- id: 7720129
+  name: EB_Bone (complete)
+  category: quest_complete
+  trigger:
+    quest: EB_Bone
+  group: east_empire
+  region: Seyda Neen
+- id: 7720130
+  name: EB_Clients (complete)
+  category: quest_complete
+  trigger:
+    quest: EB_Clients
+  group: east_empire
+  region: Seyda Neen
+- id: 7720131
+  name: EB_DeadMen (complete)
+  category: quest_complete
+  trigger:
+    quest: EB_DeadMen
+  group: east_empire
+  region: Seyda Neen
+- id: 7720132
+  name: EB_Deed (complete)
+  category: quest_complete
+  trigger:
+    quest: EB_Deed
+  group: east_empire
+  region: Seyda Neen
+- id: 7720133
+  name: EB_Express (complete)
+  category: quest_complete
+  trigger:
+    quest: EB_Express
+  group: east_empire
+  region: Seyda Neen
+- id: 7720134
+  name: EB_False (complete)
+  category: quest_complete
+  trigger:
+    quest: EB_False
+  group: east_empire
+  region: Seyda Neen
+- id: 7720135
+  name: EB_Invisible (complete)
+  category: quest_complete
+  trigger:
+    quest: EB_Invisible
+  group: east_empire
+  region: Seyda Neen
+- id: 7720136
+  name: EB_Pest (complete)
+  category: quest_complete
+  trigger:
+    quest: EB_Pest
+  group: east_empire
+  region: Seyda Neen
+- id: 7720137
+  name: EB_Shipment (complete)
+  category: quest_complete
+  trigger:
+    quest: EB_Shipment
+  group: east_empire
+  region: Seyda Neen
+- id: 7720138
+  name: EB_TradeSpy (complete)
+  category: quest_complete
+  trigger:
+    quest: EB_TradeSpy
+  group: east_empire
+  region: Seyda Neen
+- id: 7720139
+  name: EB_Unrequited (complete)
+  category: quest_complete
+  trigger:
+    quest: EB_Unrequited
+  group: east_empire
+  region: Seyda Neen
+- id: 7720140
+  name: fast_eddie (complete)
+  category: quest_complete
+  trigger:
+    quest: fast_eddie
+  group: misc
+  region: Seyda Neen
+- id: 7720141
+  name: FG_AlofsFarm (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_AlofsFarm
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720142
+  name: FG_BeneranBounty (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_BeneranBounty
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720143
+  name: FG_BigBosses (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_BigBosses
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720144
+  name: FG_CorprusStalker (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_CorprusStalker
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720145
+  name: FG_DebtOrc (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_DebtOrc
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720146
+  name: FG_DebtStoine (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_DebtStoine
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720147
+  name: FG_DeseleDebt (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_DeseleDebt
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720148
+  name: FG_DissaplaMine (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_DissaplaMine
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720149
+  name: FG_DuniraiSupply (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_DuniraiSupply
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720150
+  name: FG_Egg_Poachers (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_Egg_Poachers
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720151
+  name: FG_ElithPalSupply (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_ElithPalSupply
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720152
+  name: FG_EngaerBounty (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_EngaerBounty
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720153
+  name: FG_FindPudai (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_FindPudai
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720154
+  name: FG_HungerLoose (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_HungerLoose
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720155
+  name: FG_KhajiitBounty (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_KhajiitBounty
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720156
+  name: FG_KillBosses (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_KillBosses
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720157
+  name: FG_KillCronies (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_KillCronies
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720158
+  name: FG_KillHardHeart (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_KillHardHeart
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720159
+  name: FG_Nchurdamz (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_Nchurdamz
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720160
+  name: FG_OrcBounty (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_OrcBounty
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720161
+  name: FG_RatHunt (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_RatHunt
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720162
+  name: FG_SilenceMagistrate (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_SilenceMagistrate
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720163
+  name: FG_SilenceTaxgirl (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_SilenceTaxgirl
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720164
+  name: FG_Sottilde (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_Sottilde
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720165
+  name: FG_SuranBandits (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_SuranBandits
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720166
+  name: FG_Telasero (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_Telasero
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720167
+  name: FG_Telvanni_agents (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_Telvanni_agents
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720168
+  name: FG_TenimBounty (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_TenimBounty
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720169
+  name: FG_TongueToad (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_TongueToad
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720170
+  name: FG_Vas (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_Vas
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720171
+  name: FG_VerethiGang (complete)
+  category: quest_complete
+  trigger:
+    quest: FG_VerethiGang
+  group: fighters_guild
+  region: Seyda Neen
+- id: 7720172
+  name: HH_AshlanderEbony (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_AshlanderEbony
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720173
+  name: HH_BankCourier (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_BankCourier
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720174
+  name: HH_BankFraud (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_BankFraud
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720175
+  name: HH_BeroSupport (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_BeroSupport
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720176
+  name: HH_BuriedTreasure (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_BuriedTreasure
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720177
+  name: HH_CaptureSpy (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_CaptureSpy
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720178
+  name: HH_Crassius (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_Crassius
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720179
+  name: HH_DestroyIndarysManor (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_DestroyIndarysManor
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720180
+  name: HH_DestroyTelUvirith (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_DestroyTelUvirith
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720181
+  name: HH_DisguisedArmor (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_DisguisedArmor
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720182
+  name: HH_EbonyDelivery (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_EbonyDelivery
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720183
+  name: HH_EggMine (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_EggMine
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720184
+  name: HH_EscortMerchant (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_EscortMerchant
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720185
+  name: HH_GuardMerchant (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_GuardMerchant
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720186
+  name: HH_IndEsp1 (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_IndEsp1
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720187
+  name: HH_IndEsp2 (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_IndEsp2
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720188
+  name: HH_IndEsp3 (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_IndEsp3
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720189
+  name: HH_IndEsp4 (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_IndEsp4
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720190
+  name: HH_LiteracyCampaign (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_LiteracyCampaign
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720191
+  name: HH_NordSmugglers (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_NordSmugglers
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720192
+  name: HH_Odirniran (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_Odirniran
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720193
+  name: HH_RentCollector (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_RentCollector
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720194
+  name: HH_ReplaceDocs (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_ReplaceDocs
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720195
+  name: HH_Retaliation (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_Retaliation
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720196
+  name: HH_Stronghold (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_Stronghold
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720197
+  name: HH_SunkenTreasure (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_SunkenTreasure
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720198
+  name: HH_TheExterminator (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_TheExterminator
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720199
+  name: HH_TwinLamps1 (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_TwinLamps1
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720200
+  name: HH_TwinLamps3 (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_TwinLamps3
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720201
+  name: HH_WinCamonna (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_WinCamonna
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720202
+  name: HH_WinSaryoni (complete)
+  category: quest_complete
+  trigger:
+    quest: HH_WinSaryoni
+  group: hlaalu
+  region: Seyda Neen
+- id: 7720203
+  name: Hospitality_Papers (complete)
+  category: quest_complete
+  trigger:
+    quest: Hospitality_Papers
+  group: misc
+  region: Seyda Neen
+- id: 7720204
+  name: HR_Archmaster (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_Archmaster
+  group: redoran
+  region: Seyda Neen
+- id: 7720205
+  name: HR_ArobarKidnap (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_ArobarKidnap
+  group: redoran
+  region: Seyda Neen
+- id: 7720206
+  name: HR_AshimanuMine (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_AshimanuMine
+  group: redoran
+  region: Seyda Neen
+- id: 7720207
+  name: HR_AttackRethan (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_AttackRethan
+  group: redoran
+  region: Seyda Neen
+- id: 7720208
+  name: HR_AttackUvirith (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_AttackUvirith
+  group: redoran
+  region: Seyda Neen
+- id: 7720209
+  name: HR_BillCollect (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_BillCollect
+  group: redoran
+  region: Seyda Neen
+- id: 7720210
+  name: HR_CalderaCorrupt (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_CalderaCorrupt
+  group: redoran
+  region: Seyda Neen
+- id: 7720211
+  name: HR_CalderaDisrupt (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_CalderaDisrupt
+  group: redoran
+  region: Seyda Neen
+- id: 7720212
+  name: HR_ClearSarethi (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_ClearSarethi
+  group: redoran
+  region: Seyda Neen
+- id: 7720213
+  name: HR_Courier (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_Courier
+  group: redoran
+  region: Seyda Neen
+- id: 7720214
+  name: HR_CowardDisgrace (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_CowardDisgrace
+  group: redoran
+  region: Seyda Neen
+- id: 7720215
+  name: HR_CultElimination (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_CultElimination
+  group: redoran
+  region: Seyda Neen
+- id: 7720216
+  name: HR_DagothTanis (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_DagothTanis
+  group: redoran
+  region: Seyda Neen
+- id: 7720217
+  name: HR_FindDalobar (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_FindDalobar
+  group: redoran
+  region: Seyda Neen
+- id: 7720218
+  name: HR_FindGiladren (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_FindGiladren
+  group: redoran
+  region: Seyda Neen
+- id: 7720219
+  name: HR_FindTharen (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_FindTharen
+  group: redoran
+  region: Seyda Neen
+- id: 7720220
+  name: HR_FoundersHelm (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_FoundersHelm
+  group: redoran
+  region: Seyda Neen
+- id: 7720221
+  name: HR_GuardGuarHerds (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_GuardGuarHerds
+  group: redoran
+  region: Seyda Neen
+- id: 7720222
+  name: HR_GuardSarethi (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_GuardSarethi
+  group: redoran
+  region: Seyda Neen
+- id: 7720223
+  name: HR_HlaanoSlanders (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_HlaanoSlanders
+  group: redoran
+  region: Seyda Neen
+- id: 7720224
+  name: HR_HonorChallenge (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_HonorChallenge
+  group: redoran
+  region: Seyda Neen
+- id: 7720225
+  name: HR_Kagouti (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_Kagouti
+  group: redoran
+  region: Seyda Neen
+- id: 7720226
+  name: HR_KoalCave (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_KoalCave
+  group: redoran
+  region: Seyda Neen
+- id: 7720227
+  name: HR_LostBanner (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_LostBanner
+  group: redoran
+  region: Seyda Neen
+- id: 7720228
+  name: HR_MadMilk (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_MadMilk
+  group: redoran
+  region: Seyda Neen
+- id: 7720229
+  name: HR_MorvaynManor (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_MorvaynManor
+  group: redoran
+  region: Seyda Neen
+- id: 7720230
+  name: HR_MudcrabNest (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_MudcrabNest
+  group: redoran
+  region: Seyda Neen
+- id: 7720231
+  name: HR_OldBlueFin (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_OldBlueFin
+  group: redoran
+  region: Seyda Neen
+- id: 7720232
+  name: HR_OldFlame (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_OldFlame
+  group: redoran
+  region: Seyda Neen
+- id: 7720233
+  name: HR_RansomMandas (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_RansomMandas
+  group: redoran
+  region: Seyda Neen
+- id: 7720234
+  name: HR_RedasTomb (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_RedasTomb
+  group: redoran
+  region: Seyda Neen
+- id: 7720235
+  name: HR_RescueSarethi (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_RescueSarethi
+  group: redoran
+  region: Seyda Neen
+- id: 7720236
+  name: HR_ShishiReport (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_ShishiReport
+  group: redoran
+  region: Seyda Neen
+- id: 7720237
+  name: HR_Shurinbaal (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_Shurinbaal
+  group: redoran
+  region: Seyda Neen
+- id: 7720238
+  name: HR_SixthHouseBase (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_SixthHouseBase
+  group: redoran
+  region: Seyda Neen
+- id: 7720239
+  name: HR_Stronghold (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_Stronghold
+  group: redoran
+  region: Seyda Neen
+- id: 7720240
+  name: HR_TaxCollector (complete)
+  category: quest_complete
+  trigger:
+    quest: HR_TaxCollector
+  group: redoran
+  region: Seyda Neen
+- id: 7720241
+  name: HT_Archmagister (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_Archmagister
+  group: telvanni
+  region: Seyda Neen
+- id: 7720242
+  name: HT_AttackIndarys (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_AttackIndarys
+  group: telvanni
+  region: Seyda Neen
+- id: 7720243
+  name: HT_AttackRethan (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_AttackRethan
+  group: telvanni
+  region: Seyda Neen
+- id: 7720244
+  name: HT_AurielBow (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_AurielBow
+  group: telvanni
+  region: Seyda Neen
+- id: 7720245
+  name: HT_BaladasAlly (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_BaladasAlly
+  group: telvanni
+  region: Seyda Neen
+- id: 7720246
+  name: HT_BlackJinx (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_BlackJinx
+  group: telvanni
+  region: Seyda Neen
+- id: 7720247
+  name: HT_ChroniclesNchuleft (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_ChroniclesNchuleft
+  group: telvanni
+  region: Seyda Neen
+- id: 7720248
+  name: HT_CureBlight (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_CureBlight
+  group: telvanni
+  region: Seyda Neen
+- id: 7720249
+  name: HT_DaedraSkin (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_DaedraSkin
+  group: telvanni
+  region: Seyda Neen
+- id: 7720250
+  name: HT_DahrkMezalf (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_DahrkMezalf
+  group: telvanni
+  region: Seyda Neen
+- id: 7720251
+  name: HT_DrakePride (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_DrakePride
+  group: telvanni
+  region: Seyda Neen
+- id: 7720252
+  name: HT_DwemerLaw (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_DwemerLaw
+  group: telvanni
+  region: Seyda Neen
+- id: 7720253
+  name: HT_EddieAmulet (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_EddieAmulet
+  group: telvanni
+  region: Seyda Neen
+- id: 7720254
+  name: HT_EddieRing (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_EddieRing
+  group: telvanni
+  region: Seyda Neen
+- id: 7720255
+  name: HT_FireAndFaith (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_FireAndFaith
+  group: telvanni
+  region: Seyda Neen
+- id: 7720256
+  name: HT_FleshAmulet (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_FleshAmulet
+  group: telvanni
+  region: Seyda Neen
+- id: 7720257
+  name: HT_FyrMessage (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_FyrMessage
+  group: telvanni
+  region: Seyda Neen
+- id: 7720258
+  name: HT_MineCure (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_MineCure
+  group: telvanni
+  region: Seyda Neen
+- id: 7720259
+  name: HT_Monopoly (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_Monopoly
+  group: telvanni
+  region: Seyda Neen
+- id: 7720260
+  name: HT_Muck (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_Muck
+  group: telvanni
+  region: Seyda Neen
+- id: 7720261
+  name: HT_NchuleftKey (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_NchuleftKey
+  group: telvanni
+  region: Seyda Neen
+- id: 7720262
+  name: HT_Odirniran (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_Odirniran
+  group: telvanni
+  region: Seyda Neen
+- id: 7720263
+  name: HT_RecruitEddie (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_RecruitEddie
+  group: telvanni
+  region: Seyda Neen
+- id: 7720264
+  name: HT_Shishi (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_Shishi
+  group: telvanni
+  region: Seyda Neen
+- id: 7720265
+  name: HT_SilverDawn (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_SilverDawn
+  group: telvanni
+  region: Seyda Neen
+- id: 7720266
+  name: HT_SlaveRebellion (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_SlaveRebellion
+  group: telvanni
+  region: Seyda Neen
+- id: 7720267
+  name: HT_SloadSoap (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_SloadSoap
+  group: telvanni
+  region: Seyda Neen
+- id: 7720268
+  name: HT_SpyBaladas (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_SpyBaladas
+  group: telvanni
+  region: Seyda Neen
+- id: 7720269
+  name: HT_Stronghold (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_Stronghold
+  group: telvanni
+  region: Seyda Neen
+- id: 7720270
+  name: HT_TheranaClothes (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_TheranaClothes
+  group: telvanni
+  region: Seyda Neen
+- id: 7720271
+  name: HT_WizardSpells (complete)
+  category: quest_complete
+  trigger:
+    quest: HT_WizardSpells
+  group: telvanni
+  region: Seyda Neen
+- id: 7720272
+  name: IC0_Akatosh_token (complete)
+  category: quest_complete
+  trigger:
+    quest: IC0_Akatosh_token
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720273
+  name: IC0_ImperialCult (complete)
+  category: quest_complete
+  trigger:
+    quest: IC0_ImperialCult
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720274
+  name: IC0_Maran_token (complete)
+  category: quest_complete
+  trigger:
+    quest: IC0_Maran_token
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720275
+  name: IC0_Septim_token (complete)
+  category: quest_complete
+  trigger:
+    quest: IC0_Septim_token
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720276
+  name: IC0_Stendarr_token (complete)
+  category: quest_complete
+  trigger:
+    quest: IC0_Stendarr_token
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720277
+  name: IC10_aengoth (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_aengoth
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720278
+  name: IC10_baradras (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_baradras
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720279
+  name: IC10_buckmoth_alms (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_buckmoth_alms
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720280
+  name: IC10_buckmoth_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_buckmoth_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720281
+  name: IC10_cienne (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_cienne
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720282
+  name: IC10_codus (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_codus
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720283
+  name: IC10_dular (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_dular
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720284
+  name: IC10_edwinna (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_edwinna
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720285
+  name: IC10_erranil (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_erranil
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720286
+  name: IC10_estoril (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_estoril
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720287
+  name: IC10_galthragoth (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_galthragoth
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720288
+  name: IC10_Hoki (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_Hoki
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720289
+  name: IC10_Lirielle (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_Lirielle
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720290
+  name: IC10_malpenix (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_malpenix
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720291
+  name: IC10_merthierry (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_merthierry
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720292
+  name: IC10_persius (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_persius
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720293
+  name: IC10_tauryon (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_tauryon
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720294
+  name: IC10_Tongue (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_Tongue
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720295
+  name: IC10_yak (complete)
+  category: quest_complete
+  trigger:
+    quest: IC10_yak
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720296
+  name: IC11_shirt (complete)
+  category: quest_complete
+  trigger:
+    quest: IC11_shirt
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720297
+  name: IC11_shirt_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC11_shirt_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720298
+  name: IC12_Bacola (complete)
+  category: quest_complete
+  trigger:
+    quest: IC12_Bacola
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720299
+  name: IC12_Banor (complete)
+  category: quest_complete
+  trigger:
+    quest: IC12_Banor
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720300
+  name: IC12_Benunius (complete)
+  category: quest_complete
+  trigger:
+    quest: IC12_Benunius
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720301
+  name: IC12_dinner (complete)
+  category: quest_complete
+  trigger:
+    quest: IC12_dinner
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720302
+  name: IC12_dinner_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC12_dinner_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720303
+  name: IC12_Dulnea (complete)
+  category: quest_complete
+  trigger:
+    quest: IC12_Dulnea
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720304
+  name: IC13_fight (complete)
+  category: quest_complete
+  trigger:
+    quest: IC13_fight
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720305
+  name: IC13_rich (complete)
+  category: quest_complete
+  trigger:
+    quest: IC13_rich
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720306
+  name: IC13_rich_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC13_rich_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720307
+  name: IC13_rumor (complete)
+  category: quest_complete
+  trigger:
+    quest: IC13_rumor
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720308
+  name: IC13_slave (complete)
+  category: quest_complete
+  trigger:
+    quest: IC13_slave
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720309
+  name: IC14_Delay (complete)
+  category: quest_complete
+  trigger:
+    quest: IC14_Delay
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720310
+  name: IC14_Demand (complete)
+  category: quest_complete
+  trigger:
+    quest: IC14_Demand
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720311
+  name: IC14_Flacassia (complete)
+  category: quest_complete
+  trigger:
+    quest: IC14_Flacassia
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720312
+  name: IC14_NotTell (complete)
+  category: quest_complete
+  trigger:
+    quest: IC14_NotTell
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720313
+  name: IC14_Okan (complete)
+  category: quest_complete
+  trigger:
+    quest: IC14_Okan
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720314
+  name: IC14_Ponius (complete)
+  category: quest_complete
+  trigger:
+    quest: IC14_Ponius
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720315
+  name: IC14_Ponius_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC14_Ponius_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720316
+  name: IC14_Promise (complete)
+  category: quest_complete
+  trigger:
+    quest: IC14_Promise
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720317
+  name: IC14_Shazgob (complete)
+  category: quest_complete
+  trigger:
+    quest: IC14_Shazgob
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720318
+  name: IC14_Sinyaramen (complete)
+  category: quest_complete
+  trigger:
+    quest: IC14_Sinyaramen
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720319
+  name: IC14_Tell (complete)
+  category: quest_complete
+  trigger:
+    quest: IC14_Tell
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720320
+  name: IC15_Missing_Limeware (complete)
+  category: quest_complete
+  trigger:
+    quest: IC15_Missing_Limeware
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720321
+  name: IC15_Missing_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC15_Missing_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720322
+  name: IC16_Haunting (complete)
+  category: quest_complete
+  trigger:
+    quest: IC16_Haunting
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720323
+  name: IC16_Haunting_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC16_Haunting_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720324
+  name: IC17_Witch (complete)
+  category: quest_complete
+  trigger:
+    quest: IC17_Witch
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720325
+  name: IC17_Witch_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC17_Witch_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720326
+  name: IC18_Silver_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC18_Silver_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720327
+  name: IC18_Silver_Staff (complete)
+  category: quest_complete
+  trigger:
+    quest: IC18_Silver_Staff
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720328
+  name: IC19_Restless_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC19_Restless_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720329
+  name: IC19_Restless_Spirit (complete)
+  category: quest_complete
+  trigger:
+    quest: IC19_Restless_Spirit
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720330
+  name: IC1_marshmerrow (complete)
+  category: quest_complete
+  trigger:
+    quest: IC1_marshmerrow
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720331
+  name: IC1_marshmerrow_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC1_marshmerrow_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720332
+  name: IC24_OracleQuest (complete)
+  category: quest_complete
+  trigger:
+    quest: IC24_OracleQuest
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720333
+  name: IC25_JonHawker (complete)
+  category: quest_complete
+  trigger:
+    quest: IC25_JonHawker
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720334
+  name: IC25_JonHawker_free (complete)
+  category: quest_complete
+  trigger:
+    quest: IC25_JonHawker_free
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720335
+  name: IC26_AmaNin (complete)
+  category: quest_complete
+  trigger:
+    quest: IC26_AmaNin
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720336
+  name: IC26_AmaNin_free (complete)
+  category: quest_complete
+  trigger:
+    quest: IC26_AmaNin_free
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720337
+  name: IC27_Oracle (complete)
+  category: quest_complete
+  trigger:
+    quest: IC27_Oracle
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720338
+  name: IC27_Oracle_A (complete)
+  category: quest_complete
+  trigger:
+    quest: IC27_Oracle_A
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720339
+  name: IC28_Urjorad (complete)
+  category: quest_complete
+  trigger:
+    quest: IC28_Urjorad
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720340
+  name: IC29_Crusher (complete)
+  category: quest_complete
+  trigger:
+    quest: IC29_Crusher
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720341
+  name: IC2_Muck (complete)
+  category: quest_complete
+  trigger:
+    quest: IC2_Muck
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720342
+  name: IC2_Muck_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC2_Muck_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720343
+  name: IC30_Imperial_veteran (complete)
+  category: quest_complete
+  trigger:
+    quest: IC30_Imperial_veteran
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720344
+  name: IC3_willow (complete)
+  category: quest_complete
+  trigger:
+    quest: IC3_willow
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720345
+  name: IC3_willow_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC3_willow_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720346
+  name: IC4_scrib (complete)
+  category: quest_complete
+  trigger:
+    quest: IC4_scrib
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720347
+  name: IC4_scrib_A (complete)
+  category: quest_complete
+  trigger:
+    quest: IC4_scrib_A
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720348
+  name: IC4_scrib_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC4_scrib_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720349
+  name: IC5_corkbulb (complete)
+  category: quest_complete
+  trigger:
+    quest: IC5_corkbulb
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720350
+  name: IC5_corkbulb_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC5_corkbulb_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720351
+  name: IC6_Rat (complete)
+  category: quest_complete
+  trigger:
+    quest: IC6_Rat
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720352
+  name: IC6_Rat_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC6_Rat_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720353
+  name: IC7_netch (complete)
+  category: quest_complete
+  trigger:
+    quest: IC7_netch
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720354
+  name: IC7_netch_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC7_netch_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720355
+  name: IC8_Bedraflod (complete)
+  category: quest_complete
+  trigger:
+    quest: IC8_Bedraflod
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720356
+  name: IC8_Briring (complete)
+  category: quest_complete
+  trigger:
+    quest: IC8_Briring
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720357
+  name: IC8_Eiruki (complete)
+  category: quest_complete
+  trigger:
+    quest: IC8_Eiruki
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720358
+  name: IC8_Heidmir (complete)
+  category: quest_complete
+  trigger:
+    quest: IC8_Heidmir
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720359
+  name: IC8_Ingokning (complete)
+  category: quest_complete
+  trigger:
+    quest: IC8_Ingokning
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720360
+  name: IC9_Argonian_alms (complete)
+  category: quest_complete
+  trigger:
+    quest: IC9_Argonian_alms
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720361
+  name: IC9_Argonian_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC9_Argonian_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720362
+  name: IC9_slave_hiding (complete)
+  category: quest_complete
+  trigger:
+    quest: IC9_slave_hiding
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720363
+  name: IC_8_Nord_alms (complete)
+  category: quest_complete
+  trigger:
+    quest: IC_8_Nord_alms
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720364
+  name: IC_8_Nord_alms_not (complete)
+  category: quest_complete
+  trigger:
+    quest: IC_8_Nord_alms_not
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720365
+  name: IC_guide (complete)
+  category: quest_complete
+  trigger:
+    quest: IC_guide
+  group: imperial_cult
+  region: Seyda Neen
+- id: 7720366
+  name: IL_Blueprints (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_Blueprints
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720367
+  name: IL_Courtesy (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_Courtesy
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720368
+  name: IL_Damsel (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_Damsel
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720369
+  name: IL_FalseOrdinator (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_FalseOrdinator
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720370
+  name: IL_GiantNetch (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_GiantNetch
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720371
+  name: IL_GnisisBlight (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_GnisisBlight
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720372
+  name: IL_Grandmaster (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_Grandmaster
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720373
+  name: IL_KnightShield (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_KnightShield
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720374
+  name: IL_MaidenToken (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_MaidenToken
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720375
+  name: IL_Necromancer (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_Necromancer
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720376
+  name: IL_ProtectEntius (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_ProtectEntius
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720377
+  name: IL_RescueHermit (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_RescueHermit
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720378
+  name: IL_RescueKnight (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_RescueKnight
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720379
+  name: IL_RescuePilgrim (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_RescuePilgrim
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720380
+  name: IL_RescueRagash (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_RescueRagash
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720381
+  name: IL_ScrapMetal (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_ScrapMetal
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720382
+  name: IL_Smuggler (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_Smuggler
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720383
+  name: IL_TalosTreason (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_TalosTreason
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720384
+  name: IL_TraitorWarrior (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_TraitorWarrior
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720385
+  name: IL_WidowLand (complete)
+  category: quest_complete
+  trigger:
+    quest: IL_WidowLand
+  group: imperial_legion
+  region: Seyda Neen
+- id: 7720386
+  name: MG_Advancement (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Advancement
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720387
+  name: MG_Apprentice (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Apprentice
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720388
+  name: MG_BCShrooms (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_BCShrooms
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720389
+  name: MG_Bethamez (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Bethamez
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720390
+  name: MG_Bowl (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Bowl
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720391
+  name: MG_Dwarves (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Dwarves
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720392
+  name: MG_EscortScholar1 (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_EscortScholar1
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720393
+  name: MG_EscortScholar2 (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_EscortScholar2
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720394
+  name: MG_Excavation (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Excavation
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720395
+  name: MG_Flowers (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Flowers
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720396
+  name: MG_Guildmaster (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Guildmaster
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720397
+  name: MG_JoinUs (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_JoinUs
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720398
+  name: MG_KillNecro1 (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_KillNecro1
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720399
+  name: MG_KillNecro2 (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_KillNecro2
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720400
+  name: MG_KillTelvanni (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_KillTelvanni
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720401
+  name: MG_Mzuleft (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Mzuleft
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720402
+  name: MG_NchuleftBook (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_NchuleftBook
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720403
+  name: MG_PayDues (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_PayDues
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720404
+  name: MG_Potion (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Potion
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720405
+  name: MG_ReturnBook (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_ReturnBook
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720406
+  name: MG_Sabotage (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Sabotage
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720407
+  name: MG_Science (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Science
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720408
+  name: MG_Sharn_Necro (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_Sharn_Necro
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720409
+  name: MG_SoulGem2 (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_SoulGem2
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720410
+  name: MG_SpyCatch (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_SpyCatch
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720411
+  name: MG_StaffMagnus (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_StaffMagnus
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720412
+  name: MG_StealBook (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_StealBook
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720413
+  name: MG_StolenReport (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_StolenReport
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720414
+  name: MG_StopCompetition (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_StopCompetition
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720415
+  name: MG_VampireCure (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_VampireCure
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720416
+  name: MG_VampVol2 (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_VampVol2
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720417
+  name: MG_WarlocksRing (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_WarlocksRing
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720418
+  name: MG_WiseWoman (complete)
+  category: quest_complete
+  trigger:
+    quest: MG_WiseWoman
+  group: mages_guild
+  region: Seyda Neen
+- id: 7720419
+  name: MS_Apologies (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_Apologies
+  group: misc
+  region: Seyda Neen
+- id: 7720420
+  name: MS_ArenimTomb (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_ArenimTomb
+  group: misc
+  region: Seyda Neen
+- id: 7720421
+  name: MS_FargothRing (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_FargothRing
+  group: misc
+  region: Seyda Neen
+- id: 7720422
+  name: MS_Gold_kanet_flower (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_Gold_kanet_flower
+  group: misc
+  region: Seyda Neen
+- id: 7720423
+  name: MS_Hannat (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_Hannat
+  group: misc
+  region: Seyda Neen
+- id: 7720424
+  name: MS_HatandSkirt (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_HatandSkirt
+  group: misc
+  region: Seyda Neen
+- id: 7720425
+  name: MS_HentusPants (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_HentusPants
+  group: misc
+  region: Seyda Neen
+- id: 7720426
+  name: MS_JobashaAbolitionist (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_JobashaAbolitionist
+  group: misc
+  region: Seyda Neen
+- id: 7720427
+  name: MS_Lookout (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_Lookout
+  group: misc
+  region: Seyda Neen
+- id: 7720428
+  name: MS_Nord_burial (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_Nord_burial
+  group: misc
+  region: Seyda Neen
+- id: 7720429
+  name: MS_Nuccius (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_Nuccius
+  group: misc
+  region: Seyda Neen
+- id: 7720430
+  name: MS_Piernette (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_Piernette
+  group: misc
+  region: Seyda Neen
+- id: 7720431
+  name: MS_propylon (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_propylon
+  group: misc
+  region: Seyda Neen
+- id: 7720432
+  name: MS_RaGruzgob (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_RaGruzgob
+  group: misc
+  region: Seyda Neen
+- id: 7720433
+  name: MS_Trerayna_bounty (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_Trerayna_bounty
+  group: misc
+  region: Seyda Neen
+- id: 7720434
+  name: MS_Umbra (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_Umbra
+  group: misc
+  region: Seyda Neen
+- id: 7720435
+  name: MS_VampireCure (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_VampireCure
+  group: misc
+  region: Seyda Neen
+- id: 7720436
+  name: MS_VassirDidanat (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_VassirDidanat
+  group: misc
+  region: Seyda Neen
+- id: 7720437
+  name: MS_WhiteGuar (complete)
+  category: quest_complete
+  trigger:
+    quest: MS_WhiteGuar
+  group: misc
+  region: Seyda Neen
+- id: 7720438
+  name: MT_DB_AldSotha (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_DB_AldSotha
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720439
+  name: MT_DB_Assernerairan (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_DB_Assernerairan
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720440
+  name: MT_DB_Carecalmo (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_DB_Carecalmo
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720441
+  name: MT_DB_Contact (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_DB_Contact
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720442
+  name: MT_DB_Darys (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_DB_Darys
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720443
+  name: MT_Grandmaster (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_Grandmaster
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720444
+  name: MT_S_BalancedArmor (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_BalancedArmor
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720445
+  name: MT_S_DeepBiting (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_DeepBiting
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720446
+  name: MT_S_Denial (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Denial
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720447
+  name: MT_S_Fleetness (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Fleetness
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720448
+  name: MT_S_FluidEvasion (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_FluidEvasion
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720449
+  name: MT_S_GlibSpeech (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_GlibSpeech
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720450
+  name: MT_S_Golden (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Golden
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720451
+  name: MT_S_Green (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Green
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720452
+  name: MT_S_Hewing (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Hewing
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720453
+  name: MT_S_HornyFist (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_HornyFist
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720454
+  name: MT_S_Impaling (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Impaling
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720455
+  name: MT_S_Leaping (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Leaping
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720456
+  name: MT_S_MartialCraft (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_MartialCraft
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720457
+  name: MT_S_NimbleArmor (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_NimbleArmor
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720458
+  name: MT_S_Red (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Red
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720459
+  name: MT_S_Safekeeping (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Safekeeping
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720460
+  name: MT_S_Silver (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Silver
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720461
+  name: MT_S_Smiting (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Smiting
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720462
+  name: MT_S_Stalking (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Stalking
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720463
+  name: MT_S_StolidArmor (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_StolidArmor
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720464
+  name: MT_S_Sublime (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Sublime
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720465
+  name: MT_S_Sureflight (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Sureflight
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720466
+  name: MT_S_Swiftblade (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Swiftblade
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720467
+  name: MT_S_Transcendent (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Transcendent
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720468
+  name: MT_S_Transfiguring (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Transfiguring
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720469
+  name: MT_S_Unseen (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_S_Unseen
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720470
+  name: MT_WritBaladas (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritBaladas
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720471
+  name: MT_WritBelvayn (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritBelvayn
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720472
+  name: MT_WritBemis (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritBemis
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720473
+  name: MT_WritBero (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritBero
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720474
+  name: MT_WritBrilnosu (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritBrilnosu
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720475
+  name: MT_WritGalasa (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritGalasa
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720476
+  name: MT_WritGuril (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritGuril
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720477
+  name: MT_WritMavon (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritMavon
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720478
+  name: MT_WritNavil (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritNavil
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720479
+  name: MT_WritOran (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritOran
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720480
+  name: MT_WritSadus (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritSadus
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720481
+  name: MT_WritSaren (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritSaren
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720482
+  name: MT_WritTherana (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritTherana
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720483
+  name: MT_WritVarro (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritVarro
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720484
+  name: MT_WritVendu (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritVendu
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720485
+  name: MT_WritYasalmibaal (complete)
+  category: quest_complete
+  trigger:
+    quest: MT_WritYasalmibaal
+  group: morag_tong
+  region: Seyda Neen
+- id: 7720486
+  name: MV_3_Charming (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_3_Charming
+  group: misc
+  region: Seyda Neen
+- id: 7720487
+  name: MV_AbusedHealer (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_AbusedHealer
+  group: misc
+  region: Seyda Neen
+- id: 7720488
+  name: MV_AngryTrader (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_AngryTrader
+  group: misc
+  region: Seyda Neen
+- id: 7720489
+  name: MV_BanditVictim (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_BanditVictim
+  group: misc
+  region: Seyda Neen
+- id: 7720490
+  name: MV_Bastard (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_Bastard
+  group: misc
+  region: Seyda Neen
+- id: 7720491
+  name: MV_BountyHunter (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_BountyHunter
+  group: misc
+  region: Seyda Neen
+- id: 7720492
+  name: MV_Bugrol (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_Bugrol
+  group: misc
+  region: Seyda Neen
+- id: 7720493
+  name: MV_CultistVictim (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_CultistVictim
+  group: misc
+  region: Seyda Neen
+- id: 7720494
+  name: MV_DeadTaxman (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_DeadTaxman
+  group: misc
+  region: Seyda Neen
+- id: 7720495
+  name: MV_FakeSlave (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_FakeSlave
+  group: misc
+  region: Seyda Neen
+- id: 7720496
+  name: MV_InnocentAshlanders (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_InnocentAshlanders
+  group: misc
+  region: Seyda Neen
+- id: 7720497
+  name: MV_LostRing (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_LostRing
+  group: misc
+  region: Seyda Neen
+- id: 7720498
+  name: MV_MissingCompanion (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_MissingCompanion
+  group: misc
+  region: Seyda Neen
+- id: 7720499
+  name: MV_MonsterDisease (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_MonsterDisease
+  group: misc
+  region: Seyda Neen
+- id: 7720500
+  name: MV_OutcastAshlanders (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_OutcastAshlanders
+  group: misc
+  region: Seyda Neen
+- id: 7720501
+  name: MV_ParalyzedBarbarian (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_ParalyzedBarbarian
+  group: misc
+  region: Seyda Neen
+- id: 7720502
+  name: MV_PoorPilgrim (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_PoorPilgrim
+  group: misc
+  region: Seyda Neen
+- id: 7720503
+  name: MV_RecoverWidowmaker (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_RecoverWidowmaker
+  group: misc
+  region: Seyda Neen
+- id: 7720504
+  name: MV_RichPilgrim (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_RichPilgrim
+  group: misc
+  region: Seyda Neen
+- id: 7720505
+  name: MV_RichTrader (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_RichTrader
+  group: misc
+  region: Seyda Neen
+- id: 7720506
+  name: MV_RunawaySlave (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_RunawaySlave
+  group: misc
+  region: Seyda Neen
+- id: 7720507
+  name: MV_SkoomaCorpse (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_SkoomaCorpse
+  group: misc
+  region: Seyda Neen
+- id: 7720508
+  name: MV_SlaveMule (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_SlaveMule
+  group: misc
+  region: Seyda Neen
+- id: 7720509
+  name: MV_StrayedPilgrim (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_StrayedPilgrim
+  group: misc
+  region: Seyda Neen
+- id: 7720510
+  name: MV_ThiefTrader (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_ThiefTrader
+  group: misc
+  region: Seyda Neen
+- id: 7720511
+  name: MV_TraderAbandoned (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_TraderAbandoned
+  group: misc
+  region: Seyda Neen
+- id: 7720512
+  name: MV_TraderLate (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_TraderLate
+  group: misc
+  region: Seyda Neen
+- id: 7720513
+  name: MV_TraderMissed (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_TraderMissed
+  group: misc
+  region: Seyda Neen
+- id: 7720514
+  name: MV_VictimRomance (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_VictimRomance
+  group: misc
+  region: Seyda Neen
+- id: 7720515
+  name: MV_WanderingPilgrim (complete)
+  category: quest_complete
+  trigger:
+    quest: MV_WanderingPilgrim
+  group: misc
+  region: Seyda Neen
+- id: 7720516
+  name: Romance_Ahnassi (complete)
+  category: quest_complete
+  trigger:
+    quest: Romance_Ahnassi
+  group: non_quest
+  region: Seyda Neen
+- id: 7720517
+  name: romance_ahnassi_A (complete)
+  category: quest_complete
+  trigger:
+    quest: romance_ahnassi_A
+  group: non_quest
+  region: Seyda Neen
+- id: 7720518
+  name: rules_blades (complete)
+  category: quest_complete
+  trigger:
+    quest: rules_blades
+  group: faction_rules
+  region: Seyda Neen
+- id: 7720519
+  name: rules_fighters (complete)
+  category: quest_complete
+  trigger:
+    quest: rules_fighters
+  group: faction_rules
+  region: Seyda Neen
+- id: 7720520
+  name: rules_hlaalu (complete)
+  category: quest_complete
+  trigger:
+    quest: rules_hlaalu
+  group: faction_rules
+  region: Seyda Neen
+- id: 7720521
+  name: rules_legion (complete)
+  category: quest_complete
+  trigger:
+    quest: rules_legion
+  group: faction_rules
+  region: Seyda Neen
+- id: 7720522
+  name: rules_mages (complete)
+  category: quest_complete
+  trigger:
+    quest: rules_mages
+  group: faction_rules
+  region: Seyda Neen
+- id: 7720523
+  name: rules_morag (complete)
+  category: quest_complete
+  trigger:
+    quest: rules_morag
+  group: faction_rules
+  region: Seyda Neen
+- id: 7720524
+  name: rules_redoran (complete)
+  category: quest_complete
+  trigger:
+    quest: rules_redoran
+  group: faction_rules
+  region: Seyda Neen
+- id: 7720525
+  name: rules_telvanni (complete)
+  category: quest_complete
+  trigger:
+    quest: rules_telvanni
+  group: faction_rules
+  region: Seyda Neen
+- id: 7720526
+  name: rules_temple (complete)
+  category: quest_complete
+  trigger:
+    quest: rules_temple
+  group: faction_rules
+  region: Seyda Neen
+- id: 7720527
+  name: rules_thieves (complete)
+  category: quest_complete
+  trigger:
+    quest: rules_thieves
+  group: faction_rules
+  region: Seyda Neen
+- id: 7720528
+  name: TG_AldruhnDefenses (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_AldruhnDefenses
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720529
+  name: TG_BadGandosa (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_BadGandosa
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720530
+  name: TG_BalmoraDefenses (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_BalmoraDefenses
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720531
+  name: TG_BitterBribe (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_BitterBribe
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720532
+  name: TG_BrotherBragor (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_BrotherBragor
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720533
+  name: TG_BrotherThief (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_BrotherThief
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720534
+  name: TG_CookbookAlchemy (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_CookbookAlchemy
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720535
+  name: TG_DartsJudgement (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_DartsJudgement
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720536
+  name: TG_Diamonds (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_Diamonds
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720537
+  name: TG_EbonyStaff (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_EbonyStaff
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720538
+  name: TG_EnemyParley (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_EnemyParley
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720539
+  name: TG_GrandmasterRetort (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_GrandmasterRetort
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720540
+  name: TG_Hostage (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_Hostage
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720541
+  name: TG_KillHardHeart (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_KillHardHeart
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720542
+  name: TG_KillIenith (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_KillIenith
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720543
+  name: TG_LootAldruhnMG (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_LootAldruhnMG
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720544
+  name: TG_ManorKey (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_ManorKey
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720545
+  name: TG_MasterHelm (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_MasterHelm
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720546
+  name: TG_OverduePayments (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_OverduePayments
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720547
+  name: TG_RedoranCookbook (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_RedoranCookbook
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720548
+  name: TG_SadrithMoraDefenses (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_SadrithMoraDefenses
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720549
+  name: TG_SS_ChurchPolice (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_SS_ChurchPolice
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720550
+  name: TG_SS_Enamor (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_SS_Enamor
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720551
+  name: TG_SS_Generosity1 (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_SS_Generosity1
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720552
+  name: TG_SS_Generosity2 (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_SS_Generosity2
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720553
+  name: TG_SS_GreedySlaver (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_SS_GreedySlaver
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720554
+  name: TG_SS_Plutocrats (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_SS_Plutocrats
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720555
+  name: TG_SS_Yngling (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_SS_Yngling
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720556
+  name: TG_VintageBrandy (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_VintageBrandy
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720557
+  name: TG_Withershins (complete)
+  category: quest_complete
+  trigger:
+    quest: TG_Withershins
+  group: thieves_guild
+  region: Seyda Neen
+- id: 7720558
+  name: Town_Ald_Bevene (complete)
+  category: quest_complete
+  trigger:
+    quest: Town_Ald_Bevene
+  group: non_quest
+  region: Seyda Neen
+- id: 7720559
+  name: Town_Ald_Bivale (complete)
+  category: quest_complete
+  trigger:
+    quest: Town_Ald_Bivale
+  group: non_quest
+  region: Seyda Neen
+- id: 7720560
+  name: Town_Ald_Daynes (complete)
+  category: quest_complete
+  trigger:
+    quest: Town_Ald_Daynes
+  group: non_quest
+  region: Seyda Neen
+- id: 7720561
+  name: town_ald_ienas (complete)
+  category: quest_complete
+  trigger:
+    quest: town_ald_ienas
+  group: non_quest
+  region: Seyda Neen
+- id: 7720562
+  name: Town_Ald_Llethri (complete)
+  category: quest_complete
+  trigger:
+    quest: Town_Ald_Llethri
+  group: non_quest
+  region: Seyda Neen
+- id: 7720563
+  name: Town_Ald_Tiras (complete)
+  category: quest_complete
+  trigger:
+    quest: Town_Ald_Tiras
+  group: non_quest
+  region: Seyda Neen
+- id: 7720564
+  name: Town_Aldruhn (complete)
+  category: quest_complete
+  trigger:
+    quest: Town_Aldruhn
+  group: non_quest
+  region: Seyda Neen
+- id: 7720565
+  name: town_balmora (complete)
+  category: quest_complete
+  trigger:
+    quest: town_balmora
+  group: non_quest
+  region: Seyda Neen
+- id: 7720566
+  name: town_Sadrith (complete)
+  category: quest_complete
+  trigger:
+    quest: town_Sadrith
+  group: non_quest
+  region: Seyda Neen
+- id: 7720567
+  name: town_sadrith_expert (complete)
+  category: quest_complete
+  trigger:
+    quest: town_sadrith_expert
+  group: non_quest
+  region: Seyda Neen
+- id: 7720568
+  name: town_Tel_Vos (complete)
+  category: quest_complete
+  trigger:
+    quest: town_Tel_Vos
+  group: non_quest
+  region: Seyda Neen
+- id: 7720569
+  name: town_Tel_Vos_ashur (complete)
+  category: quest_complete
+  trigger:
+    quest: town_Tel_Vos_ashur
+  group: non_quest
+  region: Seyda Neen
+- id: 7720570
+  name: town_Tel_Vos_he (complete)
+  category: quest_complete
+  trigger:
+    quest: town_Tel_Vos_he
+  group: non_quest
+  region: Seyda Neen
+- id: 7720571
+  name: town_Tel_Vos_she (complete)
+  category: quest_complete
+  trigger:
+    quest: town_Tel_Vos_she
+  group: non_quest
+  region: Seyda Neen
+- id: 7720572
+  name: town_Tel_Vos_wise (complete)
+  category: quest_complete
+  trigger:
+    quest: town_Tel_Vos_wise
+  group: non_quest
+  region: Seyda Neen
+- id: 7720573
+  name: town_Vivec (complete)
+  category: quest_complete
+  trigger:
+    quest: town_Vivec
+  group: non_quest
+  region: Seyda Neen
+- id: 7720574
+  name: TT_AldDaedroth (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_AldDaedroth
+  group: temple
+  region: Seyda Neen
+- id: 7720575
+  name: TT_AldSotha (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_AldSotha
+  group: temple
+  region: Seyda Neen
+- id: 7720576
+  name: TT_Assarnibibi (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_Assarnibibi
+  group: temple
+  region: Seyda Neen
+- id: 7720577
+  name: TT_BalUr (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_BalUr
+  group: temple
+  region: Seyda Neen
+- id: 7720578
+  name: TT_Compassion (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_Compassion
+  group: temple
+  region: Seyda Neen
+- id: 7720579
+  name: TT_CuringTouch (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_CuringTouch
+  group: temple
+  region: Seyda Neen
+- id: 7720580
+  name: TT_DagonFel (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_DagonFel
+  group: temple
+  region: Seyda Neen
+- id: 7720581
+  name: TT_DiseaseCarrier (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_DiseaseCarrier
+  group: temple
+  region: Seyda Neen
+- id: 7720582
+  name: TT_FalseIncarnate (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_FalseIncarnate
+  group: temple
+  region: Seyda Neen
+- id: 7720583
+  name: TT_FelmsCleaver (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_FelmsCleaver
+  group: temple
+  region: Seyda Neen
+- id: 7720584
+  name: TT_FieldsKummu (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_FieldsKummu
+  group: temple
+  region: Seyda Neen
+- id: 7720585
+  name: TT_GalomDeus (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_GalomDeus
+  group: temple
+  region: Seyda Neen
+- id: 7720586
+  name: TT_Ghostgate (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_Ghostgate
+  group: temple
+  region: Seyda Neen
+- id: 7720587
+  name: TT_HairShirt (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_HairShirt
+  group: temple
+  region: Seyda Neen
+- id: 7720588
+  name: TT_Hassour (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_Hassour
+  group: temple
+  region: Seyda Neen
+- id: 7720589
+  name: TT_LlothisCrosier (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_LlothisCrosier
+  group: temple
+  region: Seyda Neen
+- id: 7720590
+  name: TT_MaarGan (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_MaarGan
+  group: temple
+  region: Seyda Neen
+- id: 7720591
+  name: TT_MaskVivec (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_MaskVivec
+  group: temple
+  region: Seyda Neen
+- id: 7720592
+  name: TT_Mawia (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_Mawia
+  group: temple
+  region: Seyda Neen
+- id: 7720593
+  name: TT_MinistryHeathen (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_MinistryHeathen
+  group: temple
+  region: Seyda Neen
+- id: 7720594
+  name: TT_MountKand (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_MountKand
+  group: temple
+  region: Seyda Neen
+- id: 7720595
+  name: TT_PalaceVivec (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_PalaceVivec
+  group: temple
+  region: Seyda Neen
+- id: 7720596
+  name: TT_PilgrimsPath (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_PilgrimsPath
+  group: temple
+  region: Seyda Neen
+- id: 7720597
+  name: TT_PuzzleCanal (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_PuzzleCanal
+  group: temple
+  region: Seyda Neen
+- id: 7720598
+  name: TT_RilmsShoes (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_RilmsShoes
+  group: temple
+  region: Seyda Neen
+- id: 7720599
+  name: TT_RuddyMan (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_RuddyMan
+  group: temple
+  region: Seyda Neen
+- id: 7720600
+  name: TT_SanctusShrine (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_SanctusShrine
+  group: temple
+  region: Seyda Neen
+- id: 7720601
+  name: TT_SevenGraces (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_SevenGraces
+  group: temple
+  region: Seyda Neen
+- id: 7720602
+  name: TT_StAralor (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_StAralor
+  group: temple
+  region: Seyda Neen
+- id: 7720603
+  name: TT_StopMoon (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_StopMoon
+  group: temple
+  region: Seyda Neen
+- id: 7720604
+  name: TT_SupplyMonk (complete)
+  category: quest_complete
+  trigger:
+    quest: TT_SupplyMonk
+  group: temple
+  region: Seyda Neen
+- id: 7720605
+  name: VA_Rimintil (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_Rimintil
+  group: vampire
+  region: Seyda Neen
+- id: 7720606
+  name: VA_Shashev (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_Shashev
+  group: vampire
+  region: Seyda Neen
+- id: 7720607
+  name: VA_VampAmulet (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_VampAmulet
+  group: vampire
+  region: Seyda Neen
+- id: 7720608
+  name: VA_VampBlood (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_VampBlood
+  group: vampire
+  region: Seyda Neen
+- id: 7720609
+  name: VA_VampBlood2 (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_VampBlood2
+  group: vampire
+  region: Seyda Neen
+- id: 7720610
+  name: VA_VampChild (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_VampChild
+  group: vampire
+  region: Seyda Neen
+- id: 7720611
+  name: VA_VampCountess (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_VampCountess
+  group: vampire
+  region: Seyda Neen
+- id: 7720612
+  name: VA_VampCult (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_VampCult
+  group: vampire
+  region: Seyda Neen
+- id: 7720613
+  name: VA_VampCurse (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_VampCurse
+  group: vampire
+  region: Seyda Neen
+- id: 7720614
+  name: VA_VampDust (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_VampDust
+  group: vampire
+  region: Seyda Neen
+- id: 7720615
+  name: VA_VampHunter (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_VampHunter
+  group: vampire
+  region: Seyda Neen
+- id: 7720616
+  name: VA_VampMarara (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_VampMarara
+  group: vampire
+  region: Seyda Neen
+- id: 7720617
+  name: VA_VampRich (complete)
+  category: quest_complete
+  trigger:
+    quest: VA_VampRich
+  group: vampire
+  region: Seyda Neen

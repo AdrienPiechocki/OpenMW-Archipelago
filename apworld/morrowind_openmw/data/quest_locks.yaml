@@ -1,0 +1,15 @@
+# Quetes verrouillees par Archipelago : tant que l'item AP correspondant n'est pas
+# recu, la quete ne peut pas progresser (le mod remet son journal a zero). Actif
+# uniquement si l'objectif `goal` correspondant est selectionne dans le YAML joueur
+# (daedric_quests : option "Daedric Quests"). Chaque item est de la progression.
+#   name       nom de l'item AP (unique)      id     ID d'item AP (stable)
+#   goal       cle d'objectif                 quest  ID de quete (journal), en minuscules
+#   scripts    scripts MWScript des activateurs (blocage avant OnActivate)
+#   activators IDs des records ACTI (repli si un mod renomme le script)
+- {name: "Daedric Quest: Azura", id: 7701400, goal: daedric_quests, quest: da_azura, scripts: [DaedraAzura], activators: [active_dae_azura]}
+- {name: "Daedric Quest: Boethiah", id: 7701401, goal: daedric_quests, quest: da_boethiah, scripts: [DaedraBoethiah, DaedraBoethiah2], activators: [Ex_DAE_Boethiah_fixed, active_dae_boethiah, active_dae_boethiah_ruin, active_DAE_B_Bo_Head]}
+- {name: "Daedric Quest: Malacath", id: 7701402, goal: daedric_quests, quest: da_malacath, scripts: [DaedraMalacath], activators: [active_dae_malacath]}
+- {name: "Daedric Quest: Mehrunes Dagon", id: 7701403, goal: daedric_quests, quest: da_mehrunes, scripts: [DaedraMehrunes], activators: [active_dae_mehrunes]}
+- {name: "Daedric Quest: Mephala", id: 7701404, goal: daedric_quests, quest: da_mephala, scripts: [DaedraMephala], activators: [active_dae_mephala, active_velothi_altar_Mephala]}
+- {name: "Daedric Quest: Molag Bal", id: 7701405, goal: daedric_quests, quest: da_molagbal, scripts: [DaedraMolagBal], activators: [active_dae_molagbal]}
+- {name: "Daedric Quest: Sheogorath", id: 7701406, goal: daedric_quests, quest: da_sheogorath, scripts: [DaedraSheogorath], activators: [active_dae_sheogorath]}

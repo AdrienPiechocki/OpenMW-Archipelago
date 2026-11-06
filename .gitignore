@@ -1,0 +1,4 @@
+*.json
+data/*
+!data/quest_locks.yaml
+!data/goals.yaml

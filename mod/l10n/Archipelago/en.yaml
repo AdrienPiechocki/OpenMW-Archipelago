@@ -1,0 +1,14 @@
+pageName: Archipelago
+groupName: Connection
+hostName: Host
+hostDesc: Archipelago server address
+portName: Port
+portDesc: Archipelago server port
+slotName: Slot
+slotDesc: Player slot name
+passwordName: Password
+passwordDesc: Server password (optional)
+deathlinkName: DeathLink
+deathlinkDesc: Enable DeathLink
+notificationsName: Item notifications
+notificationsDesc: Show an in-game message for each Archipelago item received or sent

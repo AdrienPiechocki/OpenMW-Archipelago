@@ -1,0 +1,46 @@
+# Objectifs accomplissables. L'objectif de la partie est main_quest (option main_quest,
+# activee par defaut), auquel s'ajoutent la grande maison / guilde / faction choisies dans
+# le YAML joueur (options great_house, guild, faction) et les quetes daedriques. La victoire
+# exige que tous les objectifs choisis soient accomplis.
+# Chaque objectif est atteint des qu'UNE des conditions de l'entree est remplie :
+#   quests:  liste de {quest, stage}  -> stage Journal >= stage
+#   faction: id OpenMW de la faction  -> rang >= `rank` (10 = chef de faction)
+#   group:   groupe de quetes (voir tools/quest_groups.py) -> toutes les
+#            quetes du groupe sont terminees (stage de completion de quest_finals.yaml)
+main_quest:
+  quests:
+    - {quest: c3_destroydagoth, stage: 50}        # mort de Dagoth Ur
+hlaalu:
+  faction: hlaalu
+  rank: 10                                        # Grandmaster
+telvanni:
+  faction: telvanni
+  rank: 10                                        # Archmagister
+redoran:
+  faction: redoran
+  rank: 10                                        # Archmaster
+fighters_guild:
+  faction: fighters guild
+  rank: 10                                        # Guildmaster
+mages_guild:
+  faction: mages guild
+  rank: 10                                        # Arch-Mage
+thieves_guild:
+  faction: thieves guild
+  rank: 10                                        # Guildmaster
+imperial_cult:
+  faction: imperial cult
+  rank: 10                                        # Primate
+imperial_legion:
+  faction: imperial legion
+  rank: 10                                        # Knight of the Imperial Dragon
+temple:
+  faction: temple
+  rank: 10                                        # Patriarch
+morag_tong:
+  faction: morag tong
+  rank: 10                                        # Grandmaster
+  quests:
+    - {quest: mt_grandmaster, stage: 100}         # ID confirme (UESP) : 100 ou 110 = nouveau Grandmaster
+daedric_quests:
+  group: daedric                                  # les 7 quetes daedriques terminees (option "Daedric Quests")
