@@ -130,7 +130,6 @@ QUEST_ITEMS_BY_GOAL = {
         'key_arenim',
         'misc_beluelle_silver_bowl',
         'nuccius_ring',
-        'ring_keley',
         'widowmaker_unique',
     },
 }
@@ -163,6 +162,7 @@ QUEST_ITEM_ALIASES = {
     # le scan ne peut pas les generer. Si le mod doit les randomiser, les
     # ajouter à la main dans quest_items.yaml (comme Corprus Cure).
     'gavel of the ordinator', 'misc_dwrv_gear00',
+    'ring_keley',  # nécessaire au tuto (Fargoth's ring), ne pas randomiser
 }
 
 QUEST_ITEM_PATTERNS_BY_GOAL = {
@@ -385,6 +385,8 @@ def main():
         if args.goal and goal not in set(args.goal):
             continue
         if item in known_records:
+            continue
+        if item in QUEST_ITEM_ALIASES:
             continue
         name = item_rec.get(item, ('', item))[1]
         cands.append({'goal': goal, 'record': item, 'name': name, 'count': e['count'],
