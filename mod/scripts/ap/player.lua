@@ -20,7 +20,6 @@ local LOCKS = require('scripts.ap.quest_locks')   -- objectif -> { {id = item AP
 local sent = {}
 local goalSent = false
 local goalList = nil        -- cles de GOALS a accomplir (quete principale + maison/guilde/faction), recues du serveur
-local goalQuestChecks = 0   -- option Goal Quest Checks (0 off, > 0 on), recue du serveur
 local reachedGoals = {}     -- cle -> true, memorise une fois accompli
 local ownedIds = {}         -- ids d'items AP recus (relayes par global.lua)
 local lockWarned = {}
@@ -174,7 +173,7 @@ local function pollQuests()
       -- choisis si l'option Goal Quest Checks est active.
       local info = QUEST_COMPLETE_LOOKUP[qkey]
       if info and questComplete(qkey, stage)
-          and goalChecks.allowed(info[4], goalQuestChecks, goalList) then
+          and goalChecks.allowed(info[4], goalList) then
         for _, cid in ipairs(info[3] or {}) do check(cid) end
       end
     end
@@ -253,7 +252,7 @@ local function onUpdate(dt)
 end
 
 local function onSave()
-  return { sent = sent, goalSent = goalSent, goalList = goalList, goalQuestChecks = goalQuestChecks, reachedGoals = reachedGoals, ownedIds = ownedIds }
+  return { sent = sent, goalSent = goalSent, goalList = goalList, reachedGoals = reachedGoals, ownedIds = ownedIds }
 end
 
 local function requestConfig()
@@ -265,7 +264,6 @@ local function onLoad(d)
     sent = d.sent or {}
     goalSent = d.goalSent or false
     goalList = d.goalList
-    goalQuestChecks = tonumber(d.goalQuestChecks) or 0
     reachedGoals = d.reachedGoals or {}
     ownedIds = d.ownedIds or {}
   end
@@ -304,8 +302,6 @@ local function onConfig(data)
     ap.send('{"t":"goal"}')
   end
 
-  -- Option Goal Quest Checks (absente des anciennes seeds : off).
-  goalQuestChecks = tonumber(data.goalQuestChecks) or 0
 
   local raw = {}
   if type(data.goals) == 'table' then

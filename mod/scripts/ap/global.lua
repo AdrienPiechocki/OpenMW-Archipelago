@@ -264,7 +264,7 @@ local function handle(msg)
     -- Relayer l'objectif au script joueur
     local pl = getPlayer()
     if pl then
-      pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal, goalQuestChecks = serverOptions.goal_quest_checks }) end)
+      pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal }) end)
     end
     -- Propager death_link (YAML) vers le stockage global pour player.lua
     if serverOptions.death_link ~= nil then
@@ -362,7 +362,12 @@ local function ensureActivationHandler()
 end
 
 local function suppressKeyItems(player)
-  local suppress = items.suppressFor(goalKeys())
+  -- Les objets 'misc' (quetes secondaires) sont toujours supprimes,
+  -- independamment des objectifs choisis dans la seed : ils ne dependent
+  -- pas d'un goal et leur item AP est toujours dans le pool.
+  local goals = goalKeys()
+  table.insert(goals, 'misc')
+  local suppress = items.suppressFor(goals)
   if next(suppress) == nil then return end
   local inv = types.Actor.inventory(player)
   -- Ne pas supprimer le package dans le Census Office : la porte de sortie
@@ -404,7 +409,7 @@ return {
     AP_RequestConfig = function()
       local pl = getPlayer()
       if pl and (serverOptions.goals ~= nil or serverOptions.goal ~= nil) then
-        pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal, goalQuestChecks = serverOptions.goal_quest_checks }) end)
+        pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal }) end)
       end
       sendOwned()
     end,

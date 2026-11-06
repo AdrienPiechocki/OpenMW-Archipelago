@@ -4,7 +4,7 @@ from Options import OptionError
 from .items import MorrowindItem, item_table, item_name_groups, quest_item_names
 from .locations import MorrowindLocation, location_table
 from .regions import region_table
-from .options import MorrowindOptions, selected_goals, goal_of_group, goal_quest_mode
+from .options import MorrowindOptions, selected_goals, goal_of_group
 from .rules import set_rules
 from typing import Dict, Any
 
@@ -150,6 +150,6 @@ class MorrowindWorld(World):
                 "faction": self.options.faction.current_key,
                 "daedric_quests": bool(self.options.daedric_quests.value),
                 "death_link": bool(getattr(self.options.death_link, "value", self.options.death_link)),
-                "goal_quest_checks": goal_quest_mode(self.options),
+                "goal_quest_checks": 1,
             },
         }

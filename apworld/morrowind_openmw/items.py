@@ -88,12 +88,26 @@ def _load_yaml(filename):
 quest_items = _load_yaml('quest_items.yaml')
 # Quetes verrouillees : un item de progression par quete (data/quest_locks.yaml).
 quest_locks = _load_yaml('quest_locks.yaml')
+
 for _it in quest_items + quest_locks:
-    item_table[_it['name']] = MorrowindItemData(
-        code=_it['id'],
-        classification=ItemClassification.progression,
-        can_create=lambda options, g=_it['goal']: g in selected_goals(options),
-    )
+    _goal = _it['goal']
+    if _goal == 'misc':
+        # Objets de quetes secondaires : toujours dans le pool, mais "useful"
+        # (ils ne sont pas necessaires a la victoire). Sinon ils satureraient
+        # les locations de progression et feraient echouer la capacite.
+        item_table[_it['name']] = MorrowindItemData(
+            code=_it['id'],
+            classification=ItemClassification.useful,
+            can_create=lambda options: True,
+        )
+    else:
+        # Objets des objectifs (main, maisons, guildes, factions, daedric) :
+        # seulement si l'objectif est choisi, et en progression.
+        item_table[_it['name']] = MorrowindItemData(
+            code=_it['id'],
+            classification=ItemClassification.progression,
+            can_create=lambda options, g=_goal: g in selected_goals(options),
+        )
 
 
 def quest_item_names(goal_key):

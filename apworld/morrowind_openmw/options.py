@@ -56,17 +56,6 @@ class DaedricQuests(Toggle):
     default = False
 
 
-class GoalQuestChecks(DefaultOnToggle):
-    """Fait compter l'accomplissement des quetes des objectifs choisis (quete
-    principale, maison / guilde / faction, quetes daedriques) comme des checks,
-    en plus des quetes Miscellaneous (un check a la fin de chaque quete).
-    Ces checks peuvent contenir des items de progression : ils sont verrouilles
-    logiquement tant que les objets de quete de leur objectif ne sont pas recus
-    (les quetes a fins exclusives n'y contiennent jamais d'item important).
-    Desactive : seules les quetes Miscellaneous donnent des checks."""
-    display_name = "Goal Quest Checks"
-
-
 class DeathLink(Toggle):
     display_name = "Death Link"
     default = True
@@ -79,7 +68,6 @@ class MorrowindOptions(PerGameCommonOptions):
     guild: Guild = Guild.default
     faction: Faction = Faction.default
     daedric_quests: DaedricQuests = DaedricQuests.default
-    goal_quest_checks: GoalQuestChecks = GoalQuestChecks.default
     death_link: DeathLink = DeathLink.default
 
 
@@ -108,8 +96,3 @@ GROUP_GOALS = {"main": "main_quest", "daedric": "daedric_quests"}
 def goal_of_group(group: str) -> str:
     return GROUP_GOALS.get(group, group)
 
-
-def goal_quest_mode(options) -> int:
-    """0 = off, 2 = on (le mod accepte tout mode > 0 ; 2 = ancien 'full')."""
-    opt = getattr(options, "goal_quest_checks", None)
-    return 2 if getattr(opt, "value", opt) else 0

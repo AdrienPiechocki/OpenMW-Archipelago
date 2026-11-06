@@ -16,8 +16,4 @@ Morrowind OpenMW:
   # item Archipelago ("Daedric Quest: <prince>") n'est pas recu.
   daedric_quests: false
 
-  # Les quetes des objectifs choisis (principale, maison / guilde / faction, daedriques)
-  # donnent aussi un check a leur completion (les quetes "Miscellaneous" en donnent
-  # toujours un chacune).
-  goal_quest_checks: true      # true | false
   death_link: true

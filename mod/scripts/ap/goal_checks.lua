@@ -14,11 +14,9 @@ function M.goalOfGroup(group)
   return M.GROUP_GOALS[group] or group
 end
 
--- mode : 0 = off, > 0 = on (slot_data.goal_quest_checks)
 -- goalList : liste des cles d'objectif choisies (nil tant que le serveur n'a pas repondu)
-function M.allowed(group, mode, goalList)
+function M.allowed(group, goalList)
   if group == nil or group == 'misc' then return true end
-  if (tonumber(mode) or 0) <= 0 then return false end
   if type(goalList) ~= 'table' then return false end
   local key = M.goalOfGroup(group)
   for _, k in ipairs(goalList) do
@@ -26,5 +24,3 @@ function M.allowed(group, mode, goalList)
   end
   return false
 end
-
-return M

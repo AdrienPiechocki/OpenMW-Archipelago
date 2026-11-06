@@ -6,7 +6,7 @@ except Exception:
 
 from BaseClasses import Location
 from typing import NamedTuple, Callable, Dict
-from .options import MorrowindOptions, selected_goals, goal_of_group, goal_quest_mode
+from .options import MorrowindOptions, selected_goals, goal_of_group
 
 
 class MorrowindLocation(Location):
@@ -57,7 +57,7 @@ if yaml is not None and _qf_text:
 
 
 def _goal_quest_can_create(options, g):
-    return goal_quest_mode(options) > 0 and goal_of_group(g) in selected_goals(options)
+    return goal_of_group(g) in selected_goals(options)
 
 
 def _goal_quest_excluded(options, risky):

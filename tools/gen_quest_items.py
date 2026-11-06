@@ -34,7 +34,8 @@ GOAL_OF_GROUP = {
     'hlaalu': 'hlaalu', 'redoran': 'redoran', 'telvanni': 'telvanni',
     'fighters_guild': 'fighters_guild', 'mages_guild': 'mages_guild',
     'thieves_guild': 'thieves_guild', 'imperial_legion': 'imperial_legion',
-    'imperial_cult': 'imperial_cult', 'temple': 'temple', 'morag_tong': 'morag_tong'
+    'imperial_cult': 'imperial_cult', 'temple': 'temple', 'morag_tong': 'morag_tong',
+    'misc': 'misc',
 }
 
 ITEM_TYPES = {'book', 'miscitem', 'misc', 'weapon', 'armor', 'clothing', 'apparatus',
@@ -109,6 +110,29 @@ QUEST_ITEMS_BY_GOAL = {
     },
     'morag_tong': set(),
     'daedric_quests': set(),
+    'misc': {
+        'amulet of ashamanu (unique)',
+        'amulet_agustas_unique',
+        'apparatus_a_spipe_tsiya',
+        'bk_aedra_tarer_unique',
+        'bk_notefrombashuk',
+        'bk_notefrombugrol',
+        'bk_notefromernil',
+        'bk_notefromnelos',
+        'bk_seydaneentaxrecord',
+        'cloudcleaver_unique',
+        'common_pants_02_hentus',
+        'expensive_amulet_aeta',
+        'expensive_ring_aeta',
+        'exquisite_ring_processus',
+        'extravagant_glove_left_maur',
+        'icecap_unique',
+        'key_arenim',
+        'misc_beluelle_silver_bowl',
+        'nuccius_ring',
+        'ring_keley',
+        'widowmaker_unique',
+    },
 }
 
 # Motifs partages : match sur l'ID ou le nom de l'objet. Ils ne s'appliquent
