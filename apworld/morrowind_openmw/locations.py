@@ -38,8 +38,11 @@ except Exception:
     if os.path.exists(_p):
         with open(_p, encoding='utf-8') as f:
             _qc_text = f.read()
-# Quests that can fail / have exclusive endings (data/quest_finals.yaml, `fail` field):
-# their check can become impossible, so never put an important item on them.
+# Quests that can fail (data/quest_finals.yaml, `fail` field): their check can
+# become impossible, so never put an important item on them.
+# Mutually exclusive quests (data/quest_exclusive.yaml) are NO LONGER risky:
+# completing any quest of a group validates the whole group (the mod sends all
+# the checks of the group), so their locations can hold progression items.
 _qf_text = None
 try:
     from importlib import resources as _res
@@ -50,20 +53,6 @@ except Exception:
         with open(_p, encoding='utf-8') as f:
             _qf_text = f.read()
 risky_quests = set()
-# Mutually exclusive journals (data/quest_exclusive.yaml): never hold an important item.
-_qe_text = None
-try:
-    from importlib import resources as _res
-    _qe_text = _res.files(__package__).joinpath('data', 'quest_exclusive.yaml').read_text(encoding='utf-8')
-except Exception:
-    _p = os.path.join(os.path.dirname(__file__), 'data', 'quest_exclusive.yaml')
-    if os.path.exists(_p):
-        with open(_p, encoding='utf-8') as f:
-            _qe_text = f.read()
-if yaml is not None and _qe_text:
-    for _grp in yaml.safe_load(_qe_text) or []:
-        for _q in _grp:
-            risky_quests.add(str(_q).lower())
 if yaml is not None and _qf_text:
     for _q in yaml.safe_load(_qf_text) or []:
         if _q.get('fail'):

@@ -135,6 +135,7 @@ class Data:
         self.conds = collections.defaultdict(list)   # (op, value) read as conditions
         self.finishes = collections.defaultdict(set)  # quest_finish, if exported
         self.texts = {}                              # (quest, stage) -> text
+        self.schema = {}                             # record type -> keys (tes3conv version)
 
 
 def collect_stages(esm_jsons, scripts_path=None):
@@ -155,24 +156,45 @@ def collect_stages(esm_jsons, scripts_path=None):
         cur_id, cur_journal = None, False
         for rec in data:
             t = rec.get('type')
+            if t and t not in D.schema:
+                D.schema[t] = sorted(rec.keys())
             if t == 'Dialogue':
                 cur_id = (rec.get('id') or '').lower()
-                cur_journal = str(rec.get('dialogue_type', '')).lower() == 'journal'
+                _dt = rec.get('dialogue_type')
+                if not _dt:
+                    _dt = (rec.get('data') or {}).get('dialogue_type')
+                cur_journal = str(_dt or '').lower() == 'journal'
             elif t == 'DialogueInfo':
-                add_text(rec.get('script_text'))
+                # tes3conv versions disagree on field names: the result
+                # script (which fires `Journal ...`) may live in
+                # script_text / result_text / result, the journal index in
+                # disposition / journal_index / quest_index. Scan them all
+                # (the NPC line itself never contains a valid Journal call).
+                for _k in ('script_text', 'result_text', 'result', 'text'):
+                    add_text(rec.get(_k))
                 for flt in rec.get('filters') or []:
-                    if str(flt.get('filter_type', '')).lower() != 'journal':
+                    ft = str(flt.get('filter_type') or flt.get('type') or '').lower()
+                    if ft != 'journal':
                         continue
                     op = CMP.get(str(flt.get('comparison', '')).lower())
-                    val = (flt.get('value') or {}).get('data')
-                    if op and isinstance(val, int) and flt.get('id'):
-                        D.conds[str(flt['id']).strip().lower()].append((op, val))
+                    val = flt.get('value') or {}
+                    val = val.get('data') if isinstance(val, dict) else val
+                    qid = str(flt.get('id') or '').strip().lower()
+                    if op and isinstance(val, int) and qid:
+                        D.conds[qid].append((op, val))
                 d = rec.get('data') or {}
-                st = d.get('disposition')
-                if cur_journal and cur_id and isinstance(st, int):
+                st = None
+                for _k in ('disposition', 'journal_index', 'quest_index'):
+                    _v = d.get(_k, rec.get(_k))
+                    if isinstance(_v, int):
+                        st = _v
+                        break
+                _dt = rec.get('dialogue_type') or d.get('dialogue_type')
+                is_j = cur_journal or str(_dt or '').lower() == 'journal'
+                if is_j and cur_id and isinstance(st, int):
                     D.entries[cur_id].add(st)
                     D.texts.setdefault((cur_id, st), (rec.get('text') or '').strip())
-                    if rec.get('quest_finish'):
+                    if rec.get('quest_finish') or d.get('quest_finish'):
                         D.finishes[cur_id].add(st)
             elif t == 'Script':
                 add_text(rec.get('script_text') or rec.get('text'))
@@ -198,11 +220,17 @@ def terminal_stages(D, qid):
                 used.add(s)
             elif op == '<=' and s <= v:
                 used.add(s)
-    return sorted(s for s in D.entries.get(qid, ()) if s < 150 and s not in used)
+    return sorted(s for s in D.entries.get(qid, ()) if 0 < s < 150 and s not in used)
 
 
-def completion_stages(qid, raw, fin, fail, known_stage=None):
-    """Returns (main stage, sorted list of all ending stages)."""
+def completion_stages(qid, raw, fin, fail, known_stage=None, entries=()):
+    """Returns (main stage, sorted list of all ending stages).
+
+    An empty ending list means NO completion stage could be deduced: the
+    quest must be fixed by hand (STAGE_OVERRIDES / STAGES_OVERRIDES) or
+    removed from quest_completions.yaml. We never silently write stage 0:
+    a journal at index 0 is "quest not started" for the mod, so such a
+    check can never fire in-game (dead location)."""
     if qid in STAGES_OVERRIDES:
         found = sorted(set(STAGES_OVERRIDES[qid]))
     else:
@@ -212,13 +240,22 @@ def completion_stages(qid, raw, fin, fail, known_stage=None):
             found.add(STAGE_OVERRIDES[qid])
         if known_stage:
             found.add(known_stage)
-        found = sorted(s for s in found if s not in exclude)
+        found = sorted(s for s in found
+                        if s not in exclude and 0 < s < 150)
+        # Journal index 0 holds the quest TITLE ("Imperial Cult: Buckmoth
+        # Alms"): it is written as soon as the quest starts and never marks
+        # progress. It must never be a completion stage.
         if not found:
-            found = [raw[-1]] if raw else [0]
+            # Fallback: highest stage with actual evidence in the ESM.
+            # Never 0 (see docstring).
+            cands = [s for s in raw if 0 < s < 150 and s not in exclude] \
+                or [s for s in entries if 0 < s < 150 and s not in exclude]
+            if cands:
+                found = [max(cands)]
     main = STAGE_OVERRIDES.get(qid)
     if main is None:
-        main = known_stage if known_stage else found[-1]
-    if main not in found:
+        main = known_stage if known_stage else (found[-1] if found else 0)
+    if found and main not in found:
         found = sorted(found + [main])
     return main, found
 
@@ -239,9 +276,30 @@ def main():
                     help='also recomputes stage/stages of quests already present')
     ap.add_argument('--no-auto', action='store_true',
                     help="does not add automatically deduced stages without follow-up")
+    ap.add_argument('--fail-on-unknown', action='store_true',
+                    help='exit code 1 if quests remain without any completion stage')
+    ap.add_argument('--debug', default='',
+                    help='comma-separated quest ids: print every ESM evidence found '
+                         'for them (entries, finishes, script stages, conditions) '
+                         'plus the record schema, then exit')
     args = ap.parse_args()
 
     D = collect_stages(args.esm_json, args.scripts)
+    if args.debug:
+        print('record schemas (tes3conv version):')
+        for t, keys in sorted(D.schema.items()):
+            if t in ('Dialogue', 'DialogueInfo', 'Script'):
+                print(f'  {t}: {keys}')
+        for qid in [q.strip().lower() for q in args.debug.split(',') if q.strip()]:
+            print(f'== {qid}')
+            print('  journal entries:', sorted(D.entries.get(qid, ())))
+            print('  quest_finish:', sorted(D.finishes.get(qid, ())))
+            print('  stages set by scripts:', sorted(D.stages.get(qid, ())))
+            print('  conditions (Journal filters):', D.conds.get(qid, ()))
+            for (q, s), txt in sorted(D.texts.items()):
+                if q == qid:
+                    print(f'    entry {s}: {txt[:90]}')
+        return
     if not D.finishes:
         print('info: no quest_finish in the JSON, endings deduced from conditions '
               '(Journal / GetJournalIndex filters)')
@@ -261,30 +319,41 @@ def main():
         ids[qid].append(q['id'])
 
     overrides = load_overrides(pathlib.Path(args.qc).parent / 'quest_groups_override.yaml')
-    rows, review = [], []
+    rows, review, unknown = [], [], []
     for qid in sorted(ids):
         raw = sorted(s for s in D.stages.get(qid, set()) if s < 150)
         fin = set(s for s in D.finishes.get(qid, set()) if s < 150)
         if not args.no_auto:
             fin |= set(terminal_stages(D, qid))
         fin = sorted(fin)
+        entries = sorted(s for s in D.entries.get(qid, ()) if 0 < s < 150)
 
         if qid in existing:
             row = dict(existing[qid])
             fail = sorted(set(row.get('fail') or []) | set(FAIL_STAGES.get(qid, [])))
             known = None if args.recompute else row.get('stage')
-            main, found = completion_stages(qid, raw, fin, fail, known)
+            if known is not None and known <= 0:
+                known = None  # legacy stage 0 is not knowledge, re-deduce
+            main, found = completion_stages(qid, raw, fin, fail, known, entries)
             old = row.get('stages')
             if args.recompute or not old:
                 row['stage'] = main
                 row['stages'] = found
             else:
                 row['stages'] = sorted(set(old) | set(found))
-            # purge: excluded / failure stages already written by a previous run
-            drop = set(STAGES_EXCLUDE.get(qid, [])) | set(fail)
-            row['stages'] = sorted((set(row['stages']) - drop) | {row['stage']})
+            # purge: excluded / failure stages already written by a previous
+            # run, plus stage 0 (dead location, never fires)
+            drop = set(STAGES_EXCLUDE.get(qid, [])) | set(fail) | {0}
+            row['stages'] = sorted((set(row['stages']) - drop) | ({main} if main > 0 else set()))
             if qid in STAGES_OVERRIDES:
                 row['stages'] = sorted(STAGES_OVERRIDES[qid])
+            if main <= 0:
+                row['unknown'] = True
+                row['stage'] = 0
+                row['stages'] = []
+                unknown.append(qid)
+            else:
+                row.pop('unknown', None)
             row['fail'] = fail
             row['ids'] = ids[qid]
             row['group'] = classify(qid, overrides)
@@ -297,20 +366,29 @@ def main():
             continue
 
         fail = FAIL_STAGES.get(qid, [])
-        main, found = completion_stages(qid, raw, fin, fail)
-        rows.append({
+        main, found = completion_stages(qid, raw, fin, fail, None, entries)
+        row = {
             'quest': qid,
             'stage': main,
             'stages': found,
             'fail': fail,
             'ids': ids[qid],
             'group': classify(qid, overrides),
-        })
-        flag = '' if len(found) <= 1 else '  <-- several possible endings, check'
-        review.append(f'{qid}: stage={main} stages={found} raw={raw}{flag}')
-        for s in found:
-            if s != main:
-                review.append(f'    + {s}: {snippet(D, qid, s)}')
+        }
+        if main <= 0:
+            row['unknown'] = True
+            row['stage'] = 0
+            row['stages'] = []
+            unknown.append(qid)
+        rows.append(row)
+        if main <= 0:
+            review.append(f'{qid}: !! NO ENDING FOUND (unknown) raw={raw} entries={entries}  <-- fix by hand or remove')
+        else:
+            flag = '' if len(found) <= 1 else '  <-- several possible endings, check'
+            review.append(f'{qid}: stage={main} stages={found} raw={raw}{flag}')
+            for s in found:
+                if s != main:
+                    review.append(f'    + {s}: {snippet(D, qid, s)}')
 
     out = pathlib.Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -318,12 +396,25 @@ def main():
         yaml.safe_dump(rows, f, sort_keys=False, allow_unicode=True)
     multi = sum(1 for r in rows if len(r['stages']) > 1)
     print(f'quest finals: {len(rows)} entries -> {out} ({multi} with several endings)')
+    if unknown:
+        banner = [f'!! {len(unknown)} QUESTS WITHOUT ANY COMPLETION STAGE (unknown: true):']
+        banner += [f'    {q}' for q in unknown]
+        banner.append('Fix them by hand (STAGE_OVERRIDES / STAGES_OVERRIDES) or remove '
+                      'them from quest_completions.yaml.')
+        print('\n'.join(banner))
     rp = out.with_name('quest_review.txt')
-    if review:
-        rp.write_text('\n'.join(review) + '\n', encoding='utf-8')
+    if review or unknown:
+        head = []
+        if unknown:
+            head = [f'!! {len(unknown)} QUESTS WITHOUT ANY COMPLETION STAGE:']
+            head += [f'    {q}' for q in unknown]
+            head.append('')
+        rp.write_text('\n'.join(head + review) + '\n', encoding='utf-8')
         print(f'to check in {rp}')
     elif rp.exists():
         rp.unlink()
+    if args.fail_on_unknown and unknown:
+        sys.exit(1)
 
 
 if __name__ == '__main__':

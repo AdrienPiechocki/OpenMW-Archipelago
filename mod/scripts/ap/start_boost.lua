@@ -8,7 +8,7 @@
 local M = {}
 
 M.MIN_LEVEL = 1
-M.MAX_LEVEL = 40
+M.MAX_LEVEL = 100
 M.CAP = 100                 -- attribute / skill ceiling
 M.HEALTH_PER_LEVEL = 0.1    -- x Endurance, as the vanilla fLevelUpHealthEndMult GMST
 
@@ -31,7 +31,7 @@ M.SKILLS = {
   'security', 'shortblade', 'sneak', 'spear', 'speechcraft', 'unarmored',
 }
 
--- Level from the server, or nil if invalid. Rounded and clamped to [1, 40].
+-- Level from the server, or nil if invalid. Rounded and clamped to [1, 100].
 function M.clampLevel(n)
   n = tonumber(n)
   if not n then return nil end

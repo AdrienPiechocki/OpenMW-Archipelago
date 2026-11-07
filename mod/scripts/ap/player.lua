@@ -48,6 +48,7 @@ local storage = require('openmw.storage')
 
 -- Tables generated from data/*.yaml (tools/gen_lua.py)
 local QUEST_COMPLETE_LOOKUP = require('scripts.ap.quest_completions') -- ['quest'] = {stage, {fails}, {ids}, group, {alternative ending stages}}
+local EXCLUSIVE = require('scripts.ap.quest_exclusive') -- ['quest'] = { members of its mutually exclusive group (itself included) }
 local GOALS = require('scripts.ap.goals')
 local LOCKS = require('scripts.ap.quest_locks')   -- goal -> { {id = AP item, quest} }
 
@@ -233,7 +234,21 @@ local function pollQuests()
       local info = QUEST_COMPLETE_LOOKUP[qkey]
       if info and questComplete(qkey, stage)
           and goalChecks.allowed(info[4], goalList, expansionGroups) then
-        for _, cid in ipairs(info[3] or {}) do check(cid) end
+        -- Mutually exclusive quests: completing one member validates the
+        -- whole group, so the checks of ALL members are sent (even the
+        -- variants whose journal never advances in this playthrough).
+        -- check() deduplicates via `sent`, which is persisted in the save.
+        local group = EXCLUSIVE[qkey]
+        if group then
+          for _, q in ipairs(group) do
+            local mi = QUEST_COMPLETE_LOOKUP[q]
+            if mi and goalChecks.allowed(mi[4], goalList, expansionGroups) then
+              for _, cid in ipairs(mi[3] or {}) do check(cid) end
+            end
+          end
+        else
+          for _, cid in ipairs(info[3] or {}) do check(cid) end
+        end
       end
     end
   end
