@@ -1,0 +1,15 @@
+cx_backpath: main
+
+# Variantes de la même quête : on n'en garde qu'une comme check
+town_ald_bevene: non_quest
+town_ald_bivale: non_quest
+town_ald_daynes: non_quest
+town_ald_ienas: non_quest
+town_ald_llethri: non_quest
+town_ald_tiras: non_quest
+# town_aldruhn reste misc (check unique pour Ienas Sarandas)
+town_sadrith_expert: non_quest
+town_tel_vos_ashur: non_quest
+town_tel_vos_he: non_quest
+town_tel_vos_she: non_quest
+town_tel_vos_wise: non_quest

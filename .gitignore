@@ -3,6 +3,7 @@ data/*
 !data/quest_locks.yaml
 !data/goals.yaml
 !data/quest_names.yaml
+!data/quest_groups_override.yaml
 tools/__pycache__/*
 bridge/__pycache__/*
 apworld/morrowind_openmw/data/*
