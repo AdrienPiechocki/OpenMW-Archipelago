@@ -1,13 +1,25 @@
 #!/usr/bin/env python3
-"""Genere data/quest_finals.yaml : stage de completion par quete.
+"""Genere data/quest_finals.yaml : stages de completion par quete.
 
-Le stage de completion par defaut est le plus haut stage Journal (< 150)
-trouve dans l'ESM pour la quete (en minuscules). Des overrides et des
-stages d'echec corrigent les branches connues.
+Chaque entree contient :
+  stage  : stage "principal" (le plus haut stage de fin, ou l'override) ;
+           conserve pour compatibilite.
+  stages : TOUS les stages qui terminent la quete avec succes. La quete est
+           completee des qu'un de ces stages est atteint.
+  fail   : stages d'echec (annulent la completion).
+
+Les stages de completion sont deduits de l'ESM : un stage d'entree de journal
+que ni un dialogue (filtre Journal) ni un script (GetJournalIndex) ne prend
+comme condition n'a pas de suite : c'est une fin possible (candidat). On y
+ajoute les stages quest_finish s'ils existent (tes3conv ne les exporte pas
+toujours), puis on retire les stages d'echec connus. A defaut, on prend le
+plus haut stage Journal (< 150). Des overrides corrigent les branches connues.
+Les stages ajoutes automatiquement sont listes dans quest_review.txt.
 
 Usage:
   tes3conv Morrowind.esm morrowind.json
   python tools/gen_quest_finals.py /tmp/morrowind.json --out data/quest_finals.yaml
+  # --recompute : recalcule aussi les quetes deja presentes (stage/stages)
 """
 import argparse
 import collections
@@ -22,7 +34,7 @@ import yaml
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from quest_groups import classify, load_overrides  # noqa: E402
 
-# Stage de completion explicite quand le max brut ne correspond pas a la
+# Stage "principal" explicite quand le max brut ne correspond pas a la
 # vraie fin "reussie" de la quete.
 STAGE_OVERRIDES = {
     'fg_nchurdamz': 100,
@@ -39,9 +51,51 @@ STAGE_OVERRIDES = {
     'b3_zainabbride': 55,
     'eb_invisible': 120,
     'mv_cultistvictim': 100,
-    # Nels Llendo : 90 (refus/attaque), 100 (or), 120 et 130 (baiser) terminent
-    # tous la quete ; 140 n'est qu'un suivi a Pelagiad, souvent jamais atteint.
     'mv_3_charming': 90,
+}
+
+# Liste COMPLETE des stages de completion, quand la deduction automatique
+# (quest_finish moins echecs) est fausse. Prioritaire sur tout le reste.
+# Nels Llendo : 90 (refus/attaque), 100 (or), 120 et 130 (baiser) terminent
+# tous la quete ; 140 n'est qu'un suivi a Pelagiad, souvent jamais atteint.
+STAGES_OVERRIDES = {
+    'mv_3_charming': [90, 100, 120, 130],
+}
+
+# Stages a ajouter a la deduction automatique (fins non flaguees quest_finish).
+STAGES_EXTRA = {
+    # 'quete_id': [stage, ...],
+}
+
+# Stages a retirer de la deduction automatique (intermediaires, dialogues,
+# refus/abandons...). Verifies d'apres le texte du journal (quest_review.txt).
+_HORT = [5, 10, 20]
+STAGES_EXCLUDE = {
+    'a1_1_findspymaster': [20],
+    'a1_sleepersawake': [1, 7],
+    'a1_v_vivecinformants': [55],
+    'a2_6_incarnate': [52, 54, 60, 62, 64, 70, 72, 74, 76, 78, 80],
+    'b5_arobarhort': _HORT, 'b5_llethrihort': _HORT,
+    'b5_morvaynhort': _HORT, 'b5_ramoranhort': _HORT,
+    'b6_berohort': [5], 'b6_curiohort': [5], 'b6_omanihort': [5, 20],
+    'b6_uleshort': [5, 20], 'b6_ynglinghort': [5, 20],
+    'b7_baladashort': [5, 30], 'b7_drathahort': [5, 10, 30],
+    'b7_gothrenhort': [5], 'b7_nelothhort': [5, 30], 'b7_theranahort': [5, 30],
+    'c0_act_c': [1, 2, 3, 4, 5, 6, 7, 10, 15],
+    'cx_backpath': [5, 10, 55, 60],
+    'da_azura': [40], 'da_mehrunes': [10], 'da_molagbal': [10],
+    'da_sheogorath': [20, 40, 50, 55],
+    'hh_wincamonna': [5], 'hr_calderacorrupt': [30],
+    'ht_archmagister': [10], 'ht_stronghold': [105],
+    'ic12_dinner_not': [0], 'ic26_amanin': [5, 10], 'ic29_crusher': [10, 15],
+    'ic8_heidmir': [10], 'ic8_ingokning': [10],
+    'il_blueprints': [10], 'ms_fargothring': [10],
+    'ms_jobashaabolitionist': [10], 'ms_piernette': [10],
+    'ms_umbra': [10, 20, 30, 40], 'mt_grandmaster': [10, 20],
+    'mv_abusedhealer': [60], 'mv_tradermissed': [110], 'mv_victimromance': [110],
+    'town_aldruhn': [50, 52, 55, 57, 60, 62, 65, 67, 70, 72, 75, 76, 77, 78, 79],
+    'town_tel_vos_ashur': [1],
+    'va_vampamulet': [10, 25], 'va_vampcountess': [30], 'va_vampmarara': [20, 40],
 }
 
 # Stages qui annulent la completion (branche d'echec).
@@ -58,22 +112,41 @@ FAIL_STAGES = {
     'b3_zainabbride': [60],
     'eb_invisible': [140],
     'mv_cultistvictim': [110],
+    'mv_fakeslave': [90],       # Tul meurt en chemin
+    'mv_poorpilgrim': [110],    # temps depasse
+    'mv_richtrader': [110],     # le marchand meurt
 }
 
 PAT_QUOTED = re.compile(r'(?<!Get)Journal\s*,?\s*"([^"]+)"\s*,?\s*(\d+)', re.I)
 PAT_BARE = re.compile(r'(?<!Get)Journal\s*,?\s*([A-Za-z_][A-Za-z0-9_\-]*)\s*,?\s*(\d+)', re.I)
+PAT_COND = re.compile(
+    r'GetJournalIndex\s*,?\s*"?([A-Za-z_][A-Za-z0-9_\-]*)"?\s*(==|=|>=|>|<=|<|!=)\s*(\d+)', re.I)
+
+# comparaison (filtre tes3conv) -> operateur
+CMP = {'equal': '==', 'notequal': '!=', 'greater': '>', 'greaterequal': '>=',
+       'less': '<', 'lessequal': '<='}
+
+
+class Data:
+    def __init__(self):
+        self.stages = collections.defaultdict(set)   # stages poses par Journal (scripts)
+        self.entries = collections.defaultdict(set)  # stages ayant une entree de journal
+        self.conds = collections.defaultdict(list)   # (op, valeur) lus comme conditions
+        self.finishes = collections.defaultdict(set)  # quest_finish, si exporte
+        self.texts = {}                              # (quete, stage) -> texte
 
 
 def collect_stages(esm_jsons, scripts_path=None):
-    stages = collections.defaultdict(set)
-    finishes = collections.defaultdict(set)
+    D = Data()
 
     def add_text(text):
         if not text:
             return
         for pat in (PAT_QUOTED, PAT_BARE):
             for m in pat.finditer(text):
-                stages[m.group(1).strip().lower()].add(int(m.group(2)))
+                D.stages[m.group(1).strip().lower()].add(int(m.group(2)))
+        for m in PAT_COND.finditer(text):
+            D.conds[m.group(1).strip().lower()].append((m.group(2), int(m.group(3))))
 
     for esm_json in esm_jsons:
         with open(esm_json, encoding='utf-8') as f:
@@ -86,10 +159,20 @@ def collect_stages(esm_jsons, scripts_path=None):
                 cur_journal = str(rec.get('dialogue_type', '')).lower() == 'journal'
             elif t == 'DialogueInfo':
                 add_text(rec.get('script_text'))
+                for flt in rec.get('filters') or []:
+                    if str(flt.get('filter_type', '')).lower() != 'journal':
+                        continue
+                    op = CMP.get(str(flt.get('comparison', '')).lower())
+                    val = (flt.get('value') or {}).get('data')
+                    if op and isinstance(val, int) and flt.get('id'):
+                        D.conds[str(flt['id']).strip().lower()].append((op, val))
                 d = rec.get('data') or {}
-                if cur_journal and cur_id and rec.get('quest_finish') \
-                        and isinstance(d.get('disposition'), int):
-                    finishes[cur_id].add(d['disposition'])
+                st = d.get('disposition')
+                if cur_journal and cur_id and isinstance(st, int):
+                    D.entries[cur_id].add(st)
+                    D.texts.setdefault((cur_id, st), (rec.get('text') or '').strip())
+                    if rec.get('quest_finish'):
+                        D.finishes[cur_id].add(st)
             elif t == 'Script':
                 add_text(rec.get('script_text') or rec.get('text'))
 
@@ -98,7 +181,50 @@ def collect_stages(esm_jsons, scripts_path=None):
             for line in f:
                 add_text(line)
 
-    return stages, finishes
+    return D
+
+
+def terminal_stages(D, qid):
+    """Stages d'entree de journal (< 150) qu'aucune condition ne consomme."""
+    used = set()
+    for op, v in D.conds.get(qid, []):
+        for s in D.entries.get(qid, ()):
+            if op in ('==', '>=', '>') and s == v:
+                used.add(s)
+            elif op == '!=' and s == v:
+                used.add(s)
+            elif op == '<' and s < v:
+                used.add(s)
+            elif op == '<=' and s <= v:
+                used.add(s)
+    return sorted(s for s in D.entries.get(qid, ()) if s < 150 and s not in used)
+
+
+def completion_stages(qid, raw, fin, fail, known_stage=None):
+    """Retourne (stage principal, liste triee de tous les stages de fin)."""
+    if qid in STAGES_OVERRIDES:
+        found = sorted(set(STAGES_OVERRIDES[qid]))
+    else:
+        exclude = set(STAGES_EXCLUDE.get(qid, [])) | set(fail)
+        found = set(fin) | set(STAGES_EXTRA.get(qid, []))
+        if STAGE_OVERRIDES.get(qid) is not None:
+            found.add(STAGE_OVERRIDES[qid])
+        if known_stage:
+            found.add(known_stage)
+        found = sorted(s for s in found if s not in exclude)
+        if not found:
+            found = [raw[-1]] if raw else [0]
+    main = STAGE_OVERRIDES.get(qid)
+    if main is None:
+        main = known_stage if known_stage else found[-1]
+    if main not in found:
+        found = sorted(found + [main])
+    return main, found
+
+
+def snippet(D, qid, st):
+    t = D.texts.get((qid, st), '').replace('\n', ' ')
+    return (t[:80] + '...') if len(t) > 80 else t
 
 
 def main():
@@ -108,12 +234,17 @@ def main():
                     help='dump texte des scripts (optionnel, ameliore la couverture)')
     ap.add_argument('--qc', default='data/quest_completions.yaml')
     ap.add_argument('--out', default='data/quest_finals.yaml')
+    ap.add_argument('--recompute', action='store_true',
+                    help='recalcule aussi stage/stages des quetes deja presentes')
+    ap.add_argument('--no-auto', action='store_true',
+                    help="n'ajoute pas les stages sans suite deduits automatiquement")
     args = ap.parse_args()
 
-    stages, finishes = collect_stages(args.esm_json, args.scripts)
+    D = collect_stages(args.esm_json, args.scripts)
+    if not D.finishes:
+        print('info: aucun quest_finish dans le JSON, fins deduites des conditions '
+              '(filtres Journal / GetJournalIndex)')
 
-    # Les entrees deja presentes sont conservees telles quelles (stages
-    # valides / overrides manuels) ; seules les nouvelles quetes sont calculees.
     existing = {}
     if pathlib.Path(args.out).exists():
         with open(args.out, encoding='utf-8') as f:
@@ -131,36 +262,67 @@ def main():
     overrides = load_overrides(pathlib.Path(args.qc).parent / 'quest_groups_override.yaml')
     rows, review = [], []
     for qid in sorted(ids):
+        raw = sorted(s for s in D.stages.get(qid, set()) if s < 150)
+        fin = set(s for s in D.finishes.get(qid, set()) if s < 150)
+        if not args.no_auto:
+            fin |= set(terminal_stages(D, qid))
+        fin = sorted(fin)
+
         if qid in existing:
             row = dict(existing[qid])
+            fail = sorted(set(row.get('fail') or []) | set(FAIL_STAGES.get(qid, [])))
+            known = None if args.recompute else row.get('stage')
+            main, found = completion_stages(qid, raw, fin, fail, known)
+            old = row.get('stages')
+            if args.recompute or not old:
+                row['stage'] = main
+                row['stages'] = found
+            else:
+                row['stages'] = sorted(set(old) | set(found))
+            # purge : stages exclus / d'echec deja ecrits par un run precedent
+            drop = set(STAGES_EXCLUDE.get(qid, [])) | set(fail)
+            row['stages'] = sorted((set(row['stages']) - drop) | {row['stage']})
+            if qid in STAGES_OVERRIDES:
+                row['stages'] = sorted(STAGES_OVERRIDES[qid])
+            row['fail'] = fail
             row['ids'] = ids[qid]
             row['group'] = classify(qid, overrides)
+            added = [s for s in row['stages'] if s != row['stage']]
+            if added and old != row['stages']:
+                review.append(f'{qid}: stage={row["stage"]} stages={row["stages"]} (existant)')
+                for s in added:
+                    review.append(f'    + {s}: {snippet(D, qid, s)}')
             rows.append(row)
             continue
-        raw = sorted(s for s in stages.get(qid, set()) if s < 150)
-        fin = sorted(s for s in finishes.get(qid, set()) if s < 150)
-        stage = STAGE_OVERRIDES.get(qid)
-        if stage is None:
-            stage = fin[-1] if fin else (raw[-1] if raw else 0)
+
+        fail = FAIL_STAGES.get(qid, [])
+        main, found = completion_stages(qid, raw, fin, fail)
         rows.append({
             'quest': qid,
-            'stage': stage,
-            'fail': FAIL_STAGES.get(qid, []),
+            'stage': main,
+            'stages': found,
+            'fail': fail,
             'ids': ids[qid],
             'group': classify(qid, overrides),
         })
-        flag = '' if len(fin) <= 1 else '  <-- plusieurs fins possibles, verifier les branches d\'echec'
-        review.append(f'{qid}: stage={stage} finish={fin} stages={raw}{flag}')
+        flag = '' if len(found) <= 1 else '  <-- plusieurs fins possibles, verifier'
+        review.append(f'{qid}: stage={main} stages={found} raw={raw}{flag}')
+        for s in found:
+            if s != main:
+                review.append(f'    + {s}: {snippet(D, qid, s)}')
 
     out = pathlib.Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, 'w', encoding='utf-8') as f:
         yaml.safe_dump(rows, f, sort_keys=False, allow_unicode=True)
-    print(f'quest finals: {len(rows)} entries -> {out}')
+    multi = sum(1 for r in rows if len(r['stages']) > 1)
+    print(f'quest finals: {len(rows)} entries -> {out} ({multi} avec plusieurs fins)')
+    rp = out.with_name('quest_review.txt')
     if review:
-        rp = out.with_name('quest_review.txt')
         rp.write_text('\n'.join(review) + '\n', encoding='utf-8')
-        print(f'{len(review)} nouvelles quetes, a verifier dans {rp}')
+        print(f'a verifier dans {rp}')
+    elif rp.exists():
+        rp.unlink()
 
 
 if __name__ == '__main__':

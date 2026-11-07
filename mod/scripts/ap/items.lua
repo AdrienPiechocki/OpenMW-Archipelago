@@ -83,7 +83,9 @@ function M.apply(player, itemId, idx)
 
   local g = GIVE[itemId]
   if g then
-    giveObject(player, g[1], g[2])
+    print('AP: apply ' .. tostring(itemId) .. ' -> give ' .. tostring(g[1]) .. ' x' .. tostring(g[2]))
+    local ok = giveObject(player, g[1], g[2])
+    print('AP: giveObject(' .. tostring(g[1]) .. ') = ' .. tostring(ok))
     return true
   end
 
