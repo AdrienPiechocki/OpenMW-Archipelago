@@ -498,7 +498,7 @@ return {
   ['mv_innocentashlanders'] = { 115, {  }, { 7720496 }, 'misc', {  } },
   ['mv_lostring'] = { 40, {  }, { 7720497 }, 'misc', {  } },
   ['mv_missingcompanion'] = { 70, {  }, { 7720498 }, 'misc', { 60 } },
-  ['mv_monsterdisease'] = { 70, {  }, { 7720499 }, 'misc', {  } },
+  ['mv_monsterdisease'] = { 70, {  }, { 7720499 }, 'misc', { 60 } },
   ['mv_outcastashlanders'] = { 110, {  }, { 7720500 }, 'misc', {  } },
   ['mv_paralyzedbarbarian'] = { 110, {  }, { 7720501 }, 'misc', {  } },
   ['mv_poorpilgrim'] = { 120, { 110 }, { 7720502 }, 'misc', {  } },

@@ -65,6 +65,7 @@ STAGES_OVERRIDES = {
 # Stages to add to the automatic deduction (endings not flagged quest_finish).
 STAGES_EXTRA = {
     # 'quest_id': [stage, ...],
+    'mv_monsterdisease': [60],
 }
 
 # Stages to remove from the automatic deduction (intermediate, dialogues,
