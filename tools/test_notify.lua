@@ -31,8 +31,18 @@ check('recv without sender', notify.format({ dir = 'recv', item = 'Gold' }),
   'Archipelago : vous recevez Gold')
 check('send', notify.format({ dir = 'send', item = 'Cloak', player = 'Bob' }),
   'Archipelago : vous envoyez Cloak à Bob')
+check('send quest check', notify.format({ dir = 'send', item = 'Cloak', player = 'Bob', location = 'Fargoth' }),
+  'Archipelago : Cloak (Fargoth) obtenu [check complété] -> Bob')
+check('send quest check with flag', notify.format({ dir = 'send', item = 'Cloak', player = 'Bob', location = 'Fargoth', flags = 2 }),
+  'Archipelago : Cloak [Utile] (Fargoth) obtenu [check complété] -> Bob')
 check('self', notify.format({ dir = 'self', item = 'Dagger', location = 'Fargoth' }),
-  'Archipelago : vous avez trouvé Dagger (Fargoth)')
+  'Archipelago : Dagger (Fargoth) obtenu [check complété]')
+check('self quest check with flag', notify.format({ dir = 'self', item = 'Dagger', location = 'Fargoth', flags = 1 }),
+  'Archipelago : Dagger [Progression] (Fargoth) obtenu [check complété]')
+check('self without location', notify.format({ dir = 'self', item = 'Gold' }),
+  'Archipelago : vous avez trouvé Gold')
+check('empty location falls back', notify.format({ dir = 'self', item = 'Gold', location = '' }),
+  'Archipelago : vous avez trouvé Gold')
 check('percent in names is kept', notify.format({ dir = 'send', item = '100% Cloak', player = 'B%d' }),
   'Archipelago : vous envoyez 100% Cloak à B%d')
 check('unknown dir', notify.format({ dir = 'x', item = 'a' }), nil)

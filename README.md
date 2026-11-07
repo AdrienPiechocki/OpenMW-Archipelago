@@ -36,6 +36,9 @@ python tools/gen_lua.py
 python tools/install_apworld.py
 ```
 
+Les locations de quête portent le nom lisible de la quête (table `data/quest_names.yaml`,
+titres des pages UESP). Les quêtes absentes de la table reçoivent un nom déduit de leur ID.
+
 Les IDs de locations sont stables : relancer l'extraction ne casse ni les seeds ni
 les tables Lua existantes. Pense à régénérer la seed après mise à jour.
 
@@ -118,8 +121,14 @@ suppression ne commence qu'à ce moment (la config est ensuite mémorisée dans 
 Chaque item Archipelago **reçu** ou **envoyé** par ton slot affiche un message en jeu :
 
 - `Archipelago : Bob vous envoie Ebony Dagger [Progression]` (item reçu d'un autre joueur)
-- `Archipelago : vous envoyez Mothwing Cloak [Utile] à Bob` (item de ton monde pour un autre joueur)
-- `Archipelago : vous avez trouvé Ebony Dagger (Fargoth Quest)` (item de ton monde pour toi)
+- `Archipelago : Mothwing Cloak [Utile] (Fargoth's Ring) obtenu [check complété] -> Bob` (item de ton monde pour un autre joueur)
+- `Archipelago : Ebony Dagger (Fargoth's Ring) obtenu [check complété]` (item de ton monde pour toi)
+
+Quand le message correspond à un check de quête, le nom de la quête est affiché entre parenthèses.
+Les locations Archipelago utilisent ce nom lisible (titre de la page UESP, table
+`data/quest_names.yaml`) au lieu de l'ID de journal (`MS_FargothRing`). Pour les quêtes
+sans page UESP, un nom est déduit de l'ID. Les homonymes (plusieurs IDs pour une même
+page) reçoivent un suffixe lisible.
 
 Le tag indique la classe de l'item (`[Progression]`, `[Utile]`, `[Piège]`). Les messages sont
 espacés de 2 s et aussi écrits dans le log OpenMW (`AP notification: ...`). Le réglage

@@ -1,0 +1,579 @@
+# Noms lisibles des quetes Morrowind (titres des pages UESP), par ID de journal.
+# Utilise par tools/extract.py pour nommer les locations Archipelago.
+# Cle : ID de journal en minuscules. Valeur : titre de la page UESP.
+a1_10_mehramilo: Vivec Informants
+a1_11_zainsubanigift: Zainsubani Informant
+a1_11_zainsubaniinformant: Zainsubani Informant
+a1_1_findspymaster: Report to Caius Cosades
+a1_2_antabolisinformant: Antabolis Informant
+a1_4_muzgobinformant: Gra-Muzgob Informant
+a1_6_addhiranirrinformant: Vivec Informants
+a1_7huleeyainformant: Vivec Informants
+a1_dreams: Sleepers Awake
+a1_sleeperdreamer02: Strange Man at Gindrala Hleran's House
+a1_sleepers_alvura: Sleepers Awake
+a1_sleepers_assi: Sleepers Awake
+a1_sleepers_daynasa: Sleepers Awake
+a1_sleepers_dralas: Sleepers Awake
+a1_sleepers_drarayne: Sleepers Awake
+a1_sleepers_dravasa: Sleepers Awake
+a1_sleepers_endris: Sleepers Awake
+a1_sleepers_eralane: Sleepers Awake
+a1_sleepers_llandras: Sleepers Awake
+a1_sleepers_neldris: Sleepers Awake
+a1_sleepers_nelmil: Sleepers Awake
+a1_sleepers_rararyn: Sleepers Awake
+a1_sleepers_relur: Sleepers Awake
+a1_sleepers_vireveri: Sleepers Awake
+a1_sleepers_vivyne: Sleepers Awake
+a1_sleepersawake: Sleepers Awake
+a1_v_vivecinformants: Vivec Informants
+a2_1_kurapli_zallay: Kurapli Seeks Justice
+a2_1_meetsulmatuul: Meet Sul-Matuul
+a2_2_6thhouse: Sixth House Base
+a2_3_corprus_vistha: Corprus Cure
+a2_3_corpruscure: Corprus Cure
+a2_3_corpruskiller: Corprus Cure
+a2_3_corprussafe: Corprus Cure
+a2_4_milo_hola_go: Mehra Milo and the Lost Prophecies
+a2_4_milocaiusgone: Mehra Milo and the Lost Prophecies
+a2_4_milogone: Mehra Milo and the Lost Prophecies
+a2_4_milogone_books: Mehra Milo and the Lost Prophecies
+a2_4_miloprisonsafe: Mehra Milo and the Lost Prophecies
+a2_6_ane_teria: The Path of the Incarnate
+a2_6_conoon: The Path of the Incarnate
+a2_6_erur-dan: The Path of the Incarnate
+a2_6_hort-ledd: The Path of the Incarnate
+a2_6_idrenie: The Path of the Incarnate
+a2_6_incarnate: The Path of the Incarnate
+a2_6_peakstar: The Path of the Incarnate
+b1_unifyurshilaku: Urshilaku Nerevarine
+b1_urshilaku: Urshilaku Nerevarine
+b1_urshilakukill: Urshilaku Nerevarine
+b2_ahemmusakill: Ahemmusa Nerevarine
+b2_ahemmusasafe: Ahemmusa Nerevarine
+b2_ahemmusawalk: Ahemmusa Nerevarine
+b2a_kausi: Ahemmusa Nerevarine
+b2b_dutadalk: Ahemmusa Nerevarine
+b2c_yenammu: Ahemmusa Nerevarine
+b3_zainabbride: Zainab Nerevarine
+b3_zainabkill: Zainab Nerevarine
+b4_erabenimsunkill: Erabenimsun Nerevarine
+b4_heartfire: Erabenimsun Nerevarine
+b4_killwarlovers: Erabenimsun Nerevarine
+b4_robe: Erabenimsun Nerevarine
+b4_waraxe: Erabenimsun Nerevarine
+b4_warloverkill: Erabenimsun Nerevarine
+b5_arobarhort: Redoran Hortator
+b5_llethrihort: Redoran Hortator
+b5_morvaynhort: Redoran Hortator
+b5_ramoranhort: Redoran Hortator
+b5_redoranbook: Redoran Hortator
+b5_redoranhort: Redoran Hortator
+b5_sarethihort: Redoran Hortator
+b5_venimhort: Redoran Hortator
+b6_berohort: Hlaalu Hortator
+b6_curiohort: Hlaalu Hortator
+b6_drenhortator: Hlaalu Hortator
+b6_hlaalubook: Hlaalu Hortator
+b6_hlaaluhort: Hlaalu Hortator
+b6_omanihort: Hlaalu Hortator
+b6_uleshort: Hlaalu Hortator
+b6_ynglinghort: Hlaalu Hortator
+b7_aryonhort: Telvanni Hortator
+b7_baladashort: Telvanni Hortator
+b7_drathahort: Telvanni Hortator
+b7_gothrenhort: Telvanni Hortator
+b7_nelothhort: Telvanni Hortator
+b7_telvannibook: Telvanni Hortator
+b7_telvannihort: Telvanni Hortator
+b7_theranahort: Telvanni Hortator
+b8_all_hortator: Hortator and Nerevarine
+b8_all_nerevarine: Hortator and Nerevarine
+b8_backdoor1: Hortator and Nerevarine
+b8_backdoor2: Hortator and Nerevarine
+b8_backdoor3: Hortator and Nerevarine
+b8_backdoor4: Hortator and Nerevarine
+b8_backdoor5: Hortator and Nerevarine
+b8_backdoor6: Hortator and Nerevarine
+b8_failed_nerevarine: Hortator and Nerevarine
+b8_meetvivec: Hortator and Nerevarine
+b8_nibani_2_vivec: Hortator and Nerevarine
+blades_elone: Blades Trainers
+blades_elone2: Blades Trainers
+blades_gildan: Blades Trainers
+blades_gildan2: Blades Trainers
+blades_nine_toes: Blades Trainers
+blades_nine_toes2: Blades Trainers
+blades_rithleen: Blades Trainers
+blades_rithleen2: Blades Trainers
+blades_sjorvar: Blades Trainers
+blades_sjorvar2: Blades Trainers
+blades_surane: Blades Trainers
+blades_surane2: Blades Trainers
+blades_tyermaillin: Blades Trainers
+blades_tyermaillin2: Blades Trainers
+c0_act_c: The Citadels of the Sixth House
+c0_act_c_expo: The Citadels of the Sixth House
+c2_sunder: The Citadels of the Sixth House
+c3_destroydagoth: The Citadels of the Sixth House
+cx_backpath: Yagrum Bagarn and Wraithguard
+da_azura: Azura's Quest
+da_boethiah: Boethiah's Quest
+da_malacath: Malacath's Quest
+da_mehrunes: Mehrunes Dagon's Quest
+da_mephala: Mephala's Quest
+da_molagbal: Molag Bal's Quest
+da_sheogorath: Sheogorath's Quest
+eb_actor: The Bad Actor
+eb_bone: The Dwemer's Bone
+eb_clients: The Client List
+eb_deadmen: The Short Unhappy Life of Danar Uvelas
+eb_deed: A Friend in Deed
+eb_express: Dredil's Delivery
+eb_false: An Apothecary Slandered
+eb_invisible: An Invisible Son
+eb_pest: The Enchanter's Rats
+eb_shipment: Liberate the Limeware
+eb_tradespy: The Price List
+eb_unrequited: For the Love of a Bosmer
+fg_alofsfarm: Alof and the Orcs
+fg_beneranbounty: Beneran's Bounty
+fg_bigbosses: Kill the Master Thief
+fg_corprusstalker: Berwen's Stalker
+fg_debtorc: Juicedaw Ring
+fg_debtstoine: Lirielle's Debt
+fg_deseledebt: Desele's Debt
+fg_dissaplamine: The Dissapla Mine
+fg_duniraisupply: Sujamma to Dunirai
+fg_egg_poachers: The Egg Poachers
+fg_elithpalsupply: Flin for Elith-Pal
+fg_engaerbounty: Engaer's Bounty
+fg_findpudai: The Pudai Eggmine
+fg_hungerloose: Hunger in the Sarano Tomb
+fg_khajiitbounty: Dro'Sakhar's Bounty
+fg_killbosses: Remove the Heads of the Thieves Guild
+fg_killcronies: Remove Sjoring's Supporters
+fg_killhardheart: Kill Hard-Heart (Fighters Guild)
+fg_nchurdamz: Battle at Nchurdamz
+fg_orcbounty: Gra-Bol's Bounty
+fg_rathunt: Exterminator (Fighters)
+fg_sanit: Unfinished Quests
+fg_silencemagistrate: Alleius' Bounty
+fg_silencetaxgirl: Vandacia's Bounty
+fg_sottilde: The Code Book
+fg_suranbandits: Bandits in Suran
+fg_telasero: Sondaale
+fg_telvanni_agents: The Telvanni Agents
+fg_tenimbounty: Tenim's Bounty
+fg_tonguetoad: Silence Tongue-Toad
+fg_vas: The Necromancer of Vas
+fg_verethigang: The Verethi Gang
+hh_ashlanderebony: Ashlander Ebony
+hh_bankcourier: Bank Courier
+hh_bankfraud: Sealed Orders
+hh_berosupport: Bero's Support
+hh_buriedtreasure: Murudius Flaeus's Debt
+hh_capturespy: The Caldera Spy
+hh_crassius: An Admiring Sponsor
+hh_destroyindarysmanor: Kill Banden Indarys (Hlaalu)
+hh_destroyteluvirith: Kill Reynel Uvirith
+hh_disguisedarmor: Disguise
+hh_ebonydelivery: Shipment of Ebony
+hh_eggmine: Inanius Egg Mine
+hh_escortmerchant: Escort Tarvyn Faren
+hh_guardmerchant: Guard Ralen Tilvur
+hh_indesp1: Alchemical Formulas
+hh_indesp2: Guar Hide Squeeze
+hh_indesp3: Delivery for Bivale Teneran
+hh_indesp4: Epony Trade
+hh_literacycampaign: Literacy Campaign
+hh_nordsmugglers: Velfred the Outlaw
+hh_odirniran: Telvanni at Odirniran
+hh_rentcollector: Rent and Taxes
+hh_replacedocs: Erroneous Documents
+hh_retaliation: The Death of Ralen Hlaalo
+hh_stronghold: Stronghold (Hlaalu)
+hh_sunkentreasure: The Shipwreck 'Prelude'
+hh_theexterminator: Exterminator (Hlaalu)
+hh_twinlamps1: The Twin Lamps
+hh_twinlamps3: Free Hides-His-Foot
+hh_wincamonna: Dealing with Orvas Dren
+hh_winsaryoni: Control the Ordinators
+hr_archmaster: Duel with Bolvyn Venim
+hr_arobarkidnap: Miner Arobar's Support
+hr_ashimanumine: Ashimanu Mine
+hr_attackrethan: Slay Raynasa Rethan
+hr_attackuvirith: Slay Reynel Uvirith
+hr_billcollect: Armor Repair Debts
+hr_calderacorrupt: Evidence of Corruption
+hr_calderadisrupt: Shut the Mines Down
+hr_clearsarethi: Clear Varvur Sarethi's Name
+hr_courier: Deliver Cure Disease Potion
+hr_cowarddisgrace: Duel of Honor
+hr_cultelimination: Kill Gordol
+hr_dagothtanis: Slay Dagoth Tanis
+hr_finddalobar: Find Mathis Dalobar
+hr_findgiladren: Find Beden Giladren
+hr_findtharen: Find Fedris Tharen
+hr_foundershelm: Founder's Helm
+hr_guardguarherds: Trouble with Bandits
+hr_guardsarethi: Guard Sarethi Manor
+hr_hlaanoslanders: Meril Hlaano's Slanders
+hr_honorchallenge: Ondres Nerano's Slanders
+hr_kagouti: Kagouti Den
+hr_koalcave: Escort to Koal Cave
+hr_lostbanner: Recover Shields from Andasreth
+hr_madmilk: The Mad Lord of Milk
+hr_morvaynmanor: Mission to Morvayn Manor
+hr_mudcrabnest: Mudcrab Pests
+hr_oldbluefin: Old Blue Fin
+hr_oldflame: Nalvilie Saren
+hr_ransommandas: The Mad Lord of Milk
+hr_redastomb: Redas Tomb
+hr_rescuesarethi: Rescue Varvur Sarethi
+hr_shishireport: Shishi Report
+hr_shurinbaal: Shurinbaal
+hr_sixthhousebase: Ash Statue
+hr_stronghold: Stronghold (Redoran)
+hr_taxcollector: Taxes from Gnisis
+ht_archmagister: Archmagister Gothren
+ht_attackindarys: Kill Banden Indarys (Telvanni)
+ht_attackrethan: Kill Raynasa Rethan
+ht_aurielbow: Auriel's Bow
+ht_baladasally: Baladas Demnevanni
+ht_blackjinx: Black Jinx
+ht_chroniclesnchuleft: Dwemer Books
+ht_cureblight: Cure Blight
+ht_daedraskin: Daedra Skin
+ht_dahrkmezalf: Dahrk Mezalf
+ht_drakepride: Drake's Pride
+ht_dwemerlaw: Dwemer Books
+ht_eddieamulet: Amulet of Unity
+ht_eddiering: Ring of Equity
+ht_fireandfaith: Dwemer Books
+ht_fleshamulet: Flesh Made Whole
+ht_fyrmessage: Coded Message
+ht_minecure: Mudan-Mul Egg Mine
+ht_monopoly: Mages Guild Monopoly
+ht_muck: Muck
+ht_nchuleftkey: Mission to Nchuleft
+ht_odirniran: Odirniran
+ht_recruiteddie: Recruit a Mouth
+ht_shishi: Shishi
+ht_silverdawn: Staff of the Silver Dawn
+ht_slaverebellion: Slave Rebellion
+ht_sloadsoap: Sload Soap
+ht_spybaladas: Three Questions for Baladas Demnevanni
+ht_stronghold: Stronghold (Telvanni)
+ht_theranaclothes: New Clothes
+ht_wizardspells: Wizard Spells
+ic10_aengoth: Buckmoth Alms
+ic10_baradras: Buckmoth Alms
+ic10_buckmoth_alms: Buckmoth Alms
+ic10_buckmoth_not: Buckmoth Alms
+ic10_cienne: Buckmoth Alms
+ic10_codus: Buckmoth Alms
+ic10_dular: Buckmoth Alms
+ic10_edwinna: Buckmoth Alms
+ic10_erranil: Buckmoth Alms
+ic10_estoril: Buckmoth Alms
+ic10_galthragoth: Buckmoth Alms
+ic10_hoki: Buckmoth Alms
+ic10_lirielle: Buckmoth Alms
+ic10_malpenix: Buckmoth Alms
+ic10_manis: Buckmoth Alms
+ic10_merthierry: Buckmoth Alms
+ic10_persius: Buckmoth Alms
+ic10_tauryon: Buckmoth Alms
+ic10_tongue: Buckmoth Alms
+ic10_yak: Buckmoth Alms
+ic11_shirt: Shirt and Vest for Harvest's End
+ic11_shirt_not: Shirt and Vest for Harvest's End
+ic12_bacola: Brandy for the Fundraising Dinner
+ic12_banor: Brandy for the Fundraising Dinner
+ic12_benunius: Brandy for the Fundraising Dinner
+ic12_dinner: Brandy for the Fundraising Dinner
+ic12_dinner_not: Brandy for the Fundraising Dinner
+ic12_dulnea: Brandy for the Fundraising Dinner
+ic13_fight: Donation from Cunius Pelelius
+ic13_rich: Donation from Cunius Pelelius
+ic13_rich_not: Donation from Cunius Pelelius
+ic13_rumor: Donation from Cunius Pelelius
+ic13_slave: Donation from Cunius Pelelius
+ic14_delay: Pledge from Canctunian Ponius
+ic14_demand: Pledge from Canctunian Ponius
+ic14_flacassia: Pledge from Canctunian Ponius
+ic14_mossanon: Pledge from Canctunian Ponius
+ic14_nottell: Pledge from Canctunian Ponius
+ic14_okan: Pledge from Canctunian Ponius
+ic14_ponius: Pledge from Canctunian Ponius
+ic14_ponius_not: Pledge from Canctunian Ponius
+ic14_promise: Pledge from Canctunian Ponius
+ic14_shazgob: Pledge from Canctunian Ponius
+ic14_sinyaramen: Pledge from Canctunian Ponius
+ic14_tell: Pledge from Canctunian Ponius
+ic15_missing_limeware: Missing Limeware
+ic15_missing_limeware_not: Missing Limeware
+ic15_missing_not: Missing Limeware
+ic16_haunting: The Haunting
+ic16_haunting_not: The Haunting
+ic17_witch: Thelsa Dral the Witch
+ic17_witch_not: Thelsa Dral the Witch
+ic18_silver_not: The Silver Staff of Shaming
+ic18_silver_staff: The Silver Staff of Shaming
+ic19_restless_not: Restless Spirit
+ic19_restless_spirit: Restless Spirit
+ic1_marshmerrow: Gathering Marshmerrow
+ic1_marshmerrow_not: Gathering Marshmerrow
+ic25_jonhawker: Ring in Darkness
+ic25_jonhawker_free: Ring in Darkness
+ic26_amanin: Boots of the Apostle
+ic26_amanin_free: Boots of the Apostle
+ic27_oracle: Ice Blade of the Monarch
+ic27_oracle_a: Ice Blade of the Monarch
+ic28_urjorad: The Scroll of Fiercely Roasting
+ic29_crusher: Skull-Crusher
+ic2_muck: Gathering Muck
+ic2_muck_not: Gathering Muck
+ic30_imperial_veteran: A Lucky Coin
+ic3_willow: Gathering Willow Anther
+ic3_willow_not: Gathering Willow Anther
+ic4_scrib: Gathering Scrib Jelly
+ic4_scrib_a: Gathering Scrib Jelly
+ic4_scrib_not: Gathering Scrib Jelly
+ic5_corkbulb: Gathering Corkbulb Root
+ic5_corkbulb_not: Gathering Corkbulb Root
+ic6_rat: Gathering Rat Meat
+ic6_rat_not: Gathering Rat Meat
+ic7_netch: Gathering Netch Leather
+ic7_netch_not: Gathering Netch Leather
+ic8_bedraflod: Alms from the Skyrim Mission
+ic8_briring: Alms from the Skyrim Mission
+ic8_eiruki: Alms from the Skyrim Mission
+ic8_heidmir: Alms from the Skyrim Mission
+ic8_ingokning: Alms from the Skyrim Mission
+ic9_argonian_alms: Alms from the Argonian Mission
+ic9_argonian_not: Alms from the Argonian Mission
+ic9_slave_hiding: Alms from the Argonian Mission
+ic_8_nord_alms: Alms from the Skyrim Mission
+ic_8_nord_alms_not: Alms from the Skyrim Mission
+il_courtesy: Courtesy
+il_damsel: Rescue Dandsa
+il_falseordinator: Suryn Athones' Slanders
+il_giantnetch: Breeding Netch
+il_gnisisblight: Gnisis Eggmine
+il_grandmaster: Grandmaster Duel
+il_knightshield: Lord's Mail
+il_maidentoken: Maiden's Token
+il_necromancer: Sorkvild the Raven
+il_protectentius: Saprius Entius
+il_rescuehermit: Rescue Jocien Ancois
+il_rescueknight: Rescue Joncis Dalomax
+il_rescuepilgrim: Rescue Madura Seran
+il_rescueragash: Rescue Ragash gra-Shuzgub
+il_scrapmetal: Scrap Metal
+il_smuggler: Dwemer Artifacts at Drinar Varyon's Place
+il_talostreason: Talos Cult Conspiracy
+il_traitorwarrior: Honthjolf is a Traitor
+il_widowland: Widow Vabdas' Deed
+kill: Urshilaku Nerevarine
+mg_advancement: A Wizard's Staff
+mg_apprentice: Huleen's Hut
+mg_bcshrooms: Four Types of Mushrooms
+mg_bethamez: Bethamez
+mg_bowl: Ceramic Bowl
+mg_dwarves: Mystery of the Dwarves
+mg_escortscholar1: Escort Tenyeminwe
+mg_escortscholar2: Escort Itermerel
+mg_excavation: Nchuleftingth Expedition
+mg_flowers: Four Types of Flowers
+mg_guildmaster: Arch-Mage
+mg_joinus: Recruit or Kill Llarar Bereloth
+mg_killnecro1: Kill Necromancer Telura Ulver
+mg_killnecro2: Kill Necromancer Tashpi Ashibael
+mg_killtelvanni: Kill the Telvanni Councilors
+mg_mzuleft: Scarab Plans in Mzuleft
+mg_nchuleftbook: Chronicles of Nchuleft
+mg_paydues: Manwe's Dues
+mg_potion: A Potion from Skink-in-Tree's-Shade
+mg_returnbook: Return Chimarvamidium
+mg_sabotage: Fake Soul Gem
+mg_science: Dwemer Tube from Arkngthunch-Sturdumz
+mg_sharn_necro: I'm NOT a Necromancer!
+mg_soulgem2: Soul of an Ash Ghoul
+mg_spycatch: Catch a Spy
+mg_staffmagnus: The Staff of Magnus
+mg_stealbook: Steal Chimarvamidium
+mg_stolenreport: Stolen Reports
+mg_stopcompetition: Unsanctioned Training
+mg_telvanni: Kill the Telvanni Councilors
+mg_vampirecure: Galur Rithari's Papers
+mg_vampvol2: Vampires of Vvardenfell, Vol II
+mg_warlocksring: Warlock's Ring
+mg_wisewoman: Meeting with a Wise Woman
+ms_apologies: A Rash of Insults
+ms_arenimtomb: Search for Her Father's Amulet
+ms_fargothring: Fargoth's Ring
+ms_gold_kanet_flower: Roland's Tear
+ms_hannat: Hannat Zainsubani
+ms_hatandskirt: The Sad Sorcerer
+ms_hentuspants: Hentus Needs Pants
+ms_jobashaabolitionist: Free the Slaves
+ms_lookout: Fargoth's Hiding Place
+ms_nord_burial: Ennbjof's Nord Burial
+ms_nuccius: Vodunius Nuccius
+ms_piernette: The Silver Bowl
+ms_trerayna_bounty: A Bounty for Trerayna Dalen
+ms_umbra: Umbra
+ms_vampirecure: A Cure for Vampirism
+ms_vassirdidanat: Vassir-Didanat Ebony Mine
+ms_whiteguar: Dreams of a White Guar
+mt_db_aldsotha: Execute Severa Magia
+mt_db_assernerairan: Execute Durus Marius
+mt_db_carecalmo: Ultimatum for Carecalmo
+mt_db_contact: A Contact in the Dark Brotherhood
+mt_db_darys: Ultimatum for Movis Darys
+mt_grandmaster: Grandmaster
+mt_s_fleetness: Belt of Sanguine Fleetness
+mt_s_red: Threads of the Webspinner
+mt_s_sublime: Ring of Sanguine Sublime Wisdom
+mt_writbaladas: Writ for Baladas Demnevanni
+mt_writbelvayn: Writ for Tirer Belvayn
+mt_writbemis: Writ for Mathyn Bemis
+mt_writbero: Writ for Dram Bero
+mt_writbrilnosu: Writ for Brilnosu Llarys
+mt_writgalasa: Writ for Galasa Uvayn
+mt_writguril: Writ for Guril Retheran
+mt_writmavon: Writ for Mavon Drenim
+mt_writnavil: Writ for Navil and Ranes Ienith
+mt_writoran: Writ for Feruren Oran
+mt_writsadus: Writ for Sarayn Sadus
+mt_writsaren: Writ for Toris Saren
+mt_writtherana: Writ for Mistress Therana
+mt_writvarro: Writ for Larrius Varro
+mt_writvendu: Writ for Ethal Seloth and Idroso Vendu
+mt_writyasalmibaal: Writ for Odaishah Yasalmibaal
+mv_3_charming: Nels Llendo
+mv_abusedhealer: Recovering Cloudcleaver
+mv_angrytrader: The Angry Trader
+mv_banditvictim: Aeta Wave-Breaker's Jewels
+mv_bastard: Fjol the Outlaw
+mv_bountyhunter: The Drunken Bounty Hunter
+mv_bugrol: Favors for Orcs
+mv_cultistvictim: Kidnapped by Cultists
+mv_deadtaxman: Death of a Taxman
+mv_fakeslave: Tul's Escape
+mv_innocentashlanders: Marsus Tullius' Missing Hides
+mv_lostring: The Lady's Ring
+mv_missingcompanion: Divided by Nix Hounds
+mv_monsterdisease: The Man Who Spoke to Slaughterfish
+mv_outcastashlanders: Girith's Stolen Hides
+mv_paralyzedbarbarian: The Paralyzed Barbarian
+mv_poorpilgrim: Lead the Pilgrim to Koal Cave
+mv_recoverwidowmaker: Widowmaker
+mv_richpilgrim: Viatrix, The Annoying Pilgrim
+mv_richtrader: A Man and His Guar
+mv_runawayslave: The Runaway Slave
+mv_skoomacorpse: The Corpse and the Skooma Pipe
+mv_slavemule: Rabinna's Inner Beauty
+mv_strayedpilgrim: The Scholars and the Mating Kagouti
+mv_thieftrader: The Weapon Delivery
+mv_traderabandoned: Pemenie and the Boots of Blinding Speed
+mv_traderlate: The Shirt of His Back
+mv_tradermissed: An Escort to Molag Mar
+mv_victimromance: The Beauty and the Bandit
+mv_wanderingpilgrim: To the Fields of Kummu
+none: A Falling Wizard
+romance_ahnassi: Ahnassi, a Special Friend
+romance_ahnassi_a: Ahnassi, a Special Friend
+tg_aldruhndefenses: Retrieve the Scrap Metal
+tg_badgandosa: Naughty Gandosa
+tg_balmoradefenses: Master of Security
+tg_bitterbribe: The Bitter Cup
+tg_brotherbragor: Free New-Shoes Bragor
+tg_brotherthief: Find Brother Nads
+tg_cookbookalchemy: Potion Recipe
+tg_dartsjudgement: The Darts of Judgement
+tg_diamonds: Diamonds for Habasi
+tg_ebonystaff: Felen's Ebony Staff
+tg_enemyparley: Speak With Percius
+tg_grandmasterretort: The Grandmaster's Retort
+tg_hostage: Hrundi's Lover
+tg_killhardheart: Kill Hard-Heart (Thieves Guild)
+tg_killienith: The Brothers Ienith
+tg_lootaldruhnmg: Loot the Mages Guild
+tg_manorkey: Nerano Manor Key
+tg_masterhelm: Redoran Master Helm
+tg_overduepayments: Ra'Zhid's Dwemer Artifacts
+tg_redorancookbook: Redoran Cookbook
+tg_sadrithmoradefenses: Wizard For Hire
+tg_ss_churchpolice: The Dwemer Goblet
+tg_ss_enamor: Enamor
+tg_ss_generosity1: The Hlervu Locket
+tg_ss_generosity2: Land Deed
+tg_ss_greedyslaver: Brallion's Ring
+tg_ss_plutocrats: Books for Vala
+tg_ss_yngling: Yngling's Ledger
+tg_vintagebrandy: The Vintage Brandy
+tg_withershins: Withershins
+town_ald_bevene: Ienas Sarandas
+town_ald_bivale: Ienas Sarandas
+town_ald_daynes: Ienas Sarandas
+town_ald_ienas: Ienas Sarandas
+town_ald_llethri: Ienas Sarandas
+town_ald_tiras: Ienas Sarandas
+town_aldruhn: Ienas Sarandas
+town_balmora: Larrius Varro Tells a Little Story
+town_sadrith: Gateway Ghost
+town_sadrith_expert: Gateway Ghost
+town_tel_vos: Trade Mission to the Zainab
+town_tel_vos_ashur: Trade Mission to the Zainab
+town_tel_vos_he: Trade Mission to the Zainab
+town_tel_vos_she: Trade Mission to the Zainab
+town_tel_vos_wise: Trade Mission to the Zainab
+town_vivec: Mysterious Killings in Vivec
+tt_alddaedroth: Sheogorath of the House of Troubles
+tt_aldsotha: Mehrunes Dagon of the House of Troubles
+tt_assarnibibi: Ebony Mail
+tt_balur: Molag Bal of the House of Troubles
+tt_compassion: Compassion
+tt_curingtouch: Cure Lette
+tt_dagonfel: Malacath of the House of Troubles
+tt_diseasecarrier: Disease Carrier
+tt_falseincarnate: False Incarnate
+tt_felmscleaver: Cleaver of St. Felms
+tt_fieldskummu: Pilgrimages of the Seven Graces
+tt_galomdeus: Slay Raxle Berne
+tt_ghostgate: Pilgrimages of the Seven Graces
+tt_hairshirt: Hair Shirt of St. Aralor
+tt_hassour: Dark Cult in Hassour
+tt_llothiscrosier: Crosier of St. Llothis the Pious
+tt_maargan: Pilgrimage to Maar Gan
+tt_maskvivec: Pilgrimages of the Seven Graces
+tt_mawia: Necromancer in Mawia
+tt_ministryheathen: Cure the Outcast Outlander
+tt_mountkand: Pilgrimage to Mount Kand
+tt_palacevivec: Pilgrimages of the Seven Graces
+tt_pilgrimspath: Pilgrimages of the Seven Graces
+tt_puzzlecanal: Pilgrimages of the Seven Graces
+tt_rilmsshoes: Shoes of St. Rilms
+tt_ruddyman: Pilgrimages of the Seven Graces
+tt_sanctusshrine: Silent Pilgrimage
+tt_sevengraces: Pilgrimages of the Seven Graces
+tt_staralor: Foul Cult Beneath St. Delyn Canton
+tt_stopmoon: Pilgrimages of the Seven Graces
+tt_supplymonk: Food and Drink for the Hermit
+va_rimintil: Murder Rimintil
+va_shashev: Shashev's Key
+va_vampamulet: The Quarra Amulet
+va_vampblood: The Blood of the Quarra
+va_vampblood2: Blood for Mistress Dratha
+va_vampchild: Blood Ties
+va_vampcountess: The Vampire Merta
+va_vampcult: The Cult of Lord Irarak
+va_vampcurse: The Imprisonment of Mastrius
+va_vampdust: Dust of the Vampire
+va_vamphunter: The Vampire Hunter
+va_vampmarara: The Weary Vampire
+va_vamprich: The Boy Who Would Be Undead

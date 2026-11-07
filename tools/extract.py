@@ -28,6 +28,7 @@ import yaml
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from quest_groups import classify, load_overrides  # noqa: E402
+from quest_names import load_names, quest_name, unique_names  # noqa: E402
 
 PAT_QUOTED = re.compile(r'(?<![A-Za-z])Journal[ \t]*,?[ \t]*"([^"\r\n]+)"[ \t]*,?[ \t]*(\d+)', re.I)
 PAT_BARE = re.compile(r'(?<![A-Za-z])Journal[ \t]*,?[ \t]*([A-Za-z_][A-Za-z0-9_\-]*)[ \t]*,?[ \t]*(\d+)', re.I)
@@ -161,6 +162,8 @@ def main():
     print(f'quests (stages): {len(quests)} (+{len(quests) - n_before})')
 
     comps = load_yaml(out / 'quest_completions.yaml')
+    name_map_path = out / 'quest_names.yaml'
+    name_map = load_names(name_map_path if name_map_path.exists() else None)
     have_c = {str(c['trigger']['quest']).lower() for c in comps}
     nxt = next_id_factory([c['id'] for c in comps], COMPLETE_BASE, COMPLETE_LIMIT)
     new_c = []
@@ -170,13 +173,19 @@ def main():
         display = names[qid]
         comps.append({
             'id': nxt(),
-            'name': f'{display} (complete)',
+            'name': quest_name(display, name_map),
             'category': 'quest_complete',
             'trigger': {'quest': display},
             'group': classify(display, overrides),
             'region': 'Seyda Neen',
         })
         new_c.append(display)
+    # Les locations Archipelago portent le nom lisible de la quete, pas l'ID
+    # de journal. Les homonymes (plusieurs IDs d'une meme page UESP) sont
+    # suffixes pour rester uniques.
+    mapped = unique_names(comps, name_map)
+    for c in comps:
+        c['name'] = mapped[str(c['trigger']['quest']).lower()]
     dump_yaml(out / 'quest_completions.yaml', comps)
     print(f'quest completions: {len(comps)} (+{len(new_c)})')
     if new_c:

@@ -37,16 +37,28 @@ function M.accept(msg, lastId, now)
 end
 
 -- Texte affiche pour une notification, nil si le message est inutilisable.
+-- Les checks de quete (locations Archipelago) indiquent le nom de la quete
+-- entre parentheses et la completion du check ; les autres messages gardent
+-- l'ancien format.
 function M.format(d)
   if type(d) ~= 'table' then return nil end
   local item = tostring(d.item or '?')
   local tag = M.flagTag(d.flags)
   local who = d.player ~= nil and tostring(d.player) or nil
+  local loc = nil
+  if d.location ~= nil and tostring(d.location) ~= '' then
+    loc = tostring(d.location)
+  end
 
   if d.dir == 'self' then
-    local loc = d.location ~= nil and (' (' .. tostring(d.location) .. ')') or ''
-    return 'Archipelago : vous avez trouvé ' .. item .. tag .. loc
+    if loc then
+      return 'Archipelago : ' .. item .. tag .. ' (' .. loc .. ') obtenu [check complété]'
+    end
+    return 'Archipelago : vous avez trouvé ' .. item .. tag
   elseif d.dir == 'send' then
+    if loc then
+      return 'Archipelago : ' .. item .. tag .. ' (' .. loc .. ') obtenu [check complété] -> ' .. (who or '?')
+    end
     return 'Archipelago : vous envoyez ' .. item .. tag .. ' à ' .. (who or '?')
   elseif d.dir == 'recv' then
     if who then

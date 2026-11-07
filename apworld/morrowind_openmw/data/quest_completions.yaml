@@ -1,4317 +1,4317 @@
 - id: 7720001
-  name: A1_10_MehraMilo (complete)
+  name: Vivec Informants - Mehra Milo
   category: quest_complete
   trigger:
     quest: A1_10_MehraMilo
   group: main
   region: Seyda Neen
 - id: 7720002
-  name: A1_11_ZainsubaniGift (complete)
+  name: Zainsubani Informant - Gift
   category: quest_complete
   trigger:
     quest: A1_11_ZainsubaniGift
   group: main
   region: Seyda Neen
 - id: 7720003
-  name: A1_11_ZainsubaniInformant (complete)
+  name: Zainsubani Informant - complete
   category: quest_complete
   trigger:
     quest: A1_11_ZainsubaniInformant
   group: main
   region: Seyda Neen
 - id: 7720004
-  name: A1_1_FindSpymaster (complete)
+  name: Report to Caius Cosades
   category: quest_complete
   trigger:
     quest: A1_1_FindSpymaster
   group: main
   region: Seyda Neen
 - id: 7720005
-  name: A1_2_AntabolisInformant (complete)
+  name: Antabolis Informant
   category: quest_complete
   trigger:
     quest: A1_2_AntabolisInformant
   group: main
   region: Seyda Neen
 - id: 7720006
-  name: A1_4_MuzgobInformant (complete)
+  name: Gra-Muzgob Informant
   category: quest_complete
   trigger:
     quest: A1_4_MuzgobInformant
   group: main
   region: Seyda Neen
 - id: 7720007
-  name: A1_6_AddhiranirrInformant (complete)
+  name: Vivec Informants - Addhiranirr Informant
   category: quest_complete
   trigger:
     quest: A1_6_AddhiranirrInformant
   group: main
   region: Seyda Neen
 - id: 7720008
-  name: A1_7HuleeyaInformant (complete)
+  name: Vivec Informants - Huleeya Informant
   category: quest_complete
   trigger:
     quest: A1_7HuleeyaInformant
   group: main
   region: Seyda Neen
 - id: 7720009
-  name: A1_Dreams (complete)
+  name: Sleepers Awake - Dreams
   category: quest_complete
   trigger:
     quest: A1_Dreams
   group: main
   region: Seyda Neen
 - id: 7720010
-  name: A1_SleeperDreamer02 (complete)
+  name: Strange Man at Gindrala Hleran's House
   category: quest_complete
   trigger:
     quest: A1_SleeperDreamer02
   group: main
   region: Seyda Neen
 - id: 7720011
-  name: A1_Sleepers_Alvura (complete)
+  name: Sleepers Awake - Alvura
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Alvura
   group: main
   region: Seyda Neen
 - id: 7720012
-  name: A1_Sleepers_Assi (complete)
+  name: Sleepers Awake - Assi
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Assi
   group: main
   region: Seyda Neen
 - id: 7720013
-  name: A1_Sleepers_Daynasa (complete)
+  name: Sleepers Awake - Daynasa
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Daynasa
   group: main
   region: Seyda Neen
 - id: 7720014
-  name: A1_Sleepers_Dralas (complete)
+  name: Sleepers Awake - Dralas
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Dralas
   group: main
   region: Seyda Neen
 - id: 7720015
-  name: A1_Sleepers_Drarayne (complete)
+  name: Sleepers Awake - Drarayne
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Drarayne
   group: main
   region: Seyda Neen
 - id: 7720016
-  name: A1_Sleepers_Dravasa (complete)
+  name: Sleepers Awake - Dravasa
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Dravasa
   group: main
   region: Seyda Neen
 - id: 7720017
-  name: A1_Sleepers_Endris (complete)
+  name: Sleepers Awake - Endris
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Endris
   group: main
   region: Seyda Neen
 - id: 7720018
-  name: A1_Sleepers_Eralane (complete)
+  name: Sleepers Awake - Eralane
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Eralane
   group: main
   region: Seyda Neen
 - id: 7720019
-  name: A1_Sleepers_Llandras (complete)
+  name: Sleepers Awake - Llandras
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Llandras
   group: main
   region: Seyda Neen
 - id: 7720020
-  name: A1_Sleepers_Neldris (complete)
+  name: Sleepers Awake - Neldris
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Neldris
   group: main
   region: Seyda Neen
 - id: 7720021
-  name: A1_Sleepers_Nelmil (complete)
+  name: Sleepers Awake - Nelmil
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Nelmil
   group: main
   region: Seyda Neen
 - id: 7720022
-  name: A1_Sleepers_Rararyn (complete)
+  name: Sleepers Awake - Rararyn
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Rararyn
   group: main
   region: Seyda Neen
 - id: 7720023
-  name: A1_Sleepers_Relur (complete)
+  name: Sleepers Awake - Relur
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Relur
   group: main
   region: Seyda Neen
 - id: 7720024
-  name: A1_Sleepers_Vireveri (complete)
+  name: Sleepers Awake - Vireveri
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Vireveri
   group: main
   region: Seyda Neen
 - id: 7720025
-  name: A1_Sleepers_Vivyne (complete)
+  name: Sleepers Awake - Vivyne
   category: quest_complete
   trigger:
     quest: A1_Sleepers_Vivyne
   group: main
   region: Seyda Neen
 - id: 7720026
-  name: A1_SleepersAwake (complete)
+  name: Sleepers Awake - complete
   category: quest_complete
   trigger:
     quest: A1_SleepersAwake
   group: main
   region: Seyda Neen
 - id: 7720027
-  name: A1_V_VivecInformants (complete)
+  name: Vivec Informants - complete
   category: quest_complete
   trigger:
     quest: A1_V_VivecInformants
   group: main
   region: Seyda Neen
 - id: 7720028
-  name: A2_1_Kurapli_Zallay (complete)
+  name: Kurapli Seeks Justice
   category: quest_complete
   trigger:
     quest: A2_1_Kurapli_Zallay
   group: main
   region: Seyda Neen
 - id: 7720029
-  name: A2_1_MeetSulMatuul (complete)
+  name: Meet Sul-Matuul
   category: quest_complete
   trigger:
     quest: A2_1_MeetSulMatuul
   group: main
   region: Seyda Neen
 - id: 7720030
-  name: A2_1_Supplies (complete)
+  name: Supplies
   category: quest_complete
   trigger:
     quest: A2_1_Supplies
   group: main
   region: Seyda Neen
 - id: 7720031
-  name: A2_1_Supplies2 (complete)
+  name: Supplies 2
   category: quest_complete
   trigger:
     quest: A2_1_Supplies2
   group: main
   region: Seyda Neen
 - id: 7720032
-  name: A2_2_6thHouse (complete)
+  name: Sixth House Base
   category: quest_complete
   trigger:
     quest: A2_2_6thHouse
   group: main
   region: Seyda Neen
 - id: 7720033
-  name: A2_3_Corprus_Vistha (complete)
+  name: Corprus Cure - Vistha
   category: quest_complete
   trigger:
     quest: A2_3_Corprus_Vistha
   group: main
   region: Seyda Neen
 - id: 7720034
-  name: A2_3_CorprusCure (complete)
+  name: Corprus Cure - complete
   category: quest_complete
   trigger:
     quest: A2_3_CorprusCure
   group: main
   region: Seyda Neen
 - id: 7720035
-  name: A2_3_CorprusKiller (complete)
+  name: Corprus Cure - Killer
   category: quest_complete
   trigger:
     quest: A2_3_CorprusKiller
   group: main
   region: Seyda Neen
 - id: 7720036
-  name: A2_3_CorprusSafe (complete)
+  name: Corprus Cure - Safe
   category: quest_complete
   trigger:
     quest: A2_3_CorprusSafe
   group: main
   region: Seyda Neen
 - id: 7720037
-  name: A2_4_Milo_hola_go (complete)
+  name: Mehra Milo and the Lost Prophecies - Hola Go
   category: quest_complete
   trigger:
     quest: A2_4_Milo_hola_go
   group: main
   region: Seyda Neen
 - id: 7720038
-  name: A2_4_MiloCaiusGone (complete)
+  name: Mehra Milo and the Lost Prophecies - Caius Gone
   category: quest_complete
   trigger:
     quest: A2_4_MiloCaiusGone
   group: main
   region: Seyda Neen
 - id: 7720039
-  name: A2_4_MiloGone (complete)
+  name: Mehra Milo and the Lost Prophecies - Gone
   category: quest_complete
   trigger:
     quest: A2_4_MiloGone
   group: main
   region: Seyda Neen
 - id: 7720040
-  name: A2_4_MiloGone_books (complete)
+  name: Mehra Milo and the Lost Prophecies - Gone Books
   category: quest_complete
   trigger:
     quest: A2_4_MiloGone_books
   group: main
   region: Seyda Neen
 - id: 7720041
-  name: A2_4_MiloPrisonSafe (complete)
+  name: Mehra Milo and the Lost Prophecies - Prison Safe
   category: quest_complete
   trigger:
     quest: A2_4_MiloPrisonSafe
   group: main
   region: Seyda Neen
 - id: 7720042
-  name: A2_6_Ane_Teria (complete)
+  name: The Path of the Incarnate - Ane Teria
   category: quest_complete
   trigger:
     quest: A2_6_Ane_Teria
   group: main
   region: Seyda Neen
 - id: 7720043
-  name: A2_6_Conoon (complete)
+  name: The Path of the Incarnate - Conoon
   category: quest_complete
   trigger:
     quest: A2_6_Conoon
   group: main
   region: Seyda Neen
 - id: 7720044
-  name: A2_6_Erur-Dan (complete)
+  name: The Path of the Incarnate - Erur Dan
   category: quest_complete
   trigger:
     quest: A2_6_Erur-Dan
   group: main
   region: Seyda Neen
 - id: 7720045
-  name: A2_6_Hort-Ledd (complete)
+  name: The Path of the Incarnate - Hort Ledd
   category: quest_complete
   trigger:
     quest: A2_6_Hort-Ledd
   group: main
   region: Seyda Neen
 - id: 7720046
-  name: A2_6_Idrenie (complete)
+  name: The Path of the Incarnate - Idrenie
   category: quest_complete
   trigger:
     quest: A2_6_Idrenie
   group: main
   region: Seyda Neen
 - id: 7720047
-  name: A2_6_Incarnate (complete)
+  name: The Path of the Incarnate - complete
   category: quest_complete
   trigger:
     quest: A2_6_Incarnate
   group: main
   region: Seyda Neen
 - id: 7720048
-  name: A2_6_Peakstar (complete)
+  name: The Path of the Incarnate - Peakstar
   category: quest_complete
   trigger:
     quest: A2_6_Peakstar
   group: main
   region: Seyda Neen
 - id: 7720049
-  name: B1_UnifyUrshilaku (complete)
+  name: Urshilaku Nerevarine - Unify
   category: quest_complete
   trigger:
     quest: B1_UnifyUrshilaku
   group: main
   region: Seyda Neen
 - id: 7720050
-  name: B1_UrshilakuKill (complete)
+  name: Urshilaku Nerevarine - Kill
   category: quest_complete
   trigger:
     quest: B1_UrshilakuKill
   group: main
   region: Seyda Neen
 - id: 7720051
-  name: B2_AhemmusaKill (complete)
+  name: Ahemmusa Nerevarine - Kill
   category: quest_complete
   trigger:
     quest: B2_AhemmusaKill
   group: main
   region: Seyda Neen
 - id: 7720052
-  name: B2_AhemmusaSafe (complete)
+  name: Ahemmusa Nerevarine - Safe
   category: quest_complete
   trigger:
     quest: B2_AhemmusaSafe
   group: main
   region: Seyda Neen
 - id: 7720053
-  name: B2_AhemmusaWalk (complete)
+  name: Ahemmusa Nerevarine - Walk
   category: quest_complete
   trigger:
     quest: B2_AhemmusaWalk
   group: main
   region: Seyda Neen
 - id: 7720054
-  name: B2a_Kausi (complete)
+  name: Ahemmusa Nerevarine - Kausi
   category: quest_complete
   trigger:
     quest: B2a_Kausi
   group: main
   region: Seyda Neen
 - id: 7720055
-  name: B2b_Dutadalk (complete)
+  name: Ahemmusa Nerevarine - Dutadalk
   category: quest_complete
   trigger:
     quest: B2b_Dutadalk
   group: main
   region: Seyda Neen
 - id: 7720056
-  name: B2c_Yenammu (complete)
+  name: Ahemmusa Nerevarine - Yenammu
   category: quest_complete
   trigger:
     quest: B2c_Yenammu
   group: main
   region: Seyda Neen
 - id: 7720057
-  name: B3_ZainabBride (complete)
+  name: Zainab Nerevarine - Bride
   category: quest_complete
   trigger:
     quest: B3_ZainabBride
   group: main
   region: Seyda Neen
 - id: 7720058
-  name: B3_ZainabKill (complete)
+  name: Zainab Nerevarine - Kill
   category: quest_complete
   trigger:
     quest: B3_ZainabKill
   group: main
   region: Seyda Neen
 - id: 7720059
-  name: B4_ErabenimsunKill (complete)
+  name: Erabenimsun Nerevarine - Kill
   category: quest_complete
   trigger:
     quest: B4_ErabenimsunKill
   group: main
   region: Seyda Neen
 - id: 7720060
-  name: B4_HeartFire (complete)
+  name: Erabenimsun Nerevarine - Heart Fire
   category: quest_complete
   trigger:
     quest: B4_HeartFire
   group: main
   region: Seyda Neen
 - id: 7720061
-  name: B4_KillWarLovers (complete)
+  name: Erabenimsun Nerevarine - Kill War Lovers
   category: quest_complete
   trigger:
     quest: B4_KillWarLovers
   group: main
   region: Seyda Neen
 - id: 7720062
-  name: B4_Robe (complete)
+  name: Erabenimsun Nerevarine - Robe
   category: quest_complete
   trigger:
     quest: B4_Robe
   group: main
   region: Seyda Neen
 - id: 7720063
-  name: B4_WarAxe (complete)
+  name: Erabenimsun Nerevarine - War Axe
   category: quest_complete
   trigger:
     quest: B4_WarAxe
   group: main
   region: Seyda Neen
 - id: 7720064
-  name: B4_WarLoverKill (complete)
+  name: Erabenimsun Nerevarine - War Lover Kill
   category: quest_complete
   trigger:
     quest: B4_WarLoverKill
   group: main
   region: Seyda Neen
 - id: 7720065
-  name: B5_ArobarHort (complete)
+  name: Redoran Hortator - Arobar Hort
   category: quest_complete
   trigger:
     quest: B5_ArobarHort
   group: main
   region: Seyda Neen
 - id: 7720066
-  name: B5_LlethriHort (complete)
+  name: Redoran Hortator - Llethri Hort
   category: quest_complete
   trigger:
     quest: B5_LlethriHort
   group: main
   region: Seyda Neen
 - id: 7720067
-  name: B5_MorvaynHort (complete)
+  name: Redoran Hortator - Morvayn Hort
   category: quest_complete
   trigger:
     quest: B5_MorvaynHort
   group: main
   region: Seyda Neen
 - id: 7720068
-  name: B5_RamoranHort (complete)
+  name: Redoran Hortator - Ramoran Hort
   category: quest_complete
   trigger:
     quest: B5_RamoranHort
   group: main
   region: Seyda Neen
 - id: 7720069
-  name: B5_RedoranBook (complete)
+  name: Redoran Hortator - Book
   category: quest_complete
   trigger:
     quest: B5_RedoranBook
   group: main
   region: Seyda Neen
 - id: 7720070
-  name: B5_RedoranHort (complete)
+  name: Redoran Hortator - Hort
   category: quest_complete
   trigger:
     quest: B5_RedoranHort
   group: main
   region: Seyda Neen
 - id: 7720071
-  name: B5_SarethiHort (complete)
+  name: Redoran Hortator - Sarethi Hort
   category: quest_complete
   trigger:
     quest: B5_SarethiHort
   group: main
   region: Seyda Neen
 - id: 7720072
-  name: B5_VenimHort (complete)
+  name: Redoran Hortator - Venim Hort
   category: quest_complete
   trigger:
     quest: B5_VenimHort
   group: main
   region: Seyda Neen
 - id: 7720073
-  name: B6_BeroHort (complete)
+  name: Hlaalu Hortator - Bero Hort
   category: quest_complete
   trigger:
     quest: B6_BeroHort
   group: main
   region: Seyda Neen
 - id: 7720074
-  name: B6_CurioHort (complete)
+  name: Hlaalu Hortator - Curio Hort
   category: quest_complete
   trigger:
     quest: B6_CurioHort
   group: main
   region: Seyda Neen
 - id: 7720075
-  name: B6_DrenHortator (complete)
+  name: Hlaalu Hortator - Dren
   category: quest_complete
   trigger:
     quest: B6_DrenHortator
   group: main
   region: Seyda Neen
 - id: 7720076
-  name: B6_HlaaluBook (complete)
+  name: Hlaalu Hortator - Book
   category: quest_complete
   trigger:
     quest: B6_HlaaluBook
   group: main
   region: Seyda Neen
 - id: 7720077
-  name: B6_HlaaluHort (complete)
+  name: Hlaalu Hortator - Hort
   category: quest_complete
   trigger:
     quest: B6_HlaaluHort
   group: main
   region: Seyda Neen
 - id: 7720078
-  name: B6_OmaniHort (complete)
+  name: Hlaalu Hortator - Omani Hort
   category: quest_complete
   trigger:
     quest: B6_OmaniHort
   group: main
   region: Seyda Neen
 - id: 7720079
-  name: B6_UlesHort (complete)
+  name: Hlaalu Hortator - Ules Hort
   category: quest_complete
   trigger:
     quest: B6_UlesHort
   group: main
   region: Seyda Neen
 - id: 7720080
-  name: B6_YnglingHort (complete)
+  name: Hlaalu Hortator - Yngling Hort
   category: quest_complete
   trigger:
     quest: B6_YnglingHort
   group: main
   region: Seyda Neen
 - id: 7720081
-  name: B7_AryonHort (complete)
+  name: Telvanni Hortator - Aryon Hort
   category: quest_complete
   trigger:
     quest: B7_AryonHort
   group: main
   region: Seyda Neen
 - id: 7720082
-  name: B7_BaladasHort (complete)
+  name: Telvanni Hortator - Baladas Hort
   category: quest_complete
   trigger:
     quest: B7_BaladasHort
   group: main
   region: Seyda Neen
 - id: 7720083
-  name: B7_DrathaHort (complete)
+  name: Telvanni Hortator - Dratha Hort
   category: quest_complete
   trigger:
     quest: B7_DrathaHort
   group: main
   region: Seyda Neen
 - id: 7720084
-  name: B7_GothrenHort (complete)
+  name: Telvanni Hortator - Gothren Hort
   category: quest_complete
   trigger:
     quest: B7_GothrenHort
   group: main
   region: Seyda Neen
 - id: 7720085
-  name: B7_NelothHort (complete)
+  name: Telvanni Hortator - Neloth Hort
   category: quest_complete
   trigger:
     quest: B7_NelothHort
   group: main
   region: Seyda Neen
 - id: 7720086
-  name: B7_TelvanniBook (complete)
+  name: Telvanni Hortator - Book
   category: quest_complete
   trigger:
     quest: B7_TelvanniBook
   group: main
   region: Seyda Neen
 - id: 7720087
-  name: B7_TelvanniHort (complete)
+  name: Telvanni Hortator - Hort
   category: quest_complete
   trigger:
     quest: B7_TelvanniHort
   group: main
   region: Seyda Neen
 - id: 7720088
-  name: B7_TheranaHort (complete)
+  name: Telvanni Hortator - Therana Hort
   category: quest_complete
   trigger:
     quest: B7_TheranaHort
   group: main
   region: Seyda Neen
 - id: 7720089
-  name: B8_All_Hortator (complete)
+  name: Hortator and Nerevarine - All
   category: quest_complete
   trigger:
     quest: B8_All_Hortator
   group: main
   region: Seyda Neen
 - id: 7720090
-  name: B8_All_Nerevarine (complete)
+  name: Hortator and Nerevarine - All 2
   category: quest_complete
   trigger:
     quest: B8_All_Nerevarine
   group: main
   region: Seyda Neen
 - id: 7720091
-  name: B8_BackDoor1 (complete)
+  name: Hortator and Nerevarine - Back Door 1
   category: quest_complete
   trigger:
     quest: B8_BackDoor1
   group: main
   region: Seyda Neen
 - id: 7720092
-  name: B8_BackDoor2 (complete)
+  name: Hortator and Nerevarine - Back Door 2
   category: quest_complete
   trigger:
     quest: B8_BackDoor2
   group: main
   region: Seyda Neen
 - id: 7720093
-  name: B8_BackDoor3 (complete)
+  name: Hortator and Nerevarine - Back Door 3
   category: quest_complete
   trigger:
     quest: B8_BackDoor3
   group: main
   region: Seyda Neen
 - id: 7720094
-  name: B8_BackDoor4 (complete)
+  name: Hortator and Nerevarine - Back Door 4
   category: quest_complete
   trigger:
     quest: B8_BackDoor4
   group: main
   region: Seyda Neen
 - id: 7720095
-  name: B8_BackDoor5 (complete)
+  name: Hortator and Nerevarine - Back Door 5
   category: quest_complete
   trigger:
     quest: B8_BackDoor5
   group: main
   region: Seyda Neen
 - id: 7720096
-  name: B8_BackDoor6 (complete)
+  name: Hortator and Nerevarine - Back Door 6
   category: quest_complete
   trigger:
     quest: B8_BackDoor6
   group: main
   region: Seyda Neen
 - id: 7720097
-  name: B8_Failed_Nerevarine (complete)
+  name: Hortator and Nerevarine - Failed
   category: quest_complete
   trigger:
     quest: B8_Failed_Nerevarine
   group: main
   region: Seyda Neen
 - id: 7720098
-  name: B8_MeetVivec (complete)
+  name: Hortator and Nerevarine - Meet Vivec
   category: quest_complete
   trigger:
     quest: B8_MeetVivec
   group: main
   region: Seyda Neen
 - id: 7720099
-  name: B8_Nibani_2_Vivec (complete)
+  name: Hortator and Nerevarine - Nibani 2 Vivec
   category: quest_complete
   trigger:
     quest: B8_Nibani_2_Vivec
   group: main
   region: Seyda Neen
 - id: 7720100
-  name: blades_Elone (complete)
+  name: Blades Trainers - Elone
   category: quest_complete
   trigger:
     quest: blades_Elone
   group: blades
   region: Seyda Neen
 - id: 7720101
-  name: blades_elone2 (complete)
+  name: Blades Trainers - Elone 2
   category: quest_complete
   trigger:
     quest: blades_elone2
   group: blades
   region: Seyda Neen
 - id: 7720102
-  name: blades_Gildan (complete)
+  name: Blades Trainers - Gildan
   category: quest_complete
   trigger:
     quest: blades_Gildan
   group: blades
   region: Seyda Neen
 - id: 7720103
-  name: blades_gildan2 (complete)
+  name: Blades Trainers - Gildan 2
   category: quest_complete
   trigger:
     quest: blades_gildan2
   group: blades
   region: Seyda Neen
 - id: 7720104
-  name: blades_Nine_Toes (complete)
+  name: Blades Trainers - Nine Toes
   category: quest_complete
   trigger:
     quest: blades_Nine_Toes
   group: blades
   region: Seyda Neen
 - id: 7720105
-  name: blades_nine_toes2 (complete)
+  name: Blades Trainers - Nine Toes 2
   category: quest_complete
   trigger:
     quest: blades_nine_toes2
   group: blades
   region: Seyda Neen
 - id: 7720106
-  name: blades_rithleen (complete)
+  name: Blades Trainers - Rithleen
   category: quest_complete
   trigger:
     quest: blades_rithleen
   group: blades
   region: Seyda Neen
 - id: 7720107
-  name: blades_rithleen2 (complete)
+  name: Blades Trainers - Rithleen 2
   category: quest_complete
   trigger:
     quest: blades_rithleen2
   group: blades
   region: Seyda Neen
 - id: 7720108
-  name: blades_Sjorvar (complete)
+  name: Blades Trainers - Sjorvar
   category: quest_complete
   trigger:
     quest: blades_Sjorvar
   group: blades
   region: Seyda Neen
 - id: 7720109
-  name: blades_sjorvar2 (complete)
+  name: Blades Trainers - Sjorvar 2
   category: quest_complete
   trigger:
     quest: blades_sjorvar2
   group: blades
   region: Seyda Neen
 - id: 7720110
-  name: blades_Surane (complete)
+  name: Blades Trainers - Surane
   category: quest_complete
   trigger:
     quest: blades_Surane
   group: blades
   region: Seyda Neen
 - id: 7720111
-  name: blades_surane2 (complete)
+  name: Blades Trainers - Surane 2
   category: quest_complete
   trigger:
     quest: blades_surane2
   group: blades
   region: Seyda Neen
 - id: 7720112
-  name: blades_tyermaillin (complete)
+  name: Blades Trainers - Tyermaillin
   category: quest_complete
   trigger:
     quest: blades_tyermaillin
   group: blades
   region: Seyda Neen
 - id: 7720113
-  name: blades_tyermaillin2 (complete)
+  name: Blades Trainers - Tyermaillin 2
   category: quest_complete
   trigger:
     quest: blades_tyermaillin2
   group: blades
   region: Seyda Neen
 - id: 7720114
-  name: book_history (complete)
+  name: Book History
   category: quest_complete
   trigger:
     quest: book_history
   group: non_quest
   region: Seyda Neen
 - id: 7720115
-  name: book_OnMorrowind (complete)
+  name: Book On Morrowind
   category: quest_complete
   trigger:
     quest: book_OnMorrowind
   group: non_quest
   region: Seyda Neen
 - id: 7720116
-  name: C0_Act_C (complete)
+  name: The Citadels of the Sixth House - Act C
   category: quest_complete
   trigger:
     quest: C0_Act_C
   group: main
   region: Seyda Neen
 - id: 7720117
-  name: C0_Act_C_Expo (complete)
+  name: The Citadels of the Sixth House - Act C Expo
   category: quest_complete
   trigger:
     quest: C0_Act_C_Expo
   group: main
   region: Seyda Neen
 - id: 7720118
-  name: C2_Sunder (complete)
+  name: The Citadels of the Sixth House - Sunder
   category: quest_complete
   trigger:
     quest: C2_Sunder
   group: main
   region: Seyda Neen
 - id: 7720119
-  name: C3_DestroyDagoth (complete)
+  name: The Citadels of the Sixth House - Destroy Dagoth
   category: quest_complete
   trigger:
     quest: C3_DestroyDagoth
   group: main
   region: Seyda Neen
 - id: 7720120
-  name: CX_BackPath (complete)
+  name: Yagrum Bagarn and Wraithguard
   category: quest_complete
   trigger:
     quest: CX_BackPath
   group: misc
   region: Seyda Neen
 - id: 7720121
-  name: DA_Azura (complete)
+  name: Azura's Quest
   category: quest_complete
   trigger:
     quest: DA_Azura
   group: daedric
   region: Seyda Neen
 - id: 7720122
-  name: DA_Boethiah (complete)
+  name: Boethiah's Quest
   category: quest_complete
   trigger:
     quest: DA_Boethiah
   group: daedric
   region: Seyda Neen
 - id: 7720123
-  name: DA_Malacath (complete)
+  name: Malacath's Quest
   category: quest_complete
   trigger:
     quest: DA_Malacath
   group: daedric
   region: Seyda Neen
 - id: 7720124
-  name: DA_Mehrunes (complete)
+  name: Mehrunes Dagon's Quest
   category: quest_complete
   trigger:
     quest: DA_Mehrunes
   group: daedric
   region: Seyda Neen
 - id: 7720125
-  name: DA_Mephala (complete)
+  name: Mephala's Quest
   category: quest_complete
   trigger:
     quest: DA_Mephala
   group: daedric
   region: Seyda Neen
 - id: 7720126
-  name: DA_MolagBal (complete)
+  name: Molag Bal's Quest
   category: quest_complete
   trigger:
     quest: DA_MolagBal
   group: daedric
   region: Seyda Neen
 - id: 7720127
-  name: DA_Sheogorath (complete)
+  name: Sheogorath's Quest
   category: quest_complete
   trigger:
     quest: DA_Sheogorath
   group: daedric
   region: Seyda Neen
 - id: 7720128
-  name: EB_Actor (complete)
+  name: The Bad Actor
   category: quest_complete
   trigger:
     quest: EB_Actor
   group: east_empire
   region: Seyda Neen
 - id: 7720129
-  name: EB_Bone (complete)
+  name: The Dwemer's Bone
   category: quest_complete
   trigger:
     quest: EB_Bone
   group: east_empire
   region: Seyda Neen
 - id: 7720130
-  name: EB_Clients (complete)
+  name: The Client List
   category: quest_complete
   trigger:
     quest: EB_Clients
   group: east_empire
   region: Seyda Neen
 - id: 7720131
-  name: EB_DeadMen (complete)
+  name: The Short Unhappy Life of Danar Uvelas
   category: quest_complete
   trigger:
     quest: EB_DeadMen
   group: east_empire
   region: Seyda Neen
 - id: 7720132
-  name: EB_Deed (complete)
+  name: A Friend in Deed
   category: quest_complete
   trigger:
     quest: EB_Deed
   group: east_empire
   region: Seyda Neen
 - id: 7720133
-  name: EB_Express (complete)
+  name: Dredil's Delivery
   category: quest_complete
   trigger:
     quest: EB_Express
   group: east_empire
   region: Seyda Neen
 - id: 7720134
-  name: EB_False (complete)
+  name: An Apothecary Slandered
   category: quest_complete
   trigger:
     quest: EB_False
   group: east_empire
   region: Seyda Neen
 - id: 7720135
-  name: EB_Invisible (complete)
+  name: An Invisible Son
   category: quest_complete
   trigger:
     quest: EB_Invisible
   group: east_empire
   region: Seyda Neen
 - id: 7720136
-  name: EB_Pest (complete)
+  name: The Enchanter's Rats
   category: quest_complete
   trigger:
     quest: EB_Pest
   group: east_empire
   region: Seyda Neen
 - id: 7720137
-  name: EB_Shipment (complete)
+  name: Liberate the Limeware
   category: quest_complete
   trigger:
     quest: EB_Shipment
   group: east_empire
   region: Seyda Neen
 - id: 7720138
-  name: EB_TradeSpy (complete)
+  name: The Price List
   category: quest_complete
   trigger:
     quest: EB_TradeSpy
   group: east_empire
   region: Seyda Neen
 - id: 7720139
-  name: EB_Unrequited (complete)
+  name: For the Love of a Bosmer
   category: quest_complete
   trigger:
     quest: EB_Unrequited
   group: east_empire
   region: Seyda Neen
 - id: 7720140
-  name: fast_eddie (complete)
+  name: Fast Eddie
   category: quest_complete
   trigger:
     quest: fast_eddie
   group: misc
   region: Seyda Neen
 - id: 7720141
-  name: FG_AlofsFarm (complete)
+  name: Alof and the Orcs
   category: quest_complete
   trigger:
     quest: FG_AlofsFarm
   group: fighters_guild
   region: Seyda Neen
 - id: 7720142
-  name: FG_BeneranBounty (complete)
+  name: Beneran's Bounty
   category: quest_complete
   trigger:
     quest: FG_BeneranBounty
   group: fighters_guild
   region: Seyda Neen
 - id: 7720143
-  name: FG_BigBosses (complete)
+  name: Kill the Master Thief
   category: quest_complete
   trigger:
     quest: FG_BigBosses
   group: fighters_guild
   region: Seyda Neen
 - id: 7720144
-  name: FG_CorprusStalker (complete)
+  name: Berwen's Stalker
   category: quest_complete
   trigger:
     quest: FG_CorprusStalker
   group: fighters_guild
   region: Seyda Neen
 - id: 7720145
-  name: FG_DebtOrc (complete)
+  name: Juicedaw Ring
   category: quest_complete
   trigger:
     quest: FG_DebtOrc
   group: fighters_guild
   region: Seyda Neen
 - id: 7720146
-  name: FG_DebtStoine (complete)
+  name: Lirielle's Debt
   category: quest_complete
   trigger:
     quest: FG_DebtStoine
   group: fighters_guild
   region: Seyda Neen
 - id: 7720147
-  name: FG_DeseleDebt (complete)
+  name: Desele's Debt
   category: quest_complete
   trigger:
     quest: FG_DeseleDebt
   group: fighters_guild
   region: Seyda Neen
 - id: 7720148
-  name: FG_DissaplaMine (complete)
+  name: The Dissapla Mine
   category: quest_complete
   trigger:
     quest: FG_DissaplaMine
   group: fighters_guild
   region: Seyda Neen
 - id: 7720149
-  name: FG_DuniraiSupply (complete)
+  name: Sujamma to Dunirai
   category: quest_complete
   trigger:
     quest: FG_DuniraiSupply
   group: fighters_guild
   region: Seyda Neen
 - id: 7720150
-  name: FG_Egg_Poachers (complete)
+  name: The Egg Poachers
   category: quest_complete
   trigger:
     quest: FG_Egg_Poachers
   group: fighters_guild
   region: Seyda Neen
 - id: 7720151
-  name: FG_ElithPalSupply (complete)
+  name: Flin for Elith-Pal
   category: quest_complete
   trigger:
     quest: FG_ElithPalSupply
   group: fighters_guild
   region: Seyda Neen
 - id: 7720152
-  name: FG_EngaerBounty (complete)
+  name: Engaer's Bounty
   category: quest_complete
   trigger:
     quest: FG_EngaerBounty
   group: fighters_guild
   region: Seyda Neen
 - id: 7720153
-  name: FG_FindPudai (complete)
+  name: The Pudai Eggmine
   category: quest_complete
   trigger:
     quest: FG_FindPudai
   group: fighters_guild
   region: Seyda Neen
 - id: 7720154
-  name: FG_HungerLoose (complete)
+  name: Hunger in the Sarano Tomb
   category: quest_complete
   trigger:
     quest: FG_HungerLoose
   group: fighters_guild
   region: Seyda Neen
 - id: 7720155
-  name: FG_KhajiitBounty (complete)
+  name: Dro'Sakhar's Bounty
   category: quest_complete
   trigger:
     quest: FG_KhajiitBounty
   group: fighters_guild
   region: Seyda Neen
 - id: 7720156
-  name: FG_KillBosses (complete)
+  name: Remove the Heads of the Thieves Guild
   category: quest_complete
   trigger:
     quest: FG_KillBosses
   group: fighters_guild
   region: Seyda Neen
 - id: 7720157
-  name: FG_KillCronies (complete)
+  name: Remove Sjoring's Supporters
   category: quest_complete
   trigger:
     quest: FG_KillCronies
   group: fighters_guild
   region: Seyda Neen
 - id: 7720158
-  name: FG_KillHardHeart (complete)
+  name: Kill Hard-Heart (Fighters Guild)
   category: quest_complete
   trigger:
     quest: FG_KillHardHeart
   group: fighters_guild
   region: Seyda Neen
 - id: 7720159
-  name: FG_Nchurdamz (complete)
+  name: Battle at Nchurdamz
   category: quest_complete
   trigger:
     quest: FG_Nchurdamz
   group: fighters_guild
   region: Seyda Neen
 - id: 7720160
-  name: FG_OrcBounty (complete)
+  name: Gra-Bol's Bounty
   category: quest_complete
   trigger:
     quest: FG_OrcBounty
   group: fighters_guild
   region: Seyda Neen
 - id: 7720161
-  name: FG_RatHunt (complete)
+  name: Exterminator (Fighters)
   category: quest_complete
   trigger:
     quest: FG_RatHunt
   group: fighters_guild
   region: Seyda Neen
 - id: 7720162
-  name: FG_SilenceMagistrate (complete)
+  name: Alleius' Bounty
   category: quest_complete
   trigger:
     quest: FG_SilenceMagistrate
   group: fighters_guild
   region: Seyda Neen
 - id: 7720163
-  name: FG_SilenceTaxgirl (complete)
+  name: Vandacia's Bounty
   category: quest_complete
   trigger:
     quest: FG_SilenceTaxgirl
   group: fighters_guild
   region: Seyda Neen
 - id: 7720164
-  name: FG_Sottilde (complete)
+  name: The Code Book
   category: quest_complete
   trigger:
     quest: FG_Sottilde
   group: fighters_guild
   region: Seyda Neen
 - id: 7720165
-  name: FG_SuranBandits (complete)
+  name: Bandits in Suran
   category: quest_complete
   trigger:
     quest: FG_SuranBandits
   group: fighters_guild
   region: Seyda Neen
 - id: 7720166
-  name: FG_Telasero (complete)
+  name: Sondaale
   category: quest_complete
   trigger:
     quest: FG_Telasero
   group: fighters_guild
   region: Seyda Neen
 - id: 7720167
-  name: FG_Telvanni_agents (complete)
+  name: The Telvanni Agents
   category: quest_complete
   trigger:
     quest: FG_Telvanni_agents
   group: fighters_guild
   region: Seyda Neen
 - id: 7720168
-  name: FG_TenimBounty (complete)
+  name: Tenim's Bounty
   category: quest_complete
   trigger:
     quest: FG_TenimBounty
   group: fighters_guild
   region: Seyda Neen
 - id: 7720169
-  name: FG_TongueToad (complete)
+  name: Silence Tongue-Toad
   category: quest_complete
   trigger:
     quest: FG_TongueToad
   group: fighters_guild
   region: Seyda Neen
 - id: 7720170
-  name: FG_Vas (complete)
+  name: The Necromancer of Vas
   category: quest_complete
   trigger:
     quest: FG_Vas
   group: fighters_guild
   region: Seyda Neen
 - id: 7720171
-  name: FG_VerethiGang (complete)
+  name: The Verethi Gang
   category: quest_complete
   trigger:
     quest: FG_VerethiGang
   group: fighters_guild
   region: Seyda Neen
 - id: 7720172
-  name: HH_AshlanderEbony (complete)
+  name: Ashlander Ebony
   category: quest_complete
   trigger:
     quest: HH_AshlanderEbony
   group: hlaalu
   region: Seyda Neen
 - id: 7720173
-  name: HH_BankCourier (complete)
+  name: Bank Courier
   category: quest_complete
   trigger:
     quest: HH_BankCourier
   group: hlaalu
   region: Seyda Neen
 - id: 7720174
-  name: HH_BankFraud (complete)
+  name: Sealed Orders
   category: quest_complete
   trigger:
     quest: HH_BankFraud
   group: hlaalu
   region: Seyda Neen
 - id: 7720175
-  name: HH_BeroSupport (complete)
+  name: Bero's Support
   category: quest_complete
   trigger:
     quest: HH_BeroSupport
   group: hlaalu
   region: Seyda Neen
 - id: 7720176
-  name: HH_BuriedTreasure (complete)
+  name: Murudius Flaeus's Debt
   category: quest_complete
   trigger:
     quest: HH_BuriedTreasure
   group: hlaalu
   region: Seyda Neen
 - id: 7720177
-  name: HH_CaptureSpy (complete)
+  name: The Caldera Spy
   category: quest_complete
   trigger:
     quest: HH_CaptureSpy
   group: hlaalu
   region: Seyda Neen
 - id: 7720178
-  name: HH_Crassius (complete)
+  name: An Admiring Sponsor
   category: quest_complete
   trigger:
     quest: HH_Crassius
   group: hlaalu
   region: Seyda Neen
 - id: 7720179
-  name: HH_DestroyIndarysManor (complete)
+  name: Kill Banden Indarys (Hlaalu)
   category: quest_complete
   trigger:
     quest: HH_DestroyIndarysManor
   group: hlaalu
   region: Seyda Neen
 - id: 7720180
-  name: HH_DestroyTelUvirith (complete)
+  name: Kill Reynel Uvirith
   category: quest_complete
   trigger:
     quest: HH_DestroyTelUvirith
   group: hlaalu
   region: Seyda Neen
 - id: 7720181
-  name: HH_DisguisedArmor (complete)
+  name: Disguise
   category: quest_complete
   trigger:
     quest: HH_DisguisedArmor
   group: hlaalu
   region: Seyda Neen
 - id: 7720182
-  name: HH_EbonyDelivery (complete)
+  name: Shipment of Ebony
   category: quest_complete
   trigger:
     quest: HH_EbonyDelivery
   group: hlaalu
   region: Seyda Neen
 - id: 7720183
-  name: HH_EggMine (complete)
+  name: Inanius Egg Mine
   category: quest_complete
   trigger:
     quest: HH_EggMine
   group: hlaalu
   region: Seyda Neen
 - id: 7720184
-  name: HH_EscortMerchant (complete)
+  name: Escort Tarvyn Faren
   category: quest_complete
   trigger:
     quest: HH_EscortMerchant
   group: hlaalu
   region: Seyda Neen
 - id: 7720185
-  name: HH_GuardMerchant (complete)
+  name: Guard Ralen Tilvur
   category: quest_complete
   trigger:
     quest: HH_GuardMerchant
   group: hlaalu
   region: Seyda Neen
 - id: 7720186
-  name: HH_IndEsp1 (complete)
+  name: Alchemical Formulas
   category: quest_complete
   trigger:
     quest: HH_IndEsp1
   group: hlaalu
   region: Seyda Neen
 - id: 7720187
-  name: HH_IndEsp2 (complete)
+  name: Guar Hide Squeeze
   category: quest_complete
   trigger:
     quest: HH_IndEsp2
   group: hlaalu
   region: Seyda Neen
 - id: 7720188
-  name: HH_IndEsp3 (complete)
+  name: Delivery for Bivale Teneran
   category: quest_complete
   trigger:
     quest: HH_IndEsp3
   group: hlaalu
   region: Seyda Neen
 - id: 7720189
-  name: HH_IndEsp4 (complete)
+  name: Epony Trade
   category: quest_complete
   trigger:
     quest: HH_IndEsp4
   group: hlaalu
   region: Seyda Neen
 - id: 7720190
-  name: HH_LiteracyCampaign (complete)
+  name: Literacy Campaign
   category: quest_complete
   trigger:
     quest: HH_LiteracyCampaign
   group: hlaalu
   region: Seyda Neen
 - id: 7720191
-  name: HH_NordSmugglers (complete)
+  name: Velfred the Outlaw
   category: quest_complete
   trigger:
     quest: HH_NordSmugglers
   group: hlaalu
   region: Seyda Neen
 - id: 7720192
-  name: HH_Odirniran (complete)
+  name: Telvanni at Odirniran
   category: quest_complete
   trigger:
     quest: HH_Odirniran
   group: hlaalu
   region: Seyda Neen
 - id: 7720193
-  name: HH_RentCollector (complete)
+  name: Rent and Taxes
   category: quest_complete
   trigger:
     quest: HH_RentCollector
   group: hlaalu
   region: Seyda Neen
 - id: 7720194
-  name: HH_ReplaceDocs (complete)
+  name: Erroneous Documents
   category: quest_complete
   trigger:
     quest: HH_ReplaceDocs
   group: hlaalu
   region: Seyda Neen
 - id: 7720195
-  name: HH_Retaliation (complete)
+  name: The Death of Ralen Hlaalo
   category: quest_complete
   trigger:
     quest: HH_Retaliation
   group: hlaalu
   region: Seyda Neen
 - id: 7720196
-  name: HH_Stronghold (complete)
+  name: Stronghold (Hlaalu)
   category: quest_complete
   trigger:
     quest: HH_Stronghold
   group: hlaalu
   region: Seyda Neen
 - id: 7720197
-  name: HH_SunkenTreasure (complete)
+  name: The Shipwreck 'Prelude'
   category: quest_complete
   trigger:
     quest: HH_SunkenTreasure
   group: hlaalu
   region: Seyda Neen
 - id: 7720198
-  name: HH_TheExterminator (complete)
+  name: Exterminator (Hlaalu)
   category: quest_complete
   trigger:
     quest: HH_TheExterminator
   group: hlaalu
   region: Seyda Neen
 - id: 7720199
-  name: HH_TwinLamps1 (complete)
+  name: The Twin Lamps
   category: quest_complete
   trigger:
     quest: HH_TwinLamps1
   group: hlaalu
   region: Seyda Neen
 - id: 7720200
-  name: HH_TwinLamps3 (complete)
+  name: Free Hides-His-Foot
   category: quest_complete
   trigger:
     quest: HH_TwinLamps3
   group: hlaalu
   region: Seyda Neen
 - id: 7720201
-  name: HH_WinCamonna (complete)
+  name: Dealing with Orvas Dren
   category: quest_complete
   trigger:
     quest: HH_WinCamonna
   group: hlaalu
   region: Seyda Neen
 - id: 7720202
-  name: HH_WinSaryoni (complete)
+  name: Control the Ordinators
   category: quest_complete
   trigger:
     quest: HH_WinSaryoni
   group: hlaalu
   region: Seyda Neen
 - id: 7720203
-  name: Hospitality_Papers (complete)
+  name: Hospitality Papers
   category: quest_complete
   trigger:
     quest: Hospitality_Papers
   group: misc
   region: Seyda Neen
 - id: 7720204
-  name: HR_Archmaster (complete)
+  name: Duel with Bolvyn Venim
   category: quest_complete
   trigger:
     quest: HR_Archmaster
   group: redoran
   region: Seyda Neen
 - id: 7720205
-  name: HR_ArobarKidnap (complete)
+  name: Miner Arobar's Support
   category: quest_complete
   trigger:
     quest: HR_ArobarKidnap
   group: redoran
   region: Seyda Neen
 - id: 7720206
-  name: HR_AshimanuMine (complete)
+  name: Ashimanu Mine
   category: quest_complete
   trigger:
     quest: HR_AshimanuMine
   group: redoran
   region: Seyda Neen
 - id: 7720207
-  name: HR_AttackRethan (complete)
+  name: Slay Raynasa Rethan
   category: quest_complete
   trigger:
     quest: HR_AttackRethan
   group: redoran
   region: Seyda Neen
 - id: 7720208
-  name: HR_AttackUvirith (complete)
+  name: Slay Reynel Uvirith
   category: quest_complete
   trigger:
     quest: HR_AttackUvirith
   group: redoran
   region: Seyda Neen
 - id: 7720209
-  name: HR_BillCollect (complete)
+  name: Armor Repair Debts
   category: quest_complete
   trigger:
     quest: HR_BillCollect
   group: redoran
   region: Seyda Neen
 - id: 7720210
-  name: HR_CalderaCorrupt (complete)
+  name: Evidence of Corruption
   category: quest_complete
   trigger:
     quest: HR_CalderaCorrupt
   group: redoran
   region: Seyda Neen
 - id: 7720211
-  name: HR_CalderaDisrupt (complete)
+  name: Shut the Mines Down
   category: quest_complete
   trigger:
     quest: HR_CalderaDisrupt
   group: redoran
   region: Seyda Neen
 - id: 7720212
-  name: HR_ClearSarethi (complete)
+  name: Clear Varvur Sarethi's Name
   category: quest_complete
   trigger:
     quest: HR_ClearSarethi
   group: redoran
   region: Seyda Neen
 - id: 7720213
-  name: HR_Courier (complete)
+  name: Deliver Cure Disease Potion
   category: quest_complete
   trigger:
     quest: HR_Courier
   group: redoran
   region: Seyda Neen
 - id: 7720214
-  name: HR_CowardDisgrace (complete)
+  name: Duel of Honor
   category: quest_complete
   trigger:
     quest: HR_CowardDisgrace
   group: redoran
   region: Seyda Neen
 - id: 7720215
-  name: HR_CultElimination (complete)
+  name: Kill Gordol
   category: quest_complete
   trigger:
     quest: HR_CultElimination
   group: redoran
   region: Seyda Neen
 - id: 7720216
-  name: HR_DagothTanis (complete)
+  name: Slay Dagoth Tanis
   category: quest_complete
   trigger:
     quest: HR_DagothTanis
   group: redoran
   region: Seyda Neen
 - id: 7720217
-  name: HR_FindDalobar (complete)
+  name: Find Mathis Dalobar
   category: quest_complete
   trigger:
     quest: HR_FindDalobar
   group: redoran
   region: Seyda Neen
 - id: 7720218
-  name: HR_FindGiladren (complete)
+  name: Find Beden Giladren
   category: quest_complete
   trigger:
     quest: HR_FindGiladren
   group: redoran
   region: Seyda Neen
 - id: 7720219
-  name: HR_FindTharen (complete)
+  name: Find Fedris Tharen
   category: quest_complete
   trigger:
     quest: HR_FindTharen
   group: redoran
   region: Seyda Neen
 - id: 7720220
-  name: HR_FoundersHelm (complete)
+  name: Founder's Helm
   category: quest_complete
   trigger:
     quest: HR_FoundersHelm
   group: redoran
   region: Seyda Neen
 - id: 7720221
-  name: HR_GuardGuarHerds (complete)
+  name: Trouble with Bandits
   category: quest_complete
   trigger:
     quest: HR_GuardGuarHerds
   group: redoran
   region: Seyda Neen
 - id: 7720222
-  name: HR_GuardSarethi (complete)
+  name: Guard Sarethi Manor
   category: quest_complete
   trigger:
     quest: HR_GuardSarethi
   group: redoran
   region: Seyda Neen
 - id: 7720223
-  name: HR_HlaanoSlanders (complete)
+  name: Meril Hlaano's Slanders
   category: quest_complete
   trigger:
     quest: HR_HlaanoSlanders
   group: redoran
   region: Seyda Neen
 - id: 7720224
-  name: HR_HonorChallenge (complete)
+  name: Ondres Nerano's Slanders
   category: quest_complete
   trigger:
     quest: HR_HonorChallenge
   group: redoran
   region: Seyda Neen
 - id: 7720225
-  name: HR_Kagouti (complete)
+  name: Kagouti Den
   category: quest_complete
   trigger:
     quest: HR_Kagouti
   group: redoran
   region: Seyda Neen
 - id: 7720226
-  name: HR_KoalCave (complete)
+  name: Escort to Koal Cave
   category: quest_complete
   trigger:
     quest: HR_KoalCave
   group: redoran
   region: Seyda Neen
 - id: 7720227
-  name: HR_LostBanner (complete)
+  name: Recover Shields from Andasreth
   category: quest_complete
   trigger:
     quest: HR_LostBanner
   group: redoran
   region: Seyda Neen
 - id: 7720228
-  name: HR_MadMilk (complete)
+  name: The Mad Lord of Milk - complete
   category: quest_complete
   trigger:
     quest: HR_MadMilk
   group: redoran
   region: Seyda Neen
 - id: 7720229
-  name: HR_MorvaynManor (complete)
+  name: Mission to Morvayn Manor
   category: quest_complete
   trigger:
     quest: HR_MorvaynManor
   group: redoran
   region: Seyda Neen
 - id: 7720230
-  name: HR_MudcrabNest (complete)
+  name: Mudcrab Pests
   category: quest_complete
   trigger:
     quest: HR_MudcrabNest
   group: redoran
   region: Seyda Neen
 - id: 7720231
-  name: HR_OldBlueFin (complete)
+  name: Old Blue Fin
   category: quest_complete
   trigger:
     quest: HR_OldBlueFin
   group: redoran
   region: Seyda Neen
 - id: 7720232
-  name: HR_OldFlame (complete)
+  name: Nalvilie Saren
   category: quest_complete
   trigger:
     quest: HR_OldFlame
   group: redoran
   region: Seyda Neen
 - id: 7720233
-  name: HR_RansomMandas (complete)
+  name: The Mad Lord of Milk - Ransom Mandas
   category: quest_complete
   trigger:
     quest: HR_RansomMandas
   group: redoran
   region: Seyda Neen
 - id: 7720234
-  name: HR_RedasTomb (complete)
+  name: Redas Tomb
   category: quest_complete
   trigger:
     quest: HR_RedasTomb
   group: redoran
   region: Seyda Neen
 - id: 7720235
-  name: HR_RescueSarethi (complete)
+  name: Rescue Varvur Sarethi
   category: quest_complete
   trigger:
     quest: HR_RescueSarethi
   group: redoran
   region: Seyda Neen
 - id: 7720236
-  name: HR_ShishiReport (complete)
+  name: Shishi Report
   category: quest_complete
   trigger:
     quest: HR_ShishiReport
   group: redoran
   region: Seyda Neen
 - id: 7720237
-  name: HR_Shurinbaal (complete)
+  name: Shurinbaal
   category: quest_complete
   trigger:
     quest: HR_Shurinbaal
   group: redoran
   region: Seyda Neen
 - id: 7720238
-  name: HR_SixthHouseBase (complete)
+  name: Ash Statue
   category: quest_complete
   trigger:
     quest: HR_SixthHouseBase
   group: redoran
   region: Seyda Neen
 - id: 7720239
-  name: HR_Stronghold (complete)
+  name: Stronghold (Redoran)
   category: quest_complete
   trigger:
     quest: HR_Stronghold
   group: redoran
   region: Seyda Neen
 - id: 7720240
-  name: HR_TaxCollector (complete)
+  name: Taxes from Gnisis
   category: quest_complete
   trigger:
     quest: HR_TaxCollector
   group: redoran
   region: Seyda Neen
 - id: 7720241
-  name: HT_Archmagister (complete)
+  name: Archmagister Gothren
   category: quest_complete
   trigger:
     quest: HT_Archmagister
   group: telvanni
   region: Seyda Neen
 - id: 7720242
-  name: HT_AttackIndarys (complete)
+  name: Kill Banden Indarys (Telvanni)
   category: quest_complete
   trigger:
     quest: HT_AttackIndarys
   group: telvanni
   region: Seyda Neen
 - id: 7720243
-  name: HT_AttackRethan (complete)
+  name: Kill Raynasa Rethan
   category: quest_complete
   trigger:
     quest: HT_AttackRethan
   group: telvanni
   region: Seyda Neen
 - id: 7720244
-  name: HT_AurielBow (complete)
+  name: Auriel's Bow
   category: quest_complete
   trigger:
     quest: HT_AurielBow
   group: telvanni
   region: Seyda Neen
 - id: 7720245
-  name: HT_BaladasAlly (complete)
+  name: Baladas Demnevanni
   category: quest_complete
   trigger:
     quest: HT_BaladasAlly
   group: telvanni
   region: Seyda Neen
 - id: 7720246
-  name: HT_BlackJinx (complete)
+  name: Black Jinx
   category: quest_complete
   trigger:
     quest: HT_BlackJinx
   group: telvanni
   region: Seyda Neen
 - id: 7720247
-  name: HT_ChroniclesNchuleft (complete)
+  name: Dwemer Books - Chronicles Nchuleft
   category: quest_complete
   trigger:
     quest: HT_ChroniclesNchuleft
   group: telvanni
   region: Seyda Neen
 - id: 7720248
-  name: HT_CureBlight (complete)
+  name: Cure Blight
   category: quest_complete
   trigger:
     quest: HT_CureBlight
   group: telvanni
   region: Seyda Neen
 - id: 7720249
-  name: HT_DaedraSkin (complete)
+  name: Daedra Skin
   category: quest_complete
   trigger:
     quest: HT_DaedraSkin
   group: telvanni
   region: Seyda Neen
 - id: 7720250
-  name: HT_DahrkMezalf (complete)
+  name: Dahrk Mezalf
   category: quest_complete
   trigger:
     quest: HT_DahrkMezalf
   group: telvanni
   region: Seyda Neen
 - id: 7720251
-  name: HT_DrakePride (complete)
+  name: Drake's Pride
   category: quest_complete
   trigger:
     quest: HT_DrakePride
   group: telvanni
   region: Seyda Neen
 - id: 7720252
-  name: HT_DwemerLaw (complete)
+  name: Dwemer Books - Law
   category: quest_complete
   trigger:
     quest: HT_DwemerLaw
   group: telvanni
   region: Seyda Neen
 - id: 7720253
-  name: HT_EddieAmulet (complete)
+  name: Amulet of Unity
   category: quest_complete
   trigger:
     quest: HT_EddieAmulet
   group: telvanni
   region: Seyda Neen
 - id: 7720254
-  name: HT_EddieRing (complete)
+  name: Ring of Equity
   category: quest_complete
   trigger:
     quest: HT_EddieRing
   group: telvanni
   region: Seyda Neen
 - id: 7720255
-  name: HT_FireAndFaith (complete)
+  name: Dwemer Books - Fire And Faith
   category: quest_complete
   trigger:
     quest: HT_FireAndFaith
   group: telvanni
   region: Seyda Neen
 - id: 7720256
-  name: HT_FleshAmulet (complete)
+  name: Flesh Made Whole
   category: quest_complete
   trigger:
     quest: HT_FleshAmulet
   group: telvanni
   region: Seyda Neen
 - id: 7720257
-  name: HT_FyrMessage (complete)
+  name: Coded Message
   category: quest_complete
   trigger:
     quest: HT_FyrMessage
   group: telvanni
   region: Seyda Neen
 - id: 7720258
-  name: HT_MineCure (complete)
+  name: Mudan-Mul Egg Mine
   category: quest_complete
   trigger:
     quest: HT_MineCure
   group: telvanni
   region: Seyda Neen
 - id: 7720259
-  name: HT_Monopoly (complete)
+  name: Mages Guild Monopoly
   category: quest_complete
   trigger:
     quest: HT_Monopoly
   group: telvanni
   region: Seyda Neen
 - id: 7720260
-  name: HT_Muck (complete)
+  name: Muck
   category: quest_complete
   trigger:
     quest: HT_Muck
   group: telvanni
   region: Seyda Neen
 - id: 7720261
-  name: HT_NchuleftKey (complete)
+  name: Mission to Nchuleft
   category: quest_complete
   trigger:
     quest: HT_NchuleftKey
   group: telvanni
   region: Seyda Neen
 - id: 7720262
-  name: HT_Odirniran (complete)
+  name: Odirniran
   category: quest_complete
   trigger:
     quest: HT_Odirniran
   group: telvanni
   region: Seyda Neen
 - id: 7720263
-  name: HT_RecruitEddie (complete)
+  name: Recruit a Mouth
   category: quest_complete
   trigger:
     quest: HT_RecruitEddie
   group: telvanni
   region: Seyda Neen
 - id: 7720264
-  name: HT_Shishi (complete)
+  name: Shishi
   category: quest_complete
   trigger:
     quest: HT_Shishi
   group: telvanni
   region: Seyda Neen
 - id: 7720265
-  name: HT_SilverDawn (complete)
+  name: Staff of the Silver Dawn
   category: quest_complete
   trigger:
     quest: HT_SilverDawn
   group: telvanni
   region: Seyda Neen
 - id: 7720266
-  name: HT_SlaveRebellion (complete)
+  name: Slave Rebellion
   category: quest_complete
   trigger:
     quest: HT_SlaveRebellion
   group: telvanni
   region: Seyda Neen
 - id: 7720267
-  name: HT_SloadSoap (complete)
+  name: Sload Soap
   category: quest_complete
   trigger:
     quest: HT_SloadSoap
   group: telvanni
   region: Seyda Neen
 - id: 7720268
-  name: HT_SpyBaladas (complete)
+  name: Three Questions for Baladas Demnevanni
   category: quest_complete
   trigger:
     quest: HT_SpyBaladas
   group: telvanni
   region: Seyda Neen
 - id: 7720269
-  name: HT_Stronghold (complete)
+  name: Stronghold (Telvanni)
   category: quest_complete
   trigger:
     quest: HT_Stronghold
   group: telvanni
   region: Seyda Neen
 - id: 7720270
-  name: HT_TheranaClothes (complete)
+  name: New Clothes
   category: quest_complete
   trigger:
     quest: HT_TheranaClothes
   group: telvanni
   region: Seyda Neen
 - id: 7720271
-  name: HT_WizardSpells (complete)
+  name: Wizard Spells
   category: quest_complete
   trigger:
     quest: HT_WizardSpells
   group: telvanni
   region: Seyda Neen
 - id: 7720272
-  name: IC0_Akatosh_token (complete)
+  name: Akatosh Token
   category: quest_complete
   trigger:
     quest: IC0_Akatosh_token
   group: imperial_cult
   region: Seyda Neen
 - id: 7720273
-  name: IC0_ImperialCult (complete)
+  name: Imperial Cult
   category: quest_complete
   trigger:
     quest: IC0_ImperialCult
   group: imperial_cult
   region: Seyda Neen
 - id: 7720274
-  name: IC0_Maran_token (complete)
+  name: Maran Token
   category: quest_complete
   trigger:
     quest: IC0_Maran_token
   group: imperial_cult
   region: Seyda Neen
 - id: 7720275
-  name: IC0_Septim_token (complete)
+  name: Septim Token
   category: quest_complete
   trigger:
     quest: IC0_Septim_token
   group: imperial_cult
   region: Seyda Neen
 - id: 7720276
-  name: IC0_Stendarr_token (complete)
+  name: Stendarr Token
   category: quest_complete
   trigger:
     quest: IC0_Stendarr_token
   group: imperial_cult
   region: Seyda Neen
 - id: 7720277
-  name: IC10_aengoth (complete)
+  name: Buckmoth Alms - Aengoth
   category: quest_complete
   trigger:
     quest: IC10_aengoth
   group: imperial_cult
   region: Seyda Neen
 - id: 7720278
-  name: IC10_baradras (complete)
+  name: Buckmoth Alms - Baradras
   category: quest_complete
   trigger:
     quest: IC10_baradras
   group: imperial_cult
   region: Seyda Neen
 - id: 7720279
-  name: IC10_buckmoth_alms (complete)
+  name: Buckmoth Alms - complete
   category: quest_complete
   trigger:
     quest: IC10_buckmoth_alms
   group: imperial_cult
   region: Seyda Neen
 - id: 7720280
-  name: IC10_buckmoth_not (complete)
+  name: Buckmoth Alms - failed
   category: quest_complete
   trigger:
     quest: IC10_buckmoth_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720281
-  name: IC10_cienne (complete)
+  name: Buckmoth Alms - Cienne
   category: quest_complete
   trigger:
     quest: IC10_cienne
   group: imperial_cult
   region: Seyda Neen
 - id: 7720282
-  name: IC10_codus (complete)
+  name: Buckmoth Alms - Codus
   category: quest_complete
   trigger:
     quest: IC10_codus
   group: imperial_cult
   region: Seyda Neen
 - id: 7720283
-  name: IC10_dular (complete)
+  name: Buckmoth Alms - Dular
   category: quest_complete
   trigger:
     quest: IC10_dular
   group: imperial_cult
   region: Seyda Neen
 - id: 7720284
-  name: IC10_edwinna (complete)
+  name: Buckmoth Alms - Edwinna
   category: quest_complete
   trigger:
     quest: IC10_edwinna
   group: imperial_cult
   region: Seyda Neen
 - id: 7720285
-  name: IC10_erranil (complete)
+  name: Buckmoth Alms - Erranil
   category: quest_complete
   trigger:
     quest: IC10_erranil
   group: imperial_cult
   region: Seyda Neen
 - id: 7720286
-  name: IC10_estoril (complete)
+  name: Buckmoth Alms - Estoril
   category: quest_complete
   trigger:
     quest: IC10_estoril
   group: imperial_cult
   region: Seyda Neen
 - id: 7720287
-  name: IC10_galthragoth (complete)
+  name: Buckmoth Alms - Galthragoth
   category: quest_complete
   trigger:
     quest: IC10_galthragoth
   group: imperial_cult
   region: Seyda Neen
 - id: 7720288
-  name: IC10_Hoki (complete)
+  name: Buckmoth Alms - Hoki
   category: quest_complete
   trigger:
     quest: IC10_Hoki
   group: imperial_cult
   region: Seyda Neen
 - id: 7720289
-  name: IC10_Lirielle (complete)
+  name: Buckmoth Alms - Lirielle
   category: quest_complete
   trigger:
     quest: IC10_Lirielle
   group: imperial_cult
   region: Seyda Neen
 - id: 7720290
-  name: IC10_malpenix (complete)
+  name: Buckmoth Alms - Malpenix
   category: quest_complete
   trigger:
     quest: IC10_malpenix
   group: imperial_cult
   region: Seyda Neen
 - id: 7720291
-  name: IC10_merthierry (complete)
+  name: Buckmoth Alms - Merthierry
   category: quest_complete
   trigger:
     quest: IC10_merthierry
   group: imperial_cult
   region: Seyda Neen
 - id: 7720292
-  name: IC10_persius (complete)
+  name: Buckmoth Alms - Persius
   category: quest_complete
   trigger:
     quest: IC10_persius
   group: imperial_cult
   region: Seyda Neen
 - id: 7720293
-  name: IC10_tauryon (complete)
+  name: Buckmoth Alms - Tauryon
   category: quest_complete
   trigger:
     quest: IC10_tauryon
   group: imperial_cult
   region: Seyda Neen
 - id: 7720294
-  name: IC10_Tongue (complete)
+  name: Buckmoth Alms - Tongue
   category: quest_complete
   trigger:
     quest: IC10_Tongue
   group: imperial_cult
   region: Seyda Neen
 - id: 7720295
-  name: IC10_yak (complete)
+  name: Buckmoth Alms - Yak
   category: quest_complete
   trigger:
     quest: IC10_yak
   group: imperial_cult
   region: Seyda Neen
 - id: 7720296
-  name: IC11_shirt (complete)
+  name: Shirt and Vest for Harvest's End - complete
   category: quest_complete
   trigger:
     quest: IC11_shirt
   group: imperial_cult
   region: Seyda Neen
 - id: 7720297
-  name: IC11_shirt_not (complete)
+  name: Shirt and Vest for Harvest's End - failed
   category: quest_complete
   trigger:
     quest: IC11_shirt_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720298
-  name: IC12_Bacola (complete)
+  name: Brandy for the Fundraising Dinner - Bacola
   category: quest_complete
   trigger:
     quest: IC12_Bacola
   group: imperial_cult
   region: Seyda Neen
 - id: 7720299
-  name: IC12_Banor (complete)
+  name: Brandy for the Fundraising Dinner - Banor
   category: quest_complete
   trigger:
     quest: IC12_Banor
   group: imperial_cult
   region: Seyda Neen
 - id: 7720300
-  name: IC12_Benunius (complete)
+  name: Brandy for the Fundraising Dinner - Benunius
   category: quest_complete
   trigger:
     quest: IC12_Benunius
   group: imperial_cult
   region: Seyda Neen
 - id: 7720301
-  name: IC12_dinner (complete)
+  name: Brandy for the Fundraising Dinner - complete
   category: quest_complete
   trigger:
     quest: IC12_dinner
   group: imperial_cult
   region: Seyda Neen
 - id: 7720302
-  name: IC12_dinner_not (complete)
+  name: Brandy for the Fundraising Dinner - failed
   category: quest_complete
   trigger:
     quest: IC12_dinner_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720303
-  name: IC12_Dulnea (complete)
+  name: Brandy for the Fundraising Dinner - Dulnea
   category: quest_complete
   trigger:
     quest: IC12_Dulnea
   group: imperial_cult
   region: Seyda Neen
 - id: 7720304
-  name: IC13_fight (complete)
+  name: Donation from Cunius Pelelius - Fight
   category: quest_complete
   trigger:
     quest: IC13_fight
   group: imperial_cult
   region: Seyda Neen
 - id: 7720305
-  name: IC13_rich (complete)
+  name: Donation from Cunius Pelelius - Rich
   category: quest_complete
   trigger:
     quest: IC13_rich
   group: imperial_cult
   region: Seyda Neen
 - id: 7720306
-  name: IC13_rich_not (complete)
+  name: Donation from Cunius Pelelius - Rich failed
   category: quest_complete
   trigger:
     quest: IC13_rich_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720307
-  name: IC13_rumor (complete)
+  name: Donation from Cunius Pelelius - Rumor
   category: quest_complete
   trigger:
     quest: IC13_rumor
   group: imperial_cult
   region: Seyda Neen
 - id: 7720308
-  name: IC13_slave (complete)
+  name: Donation from Cunius Pelelius - Slave
   category: quest_complete
   trigger:
     quest: IC13_slave
   group: imperial_cult
   region: Seyda Neen
 - id: 7720309
-  name: IC14_Delay (complete)
+  name: Pledge from Canctunian Ponius - Delay
   category: quest_complete
   trigger:
     quest: IC14_Delay
   group: imperial_cult
   region: Seyda Neen
 - id: 7720310
-  name: IC14_Demand (complete)
+  name: Pledge from Canctunian Ponius - Demand
   category: quest_complete
   trigger:
     quest: IC14_Demand
   group: imperial_cult
   region: Seyda Neen
 - id: 7720311
-  name: IC14_Flacassia (complete)
+  name: Pledge from Canctunian Ponius - Flacassia
   category: quest_complete
   trigger:
     quest: IC14_Flacassia
   group: imperial_cult
   region: Seyda Neen
 - id: 7720312
-  name: IC14_NotTell (complete)
+  name: Pledge from Canctunian Ponius - Not Tell
   category: quest_complete
   trigger:
     quest: IC14_NotTell
   group: imperial_cult
   region: Seyda Neen
 - id: 7720313
-  name: IC14_Okan (complete)
+  name: Pledge from Canctunian Ponius - Okan
   category: quest_complete
   trigger:
     quest: IC14_Okan
   group: imperial_cult
   region: Seyda Neen
 - id: 7720314
-  name: IC14_Ponius (complete)
+  name: Pledge from Canctunian Ponius - complete
   category: quest_complete
   trigger:
     quest: IC14_Ponius
   group: imperial_cult
   region: Seyda Neen
 - id: 7720315
-  name: IC14_Ponius_not (complete)
+  name: Pledge from Canctunian Ponius - failed
   category: quest_complete
   trigger:
     quest: IC14_Ponius_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720316
-  name: IC14_Promise (complete)
+  name: Pledge from Canctunian Ponius - Promise
   category: quest_complete
   trigger:
     quest: IC14_Promise
   group: imperial_cult
   region: Seyda Neen
 - id: 7720317
-  name: IC14_Shazgob (complete)
+  name: Pledge from Canctunian Ponius - Shazgob
   category: quest_complete
   trigger:
     quest: IC14_Shazgob
   group: imperial_cult
   region: Seyda Neen
 - id: 7720318
-  name: IC14_Sinyaramen (complete)
+  name: Pledge from Canctunian Ponius - Sinyaramen
   category: quest_complete
   trigger:
     quest: IC14_Sinyaramen
   group: imperial_cult
   region: Seyda Neen
 - id: 7720319
-  name: IC14_Tell (complete)
+  name: Pledge from Canctunian Ponius - Tell
   category: quest_complete
   trigger:
     quest: IC14_Tell
   group: imperial_cult
   region: Seyda Neen
 - id: 7720320
-  name: IC15_Missing_Limeware (complete)
+  name: Missing Limeware - complete
   category: quest_complete
   trigger:
     quest: IC15_Missing_Limeware
   group: imperial_cult
   region: Seyda Neen
 - id: 7720321
-  name: IC15_Missing_not (complete)
+  name: Missing Limeware - failed
   category: quest_complete
   trigger:
     quest: IC15_Missing_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720322
-  name: IC16_Haunting (complete)
+  name: The Haunting - complete
   category: quest_complete
   trigger:
     quest: IC16_Haunting
   group: imperial_cult
   region: Seyda Neen
 - id: 7720323
-  name: IC16_Haunting_not (complete)
+  name: The Haunting - failed
   category: quest_complete
   trigger:
     quest: IC16_Haunting_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720324
-  name: IC17_Witch (complete)
+  name: Thelsa Dral the Witch - complete
   category: quest_complete
   trigger:
     quest: IC17_Witch
   group: imperial_cult
   region: Seyda Neen
 - id: 7720325
-  name: IC17_Witch_not (complete)
+  name: Thelsa Dral the Witch - failed
   category: quest_complete
   trigger:
     quest: IC17_Witch_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720326
-  name: IC18_Silver_not (complete)
+  name: The Silver Staff of Shaming - failed
   category: quest_complete
   trigger:
     quest: IC18_Silver_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720327
-  name: IC18_Silver_Staff (complete)
+  name: The Silver Staff of Shaming - complete
   category: quest_complete
   trigger:
     quest: IC18_Silver_Staff
   group: imperial_cult
   region: Seyda Neen
 - id: 7720328
-  name: IC19_Restless_not (complete)
+  name: Restless Spirit - failed
   category: quest_complete
   trigger:
     quest: IC19_Restless_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720329
-  name: IC19_Restless_Spirit (complete)
+  name: Restless Spirit - complete
   category: quest_complete
   trigger:
     quest: IC19_Restless_Spirit
   group: imperial_cult
   region: Seyda Neen
 - id: 7720330
-  name: IC1_marshmerrow (complete)
+  name: Gathering Marshmerrow - complete
   category: quest_complete
   trigger:
     quest: IC1_marshmerrow
   group: imperial_cult
   region: Seyda Neen
 - id: 7720331
-  name: IC1_marshmerrow_not (complete)
+  name: Gathering Marshmerrow - failed
   category: quest_complete
   trigger:
     quest: IC1_marshmerrow_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720332
-  name: IC24_OracleQuest (complete)
+  name: Oracle Quest
   category: quest_complete
   trigger:
     quest: IC24_OracleQuest
   group: imperial_cult
   region: Seyda Neen
 - id: 7720333
-  name: IC25_JonHawker (complete)
+  name: Ring in Darkness - Jon Hawker
   category: quest_complete
   trigger:
     quest: IC25_JonHawker
   group: imperial_cult
   region: Seyda Neen
 - id: 7720334
-  name: IC25_JonHawker_free (complete)
+  name: Ring in Darkness - Jon Hawker Free
   category: quest_complete
   trigger:
     quest: IC25_JonHawker_free
   group: imperial_cult
   region: Seyda Neen
 - id: 7720335
-  name: IC26_AmaNin (complete)
+  name: Boots of the Apostle - Ama Nin
   category: quest_complete
   trigger:
     quest: IC26_AmaNin
   group: imperial_cult
   region: Seyda Neen
 - id: 7720336
-  name: IC26_AmaNin_free (complete)
+  name: Boots of the Apostle - Ama Nin Free
   category: quest_complete
   trigger:
     quest: IC26_AmaNin_free
   group: imperial_cult
   region: Seyda Neen
 - id: 7720337
-  name: IC27_Oracle (complete)
+  name: Ice Blade of the Monarch - Oracle
   category: quest_complete
   trigger:
     quest: IC27_Oracle
   group: imperial_cult
   region: Seyda Neen
 - id: 7720338
-  name: IC27_Oracle_A (complete)
+  name: Ice Blade of the Monarch - Oracle A
   category: quest_complete
   trigger:
     quest: IC27_Oracle_A
   group: imperial_cult
   region: Seyda Neen
 - id: 7720339
-  name: IC28_Urjorad (complete)
+  name: The Scroll of Fiercely Roasting
   category: quest_complete
   trigger:
     quest: IC28_Urjorad
   group: imperial_cult
   region: Seyda Neen
 - id: 7720340
-  name: IC29_Crusher (complete)
+  name: Skull-Crusher
   category: quest_complete
   trigger:
     quest: IC29_Crusher
   group: imperial_cult
   region: Seyda Neen
 - id: 7720341
-  name: IC2_Muck (complete)
+  name: Gathering Muck - complete
   category: quest_complete
   trigger:
     quest: IC2_Muck
   group: imperial_cult
   region: Seyda Neen
 - id: 7720342
-  name: IC2_Muck_not (complete)
+  name: Gathering Muck - failed
   category: quest_complete
   trigger:
     quest: IC2_Muck_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720343
-  name: IC30_Imperial_veteran (complete)
+  name: A Lucky Coin
   category: quest_complete
   trigger:
     quest: IC30_Imperial_veteran
   group: imperial_cult
   region: Seyda Neen
 - id: 7720344
-  name: IC3_willow (complete)
+  name: Gathering Willow Anther - complete
   category: quest_complete
   trigger:
     quest: IC3_willow
   group: imperial_cult
   region: Seyda Neen
 - id: 7720345
-  name: IC3_willow_not (complete)
+  name: Gathering Willow Anther - failed
   category: quest_complete
   trigger:
     quest: IC3_willow_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720346
-  name: IC4_scrib (complete)
+  name: Gathering Scrib Jelly - complete
   category: quest_complete
   trigger:
     quest: IC4_scrib
   group: imperial_cult
   region: Seyda Neen
 - id: 7720347
-  name: IC4_scrib_A (complete)
+  name: Gathering Scrib Jelly - A
   category: quest_complete
   trigger:
     quest: IC4_scrib_A
   group: imperial_cult
   region: Seyda Neen
 - id: 7720348
-  name: IC4_scrib_not (complete)
+  name: Gathering Scrib Jelly - failed
   category: quest_complete
   trigger:
     quest: IC4_scrib_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720349
-  name: IC5_corkbulb (complete)
+  name: Gathering Corkbulb Root - complete
   category: quest_complete
   trigger:
     quest: IC5_corkbulb
   group: imperial_cult
   region: Seyda Neen
 - id: 7720350
-  name: IC5_corkbulb_not (complete)
+  name: Gathering Corkbulb Root - failed
   category: quest_complete
   trigger:
     quest: IC5_corkbulb_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720351
-  name: IC6_Rat (complete)
+  name: Gathering Rat Meat - complete
   category: quest_complete
   trigger:
     quest: IC6_Rat
   group: imperial_cult
   region: Seyda Neen
 - id: 7720352
-  name: IC6_Rat_not (complete)
+  name: Gathering Rat Meat - failed
   category: quest_complete
   trigger:
     quest: IC6_Rat_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720353
-  name: IC7_netch (complete)
+  name: Gathering Netch Leather - complete
   category: quest_complete
   trigger:
     quest: IC7_netch
   group: imperial_cult
   region: Seyda Neen
 - id: 7720354
-  name: IC7_netch_not (complete)
+  name: Gathering Netch Leather - failed
   category: quest_complete
   trigger:
     quest: IC7_netch_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720355
-  name: IC8_Bedraflod (complete)
+  name: Alms from the Skyrim Mission - Bedraflod
   category: quest_complete
   trigger:
     quest: IC8_Bedraflod
   group: imperial_cult
   region: Seyda Neen
 - id: 7720356
-  name: IC8_Briring (complete)
+  name: Alms from the Skyrim Mission - Briring
   category: quest_complete
   trigger:
     quest: IC8_Briring
   group: imperial_cult
   region: Seyda Neen
 - id: 7720357
-  name: IC8_Eiruki (complete)
+  name: Alms from the Skyrim Mission - Eiruki
   category: quest_complete
   trigger:
     quest: IC8_Eiruki
   group: imperial_cult
   region: Seyda Neen
 - id: 7720358
-  name: IC8_Heidmir (complete)
+  name: Alms from the Skyrim Mission - Heidmir
   category: quest_complete
   trigger:
     quest: IC8_Heidmir
   group: imperial_cult
   region: Seyda Neen
 - id: 7720359
-  name: IC8_Ingokning (complete)
+  name: Alms from the Skyrim Mission - Ingokning
   category: quest_complete
   trigger:
     quest: IC8_Ingokning
   group: imperial_cult
   region: Seyda Neen
 - id: 7720360
-  name: IC9_Argonian_alms (complete)
+  name: Alms from the Argonian Mission - complete
   category: quest_complete
   trigger:
     quest: IC9_Argonian_alms
   group: imperial_cult
   region: Seyda Neen
 - id: 7720361
-  name: IC9_Argonian_not (complete)
+  name: Alms from the Argonian Mission - failed
   category: quest_complete
   trigger:
     quest: IC9_Argonian_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720362
-  name: IC9_slave_hiding (complete)
+  name: Alms from the Argonian Mission - Slave Hiding
   category: quest_complete
   trigger:
     quest: IC9_slave_hiding
   group: imperial_cult
   region: Seyda Neen
 - id: 7720363
-  name: IC_8_Nord_alms (complete)
+  name: Alms from the Skyrim Mission - Nord
   category: quest_complete
   trigger:
     quest: IC_8_Nord_alms
   group: imperial_cult
   region: Seyda Neen
 - id: 7720364
-  name: IC_8_Nord_alms_not (complete)
+  name: Alms from the Skyrim Mission - Nord failed
   category: quest_complete
   trigger:
     quest: IC_8_Nord_alms_not
   group: imperial_cult
   region: Seyda Neen
 - id: 7720365
-  name: IC_guide (complete)
+  name: Imperial Cult Guide
   category: quest_complete
   trigger:
     quest: IC_guide
   group: imperial_cult
   region: Seyda Neen
 - id: 7720366
-  name: IL_Blueprints (complete)
+  name: Blueprints
   category: quest_complete
   trigger:
     quest: IL_Blueprints
   group: imperial_legion
   region: Seyda Neen
 - id: 7720367
-  name: IL_Courtesy (complete)
+  name: Courtesy
   category: quest_complete
   trigger:
     quest: IL_Courtesy
   group: imperial_legion
   region: Seyda Neen
 - id: 7720368
-  name: IL_Damsel (complete)
+  name: Rescue Dandsa
   category: quest_complete
   trigger:
     quest: IL_Damsel
   group: imperial_legion
   region: Seyda Neen
 - id: 7720369
-  name: IL_FalseOrdinator (complete)
+  name: Suryn Athones' Slanders
   category: quest_complete
   trigger:
     quest: IL_FalseOrdinator
   group: imperial_legion
   region: Seyda Neen
 - id: 7720370
-  name: IL_GiantNetch (complete)
+  name: Breeding Netch
   category: quest_complete
   trigger:
     quest: IL_GiantNetch
   group: imperial_legion
   region: Seyda Neen
 - id: 7720371
-  name: IL_GnisisBlight (complete)
+  name: Gnisis Eggmine
   category: quest_complete
   trigger:
     quest: IL_GnisisBlight
   group: imperial_legion
   region: Seyda Neen
 - id: 7720372
-  name: IL_Grandmaster (complete)
+  name: Grandmaster Duel
   category: quest_complete
   trigger:
     quest: IL_Grandmaster
   group: imperial_legion
   region: Seyda Neen
 - id: 7720373
-  name: IL_KnightShield (complete)
+  name: Lord's Mail
   category: quest_complete
   trigger:
     quest: IL_KnightShield
   group: imperial_legion
   region: Seyda Neen
 - id: 7720374
-  name: IL_MaidenToken (complete)
+  name: Maiden's Token
   category: quest_complete
   trigger:
     quest: IL_MaidenToken
   group: imperial_legion
   region: Seyda Neen
 - id: 7720375
-  name: IL_Necromancer (complete)
+  name: Sorkvild the Raven
   category: quest_complete
   trigger:
     quest: IL_Necromancer
   group: imperial_legion
   region: Seyda Neen
 - id: 7720376
-  name: IL_ProtectEntius (complete)
+  name: Saprius Entius
   category: quest_complete
   trigger:
     quest: IL_ProtectEntius
   group: imperial_legion
   region: Seyda Neen
 - id: 7720377
-  name: IL_RescueHermit (complete)
+  name: Rescue Jocien Ancois
   category: quest_complete
   trigger:
     quest: IL_RescueHermit
   group: imperial_legion
   region: Seyda Neen
 - id: 7720378
-  name: IL_RescueKnight (complete)
+  name: Rescue Joncis Dalomax
   category: quest_complete
   trigger:
     quest: IL_RescueKnight
   group: imperial_legion
   region: Seyda Neen
 - id: 7720379
-  name: IL_RescuePilgrim (complete)
+  name: Rescue Madura Seran
   category: quest_complete
   trigger:
     quest: IL_RescuePilgrim
   group: imperial_legion
   region: Seyda Neen
 - id: 7720380
-  name: IL_RescueRagash (complete)
+  name: Rescue Ragash gra-Shuzgub
   category: quest_complete
   trigger:
     quest: IL_RescueRagash
   group: imperial_legion
   region: Seyda Neen
 - id: 7720381
-  name: IL_ScrapMetal (complete)
+  name: Scrap Metal
   category: quest_complete
   trigger:
     quest: IL_ScrapMetal
   group: imperial_legion
   region: Seyda Neen
 - id: 7720382
-  name: IL_Smuggler (complete)
+  name: Dwemer Artifacts at Drinar Varyon's Place
   category: quest_complete
   trigger:
     quest: IL_Smuggler
   group: imperial_legion
   region: Seyda Neen
 - id: 7720383
-  name: IL_TalosTreason (complete)
+  name: Talos Cult Conspiracy
   category: quest_complete
   trigger:
     quest: IL_TalosTreason
   group: imperial_legion
   region: Seyda Neen
 - id: 7720384
-  name: IL_TraitorWarrior (complete)
+  name: Honthjolf is a Traitor
   category: quest_complete
   trigger:
     quest: IL_TraitorWarrior
   group: imperial_legion
   region: Seyda Neen
 - id: 7720385
-  name: IL_WidowLand (complete)
+  name: Widow Vabdas' Deed
   category: quest_complete
   trigger:
     quest: IL_WidowLand
   group: imperial_legion
   region: Seyda Neen
 - id: 7720386
-  name: MG_Advancement (complete)
+  name: A Wizard's Staff
   category: quest_complete
   trigger:
     quest: MG_Advancement
   group: mages_guild
   region: Seyda Neen
 - id: 7720387
-  name: MG_Apprentice (complete)
+  name: Huleen's Hut
   category: quest_complete
   trigger:
     quest: MG_Apprentice
   group: mages_guild
   region: Seyda Neen
 - id: 7720388
-  name: MG_BCShrooms (complete)
+  name: Four Types of Mushrooms
   category: quest_complete
   trigger:
     quest: MG_BCShrooms
   group: mages_guild
   region: Seyda Neen
 - id: 7720389
-  name: MG_Bethamez (complete)
+  name: Bethamez
   category: quest_complete
   trigger:
     quest: MG_Bethamez
   group: mages_guild
   region: Seyda Neen
 - id: 7720390
-  name: MG_Bowl (complete)
+  name: Ceramic Bowl
   category: quest_complete
   trigger:
     quest: MG_Bowl
   group: mages_guild
   region: Seyda Neen
 - id: 7720391
-  name: MG_Dwarves (complete)
+  name: Mystery of the Dwarves
   category: quest_complete
   trigger:
     quest: MG_Dwarves
   group: mages_guild
   region: Seyda Neen
 - id: 7720392
-  name: MG_EscortScholar1 (complete)
+  name: Escort Tenyeminwe
   category: quest_complete
   trigger:
     quest: MG_EscortScholar1
   group: mages_guild
   region: Seyda Neen
 - id: 7720393
-  name: MG_EscortScholar2 (complete)
+  name: Escort Itermerel
   category: quest_complete
   trigger:
     quest: MG_EscortScholar2
   group: mages_guild
   region: Seyda Neen
 - id: 7720394
-  name: MG_Excavation (complete)
+  name: Nchuleftingth Expedition
   category: quest_complete
   trigger:
     quest: MG_Excavation
   group: mages_guild
   region: Seyda Neen
 - id: 7720395
-  name: MG_Flowers (complete)
+  name: Four Types of Flowers
   category: quest_complete
   trigger:
     quest: MG_Flowers
   group: mages_guild
   region: Seyda Neen
 - id: 7720396
-  name: MG_Guildmaster (complete)
+  name: Arch-Mage
   category: quest_complete
   trigger:
     quest: MG_Guildmaster
   group: mages_guild
   region: Seyda Neen
 - id: 7720397
-  name: MG_JoinUs (complete)
+  name: Recruit or Kill Llarar Bereloth
   category: quest_complete
   trigger:
     quest: MG_JoinUs
   group: mages_guild
   region: Seyda Neen
 - id: 7720398
-  name: MG_KillNecro1 (complete)
+  name: Kill Necromancer Telura Ulver
   category: quest_complete
   trigger:
     quest: MG_KillNecro1
   group: mages_guild
   region: Seyda Neen
 - id: 7720399
-  name: MG_KillNecro2 (complete)
+  name: Kill Necromancer Tashpi Ashibael
   category: quest_complete
   trigger:
     quest: MG_KillNecro2
   group: mages_guild
   region: Seyda Neen
 - id: 7720400
-  name: MG_KillTelvanni (complete)
+  name: Kill the Telvanni Councilors
   category: quest_complete
   trigger:
     quest: MG_KillTelvanni
   group: mages_guild
   region: Seyda Neen
 - id: 7720401
-  name: MG_Mzuleft (complete)
+  name: Scarab Plans in Mzuleft
   category: quest_complete
   trigger:
     quest: MG_Mzuleft
   group: mages_guild
   region: Seyda Neen
 - id: 7720402
-  name: MG_NchuleftBook (complete)
+  name: Chronicles of Nchuleft
   category: quest_complete
   trigger:
     quest: MG_NchuleftBook
   group: mages_guild
   region: Seyda Neen
 - id: 7720403
-  name: MG_PayDues (complete)
+  name: Manwe's Dues
   category: quest_complete
   trigger:
     quest: MG_PayDues
   group: mages_guild
   region: Seyda Neen
 - id: 7720404
-  name: MG_Potion (complete)
+  name: A Potion from Skink-in-Tree's-Shade
   category: quest_complete
   trigger:
     quest: MG_Potion
   group: mages_guild
   region: Seyda Neen
 - id: 7720405
-  name: MG_ReturnBook (complete)
+  name: Return Chimarvamidium
   category: quest_complete
   trigger:
     quest: MG_ReturnBook
   group: mages_guild
   region: Seyda Neen
 - id: 7720406
-  name: MG_Sabotage (complete)
+  name: Fake Soul Gem
   category: quest_complete
   trigger:
     quest: MG_Sabotage
   group: mages_guild
   region: Seyda Neen
 - id: 7720407
-  name: MG_Science (complete)
+  name: Dwemer Tube from Arkngthunch-Sturdumz
   category: quest_complete
   trigger:
     quest: MG_Science
   group: mages_guild
   region: Seyda Neen
 - id: 7720408
-  name: MG_Sharn_Necro (complete)
+  name: I'm NOT a Necromancer!
   category: quest_complete
   trigger:
     quest: MG_Sharn_Necro
   group: mages_guild
   region: Seyda Neen
 - id: 7720409
-  name: MG_SoulGem2 (complete)
+  name: Soul of an Ash Ghoul
   category: quest_complete
   trigger:
     quest: MG_SoulGem2
   group: mages_guild
   region: Seyda Neen
 - id: 7720410
-  name: MG_SpyCatch (complete)
+  name: Catch a Spy
   category: quest_complete
   trigger:
     quest: MG_SpyCatch
   group: mages_guild
   region: Seyda Neen
 - id: 7720411
-  name: MG_StaffMagnus (complete)
+  name: The Staff of Magnus
   category: quest_complete
   trigger:
     quest: MG_StaffMagnus
   group: mages_guild
   region: Seyda Neen
 - id: 7720412
-  name: MG_StealBook (complete)
+  name: Steal Chimarvamidium
   category: quest_complete
   trigger:
     quest: MG_StealBook
   group: mages_guild
   region: Seyda Neen
 - id: 7720413
-  name: MG_StolenReport (complete)
+  name: Stolen Reports
   category: quest_complete
   trigger:
     quest: MG_StolenReport
   group: mages_guild
   region: Seyda Neen
 - id: 7720414
-  name: MG_StopCompetition (complete)
+  name: Unsanctioned Training
   category: quest_complete
   trigger:
     quest: MG_StopCompetition
   group: mages_guild
   region: Seyda Neen
 - id: 7720415
-  name: MG_VampireCure (complete)
+  name: Galur Rithari's Papers
   category: quest_complete
   trigger:
     quest: MG_VampireCure
   group: mages_guild
   region: Seyda Neen
 - id: 7720416
-  name: MG_VampVol2 (complete)
+  name: Vampires of Vvardenfell, Vol II
   category: quest_complete
   trigger:
     quest: MG_VampVol2
   group: mages_guild
   region: Seyda Neen
 - id: 7720417
-  name: MG_WarlocksRing (complete)
+  name: Warlock's Ring
   category: quest_complete
   trigger:
     quest: MG_WarlocksRing
   group: mages_guild
   region: Seyda Neen
 - id: 7720418
-  name: MG_WiseWoman (complete)
+  name: Meeting with a Wise Woman
   category: quest_complete
   trigger:
     quest: MG_WiseWoman
   group: mages_guild
   region: Seyda Neen
 - id: 7720419
-  name: MS_Apologies (complete)
+  name: A Rash of Insults
   category: quest_complete
   trigger:
     quest: MS_Apologies
   group: misc
   region: Seyda Neen
 - id: 7720420
-  name: MS_ArenimTomb (complete)
+  name: Search for Her Father's Amulet
   category: quest_complete
   trigger:
     quest: MS_ArenimTomb
   group: misc
   region: Seyda Neen
 - id: 7720421
-  name: MS_FargothRing (complete)
+  name: Fargoth's Ring
   category: quest_complete
   trigger:
     quest: MS_FargothRing
   group: misc
   region: Seyda Neen
 - id: 7720422
-  name: MS_Gold_kanet_flower (complete)
+  name: Roland's Tear
   category: quest_complete
   trigger:
     quest: MS_Gold_kanet_flower
   group: misc
   region: Seyda Neen
 - id: 7720423
-  name: MS_Hannat (complete)
+  name: Hannat Zainsubani
   category: quest_complete
   trigger:
     quest: MS_Hannat
   group: misc
   region: Seyda Neen
 - id: 7720424
-  name: MS_HatandSkirt (complete)
+  name: The Sad Sorcerer
   category: quest_complete
   trigger:
     quest: MS_HatandSkirt
   group: misc
   region: Seyda Neen
 - id: 7720425
-  name: MS_HentusPants (complete)
+  name: Hentus Needs Pants
   category: quest_complete
   trigger:
     quest: MS_HentusPants
   group: misc
   region: Seyda Neen
 - id: 7720426
-  name: MS_JobashaAbolitionist (complete)
+  name: Free the Slaves
   category: quest_complete
   trigger:
     quest: MS_JobashaAbolitionist
   group: misc
   region: Seyda Neen
 - id: 7720427
-  name: MS_Lookout (complete)
+  name: Fargoth's Hiding Place
   category: quest_complete
   trigger:
     quest: MS_Lookout
   group: misc
   region: Seyda Neen
 - id: 7720428
-  name: MS_Nord_burial (complete)
+  name: Ennbjof's Nord Burial
   category: quest_complete
   trigger:
     quest: MS_Nord_burial
   group: misc
   region: Seyda Neen
 - id: 7720429
-  name: MS_Nuccius (complete)
+  name: Vodunius Nuccius
   category: quest_complete
   trigger:
     quest: MS_Nuccius
   group: misc
   region: Seyda Neen
 - id: 7720430
-  name: MS_Piernette (complete)
+  name: The Silver Bowl
   category: quest_complete
   trigger:
     quest: MS_Piernette
   group: misc
   region: Seyda Neen
 - id: 7720431
-  name: MS_propylon (complete)
+  name: Propylon
   category: quest_complete
   trigger:
     quest: MS_propylon
   group: misc
   region: Seyda Neen
 - id: 7720432
-  name: MS_RaGruzgob (complete)
+  name: Ra'Gruzgob
   category: quest_complete
   trigger:
     quest: MS_RaGruzgob
   group: misc
   region: Seyda Neen
 - id: 7720433
-  name: MS_Trerayna_bounty (complete)
+  name: A Bounty for Trerayna Dalen
   category: quest_complete
   trigger:
     quest: MS_Trerayna_bounty
   group: misc
   region: Seyda Neen
 - id: 7720434
-  name: MS_Umbra (complete)
+  name: Umbra
   category: quest_complete
   trigger:
     quest: MS_Umbra
   group: misc
   region: Seyda Neen
 - id: 7720435
-  name: MS_VampireCure (complete)
+  name: A Cure for Vampirism
   category: quest_complete
   trigger:
     quest: MS_VampireCure
   group: misc
   region: Seyda Neen
 - id: 7720436
-  name: MS_VassirDidanat (complete)
+  name: Vassir-Didanat Ebony Mine
   category: quest_complete
   trigger:
     quest: MS_VassirDidanat
   group: misc
   region: Seyda Neen
 - id: 7720437
-  name: MS_WhiteGuar (complete)
+  name: Dreams of a White Guar
   category: quest_complete
   trigger:
     quest: MS_WhiteGuar
   group: misc
   region: Seyda Neen
 - id: 7720438
-  name: MT_DB_AldSotha (complete)
+  name: Execute Severa Magia
   category: quest_complete
   trigger:
     quest: MT_DB_AldSotha
   group: morag_tong
   region: Seyda Neen
 - id: 7720439
-  name: MT_DB_Assernerairan (complete)
+  name: Execute Durus Marius
   category: quest_complete
   trigger:
     quest: MT_DB_Assernerairan
   group: morag_tong
   region: Seyda Neen
 - id: 7720440
-  name: MT_DB_Carecalmo (complete)
+  name: Ultimatum for Carecalmo
   category: quest_complete
   trigger:
     quest: MT_DB_Carecalmo
   group: morag_tong
   region: Seyda Neen
 - id: 7720441
-  name: MT_DB_Contact (complete)
+  name: A Contact in the Dark Brotherhood
   category: quest_complete
   trigger:
     quest: MT_DB_Contact
   group: morag_tong
   region: Seyda Neen
 - id: 7720442
-  name: MT_DB_Darys (complete)
+  name: Ultimatum for Movis Darys
   category: quest_complete
   trigger:
     quest: MT_DB_Darys
   group: morag_tong
   region: Seyda Neen
 - id: 7720443
-  name: MT_Grandmaster (complete)
+  name: Grandmaster
   category: quest_complete
   trigger:
     quest: MT_Grandmaster
   group: morag_tong
   region: Seyda Neen
 - id: 7720444
-  name: MT_S_BalancedArmor (complete)
+  name: Balanced Armor
   category: quest_complete
   trigger:
     quest: MT_S_BalancedArmor
   group: morag_tong
   region: Seyda Neen
 - id: 7720445
-  name: MT_S_DeepBiting (complete)
+  name: Deep Biting
   category: quest_complete
   trigger:
     quest: MT_S_DeepBiting
   group: morag_tong
   region: Seyda Neen
 - id: 7720446
-  name: MT_S_Denial (complete)
+  name: Denial
   category: quest_complete
   trigger:
     quest: MT_S_Denial
   group: morag_tong
   region: Seyda Neen
 - id: 7720447
-  name: MT_S_Fleetness (complete)
+  name: Belt of Sanguine Fleetness
   category: quest_complete
   trigger:
     quest: MT_S_Fleetness
   group: morag_tong
   region: Seyda Neen
 - id: 7720448
-  name: MT_S_FluidEvasion (complete)
+  name: Fluid Evasion
   category: quest_complete
   trigger:
     quest: MT_S_FluidEvasion
   group: morag_tong
   region: Seyda Neen
 - id: 7720449
-  name: MT_S_GlibSpeech (complete)
+  name: Glib Speech
   category: quest_complete
   trigger:
     quest: MT_S_GlibSpeech
   group: morag_tong
   region: Seyda Neen
 - id: 7720450
-  name: MT_S_Golden (complete)
+  name: Golden
   category: quest_complete
   trigger:
     quest: MT_S_Golden
   group: morag_tong
   region: Seyda Neen
 - id: 7720451
-  name: MT_S_Green (complete)
+  name: Green
   category: quest_complete
   trigger:
     quest: MT_S_Green
   group: morag_tong
   region: Seyda Neen
 - id: 7720452
-  name: MT_S_Hewing (complete)
+  name: Hewing
   category: quest_complete
   trigger:
     quest: MT_S_Hewing
   group: morag_tong
   region: Seyda Neen
 - id: 7720453
-  name: MT_S_HornyFist (complete)
+  name: Horny Fist
   category: quest_complete
   trigger:
     quest: MT_S_HornyFist
   group: morag_tong
   region: Seyda Neen
 - id: 7720454
-  name: MT_S_Impaling (complete)
+  name: Impaling
   category: quest_complete
   trigger:
     quest: MT_S_Impaling
   group: morag_tong
   region: Seyda Neen
 - id: 7720455
-  name: MT_S_Leaping (complete)
+  name: Leaping
   category: quest_complete
   trigger:
     quest: MT_S_Leaping
   group: morag_tong
   region: Seyda Neen
 - id: 7720456
-  name: MT_S_MartialCraft (complete)
+  name: Martial Craft
   category: quest_complete
   trigger:
     quest: MT_S_MartialCraft
   group: morag_tong
   region: Seyda Neen
 - id: 7720457
-  name: MT_S_NimbleArmor (complete)
+  name: Nimble Armor
   category: quest_complete
   trigger:
     quest: MT_S_NimbleArmor
   group: morag_tong
   region: Seyda Neen
 - id: 7720458
-  name: MT_S_Red (complete)
+  name: Threads of the Webspinner
   category: quest_complete
   trigger:
     quest: MT_S_Red
   group: morag_tong
   region: Seyda Neen
 - id: 7720459
-  name: MT_S_Safekeeping (complete)
+  name: Safekeeping
   category: quest_complete
   trigger:
     quest: MT_S_Safekeeping
   group: morag_tong
   region: Seyda Neen
 - id: 7720460
-  name: MT_S_Silver (complete)
+  name: Silver
   category: quest_complete
   trigger:
     quest: MT_S_Silver
   group: morag_tong
   region: Seyda Neen
 - id: 7720461
-  name: MT_S_Smiting (complete)
+  name: Smiting
   category: quest_complete
   trigger:
     quest: MT_S_Smiting
   group: morag_tong
   region: Seyda Neen
 - id: 7720462
-  name: MT_S_Stalking (complete)
+  name: Stalking
   category: quest_complete
   trigger:
     quest: MT_S_Stalking
   group: morag_tong
   region: Seyda Neen
 - id: 7720463
-  name: MT_S_StolidArmor (complete)
+  name: Stolid Armor
   category: quest_complete
   trigger:
     quest: MT_S_StolidArmor
   group: morag_tong
   region: Seyda Neen
 - id: 7720464
-  name: MT_S_Sublime (complete)
+  name: Ring of Sanguine Sublime Wisdom
   category: quest_complete
   trigger:
     quest: MT_S_Sublime
   group: morag_tong
   region: Seyda Neen
 - id: 7720465
-  name: MT_S_Sureflight (complete)
+  name: Sureflight
   category: quest_complete
   trigger:
     quest: MT_S_Sureflight
   group: morag_tong
   region: Seyda Neen
 - id: 7720466
-  name: MT_S_Swiftblade (complete)
+  name: Swiftblade
   category: quest_complete
   trigger:
     quest: MT_S_Swiftblade
   group: morag_tong
   region: Seyda Neen
 - id: 7720467
-  name: MT_S_Transcendent (complete)
+  name: Transcendent
   category: quest_complete
   trigger:
     quest: MT_S_Transcendent
   group: morag_tong
   region: Seyda Neen
 - id: 7720468
-  name: MT_S_Transfiguring (complete)
+  name: Transfiguring
   category: quest_complete
   trigger:
     quest: MT_S_Transfiguring
   group: morag_tong
   region: Seyda Neen
 - id: 7720469
-  name: MT_S_Unseen (complete)
+  name: Unseen
   category: quest_complete
   trigger:
     quest: MT_S_Unseen
   group: morag_tong
   region: Seyda Neen
 - id: 7720470
-  name: MT_WritBaladas (complete)
+  name: Writ for Baladas Demnevanni
   category: quest_complete
   trigger:
     quest: MT_WritBaladas
   group: morag_tong
   region: Seyda Neen
 - id: 7720471
-  name: MT_WritBelvayn (complete)
+  name: Writ for Tirer Belvayn
   category: quest_complete
   trigger:
     quest: MT_WritBelvayn
   group: morag_tong
   region: Seyda Neen
 - id: 7720472
-  name: MT_WritBemis (complete)
+  name: Writ for Mathyn Bemis
   category: quest_complete
   trigger:
     quest: MT_WritBemis
   group: morag_tong
   region: Seyda Neen
 - id: 7720473
-  name: MT_WritBero (complete)
+  name: Writ for Dram Bero
   category: quest_complete
   trigger:
     quest: MT_WritBero
   group: morag_tong
   region: Seyda Neen
 - id: 7720474
-  name: MT_WritBrilnosu (complete)
+  name: Writ for Brilnosu Llarys
   category: quest_complete
   trigger:
     quest: MT_WritBrilnosu
   group: morag_tong
   region: Seyda Neen
 - id: 7720475
-  name: MT_WritGalasa (complete)
+  name: Writ for Galasa Uvayn
   category: quest_complete
   trigger:
     quest: MT_WritGalasa
   group: morag_tong
   region: Seyda Neen
 - id: 7720476
-  name: MT_WritGuril (complete)
+  name: Writ for Guril Retheran
   category: quest_complete
   trigger:
     quest: MT_WritGuril
   group: morag_tong
   region: Seyda Neen
 - id: 7720477
-  name: MT_WritMavon (complete)
+  name: Writ for Mavon Drenim
   category: quest_complete
   trigger:
     quest: MT_WritMavon
   group: morag_tong
   region: Seyda Neen
 - id: 7720478
-  name: MT_WritNavil (complete)
+  name: Writ for Navil and Ranes Ienith
   category: quest_complete
   trigger:
     quest: MT_WritNavil
   group: morag_tong
   region: Seyda Neen
 - id: 7720479
-  name: MT_WritOran (complete)
+  name: Writ for Feruren Oran
   category: quest_complete
   trigger:
     quest: MT_WritOran
   group: morag_tong
   region: Seyda Neen
 - id: 7720480
-  name: MT_WritSadus (complete)
+  name: Writ for Sarayn Sadus
   category: quest_complete
   trigger:
     quest: MT_WritSadus
   group: morag_tong
   region: Seyda Neen
 - id: 7720481
-  name: MT_WritSaren (complete)
+  name: Writ for Toris Saren
   category: quest_complete
   trigger:
     quest: MT_WritSaren
   group: morag_tong
   region: Seyda Neen
 - id: 7720482
-  name: MT_WritTherana (complete)
+  name: Writ for Mistress Therana
   category: quest_complete
   trigger:
     quest: MT_WritTherana
   group: morag_tong
   region: Seyda Neen
 - id: 7720483
-  name: MT_WritVarro (complete)
+  name: Writ for Larrius Varro
   category: quest_complete
   trigger:
     quest: MT_WritVarro
   group: morag_tong
   region: Seyda Neen
 - id: 7720484
-  name: MT_WritVendu (complete)
+  name: Writ for Ethal Seloth and Idroso Vendu
   category: quest_complete
   trigger:
     quest: MT_WritVendu
   group: morag_tong
   region: Seyda Neen
 - id: 7720485
-  name: MT_WritYasalmibaal (complete)
+  name: Writ for Odaishah Yasalmibaal
   category: quest_complete
   trigger:
     quest: MT_WritYasalmibaal
   group: morag_tong
   region: Seyda Neen
 - id: 7720486
-  name: MV_3_Charming (complete)
+  name: Nels Llendo
   category: quest_complete
   trigger:
     quest: MV_3_Charming
   group: misc
   region: Seyda Neen
 - id: 7720487
-  name: MV_AbusedHealer (complete)
+  name: Recovering Cloudcleaver
   category: quest_complete
   trigger:
     quest: MV_AbusedHealer
   group: misc
   region: Seyda Neen
 - id: 7720488
-  name: MV_AngryTrader (complete)
+  name: The Angry Trader
   category: quest_complete
   trigger:
     quest: MV_AngryTrader
   group: misc
   region: Seyda Neen
 - id: 7720489
-  name: MV_BanditVictim (complete)
+  name: Aeta Wave-Breaker's Jewels
   category: quest_complete
   trigger:
     quest: MV_BanditVictim
   group: misc
   region: Seyda Neen
 - id: 7720490
-  name: MV_Bastard (complete)
+  name: Fjol the Outlaw
   category: quest_complete
   trigger:
     quest: MV_Bastard
   group: misc
   region: Seyda Neen
 - id: 7720491
-  name: MV_BountyHunter (complete)
+  name: The Drunken Bounty Hunter
   category: quest_complete
   trigger:
     quest: MV_BountyHunter
   group: misc
   region: Seyda Neen
 - id: 7720492
-  name: MV_Bugrol (complete)
+  name: Favors for Orcs
   category: quest_complete
   trigger:
     quest: MV_Bugrol
   group: misc
   region: Seyda Neen
 - id: 7720493
-  name: MV_CultistVictim (complete)
+  name: Kidnapped by Cultists
   category: quest_complete
   trigger:
     quest: MV_CultistVictim
   group: misc
   region: Seyda Neen
 - id: 7720494
-  name: MV_DeadTaxman (complete)
+  name: Death of a Taxman
   category: quest_complete
   trigger:
     quest: MV_DeadTaxman
   group: misc
   region: Seyda Neen
 - id: 7720495
-  name: MV_FakeSlave (complete)
+  name: Tul's Escape
   category: quest_complete
   trigger:
     quest: MV_FakeSlave
   group: misc
   region: Seyda Neen
 - id: 7720496
-  name: MV_InnocentAshlanders (complete)
+  name: Marsus Tullius' Missing Hides
   category: quest_complete
   trigger:
     quest: MV_InnocentAshlanders
   group: misc
   region: Seyda Neen
 - id: 7720497
-  name: MV_LostRing (complete)
+  name: The Lady's Ring
   category: quest_complete
   trigger:
     quest: MV_LostRing
   group: misc
   region: Seyda Neen
 - id: 7720498
-  name: MV_MissingCompanion (complete)
+  name: Divided by Nix Hounds
   category: quest_complete
   trigger:
     quest: MV_MissingCompanion
   group: misc
   region: Seyda Neen
 - id: 7720499
-  name: MV_MonsterDisease (complete)
+  name: The Man Who Spoke to Slaughterfish
   category: quest_complete
   trigger:
     quest: MV_MonsterDisease
   group: misc
   region: Seyda Neen
 - id: 7720500
-  name: MV_OutcastAshlanders (complete)
+  name: Girith's Stolen Hides
   category: quest_complete
   trigger:
     quest: MV_OutcastAshlanders
   group: misc
   region: Seyda Neen
 - id: 7720501
-  name: MV_ParalyzedBarbarian (complete)
+  name: The Paralyzed Barbarian
   category: quest_complete
   trigger:
     quest: MV_ParalyzedBarbarian
   group: misc
   region: Seyda Neen
 - id: 7720502
-  name: MV_PoorPilgrim (complete)
+  name: Lead the Pilgrim to Koal Cave
   category: quest_complete
   trigger:
     quest: MV_PoorPilgrim
   group: misc
   region: Seyda Neen
 - id: 7720503
-  name: MV_RecoverWidowmaker (complete)
+  name: Widowmaker
   category: quest_complete
   trigger:
     quest: MV_RecoverWidowmaker
   group: misc
   region: Seyda Neen
 - id: 7720504
-  name: MV_RichPilgrim (complete)
+  name: Viatrix, The Annoying Pilgrim
   category: quest_complete
   trigger:
     quest: MV_RichPilgrim
   group: misc
   region: Seyda Neen
 - id: 7720505
-  name: MV_RichTrader (complete)
+  name: A Man and His Guar
   category: quest_complete
   trigger:
     quest: MV_RichTrader
   group: misc
   region: Seyda Neen
 - id: 7720506
-  name: MV_RunawaySlave (complete)
+  name: The Runaway Slave
   category: quest_complete
   trigger:
     quest: MV_RunawaySlave
   group: misc
   region: Seyda Neen
 - id: 7720507
-  name: MV_SkoomaCorpse (complete)
+  name: The Corpse and the Skooma Pipe
   category: quest_complete
   trigger:
     quest: MV_SkoomaCorpse
   group: misc
   region: Seyda Neen
 - id: 7720508
-  name: MV_SlaveMule (complete)
+  name: Rabinna's Inner Beauty
   category: quest_complete
   trigger:
     quest: MV_SlaveMule
   group: misc
   region: Seyda Neen
 - id: 7720509
-  name: MV_StrayedPilgrim (complete)
+  name: The Scholars and the Mating Kagouti
   category: quest_complete
   trigger:
     quest: MV_StrayedPilgrim
   group: misc
   region: Seyda Neen
 - id: 7720510
-  name: MV_ThiefTrader (complete)
+  name: The Weapon Delivery
   category: quest_complete
   trigger:
     quest: MV_ThiefTrader
   group: misc
   region: Seyda Neen
 - id: 7720511
-  name: MV_TraderAbandoned (complete)
+  name: Pemenie and the Boots of Blinding Speed
   category: quest_complete
   trigger:
     quest: MV_TraderAbandoned
   group: misc
   region: Seyda Neen
 - id: 7720512
-  name: MV_TraderLate (complete)
+  name: The Shirt of His Back
   category: quest_complete
   trigger:
     quest: MV_TraderLate
   group: misc
   region: Seyda Neen
 - id: 7720513
-  name: MV_TraderMissed (complete)
+  name: An Escort to Molag Mar
   category: quest_complete
   trigger:
     quest: MV_TraderMissed
   group: misc
   region: Seyda Neen
 - id: 7720514
-  name: MV_VictimRomance (complete)
+  name: The Beauty and the Bandit
   category: quest_complete
   trigger:
     quest: MV_VictimRomance
   group: misc
   region: Seyda Neen
 - id: 7720515
-  name: MV_WanderingPilgrim (complete)
+  name: To the Fields of Kummu
   category: quest_complete
   trigger:
     quest: MV_WanderingPilgrim
   group: misc
   region: Seyda Neen
 - id: 7720516
-  name: Romance_Ahnassi (complete)
+  name: Ahnassi, a Special Friend - complete
   category: quest_complete
   trigger:
     quest: Romance_Ahnassi
   group: non_quest
   region: Seyda Neen
 - id: 7720517
-  name: romance_ahnassi_A (complete)
+  name: Ahnassi, a Special Friend - A
   category: quest_complete
   trigger:
     quest: romance_ahnassi_A
   group: non_quest
   region: Seyda Neen
 - id: 7720518
-  name: rules_blades (complete)
+  name: 'Rules: Blades'
   category: quest_complete
   trigger:
     quest: rules_blades
   group: faction_rules
   region: Seyda Neen
 - id: 7720519
-  name: rules_fighters (complete)
+  name: 'Rules: Fighters Guild'
   category: quest_complete
   trigger:
     quest: rules_fighters
   group: faction_rules
   region: Seyda Neen
 - id: 7720520
-  name: rules_hlaalu (complete)
+  name: 'Rules: Hlaalu'
   category: quest_complete
   trigger:
     quest: rules_hlaalu
   group: faction_rules
   region: Seyda Neen
 - id: 7720521
-  name: rules_legion (complete)
+  name: 'Rules: Imperial Legion'
   category: quest_complete
   trigger:
     quest: rules_legion
   group: faction_rules
   region: Seyda Neen
 - id: 7720522
-  name: rules_mages (complete)
+  name: 'Rules: Mages Guild'
   category: quest_complete
   trigger:
     quest: rules_mages
   group: faction_rules
   region: Seyda Neen
 - id: 7720523
-  name: rules_morag (complete)
+  name: 'Rules: Morag Tong'
   category: quest_complete
   trigger:
     quest: rules_morag
   group: faction_rules
   region: Seyda Neen
 - id: 7720524
-  name: rules_redoran (complete)
+  name: 'Rules: Redoran'
   category: quest_complete
   trigger:
     quest: rules_redoran
   group: faction_rules
   region: Seyda Neen
 - id: 7720525
-  name: rules_telvanni (complete)
+  name: 'Rules: Telvanni'
   category: quest_complete
   trigger:
     quest: rules_telvanni
   group: faction_rules
   region: Seyda Neen
 - id: 7720526
-  name: rules_temple (complete)
+  name: 'Rules: Temple'
   category: quest_complete
   trigger:
     quest: rules_temple
   group: faction_rules
   region: Seyda Neen
 - id: 7720527
-  name: rules_thieves (complete)
+  name: 'Rules: Thieves Guild'
   category: quest_complete
   trigger:
     quest: rules_thieves
   group: faction_rules
   region: Seyda Neen
 - id: 7720528
-  name: TG_AldruhnDefenses (complete)
+  name: Retrieve the Scrap Metal
   category: quest_complete
   trigger:
     quest: TG_AldruhnDefenses
   group: thieves_guild
   region: Seyda Neen
 - id: 7720529
-  name: TG_BadGandosa (complete)
+  name: Naughty Gandosa
   category: quest_complete
   trigger:
     quest: TG_BadGandosa
   group: thieves_guild
   region: Seyda Neen
 - id: 7720530
-  name: TG_BalmoraDefenses (complete)
+  name: Master of Security
   category: quest_complete
   trigger:
     quest: TG_BalmoraDefenses
   group: thieves_guild
   region: Seyda Neen
 - id: 7720531
-  name: TG_BitterBribe (complete)
+  name: The Bitter Cup
   category: quest_complete
   trigger:
     quest: TG_BitterBribe
   group: thieves_guild
   region: Seyda Neen
 - id: 7720532
-  name: TG_BrotherBragor (complete)
+  name: Free New-Shoes Bragor
   category: quest_complete
   trigger:
     quest: TG_BrotherBragor
   group: thieves_guild
   region: Seyda Neen
 - id: 7720533
-  name: TG_BrotherThief (complete)
+  name: Find Brother Nads
   category: quest_complete
   trigger:
     quest: TG_BrotherThief
   group: thieves_guild
   region: Seyda Neen
 - id: 7720534
-  name: TG_CookbookAlchemy (complete)
+  name: Potion Recipe
   category: quest_complete
   trigger:
     quest: TG_CookbookAlchemy
   group: thieves_guild
   region: Seyda Neen
 - id: 7720535
-  name: TG_DartsJudgement (complete)
+  name: The Darts of Judgement
   category: quest_complete
   trigger:
     quest: TG_DartsJudgement
   group: thieves_guild
   region: Seyda Neen
 - id: 7720536
-  name: TG_Diamonds (complete)
+  name: Diamonds for Habasi
   category: quest_complete
   trigger:
     quest: TG_Diamonds
   group: thieves_guild
   region: Seyda Neen
 - id: 7720537
-  name: TG_EbonyStaff (complete)
+  name: Felen's Ebony Staff
   category: quest_complete
   trigger:
     quest: TG_EbonyStaff
   group: thieves_guild
   region: Seyda Neen
 - id: 7720538
-  name: TG_EnemyParley (complete)
+  name: Speak With Percius
   category: quest_complete
   trigger:
     quest: TG_EnemyParley
   group: thieves_guild
   region: Seyda Neen
 - id: 7720539
-  name: TG_GrandmasterRetort (complete)
+  name: The Grandmaster's Retort
   category: quest_complete
   trigger:
     quest: TG_GrandmasterRetort
   group: thieves_guild
   region: Seyda Neen
 - id: 7720540
-  name: TG_Hostage (complete)
+  name: Hrundi's Lover
   category: quest_complete
   trigger:
     quest: TG_Hostage
   group: thieves_guild
   region: Seyda Neen
 - id: 7720541
-  name: TG_KillHardHeart (complete)
+  name: Kill Hard-Heart (Thieves Guild)
   category: quest_complete
   trigger:
     quest: TG_KillHardHeart
   group: thieves_guild
   region: Seyda Neen
 - id: 7720542
-  name: TG_KillIenith (complete)
+  name: The Brothers Ienith
   category: quest_complete
   trigger:
     quest: TG_KillIenith
   group: thieves_guild
   region: Seyda Neen
 - id: 7720543
-  name: TG_LootAldruhnMG (complete)
+  name: Loot the Mages Guild
   category: quest_complete
   trigger:
     quest: TG_LootAldruhnMG
   group: thieves_guild
   region: Seyda Neen
 - id: 7720544
-  name: TG_ManorKey (complete)
+  name: Nerano Manor Key
   category: quest_complete
   trigger:
     quest: TG_ManorKey
   group: thieves_guild
   region: Seyda Neen
 - id: 7720545
-  name: TG_MasterHelm (complete)
+  name: Redoran Master Helm
   category: quest_complete
   trigger:
     quest: TG_MasterHelm
   group: thieves_guild
   region: Seyda Neen
 - id: 7720546
-  name: TG_OverduePayments (complete)
+  name: Ra'Zhid's Dwemer Artifacts
   category: quest_complete
   trigger:
     quest: TG_OverduePayments
   group: thieves_guild
   region: Seyda Neen
 - id: 7720547
-  name: TG_RedoranCookbook (complete)
+  name: Redoran Cookbook
   category: quest_complete
   trigger:
     quest: TG_RedoranCookbook
   group: thieves_guild
   region: Seyda Neen
 - id: 7720548
-  name: TG_SadrithMoraDefenses (complete)
+  name: Wizard For Hire
   category: quest_complete
   trigger:
     quest: TG_SadrithMoraDefenses
   group: thieves_guild
   region: Seyda Neen
 - id: 7720549
-  name: TG_SS_ChurchPolice (complete)
+  name: The Dwemer Goblet
   category: quest_complete
   trigger:
     quest: TG_SS_ChurchPolice
   group: thieves_guild
   region: Seyda Neen
 - id: 7720550
-  name: TG_SS_Enamor (complete)
+  name: Enamor
   category: quest_complete
   trigger:
     quest: TG_SS_Enamor
   group: thieves_guild
   region: Seyda Neen
 - id: 7720551
-  name: TG_SS_Generosity1 (complete)
+  name: The Hlervu Locket
   category: quest_complete
   trigger:
     quest: TG_SS_Generosity1
   group: thieves_guild
   region: Seyda Neen
 - id: 7720552
-  name: TG_SS_Generosity2 (complete)
+  name: Land Deed
   category: quest_complete
   trigger:
     quest: TG_SS_Generosity2
   group: thieves_guild
   region: Seyda Neen
 - id: 7720553
-  name: TG_SS_GreedySlaver (complete)
+  name: Brallion's Ring
   category: quest_complete
   trigger:
     quest: TG_SS_GreedySlaver
   group: thieves_guild
   region: Seyda Neen
 - id: 7720554
-  name: TG_SS_Plutocrats (complete)
+  name: Books for Vala
   category: quest_complete
   trigger:
     quest: TG_SS_Plutocrats
   group: thieves_guild
   region: Seyda Neen
 - id: 7720555
-  name: TG_SS_Yngling (complete)
+  name: Yngling's Ledger
   category: quest_complete
   trigger:
     quest: TG_SS_Yngling
   group: thieves_guild
   region: Seyda Neen
 - id: 7720556
-  name: TG_VintageBrandy (complete)
+  name: The Vintage Brandy
   category: quest_complete
   trigger:
     quest: TG_VintageBrandy
   group: thieves_guild
   region: Seyda Neen
 - id: 7720557
-  name: TG_Withershins (complete)
+  name: Withershins
   category: quest_complete
   trigger:
     quest: TG_Withershins
   group: thieves_guild
   region: Seyda Neen
 - id: 7720558
-  name: Town_Ald_Bevene (complete)
+  name: Ienas Sarandas - Ald Bevene
   category: quest_complete
   trigger:
     quest: Town_Ald_Bevene
   group: misc
   region: Seyda Neen
 - id: 7720559
-  name: Town_Ald_Bivale (complete)
+  name: Ienas Sarandas - Ald Bivale
   category: quest_complete
   trigger:
     quest: Town_Ald_Bivale
   group: misc
   region: Seyda Neen
 - id: 7720560
-  name: Town_Ald_Daynes (complete)
+  name: Ienas Sarandas - Ald Daynes
   category: quest_complete
   trigger:
     quest: Town_Ald_Daynes
   group: misc
   region: Seyda Neen
 - id: 7720561
-  name: town_ald_ienas (complete)
+  name: Ienas Sarandas - Ald
   category: quest_complete
   trigger:
     quest: town_ald_ienas
   group: misc
   region: Seyda Neen
 - id: 7720562
-  name: Town_Ald_Llethri (complete)
+  name: Ienas Sarandas - Ald Llethri
   category: quest_complete
   trigger:
     quest: Town_Ald_Llethri
   group: misc
   region: Seyda Neen
 - id: 7720563
-  name: Town_Ald_Tiras (complete)
+  name: Ienas Sarandas - Ald Tiras
   category: quest_complete
   trigger:
     quest: Town_Ald_Tiras
   group: misc
   region: Seyda Neen
 - id: 7720564
-  name: Town_Aldruhn (complete)
+  name: Ienas Sarandas - Aldruhn
   category: quest_complete
   trigger:
     quest: Town_Aldruhn
   group: misc
   region: Seyda Neen
 - id: 7720565
-  name: town_balmora (complete)
+  name: Larrius Varro Tells a Little Story
   category: quest_complete
   trigger:
     quest: town_balmora
   group: misc
   region: Seyda Neen
 - id: 7720566
-  name: town_Sadrith (complete)
+  name: Gateway Ghost - Sadrith
   category: quest_complete
   trigger:
     quest: town_Sadrith
   group: misc
   region: Seyda Neen
 - id: 7720567
-  name: town_sadrith_expert (complete)
+  name: Gateway Ghost - Sadrith Expert
   category: quest_complete
   trigger:
     quest: town_sadrith_expert
   group: misc
   region: Seyda Neen
 - id: 7720568
-  name: town_Tel_Vos (complete)
+  name: Trade Mission to the Zainab - Tel Vos
   category: quest_complete
   trigger:
     quest: town_Tel_Vos
   group: misc
   region: Seyda Neen
 - id: 7720569
-  name: town_Tel_Vos_ashur (complete)
+  name: Trade Mission to the Zainab - Tel Vos Ashur
   category: quest_complete
   trigger:
     quest: town_Tel_Vos_ashur
   group: misc
   region: Seyda Neen
 - id: 7720570
-  name: town_Tel_Vos_he (complete)
+  name: Trade Mission to the Zainab - Tel Vos He
   category: quest_complete
   trigger:
     quest: town_Tel_Vos_he
   group: misc
   region: Seyda Neen
 - id: 7720571
-  name: town_Tel_Vos_she (complete)
+  name: Trade Mission to the Zainab - Tel Vos She
   category: quest_complete
   trigger:
     quest: town_Tel_Vos_she
   group: misc
   region: Seyda Neen
 - id: 7720572
-  name: town_Tel_Vos_wise (complete)
+  name: Trade Mission to the Zainab - Tel Vos Wise
   category: quest_complete
   trigger:
     quest: town_Tel_Vos_wise
   group: misc
   region: Seyda Neen
 - id: 7720573
-  name: town_Vivec (complete)
+  name: Mysterious Killings in Vivec
   category: quest_complete
   trigger:
     quest: town_Vivec
   group: misc
   region: Seyda Neen
 - id: 7720574
-  name: TT_AldDaedroth (complete)
+  name: Sheogorath of the House of Troubles
   category: quest_complete
   trigger:
     quest: TT_AldDaedroth
   group: temple
   region: Seyda Neen
 - id: 7720575
-  name: TT_AldSotha (complete)
+  name: Mehrunes Dagon of the House of Troubles
   category: quest_complete
   trigger:
     quest: TT_AldSotha
   group: temple
   region: Seyda Neen
 - id: 7720576
-  name: TT_Assarnibibi (complete)
+  name: Ebony Mail
   category: quest_complete
   trigger:
     quest: TT_Assarnibibi
   group: temple
   region: Seyda Neen
 - id: 7720577
-  name: TT_BalUr (complete)
+  name: Molag Bal of the House of Troubles
   category: quest_complete
   trigger:
     quest: TT_BalUr
   group: temple
   region: Seyda Neen
 - id: 7720578
-  name: TT_Compassion (complete)
+  name: Compassion
   category: quest_complete
   trigger:
     quest: TT_Compassion
   group: temple
   region: Seyda Neen
 - id: 7720579
-  name: TT_CuringTouch (complete)
+  name: Cure Lette
   category: quest_complete
   trigger:
     quest: TT_CuringTouch
   group: temple
   region: Seyda Neen
 - id: 7720580
-  name: TT_DagonFel (complete)
+  name: Malacath of the House of Troubles
   category: quest_complete
   trigger:
     quest: TT_DagonFel
   group: temple
   region: Seyda Neen
 - id: 7720581
-  name: TT_DiseaseCarrier (complete)
+  name: Disease Carrier
   category: quest_complete
   trigger:
     quest: TT_DiseaseCarrier
   group: temple
   region: Seyda Neen
 - id: 7720582
-  name: TT_FalseIncarnate (complete)
+  name: False Incarnate
   category: quest_complete
   trigger:
     quest: TT_FalseIncarnate
   group: temple
   region: Seyda Neen
 - id: 7720583
-  name: TT_FelmsCleaver (complete)
+  name: Cleaver of St. Felms
   category: quest_complete
   trigger:
     quest: TT_FelmsCleaver
   group: temple
   region: Seyda Neen
 - id: 7720584
-  name: TT_FieldsKummu (complete)
+  name: Pilgrimages of the Seven Graces - Fields Kummu
   category: quest_complete
   trigger:
     quest: TT_FieldsKummu
   group: temple
   region: Seyda Neen
 - id: 7720585
-  name: TT_GalomDeus (complete)
+  name: Slay Raxle Berne
   category: quest_complete
   trigger:
     quest: TT_GalomDeus
   group: temple
   region: Seyda Neen
 - id: 7720586
-  name: TT_Ghostgate (complete)
+  name: Pilgrimages of the Seven Graces - Ghostgate
   category: quest_complete
   trigger:
     quest: TT_Ghostgate
   group: temple
   region: Seyda Neen
 - id: 7720587
-  name: TT_HairShirt (complete)
+  name: Hair Shirt of St. Aralor
   category: quest_complete
   trigger:
     quest: TT_HairShirt
   group: temple
   region: Seyda Neen
 - id: 7720588
-  name: TT_Hassour (complete)
+  name: Dark Cult in Hassour
   category: quest_complete
   trigger:
     quest: TT_Hassour
   group: temple
   region: Seyda Neen
 - id: 7720589
-  name: TT_LlothisCrosier (complete)
+  name: Crosier of St. Llothis the Pious
   category: quest_complete
   trigger:
     quest: TT_LlothisCrosier
   group: temple
   region: Seyda Neen
 - id: 7720590
-  name: TT_MaarGan (complete)
+  name: Pilgrimage to Maar Gan
   category: quest_complete
   trigger:
     quest: TT_MaarGan
   group: temple
   region: Seyda Neen
 - id: 7720591
-  name: TT_MaskVivec (complete)
+  name: Pilgrimages of the Seven Graces - Mask Vivec
   category: quest_complete
   trigger:
     quest: TT_MaskVivec
   group: temple
   region: Seyda Neen
 - id: 7720592
-  name: TT_Mawia (complete)
+  name: Necromancer in Mawia
   category: quest_complete
   trigger:
     quest: TT_Mawia
   group: temple
   region: Seyda Neen
 - id: 7720593
-  name: TT_MinistryHeathen (complete)
+  name: Cure the Outcast Outlander
   category: quest_complete
   trigger:
     quest: TT_MinistryHeathen
   group: temple
   region: Seyda Neen
 - id: 7720594
-  name: TT_MountKand (complete)
+  name: Pilgrimage to Mount Kand
   category: quest_complete
   trigger:
     quest: TT_MountKand
   group: temple
   region: Seyda Neen
 - id: 7720595
-  name: TT_PalaceVivec (complete)
+  name: Pilgrimages of the Seven Graces - Palace Vivec
   category: quest_complete
   trigger:
     quest: TT_PalaceVivec
   group: temple
   region: Seyda Neen
 - id: 7720596
-  name: TT_PilgrimsPath (complete)
+  name: Pilgrimages of the Seven Graces - Pilgrims Path
   category: quest_complete
   trigger:
     quest: TT_PilgrimsPath
   group: temple
   region: Seyda Neen
 - id: 7720597
-  name: TT_PuzzleCanal (complete)
+  name: Pilgrimages of the Seven Graces - Puzzle Canal
   category: quest_complete
   trigger:
     quest: TT_PuzzleCanal
   group: temple
   region: Seyda Neen
 - id: 7720598
-  name: TT_RilmsShoes (complete)
+  name: Shoes of St. Rilms
   category: quest_complete
   trigger:
     quest: TT_RilmsShoes
   group: temple
   region: Seyda Neen
 - id: 7720599
-  name: TT_RuddyMan (complete)
+  name: Pilgrimages of the Seven Graces - Ruddy Man
   category: quest_complete
   trigger:
     quest: TT_RuddyMan
   group: temple
   region: Seyda Neen
 - id: 7720600
-  name: TT_SanctusShrine (complete)
+  name: Silent Pilgrimage
   category: quest_complete
   trigger:
     quest: TT_SanctusShrine
   group: temple
   region: Seyda Neen
 - id: 7720601
-  name: TT_SevenGraces (complete)
+  name: Pilgrimages of the Seven Graces - complete
   category: quest_complete
   trigger:
     quest: TT_SevenGraces
   group: temple
   region: Seyda Neen
 - id: 7720602
-  name: TT_StAralor (complete)
+  name: Foul Cult Beneath St. Delyn Canton
   category: quest_complete
   trigger:
     quest: TT_StAralor
   group: temple
   region: Seyda Neen
 - id: 7720603
-  name: TT_StopMoon (complete)
+  name: Pilgrimages of the Seven Graces - Stop Moon
   category: quest_complete
   trigger:
     quest: TT_StopMoon
   group: temple
   region: Seyda Neen
 - id: 7720604
-  name: TT_SupplyMonk (complete)
+  name: Food and Drink for the Hermit
   category: quest_complete
   trigger:
     quest: TT_SupplyMonk
   group: temple
   region: Seyda Neen
 - id: 7720605
-  name: VA_Rimintil (complete)
+  name: Murder Rimintil
   category: quest_complete
   trigger:
     quest: VA_Rimintil
   group: vampire
   region: Seyda Neen
 - id: 7720606
-  name: VA_Shashev (complete)
+  name: Shashev's Key
   category: quest_complete
   trigger:
     quest: VA_Shashev
   group: vampire
   region: Seyda Neen
 - id: 7720607
-  name: VA_VampAmulet (complete)
+  name: The Quarra Amulet
   category: quest_complete
   trigger:
     quest: VA_VampAmulet
   group: vampire
   region: Seyda Neen
 - id: 7720608
-  name: VA_VampBlood (complete)
+  name: The Blood of the Quarra
   category: quest_complete
   trigger:
     quest: VA_VampBlood
   group: vampire
   region: Seyda Neen
 - id: 7720609
-  name: VA_VampBlood2 (complete)
+  name: Blood for Mistress Dratha
   category: quest_complete
   trigger:
     quest: VA_VampBlood2
   group: vampire
   region: Seyda Neen
 - id: 7720610
-  name: VA_VampChild (complete)
+  name: Blood Ties
   category: quest_complete
   trigger:
     quest: VA_VampChild
   group: vampire
   region: Seyda Neen
 - id: 7720611
-  name: VA_VampCountess (complete)
+  name: The Vampire Merta
   category: quest_complete
   trigger:
     quest: VA_VampCountess
   group: vampire
   region: Seyda Neen
 - id: 7720612
-  name: VA_VampCult (complete)
+  name: The Cult of Lord Irarak
   category: quest_complete
   trigger:
     quest: VA_VampCult
   group: vampire
   region: Seyda Neen
 - id: 7720613
-  name: VA_VampCurse (complete)
+  name: The Imprisonment of Mastrius
   category: quest_complete
   trigger:
     quest: VA_VampCurse
   group: vampire
   region: Seyda Neen
 - id: 7720614
-  name: VA_VampDust (complete)
+  name: Dust of the Vampire
   category: quest_complete
   trigger:
     quest: VA_VampDust
   group: vampire
   region: Seyda Neen
 - id: 7720615
-  name: VA_VampHunter (complete)
+  name: The Vampire Hunter
   category: quest_complete
   trigger:
     quest: VA_VampHunter
   group: vampire
   region: Seyda Neen
 - id: 7720616
-  name: VA_VampMarara (complete)
+  name: The Weary Vampire
   category: quest_complete
   trigger:
     quest: VA_VampMarara
   group: vampire
   region: Seyda Neen
 - id: 7720617
-  name: VA_VampRich (complete)
+  name: The Boy Who Would Be Undead
   category: quest_complete
   trigger:
     quest: VA_VampRich
