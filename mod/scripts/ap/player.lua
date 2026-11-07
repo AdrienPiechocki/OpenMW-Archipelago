@@ -29,7 +29,7 @@ local notify = require('scripts.ap.notify')
 local storage = require('openmw.storage')
 
 -- Tables generees depuis data/*.yaml (tools/gen_lua.py)
-local QUEST_COMPLETE_LOOKUP = require('scripts.ap.quest_completions') -- ['quest'] = {stage, {fails}, {ids}, groupe}
+local QUEST_COMPLETE_LOOKUP = require('scripts.ap.quest_completions') -- ['quest'] = {stage, {fails}, {ids}, groupe, {stages de fin alternatifs}}
 local GOALS = require('scripts.ap.goals')
 local LOCKS = require('scripts.ap.quest_locks')   -- objectif -> { {id = item AP, quest} }
 
@@ -77,15 +77,19 @@ local function questStage(quests, qkey)
 end
 
 -- Une quete est terminee (avec succes) si son stage a atteint le seuil de
--- completion sans etre sur une branche d'echec.
+-- completion sans etre sur une branche d'echec, OU s'il est l'un de ses stages
+-- de fin alternatifs (info[5], souvent inferieurs au seuil).
 local function questComplete(qkey, stage)
   local info = QUEST_COMPLETE_LOOKUP[qkey]
   if not info then return false end
-  local threshold = tonumber(info[1]) or 0
-  if threshold <= 0 or stage < threshold then return false end
   for _, f in ipairs(info[2] or {}) do
     if tonumber(f) == stage then return false end
   end
+  for _, a in ipairs(info[5] or {}) do
+    if tonumber(a) == stage then return true end
+  end
+  local threshold = tonumber(info[1]) or 0
+  if threshold <= 0 or stage < threshold then return false end
   return true
 end
 

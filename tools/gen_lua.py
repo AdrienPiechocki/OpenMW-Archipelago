@@ -16,10 +16,14 @@ def gen_quest_completions(qc_path, out_path):
             # Tous les groupes gardent leurs ids : le mod n'envoie ceux des quetes
             # d'objectif que si l'objectif est choisi.
             ids = q.get('ids') or []
+            # Fins alternatives : stages de completion autres que le stage principal
+            # (utile surtout quand ils sont INFERIEURS au seuil `stage`).
+            alts = sorted({int(x) for x in (q.get('stages') or [])} - {stage} - {int(x) for x in fail})
             fail_lua = ', '.join(str(int(x)) for x in fail)
             ids_lua = ', '.join(str(int(x)) for x in ids)
+            alts_lua = ', '.join(str(x) for x in alts)
             lines.append(
-                "  ['%s'] = { %d, { %s }, { %s }, '%s' }," % (qid, stage, fail_lua, ids_lua, group)
+                "  ['%s'] = { %d, { %s }, { %s }, '%s', { %s } }," % (qid, stage, fail_lua, ids_lua, group, alts_lua)
             )
             n += 1
     else:
