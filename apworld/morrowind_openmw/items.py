@@ -31,7 +31,7 @@ item_table: Dict[str, MorrowindItemData] = {
     # +10 levels: adds the progression of 10 vanilla level-ups.
     # The player sleeps to choose attributes (see mod/scripts/ap/level_up.lua).
     "Level Up (+10)": MorrowindItemData(
-        code=BASE_ITEM + 2000, classification=ItemClassification.useful, frequency=4
+        code=BASE_ITEM + 2000, classification=ItemClassification.progression, frequency=4
     ),
     # "Levitation Level" and "Strength Bonus" removed
     "Trap: Disease": MorrowindItemData(code=BASE_ITEM + 200, classification=ItemClassification.trap),
