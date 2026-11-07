@@ -172,6 +172,3 @@ les variables d'environnement `AP_HOST`, `AP_PORT`, `AP_SLOT`, `AP_PASSWORD`,
 4. Lancer le serveur Archipelago avec le multidata généré.
 5. Lancer OpenMW : le mod démarre automatiquement le bridge Python.
 
-## Protocole
-
-Voir `Design Archipelago pour OpenMW.md` section 3.
