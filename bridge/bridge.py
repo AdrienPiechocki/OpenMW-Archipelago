@@ -330,12 +330,14 @@ async def handle_out(line, ws_ref, connected_event):
             print('BRIDGE: sending check', cid, flush=True)
             await ws_send(ws, [{'cmd': 'LocationChecks', 'locations': [cid]}])
     elif t == 'death':
+        print('BRIDGE: death line read (online=%s, deathlink=%s)' % (online, DEATHLINK), flush=True)
         if online and DEATHLINK:
             await ws_send(ws, [{
                 'cmd': 'Bounce',
                 'tags': ['DeathLink'],
                 'data': {'time': time.time(), 'source': SLOT, 'cause': msg.get('cause', '')},
             }])
+            print('BRIDGE: DeathLink sent', flush=True)
     elif t == 'goal':
         if not state['goal_sent']:
             state['goal_sent'] = True
@@ -398,12 +400,14 @@ async def recv_loop(ws, connected_event):
                 idx = m.get('index', 0)
                 for i, it in enumerate(m.get('items', [])):
                     write_in({'t': 'item', 'idx': idx + i, 'id': it.get('item')})
-            elif cmd == 'Bounce':
+            elif cmd in ('Bounced', 'Bounce'):
                 if 'DeathLink' in (m.get('tags') or []) and DEATHLINK:
                     data = m.get('data') or {}
                     src = data.get('source')
+                    print('BRIDGE: DeathLink received from', src, flush=True)
                     if src and src != SLOT:
-                        write_in({'t': 'deathlink', 'from': src})
+                        write_in({'t': 'deathlink', 'id': next_notify_id(), 'ts': int(time.time()),
+                                  'from': src, 'cause': data.get('cause')})
             elif cmd == 'DataPackage':
                 games = ((m.get('data') or {}).get('games')) or {}
                 for game, g in games.items():

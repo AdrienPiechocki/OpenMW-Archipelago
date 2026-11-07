@@ -269,10 +269,17 @@ end
 
 local function checkDeath()
   local dead = types.Actor.isDead(self)
+  if not dead then
+    local ok, hp = pcall(function() return types.Actor.stats.dynamic.health(self).current end)
+    dead = ok and hp ~= nil and hp <= 0
+  end
   if dead and not wasDead then
     local now = core.getRealTime()
-    if (now - deathlinkTime) > 5 and deathlinkEnabled() then
-      ap.send('{"t":"death","cause":"player"}')
+    local enabled = deathlinkEnabled()
+    print(('AP: death detected (deathlink=%s, %.1fs since last received)'):format(tostring(enabled), now - deathlinkTime))
+    if (now - deathlinkTime) > 5 and enabled then
+      local sent = ap.send('{"t":"death","cause":"player"}')
+      print('AP: death written to out.jsonl: ' .. tostring(sent))
       lastDeathTime = now
     end
   end
@@ -314,15 +321,16 @@ end
 local timer = 0
 local function onUpdate(dt)
   notifyTick(dt)
+  local okD, errD = pcall(checkDeath)
+  if not okD then print('AP: checkDeath error: ' .. tostring(errD)) end
+
   timer = timer + dt
   local interval = tonumber(config.poll_interval) or 1.0
   if interval < 0.2 then interval = 0.2 end
-  if timer < interval then
-    return
-  end
+  if timer < interval then return end
   timer = 0
-  pollQuests()
-  checkDeath()
+  local okP, errP = pcall(pollQuests)
+  if not okP then print('AP: pollQuests error: ' .. tostring(errP)) end
 end
 
 local function onSave()
@@ -360,7 +368,11 @@ local function onInit()
 end
 
 local function onDeathLink()
-  deathlinkTime = core.getRealTime()
+  deathlinkTime = core.getRealTime()   -- anti-écho : pas de renvoi de cette mort
+  local ok, err = pcall(function()
+    types.Actor.stats.dynamic.health(self).current = 0
+  end)
+  print('AP: DeathLink applied to player: ' .. tostring(ok) .. (ok and '' or (' ' .. tostring(err))))
 end
 
 -- Server config (slot_data) relayed by global.lua: data.goals = list of
