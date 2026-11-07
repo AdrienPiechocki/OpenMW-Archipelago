@@ -32,7 +32,7 @@ PREFIX_RULES = [
     ('imperial_cult',   r'^ic(\d+)?_'),   # ic_*, mais aussi ic0_ a ic30_
     ('blades',          r'^blades_'),
     ('east_empire',     r'^eb_'),
-    ('non_quest',       r'^(book|romance|town)_'),   # pas de vraies quetes
+    ('non_quest',       r'^(book|romance)_'),   # pas de vraies quetes
     ('faction_rules',   r'^rules_'),
     ('temple',          r'^tt_'),
     ('morag_tong',      r'^mt_'),

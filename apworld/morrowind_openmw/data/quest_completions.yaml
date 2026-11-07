@@ -3902,112 +3902,112 @@
   category: quest_complete
   trigger:
     quest: Town_Ald_Bevene
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720559
   name: Town_Ald_Bivale (complete)
   category: quest_complete
   trigger:
     quest: Town_Ald_Bivale
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720560
   name: Town_Ald_Daynes (complete)
   category: quest_complete
   trigger:
     quest: Town_Ald_Daynes
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720561
   name: town_ald_ienas (complete)
   category: quest_complete
   trigger:
     quest: town_ald_ienas
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720562
   name: Town_Ald_Llethri (complete)
   category: quest_complete
   trigger:
     quest: Town_Ald_Llethri
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720563
   name: Town_Ald_Tiras (complete)
   category: quest_complete
   trigger:
     quest: Town_Ald_Tiras
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720564
   name: Town_Aldruhn (complete)
   category: quest_complete
   trigger:
     quest: Town_Aldruhn
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720565
   name: town_balmora (complete)
   category: quest_complete
   trigger:
     quest: town_balmora
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720566
   name: town_Sadrith (complete)
   category: quest_complete
   trigger:
     quest: town_Sadrith
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720567
   name: town_sadrith_expert (complete)
   category: quest_complete
   trigger:
     quest: town_sadrith_expert
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720568
   name: town_Tel_Vos (complete)
   category: quest_complete
   trigger:
     quest: town_Tel_Vos
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720569
   name: town_Tel_Vos_ashur (complete)
   category: quest_complete
   trigger:
     quest: town_Tel_Vos_ashur
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720570
   name: town_Tel_Vos_he (complete)
   category: quest_complete
   trigger:
     quest: town_Tel_Vos_he
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720571
   name: town_Tel_Vos_she (complete)
   category: quest_complete
   trigger:
     quest: town_Tel_Vos_she
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720572
   name: town_Tel_Vos_wise (complete)
   category: quest_complete
   trigger:
     quest: town_Tel_Vos_wise
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720573
   name: town_Vivec (complete)
   category: quest_complete
   trigger:
     quest: town_Vivec
-  group: non_quest
+  group: misc
   region: Seyda Neen
 - id: 7720574
   name: TT_AldDaedroth (complete)

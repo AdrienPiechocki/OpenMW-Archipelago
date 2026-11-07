@@ -4491,7 +4491,7 @@
   fail: []
   ids:
   - 7720558
-  group: non_quest
+  group: misc
 - quest: town_ald_bivale
   stage: 10
   stages:
@@ -4499,7 +4499,7 @@
   fail: []
   ids:
   - 7720559
-  group: non_quest
+  group: misc
 - quest: town_ald_daynes
   stage: 10
   stages:
@@ -4507,7 +4507,7 @@
   fail: []
   ids:
   - 7720560
-  group: non_quest
+  group: misc
 - quest: town_ald_ienas
   stage: 1
   stages:
@@ -4515,7 +4515,7 @@
   fail: []
   ids:
   - 7720561
-  group: non_quest
+  group: misc
 - quest: town_ald_llethri
   stage: 10
   stages:
@@ -4523,7 +4523,7 @@
   fail: []
   ids:
   - 7720562
-  group: non_quest
+  group: misc
 - quest: town_ald_tiras
   stage: 10
   stages:
@@ -4531,7 +4531,7 @@
   fail: []
   ids:
   - 7720563
-  group: non_quest
+  group: misc
 - quest: town_aldruhn
   stage: 45
   stages:
@@ -4539,7 +4539,7 @@
   fail: []
   ids:
   - 7720564
-  group: non_quest
+  group: misc
 - quest: town_balmora
   stage: 35
   stages:
@@ -4547,7 +4547,7 @@
   fail: []
   ids:
   - 7720565
-  group: non_quest
+  group: misc
 - quest: town_sadrith
   stage: 110
   stages:
@@ -4563,7 +4563,7 @@
   fail: []
   ids:
   - 7720566
-  group: non_quest
+  group: misc
 - quest: town_sadrith_expert
   stage: 1
   stages:
@@ -4571,7 +4571,7 @@
   fail: []
   ids:
   - 7720567
-  group: non_quest
+  group: misc
 - quest: town_tel_vos
   stage: 35
   stages:
@@ -4579,7 +4579,7 @@
   fail: []
   ids:
   - 7720568
-  group: non_quest
+  group: misc
 - quest: town_tel_vos_ashur
   stage: 5
   stages:
@@ -4587,7 +4587,7 @@
   fail: []
   ids:
   - 7720569
-  group: non_quest
+  group: misc
 - quest: town_tel_vos_he
   stage: 1
   stages:
@@ -4595,7 +4595,7 @@
   fail: []
   ids:
   - 7720570
-  group: non_quest
+  group: misc
 - quest: town_tel_vos_she
   stage: 1
   stages:
@@ -4603,7 +4603,7 @@
   fail: []
   ids:
   - 7720571
-  group: non_quest
+  group: misc
 - quest: town_tel_vos_wise
   stage: 1
   stages:
@@ -4611,7 +4611,7 @@
   fail: []
   ids:
   - 7720572
-  group: non_quest
+  group: misc
 - quest: town_vivec
   stage: 55
   stages:
@@ -4619,7 +4619,7 @@
   fail: []
   ids:
   - 7720573
-  group: non_quest
+  group: misc
 - quest: tt_alddaedroth
   stage: 100
   stages:
