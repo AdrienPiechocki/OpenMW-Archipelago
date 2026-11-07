@@ -1,15 +1,15 @@
-# Objectifs accomplissables. L'objectif de la partie est main_quest (option main_quest,
-# activee par defaut), auquel s'ajoutent la grande maison / guilde / faction choisies dans
-# le YAML joueur (options great_house, guild, faction) et les quetes daedriques. La victoire
-# exige que tous les objectifs choisis soient accomplis.
-# Chaque objectif est atteint des qu'UNE des conditions de l'entree est remplie :
-#   quests:  liste de {quest, stage}  -> stage Journal >= stage
-#   faction: id OpenMW de la faction  -> rang >= `rank` (10 = chef de faction)
-#   group:   groupe de quetes (voir tools/quest_groups.py) -> toutes les
-#            quetes du groupe sont terminees (stage de completion de quest_finals.yaml)
+# Objectives that can be completed. The game's objective is main_quest (option main_quest,
+# enabled by default), plus the great house / guild / faction chosen in
+# the player YAML (great_house, guild, faction options) and the Daedric quests. Victory
+# requires all chosen objectives to be completed.
+# Each objective is reached as soon as ONE of the entry's conditions is met:
+#   quests:  list of {quest, stage}  -> journal stage >= stage
+#   faction: OpenMW faction id       -> rank >= `rank` (10 = faction leader)
+#   group:   quest group (see tools/quest_groups.py) -> all quests
+#            in the group are completed (completion stage from quest_finals.yaml)
 main_quest:
   quests:
-    - {quest: c3_destroydagoth, stage: 50}        # mort de Dagoth Ur
+    - {quest: c3_destroydagoth, stage: 50}        # death of Dagoth Ur
 hlaalu:
   faction: hlaalu
   rank: 10                                        # Grandmaster
@@ -41,6 +41,6 @@ morag_tong:
   faction: morag tong
   rank: 10                                        # Grandmaster
   quests:
-    - {quest: mt_grandmaster, stage: 100}         # ID confirme (UESP) : 100 ou 110 = nouveau Grandmaster
+    - {quest: mt_grandmaster, stage: 100}         # confirmed ID (UESP): 100 or 110 = new Grandmaster
 daedric_quests:
-  group: daedric                                  # les 7 quetes daedriques terminees (option "Daedric Quests")
+  group: daedric                                  # the 7 Daedric quests done (option "Daedric Quests")

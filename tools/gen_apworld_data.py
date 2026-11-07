@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Genere les tables Lua/Python depuis data/*.yaml (a implementer).
+"""Generates the Lua/Python tables from data/*.yaml (to be implemented).
 
-Pour l'instant, les tables sont maintenues a la main dans :
+For now, the tables are maintained by hand in:
   apworld/morrowind_openmw/*.py
   mod/scripts/ap/*.lua
 """

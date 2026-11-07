@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Ajoute/met a jour le champ `group` dans data/quests.yaml,
-data/quest_completions.yaml et data/quest_finals.yaml, et ecrit un rapport
-data/quest_groups_report.txt (repartition par prefixe et par groupe).
+"""Adds/updates the `group` field in data/quests.yaml,
+data/quest_completions.yaml and data/quest_finals.yaml, and writes a report
+data/quest_groups_report.txt (distribution by prefix and by group).
 
-Usage : python tools/classify_quests.py [--data data]
+Usage: python tools/classify_quests.py [--data data]
 """
 import argparse
 import collections
@@ -46,12 +46,12 @@ def main():
     prefixes = collections.defaultdict(collections.Counter)
     for q, g in by_quest.items():
         prefixes[g][re.split(r'[_\-]', q)[0]] += 1
-    lines = ['Quetes par groupe :']
+    lines = ['Quests by group:']
     for g, n in sorted(groups.items()):
         lines.append(f'  {g:16} {n:4}   prefixes: ' +
                      ', '.join(f'{p}({c})' for p, c in sorted(prefixes[g].items())))
     lines.append('')
-    lines.append('Quetes classees misc (seules sources de checks) :')
+    lines.append('Quests classified as misc (only sources of checks):')
     lines += [f'  {q}' for q, g in sorted(by_quest.items()) if g == 'misc']
     (data / 'quest_groups_report.txt').write_text('\n'.join(lines) + '\n', encoding='utf-8')
     print('\n'.join(lines[:len(groups) + 1]))

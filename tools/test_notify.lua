@@ -1,6 +1,6 @@
--- Test des notifications d'items Archipelago (mod/scripts/ap/notify.lua).
+-- Test of Archipelago item notifications (mod/scripts/ap/notify.lua).
 --
--- Depuis la racine du depot :
+-- From the repository root:
 --   luajit tools/test_notify.lua
 package.path = 'mod/?.lua;' .. package.path
 
@@ -16,39 +16,39 @@ local function check(name, actual, expected)
   end
 end
 
--- Flags : 1 progression, 2 utile, 4 piege (le piege prime).
+-- Flags: 1 progression, 2 useful, 4 trap (trap wins).
 check('no flag', notify.flagTag(0), '')
 check('progression', notify.flagTag(1), ' [Progression]')
-check('useful', notify.flagTag(2), ' [Utile]')
-check('trap', notify.flagTag(4), ' [Piège]')
-check('trap wins', notify.flagTag(5), ' [Piège]')
+check('useful', notify.flagTag(2), ' [Useful]')
+check('trap', notify.flagTag(4), ' [Trap]')
+check('trap wins', notify.flagTag(5), ' [Trap]')
 check('nil flags', notify.flagTag(nil), '')
 
 -- Formats.
 check('recv', notify.format({ dir = 'recv', item = 'Ebony Dagger', player = 'Bob', flags = 1 }),
-  'Archipelago : Bob vous envoie Ebony Dagger [Progression]')
+  'Archipelago: Bob sends you Ebony Dagger [Progression]')
 check('recv without sender', notify.format({ dir = 'recv', item = 'Gold' }),
-  'Archipelago : vous recevez Gold')
+  'Archipelago: you receive Gold')
 check('send', notify.format({ dir = 'send', item = 'Cloak', player = 'Bob' }),
-  'Archipelago : vous envoyez Cloak à Bob')
+  'Archipelago: you sent Cloak to Bob')
 check('send quest check', notify.format({ dir = 'send', item = 'Cloak', player = 'Bob', location = 'Fargoth' }),
-  'Archipelago : Cloak (Fargoth) obtenu -> Bob')
+  'Archipelago: Cloak (Fargoth) obtained -> Bob')
 check('send quest check with flag', notify.format({ dir = 'send', item = 'Cloak', player = 'Bob', location = 'Fargoth', flags = 2 }),
-  'Archipelago : Cloak [Utile] (Fargoth) obtenu -> Bob')
+  'Archipelago: Cloak [Useful] (Fargoth) obtained -> Bob')
 check('self', notify.format({ dir = 'self', item = 'Dagger', location = 'Fargoth' }),
-  'Archipelago : Dagger (Fargoth) obtenu')
+  'Archipelago: Dagger (Fargoth) obtained')
 check('self quest check with flag', notify.format({ dir = 'self', item = 'Dagger', location = 'Fargoth', flags = 1 }),
-  'Archipelago : Dagger [Progression] (Fargoth) obtenu')
+  'Archipelago: Dagger [Progression] (Fargoth) obtained')
 check('self without location', notify.format({ dir = 'self', item = 'Gold' }),
-  'Archipelago : vous avez trouvé Gold')
+  'Archipelago: you found Gold')
 check('empty location falls back', notify.format({ dir = 'self', item = 'Gold', location = '' }),
-  'Archipelago : vous avez trouvé Gold')
+  'Archipelago: you found Gold')
 check('percent in names is kept', notify.format({ dir = 'send', item = '100% Cloak', player = 'B%d' }),
-  'Archipelago : vous envoyez 100% Cloak à B%d')
+  'Archipelago: you sent 100% Cloak to B%d')
 check('unknown dir', notify.format({ dir = 'x', item = 'a' }), nil)
 check('not a table', notify.format(nil), nil)
 
--- Filtre : id nouveau et recent.
+-- Filter: new and recent id.
 check('new id', notify.accept({ id = 5, ts = 1000 }, 4, 1010), true)
 check('same id', notify.accept({ id = 5, ts = 1000 }, 5, 1010), false)
 check('older id', notify.accept({ id = 3, ts = 1000 }, 5, 1010), false)

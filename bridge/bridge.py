@@ -1,14 +1,14 @@
-"""Bridge Archipelago <-> OpenMW (websocket <-> fichiers JSONL).
+"""Bridge Archipelago <-> OpenMW (websocket <-> JSONL files).
 
-Corrections par rapport a la version precedente :
-  * 'connected' n'est positionne qu'a la reception de Connected (avant, les
-    checks envoyes avant l'authentification etaient perdus pour de bon) ;
-  * a chaque connexion, tous les checks connus sont renvoyes (le serveur
-    dedoublonne) ;
-  * verrou d'instance unique (flock) : plus de double connexion ;
-  * heartbeat independant de la connexion ;
-  * watchdog d'inactivite qui fonctionne meme quand la connexion est ouverte ;
-  * lecture de out.jsonl en binaire (offsets corrects, lignes partielles).
+Fixes compared to the previous version:
+  * 'connected' is only set when Connected is received (before, checks sent
+    before authentication were lost for good);
+  * on each connection, all known checks are resent (the server
+    deduplicates them);
+  * single-instance lock (flock): no more double connection;
+  * heartbeat independent of the connection;
+  * inactivity watchdog that works even when the connection is open;
+  * reads out.jsonl in binary (correct offsets, partial lines).
 """
 import asyncio
 import fcntl
@@ -50,41 +50,41 @@ state = {
     'seed_name': None,
 }
 
-# Etat de la session courante (non persiste), utilise pour les notifications
-# d'items : numero de slot, noms des joueurs, jeu de chaque slot, checksums du
-# datapackage annonces par le serveur, PrintJSON en attente du datapackage.
+# Current session state (not persisted), used for item notifications: slot
+# number, player names, game of each slot, datapackage checksums announced by
+# the server, PrintJSON waiting for the datapackage.
 session = {
     'slot': None,
-    'players': {},       # slot -> alias / nom
-    'games': {},         # slot -> nom du jeu
-    'checksums': {},     # jeu -> checksum (RoomInfo)
-    'ready': False,      # datapackage disponible pour tous les jeux utiles
-    'buffer': [],        # PrintJSON recus avant 'ready'
-    'last_id': 0,        # dernier id de notification emis
+    'players': {},       # slot -> alias / name
+    'games': {},         # slot -> game name
+    'checksums': {},     # game -> checksum (RoomInfo)
+    'ready': False,      # datapackage available for all needed games
+    'buffer': [],        # PrintJSON received before 'ready'
+    'last_id': 0,        # last notification id emitted
 }
-# jeu -> {'checksum': str, 'items': {id: nom}, 'locations': {id: nom}}
+# game -> {'checksum': str, 'items': {id: name}, 'locations': {id: name}}
 names = {}
 
 
 # --------------------------------------------------------------------------
-# Verrou d'instance unique
+# Single-instance lock
 # --------------------------------------------------------------------------
 def acquire_lock():
     f = open(LOCK, 'a+')
     try:
         fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except OSError:
-        print('BRIDGE: une autre instance tourne deja, arret.', flush=True)
+        print('BRIDGE: another instance is already running, stopping.', flush=True)
         sys.exit(0)
     f.seek(0)
     f.truncate()
     f.write(str(os.getpid()))
     f.flush()
-    return f  # garder la reference : le verrou tient tant que le fichier est ouvert
+    return f  # keep the reference: the lock is held as long as the file is open
 
 
 # --------------------------------------------------------------------------
-# Etat persistant
+# Persistent state
 # --------------------------------------------------------------------------
 def load_state():
     try:
@@ -141,7 +141,7 @@ def save_datapackage_cache():
 
 
 def missing_games(games, checksums):
-    """Jeux dont le datapackage n'est pas (ou plus) en cache."""
+    """Games whose datapackage is not (or no longer) cached."""
     out = []
     for game in sorted(g for g in games if g):
         cached = names.get(game)
@@ -152,13 +152,14 @@ def missing_games(games, checksums):
 
 
 def build_notify(msg, my_slot, players, games, names_by_game):
-    """PrintJSON ItemSend / ItemCheat -> message 'notify' pour le mod.
+    """PrintJSON ItemSend / ItemCheat -> 'notify' message for the mod.
 
-    Renvoie None si le message ne concerne pas ce slot (ni recu, ni envoye).
-    dir : 'recv' (recu d'un autre joueur), 'send' (envoye a un autre joueur),
-    'self' (objet de notre monde pour nous). Le nom d'un item est resolu dans
-    le jeu du joueur qui le recoit, celui d'une location dans le jeu du
-    joueur qui la possede.
+    Returns None if the message does not concern this slot (neither received
+    nor sent).
+    dir: 'recv' (received from another player), 'send' (sent to another player),
+    'self' (item from our world for us). An item's name is resolved in the
+    game of the player receiving it, a location's name in the game of the
+    player who owns it.
     """
     kind = msg.get('type')
     if kind not in ('ItemSend', 'ItemCheat'):
@@ -167,7 +168,7 @@ def build_notify(msg, my_slot, players, games, names_by_game):
     receiving = msg.get('receiving')
     if not isinstance(item, dict) or receiving is None or my_slot is None:
         return None
-    owner = item.get('player')  # slot dont la location contenait l'item
+    owner = item.get('player')  # slot whose location contained the item
     mine_recv = receiving == my_slot
     mine_send = kind == 'ItemSend' and owner == my_slot
     if not (mine_recv or mine_send):
@@ -180,7 +181,7 @@ def build_notify(msg, my_slot, players, games, names_by_game):
 
     out = {
         't': 'notify',
-        'item': item_name or f'objet #{item_id}',
+        'item': item_name or f'item #{item_id}',
         'flags': int(item.get('flags') or 0),
     }
     if mine_recv and mine_send:
@@ -191,15 +192,15 @@ def build_notify(msg, my_slot, players, games, names_by_game):
             out['player'] = players[owner]
     else:
         out['dir'] = 'send'
-        out['player'] = players.get(receiving, f'joueur {receiving}')
+        out['player'] = players.get(receiving, f'player {receiving}')
     if loc_name:
         out['location'] = loc_name
     return out
 
 
 def next_notify_id():
-    """Id strictement croissant (ms Unix) : le mod s'en sert pour ne jamais
-    afficher deux fois une notification quand il relit in.jsonl."""
+    """Strictly increasing id (Unix ms): the mod uses it to never display a
+    notification twice when it re-reads in.jsonl."""
     session['last_id'] = max(session['last_id'] + 1, int(time.time() * 1000))
     return session['last_id']
 
@@ -220,10 +221,10 @@ def flush_buffered_prints():
 
 
 # --------------------------------------------------------------------------
-# Fichiers vers le mod
+# Files to the mod
 # --------------------------------------------------------------------------
 def write_sync():
-    """Remplace in.jsonl par un marqueur de synchronisation."""
+    """Replaces in.jsonl with a synchronization marker."""
     try:
         with open(INP, 'w') as f:
             f.write(json.dumps({'t': 'sync', 'id': int(time.time() * 1000)}) + '\n')
@@ -246,10 +247,10 @@ async def ws_send(ws, cmds):
 
 
 # --------------------------------------------------------------------------
-# Taches de fond
+# Background tasks
 # --------------------------------------------------------------------------
 async def heartbeat_loop():
-    """Heartbeat lu par le mod : independant de l'etat de la connexion."""
+    """Heartbeat read by the mod: independent of the connection state."""
     while True:
         try:
             HEARTBEAT.write_text(str(time.time()))
@@ -259,11 +260,11 @@ async def heartbeat_loop():
 
 
 async def watchdog_loop():
-    """Arrete le bridge quand le jeu ne donne plus signe de vie."""
+    """Stops the bridge when the game stops responding."""
     while True:
         await asyncio.sleep(5)
         if time.time() - last_activity > INACTIVITY_TIMEOUT:
-            print('BRIDGE: inactivite detectee, arret.', flush=True)
+            print('BRIDGE: inactivity detected, stopping.', flush=True)
             try:
                 if INP.exists():
                     INP.unlink()
@@ -277,21 +278,21 @@ async def watchdog_loop():
 
 
 async def tail_out(ws_ref, connected_event):
-    """Lit les nouvelles lignes de out.jsonl et les traite."""
+    """Reads new lines from out.jsonl and processes them."""
     global last_activity
     offset = 0
     while True:
         try:
             if OUT.exists():
                 size = OUT.stat().st_size
-                if size < offset:  # fichier tronque
+                if size < offset:  # file truncated
                     offset = 0
                 if size > offset:
                     with open(OUT, 'rb') as f:
                         f.seek(offset)
                         data = f.read()
                     last_activity = time.time()
-                    # ne consommer que les lignes completes
+                    # only consume complete lines
                     end = data.rfind(b'\n')
                     if end >= 0:
                         offset += end + 1
@@ -321,8 +322,8 @@ async def handle_out(line, ws_ref, connected_event):
             return
         if cid in state['checked']:
             return
-        # Toujours memoriser : si on n'est pas encore authentifie, le check
-        # sera envoye par le handler 'Connected'.
+        # Always remember: if not yet authenticated, the check will be sent
+        # by the 'Connected' handler.
         state['checked'].add(cid)
         save_state()
         if online:
@@ -341,11 +342,11 @@ async def handle_out(line, ws_ref, connected_event):
             save_state()
         if online:
             await ws_send(ws, [{'cmd': 'StatusUpdate', 'status': 30}])
-    # 'hello' et 'heartbeat' : seulement pour last_activity
+    # 'hello' and 'heartbeat': only for last_activity
 
 
 # --------------------------------------------------------------------------
-# Reception serveur
+# Server reception
 # --------------------------------------------------------------------------
 async def recv_loop(ws, connected_event):
     async for raw in ws:
@@ -364,11 +365,11 @@ async def recv_loop(ws, connected_event):
                 if 'goal' in sd:
                     options = dict(options)
                     options['goal'] = sd.get('goal')
-                # Nouvelle session : remplace in.jsonl.
+                # New session: replaces in.jsonl.
                 write_sync()
                 write_in({'t': 'config', 'goal': sd.get('goal'), 'options': options})
                 connected_event.set()
-                # Notifications d'items : identite du slot et datapackage.
+                # Item notifications: slot identity and datapackage.
                 session['slot'] = m.get('slot')
                 session['players'] = {
                     p.get('slot'): (p.get('alias') or p.get('name'))
@@ -385,14 +386,14 @@ async def recv_loop(ws, connected_event):
                 session['ready'] = not todo
                 if todo:
                     await ws_send(ws, [{'cmd': 'GetDataPackage', 'games': todo}])
-                # Renvoyer tous les checks connus (le serveur dedoublonne).
+                # Resend all known checks (the server deduplicates).
                 if state['checked']:
                     await ws_send(ws, [{'cmd': 'LocationChecks',
                                         'locations': sorted(state['checked'])}])
                 if state['goal_sent']:
                     await ws_send(ws, [{'cmd': 'StatusUpdate', 'status': 30}])
             elif cmd == 'ConnectionRefused':
-                print('BRIDGE: connexion refusee:', m.get('errors'), flush=True)
+                print('BRIDGE: connection refused:', m.get('errors'), flush=True)
             elif cmd == 'ReceivedItems':
                 idx = m.get('index', 0)
                 for i, it in enumerate(m.get('items', [])):
@@ -425,13 +426,13 @@ async def recv_loop(ws, connected_event):
 
 
 # --------------------------------------------------------------------------
-# Connexion
+# Connection
 # --------------------------------------------------------------------------
 async def run_once():
     scheme = 'wss' if HOST not in ('127.0.0.1', 'localhost') else 'ws'
     uri = f'{scheme}://{HOST}:{PORT}'
     ws_ref = {'ws': None}
-    connected_event = asyncio.Event()  # positionne uniquement sur 'Connected'
+    connected_event = asyncio.Event()  # set only on 'Connected'
 
     async with websockets.connect(uri, max_size=None) as ws:
         ws_ref['ws'] = ws
@@ -447,13 +448,13 @@ async def run_once():
                     session['checksums'] = m.get('datapackage_checksums') or {}
                     seed_name = m.get('seed_name')
                     if seed_name is not None and seed_name != state['seed_name']:
-                        print('BRIDGE: nouvelle seed detectee, reset des checks', flush=True)
+                        print('BRIDGE: new seed detected, resetting checks', flush=True)
                         state['checked'] = set()
                         state['goal_sent'] = False
                         state['seed_name'] = seed_name
                         save_state()
         except Exception as e:
-            print('BRIDGE: pas de RoomInfo:', repr(e), flush=True)
+            print('BRIDGE: no RoomInfo:', repr(e), flush=True)
 
         await ws_send(ws, [{
             'cmd': 'Connect',
@@ -488,7 +489,7 @@ async def main():
     while True:
         try:
             await run_once()
-            print('BRIDGE: connexion fermee', flush=True)
+            print('BRIDGE: connection closed', flush=True)
             backoff = 1
         except Exception as e:
             print('BRIDGE connection error:', repr(e), flush=True)
@@ -499,9 +500,9 @@ async def main():
 
 if __name__ == '__main__':
     if websockets is None:
-        sys.exit('websockets manquant : pip install websockets')
+        sys.exit('websockets missing: pip install websockets')
 
-    # Auto-daemonisation quand lance par le mod OpenMW.
+    # Auto-daemonization when launched by the OpenMW mod.
     if os.getenv('AP_DAEMON') == '1':
         try:
             if os.fork() > 0:
@@ -510,8 +511,8 @@ if __name__ == '__main__':
             pass
         os.setsid()
 
-    # Verrou AVANT la redirection du log : une 2e instance ne doit pas
-    # ecraser le log de la premiere.
+    # Lock BEFORE redirecting the log: a 2nd instance must not overwrite
+    # the first one's log.
     _lock = acquire_lock()
 
     if os.getenv('AP_DAEMON') == '1':

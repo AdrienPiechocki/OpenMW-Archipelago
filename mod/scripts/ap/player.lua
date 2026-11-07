@@ -1,5 +1,5 @@
--- Mod joueur : detection des checks (quetes Miscellaneous, mort)
--- et de l'objectif de la partie (goal).
+-- Player mod: check detection (Miscellaneous quests, death)
+-- and the game goal.
 local core  = require('openmw.core')
 local self  = require('openmw.self')
 local types = require('openmw.types')
@@ -28,16 +28,16 @@ local goalChecks = {
 local notify = require('scripts.ap.notify')
 local storage = require('openmw.storage')
 
--- Tables generees depuis data/*.yaml (tools/gen_lua.py)
-local QUEST_COMPLETE_LOOKUP = require('scripts.ap.quest_completions') -- ['quest'] = {stage, {fails}, {ids}, groupe, {stages de fin alternatifs}}
+-- Tables generated from data/*.yaml (tools/gen_lua.py)
+local QUEST_COMPLETE_LOOKUP = require('scripts.ap.quest_completions') -- ['quest'] = {stage, {fails}, {ids}, group, {alternative ending stages}}
 local GOALS = require('scripts.ap.goals')
-local LOCKS = require('scripts.ap.quest_locks')   -- objectif -> { {id = item AP, quest} }
+local LOCKS = require('scripts.ap.quest_locks')   -- goal -> { {id = AP item, quest} }
 
 local sent = {}
 local goalSent = false
-local goalList = nil        -- cles de GOALS a accomplir (quete principale + maison/guilde/faction), recues du serveur
-local reachedGoals = {}     -- cle -> true, memorise une fois accompli
-local ownedIds = {}         -- ids d'items AP recus (relayes par global.lua)
+local goalList = nil        -- GOALS keys to complete (main quest + house/guild/faction), received from the server
+local reachedGoals = {}     -- key -> true, remembered once reached
+local ownedIds = {}         -- received AP item ids (relayed by global.lua)
 local lockWarned = {}
 local dagothDead = false
 local wasDead = false
@@ -58,12 +58,12 @@ local function sendGoal()
   if goalSent then return end
   goalSent = true
   ap.send('{"t":"goal"}')
-  print('AP: goal envoye (' .. table.concat(goalList or {}, ', ') .. ')')
+  print('AP: goal sent (' .. table.concat(goalList or {}, ', ') .. ')')
 end
 
--- Ensemble des quetes a surveiller. On indexe directement l'objet quests
--- plutot que d'utiliser pairs() : l'iteration n'est pas garantie selon la
--- version d'OpenMW (et echoue silencieusement).
+-- Set of quests to watch. We index the quests object directly rather than
+-- using pairs(): iteration is not guaranteed depending on the OpenMW
+-- version (and fails silently).
 local allQuests = {}
 for q in pairs(QUEST_COMPLETE_LOOKUP) do allQuests[q] = true end
 for _, g in pairs(GOALS) do
@@ -76,9 +76,9 @@ local function questStage(quests, qkey)
   return tonumber(quest.stage) or 0
 end
 
--- Une quete est terminee (avec succes) si son stage a atteint le seuil de
--- completion sans etre sur une branche d'echec, OU s'il est l'un de ses stages
--- de fin alternatifs (info[5], souvent inferieurs au seuil).
+-- A quest is complete (successfully) if its stage reached the completion
+-- threshold without being on a failure branch, OR if it is one of its
+-- alternative ending stages (info[5], often below the threshold).
 local function questComplete(qkey, stage)
   local info = QUEST_COMPLETE_LOOKUP[qkey]
   if not info then return false end
@@ -99,8 +99,8 @@ local function factionRank(fid)
   return 0
 end
 
--- Un objectif (cle de GOALS) est accompli si UNE de ses conditions est remplie.
--- Une fois accompli, il le reste (memorise dans la sauvegarde).
+-- A goal (GOALS key) is reached if ONE of its conditions is met.
+-- Once reached, it stays reached (remembered in the save).
 local function keyReached(key, quests)
   if reachedGoals[key] then return true end
   local g = GOALS[key]
@@ -117,7 +117,7 @@ local function keyReached(key, quests)
     local r = factionRank(g.faction)
     if r ~= lastRank[g.faction] then
       lastRank[g.faction] = r
-      print(('AP: rang %s = %d (objectif : %d)'):format(g.faction, r, g.rank or 10))
+      print(('AP: rank %s = %d (goal: %d)'):format(g.faction, r, g.rank or 10))
     end
     if r >= (g.rank or 10) then ok = true end
   end
@@ -137,12 +137,12 @@ local function keyReached(key, quests)
 
   if ok then
     reachedGoals[key] = true
-    print('AP: objectif accompli : ' .. key)
+    print('AP: goal reached: ' .. key)
   end
   return ok
 end
 
--- Tous les objectifs choisis sont accomplis (on les evalue tous : logs de rang).
+-- All chosen goals are reached (we evaluate them all: rank logs).
 local function allGoalsReached(quests)
   if not goalList or #goalList == 0 then return false end
   local all = true
@@ -160,9 +160,9 @@ local function goalActive(key)
   return false
 end
 
--- Quetes verrouillees : tant que l'item AP de deverrouillage n'est pas recu, la
--- quete ne peut pas progresser (journal remis a zero a chaque verification).
--- Ne s'applique que si l'objectif correspondant est choisi (ex. Daedric Quests).
+-- Locked quests: as long as the unlocking AP item has not been received, the
+-- quest cannot progress (journal reset to zero on every check).
+-- Only applies if the matching goal is selected (e.g. Daedric Quests).
 local function enforceLocks(quests)
   if not goalList then return end
   for goal, list in pairs(LOCKS) do
@@ -171,10 +171,10 @@ local function enforceLocks(quests)
         if not ownedIds[lk.id] and questStage(quests, lk.quest) > 0 then
           local ok = pcall(function() quests[lk.quest].stage = 0 end)
           if ok then
-            print('AP: quete verrouillee remise a zero : ' .. lk.quest)
+            print('AP: locked quest reset to zero: ' .. lk.quest)
           elseif not lockWarned[lk.quest] then
             lockWarned[lk.quest] = true
-            print('AP: impossible de verrouiller la quete ' .. lk.quest .. ' (API stage non modifiable ?)')
+            print('AP: cannot lock quest ' .. lk.quest .. ' (stage API not writable?)')
           end
         end
       end
@@ -189,8 +189,8 @@ local function pollQuests()
   for qkey in pairs(allQuests) do
     local stage = questStage(quests, qkey)
     if stage > 0 then
-      -- Check de completion : quetes Miscellaneous, et quetes des objectifs
-      -- choisis si l'option Goal Quest Checks est active.
+      -- Completion check: Miscellaneous quests, and quests of the chosen
+      -- goals if the Goal Quest Checks option is enabled.
       local info = QUEST_COMPLETE_LOOKUP[qkey]
       if info and questComplete(qkey, stage)
           and goalChecks.allowed(info[4], goalList) then
@@ -225,8 +225,8 @@ local function checkDeath()
   wasDead = dead
 end
 
--- Notifications d'items Archipelago (recus / envoyes) : file d'affichage, un
--- message toutes les notify.GAP secondes pour qu'ils restent lisibles.
+-- Archipelago item notifications (received / sent): display queue, one
+-- message every notify.GAP seconds so they stay readable.
 local notifyQueue = {}
 local notifyWait = 0
 
@@ -287,7 +287,7 @@ local function onLoad(d)
     reachedGoals = d.reachedGoals or {}
     ownedIds = d.ownedIds or {}
   end
-  -- resync : renvoyer tous les checks deja obtenus (idempotent cote bridge)
+  -- resync: resend all already obtained checks (idempotent on the bridge side)
   for id in pairs(sent) do
     ap.send(('{"t":"check","id":%d}'):format(id))
   end
@@ -306,15 +306,16 @@ local function onDeathLink()
   deathlinkTime = core.getRealTime()
 end
 
--- Config du serveur (slot_data) relayee par global.lua : data.goals = liste de
--- cles (quete principale + maison / guilde / faction choisies). Ancien format :
--- data.goal = 'main_quest' ou 0.
+-- Server config (slot_data) relayed by global.lua: data.goals = list of
+-- keys (main quest + chosen house / guild / faction). Old format:
+-- data.goal = 'main_quest' or 0.
 local function onConfig(data)
   if type(data) ~= 'table' then return end
 
-  -- Resync : AP_Config n'arrive qu'apres la connexion du bridge. Le bridge a pu
-  -- remettre ses checks a zero (nouvelle seed) alors que `sent` persiste dans
-  -- la save : on renvoie tout (idempotent cote bridge, dedoublonne par le serveur).
+  -- Resync: AP_Config only arrives after the bridge connects. The bridge may
+  -- have reset its checks to zero (new seed) while `sent` persists in the
+  -- save: we resend everything (idempotent on the bridge side, deduplicated
+  -- by the server).
   for id in pairs(sent) do
     ap.send(('{"t":"check","id":%d}'):format(id))
   end
@@ -339,25 +340,25 @@ local function onConfig(data)
       seen[k] = true
       list[#list + 1] = k
     elseif not GOALS[k] then
-      print('AP: objectif inconnu : ' .. k)
+      print('AP: unknown goal: ' .. k)
     end
   end
   if #list > 0 then
     local changed = (goalList == nil) or (table.concat(goalList, ',') ~= table.concat(list, ','))
     goalList = list
-    if changed then print('AP: objectifs = ' .. table.concat(list, ', ')) end
+    if changed then print('AP: goals = ' .. table.concat(list, ', ')) end
   end
 end
 
--- Items AP recus (ids), relayes par global.lua : deverrouillent les quetes.
+-- Received AP items (ids), relayed by global.lua: they unlock quests.
 local function onOwned(data)
   if type(data) ~= 'table' or type(data.ids) ~= 'table' then return end
   for _, id in ipairs(data.ids) do ownedIds[tonumber(id)] = true end
 end
 
--- Item "+10 niveaux" : on ajoute la progression de niveau vanilla sur le
--- joueur (self). Le setter n'est autorise que dans un script local, d'ou le
--- relais par global.lua. Le joueur dort ensuite pour choisir ses attributs.
+-- "+10 levels" item: we add vanilla level-up progress to the player
+-- (self). The setter is only allowed in a local script, hence the relay
+-- through global.lua. The player then sleeps to choose their attributes.
 local function onLevelUp(data)
   local levels = levelUp.LEVELS
   if type(data) == 'table' and tonumber(data.levels) then
@@ -369,22 +370,22 @@ local function onLevelUp(data)
     stat.progress = levelUp.newProgress(stat.progress, levels, total)
   end)
   pcall(function()
-    ui.showMessage(('Item Archipelago : +%d niveaux. Dormez pour choisir vos attributs.'):format(levels))
+    ui.showMessage(('Archipelago item: +%d levels. Sleep to choose your attributes.'):format(levels))
   end)
 end
 
--- Activation d'un sanctuaire daedrique bloquee par global.lua (item AP manquant).
+-- Daedric shrine activation blocked by global.lua (missing AP item).
 local function onLockedActivation(data)
-  local name = 'sanctuaire daedrique'
+  local name = 'daedric shrine'
   if type(data) == 'table' and data.name ~= nil then
     name = tostring(data.name)
   end
   pcall(function()
-    ui.showMessage('Sanctuaire verrouillé : ' .. name .. ' (item Archipelago requis)')
+    ui.showMessage('Shrine locked: ' .. name .. ' (Archipelago item required)')
   end)
 end
 
--- Mort de Dagoth Ur (relayee par actor.lua -> global.lua).
+-- Death of Dagoth Ur (relayed by actor.lua -> global.lua).
 local function onDagothDead()
   dagothDead = true
 end

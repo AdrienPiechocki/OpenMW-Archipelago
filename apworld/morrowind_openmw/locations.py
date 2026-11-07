@@ -19,7 +19,7 @@ class MorrowindLocationData(NamedTuple):
     can_create: Callable[[MorrowindOptions], bool] = lambda options: True
     locked_item: str | None = None
     group: str = "misc"
-    # True : aucun item important (progression / utile) dans cette location.
+    # True: no important item (progression / useful) in this location.
     excluded: Callable[[MorrowindOptions], bool] = lambda options: False
 
 
@@ -27,7 +27,7 @@ BASE_LOC = 7700000
 
 location_table: Dict[str, MorrowindLocationData] = {}
 
-# Completion de quete (un check par quete)
+# Quest completion (one check per quest)
 _qc_text = None
 try:
     from importlib import resources as _res
@@ -38,8 +38,8 @@ except Exception:
     if os.path.exists(_p):
         with open(_p, encoding='utf-8') as f:
             _qc_text = f.read()
-# Quetes pouvant echouer / a fins exclusives (data/quest_finals.yaml, champ `fail`) :
-# leur check peut devenir impossible, donc jamais d'item important dessus.
+# Quests that can fail / have exclusive endings (data/quest_finals.yaml, `fail` field):
+# their check can become impossible, so never put an important item on them.
 _qf_text = None
 try:
     from importlib import resources as _res
@@ -61,7 +61,7 @@ def _goal_quest_can_create(options, g):
 
 
 def _goal_quest_excluded(options, risky):
-    # Seules les quetes sans branche d'echec peuvent contenir de la progression.
+    # Only quests without a failure branch can hold progression.
     return risky
 
 
@@ -74,8 +74,8 @@ if yaml is not None and _qc_text:
         group = q.get('group', 'misc')
         risky = str((q.get('trigger') or {}).get('quest', '')).lower() in risky_quests
         if group == 'misc':
-            # Une quete misc a branche d'echec peut rendre son check impossible :
-            # jamais d'item important dessus (sinon seed infaisable).
+            # A misc quest with a failure branch can make its check impossible:
+            # never put an important item on it (otherwise the seed is unbeatable).
             location_table[name] = MorrowindLocationData(
                 region=region, code=code, group=group,
                 can_create=lambda options: True,

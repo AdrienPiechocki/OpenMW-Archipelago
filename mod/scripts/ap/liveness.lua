@@ -1,16 +1,16 @@
--- Detection de l'activite du bridge a partir de bridge.heartbeat.
+-- Bridge liveness detection from bridge.heartbeat.
 --
--- Le bridge Python ecrit un timestamp Unix (time.time()) dans ce fichier
--- toutes les secondes. OpenMW expose core.getRealTime(), mais son origine
--- n'est pas fixe (temps depuis le demarrage / le boot) : il ne faut donc
--- jamais le comparer au timestamp du fichier. On compare uniquement avec
--- os.time() (epoch Unix).
+-- The Python bridge writes a Unix timestamp (time.time()) to this file
+-- every second. OpenMW exposes core.getRealTime(), but its origin
+-- is not fixed (time since start / boot): it must therefore
+-- never be compared with the timestamp in the file. We compare only
+-- with os.time() (Unix epoch).
 local M = {}
 
--- dir      : dossier de donnees du bridge (celui de config.data_dir)
--- now      : heure Unix courante (os.time())
--- readFile : function(path) -> contenu du fichier ou nil
--- maxAge   : age maximal en secondes (15 par defaut)
+-- dir: bridge data directory (the one from config.data_dir)
+-- now: current Unix time (os.time())
+-- readFile: function(path) -> file content or nil
+-- maxAge: maximum age in seconds (15 by default)
 function M.isBridgeAlive(dir, now, readFile, maxAge)
   if type(dir) ~= 'string' or type(now) ~= 'number' or type(readFile) ~= 'function' then
     return false
@@ -22,8 +22,9 @@ function M.isBridgeAlive(dir, now, readFile, maxAge)
   if not ts then return false end
   maxAge = tonumber(maxAge) or 15
   local age = now - ts
-  -- Une petite avance d'horloge est toleree ; un timestamp trop vieux ou
-  -- trop lointain signifie que le bridge n'est plus celui de cette session.
+  -- A small clock advance is tolerated; a timestamp that is too old or
+  -- too far in the future means the bridge is no longer the one from this
+  -- session.
   return age >= -5 and age <= maxAge
 end
 

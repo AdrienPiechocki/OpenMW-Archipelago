@@ -1,18 +1,18 @@
--- Configuration du mod Archipelago pour OpenMW.
+-- Archipelago mod configuration for OpenMW.
 --
--- C'est le seul endroit a modifier pour changer de serveur / de slot.
--- Le bridge Python peut aussi etre configure avec les variables
--- d'environnement AP_HOST, AP_PORT, AP_SLOT, AP_PASSWORD, AP_DATA_DIR,
--- mais le mod lance toujours le bridge avec les valeurs ci-dessous.
+-- This is the only place to edit to change server / slot.
+-- The Python bridge can also be configured with the environment
+-- variables AP_HOST, AP_PORT, AP_SLOT, AP_PASSWORD, AP_DATA_DIR,
+-- but the mod always launches the bridge with the values below.
 return {
-  -- Serveur Archipelago
+  -- Archipelago server
   host = 'archipelago.gg',
   port = 64423,
   slot = 'TestMW',
   password = '',
 
   -- Bridge Python
-  -- ~ est remplace par le dossier personnel.
+  -- ~ is replaced by the home directory.
   data_dir = '~/.local/share/openmw/ap',
   python = 'python3',
   bridge_path = '~/Projets/OpenMW-Archipelago/bridge/bridge.py',
@@ -20,5 +20,5 @@ return {
 
   -- Gameplay
   deathlink = true,
-  poll_interval = 1.0, -- secondes
+  poll_interval = 1.0, -- seconds
 }

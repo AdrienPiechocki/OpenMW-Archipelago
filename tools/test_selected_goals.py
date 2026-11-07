@@ -1,6 +1,6 @@
-"""Test de selected_goals() (option main_quest) sans Archipelago installe.
+"""Test of selected_goals() (main_quest option) without Archipelago installed.
 
-Depuis la racine du depot :
+From the repository root:
     python3 tools/test_selected_goals.py
 """
 import importlib.util
@@ -8,9 +8,9 @@ import pathlib
 import sys
 import types
 
-# Faux module `Options` : juste de quoi importer options.py.
+# Fake `Options` module: just enough to import options.py.
 fake = types.ModuleType('Options')
-# Comme dans Archipelago : Toggle vaut 0 par defaut, DefaultOnToggle 1.
+# As in Archipelago: Toggle defaults to 0, DefaultOnToggle to 1.
 for name, default in (('Toggle', 0), ('Choice', 0), ('DefaultOnToggle', 1), ('PerGameCommonOptions', None)):
     setattr(fake, name, type(name, (), {'default': default}))
 sys.modules['Options'] = fake
@@ -55,16 +55,16 @@ def check(name, got, want):
 
 
 check('default', opts.selected_goals(make()), ['main_quest'])
-check('option absent -> main quest', opts.selected_goals(make(with_main=False)), ['main_quest'])
+check('missing option -> main quest', opts.selected_goals(make(with_main=False)), ['main_quest'])
 check('main off + house', opts.selected_goals(make(main=False, house='hlaalu')), ['hlaalu'])
 check('main off + daedric', opts.selected_goals(make(main=False, daedric=True)), ['daedric_quests'])
 check('main off + several', opts.selected_goals(
     make(main=False, house='redoran', guild='mages_guild', faction='temple', daedric=True)),
     ['redoran', 'mages_guild', 'temple', 'daedric_quests'])
 check('main on + house', opts.selected_goals(make(house='hlaalu')), ['main_quest', 'hlaalu'])
-# Sans aucun objectif : liste vide (generate_early leve alors une OptionError).
+# With no goal: empty list (generate_early then raises an OptionError).
 check('nothing selected', opts.selected_goals(make(main=False)), [])
-# goal_quest_checks : simple on / off (on = ancien 'full', code 2 pour le mod).
+# goal_quest_checks: simple on / off (on = former 'full', code 2 for the mod).
 check('goal checks on', opts.goal_quest_mode(make(gqc=1)), 2)
 check('goal checks off', opts.goal_quest_mode(make(gqc=0)), 0)
 check('goal checks absent', opts.goal_quest_mode(make()), 0)

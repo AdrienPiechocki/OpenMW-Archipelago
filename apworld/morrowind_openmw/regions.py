@@ -4,7 +4,7 @@ try:
 except Exception:
     yaml = None
 
-# Regions de base
+# Base regions
 region_table = {
     "Menu": ["Seyda Neen"],
     "Seyda Neen": ["Balmora"],

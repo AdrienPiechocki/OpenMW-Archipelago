@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
-"""Genere data/quest_finals.yaml : stages de completion par quete.
+"""Generates data/quest_finals.yaml: completion stages per quest.
 
-Chaque entree contient :
-  stage  : stage "principal" (le plus haut stage de fin, ou l'override) ;
-           conserve pour compatibilite.
-  stages : TOUS les stages qui terminent la quete avec succes. La quete est
-           completee des qu'un de ces stages est atteint.
-  fail   : stages d'echec (annulent la completion).
+Each entry contains:
+  stage  : "main" stage (the highest ending stage, or the override);
+           kept for compatibility.
+  stages : ALL stages that successfully finish the quest. The quest is
+           completed as soon as one of these stages is reached.
+  fail   : failure stages (cancel the completion).
 
-Les stages de completion sont deduits de l'ESM : un stage d'entree de journal
-que ni un dialogue (filtre Journal) ni un script (GetJournalIndex) ne prend
-comme condition n'a pas de suite : c'est une fin possible (candidat). On y
-ajoute les stages quest_finish s'ils existent (tes3conv ne les exporte pas
-toujours), puis on retire les stages d'echec connus. A defaut, on prend le
-plus haut stage Journal (< 150). Des overrides corrigent les branches connues.
-Les stages ajoutes automatiquement sont listes dans quest_review.txt.
+Completion stages are deduced from the ESM: a journal entry stage that
+neither a dialogue (Journal filter) nor a script (GetJournalIndex) uses as a
+condition has no follow-up: it is a possible ending (candidate). The
+quest_finish stages are added if they exist (tes3conv does not always export
+them), then known failure stages are removed. As a fallback, we take the
+highest Journal stage (< 150). Overrides fix known branches. Automatically
+added stages are listed in quest_review.txt.
 
 Usage:
   tes3conv Morrowind.esm morrowind.json
   python tools/gen_quest_finals.py /tmp/morrowind.json --out data/quest_finals.yaml
-  # --recompute : recalcule aussi les quetes deja presentes (stage/stages)
+  # --recompute: also recomputes quests already present (stage/stages)
 """
 import argparse
 import collections
@@ -34,8 +34,8 @@ import yaml
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from quest_groups import classify, load_overrides  # noqa: E402
 
-# Stage "principal" explicite quand le max brut ne correspond pas a la
-# vraie fin "reussie" de la quete.
+# Explicit "main" stage when the raw maximum does not match the quest's
+# actual "successful" ending.
 STAGE_OVERRIDES = {
     'fg_nchurdamz': 100,
     'il_maidentoken': 110,
@@ -54,21 +54,21 @@ STAGE_OVERRIDES = {
     'mv_3_charming': 90,
 }
 
-# Liste COMPLETE des stages de completion, quand la deduction automatique
-# (quest_finish moins echecs) est fausse. Prioritaire sur tout le reste.
-# Nels Llendo : 90 (refus/attaque), 100 (or), 120 et 130 (baiser) terminent
-# tous la quete ; 140 n'est qu'un suivi a Pelagiad, souvent jamais atteint.
+# COMPLETE list of completion stages, when the automatic deduction
+# (quest_finish minus failures) is wrong. Takes priority over everything else.
+# Nels Llendo: 90 (refusal/attack), 100 (gold), 120 and 130 (kiss) all finish
+# the quest; 140 is only a follow-up at Pelagiad, often never reached.
 STAGES_OVERRIDES = {
     'mv_3_charming': [90, 100, 120, 130],
 }
 
-# Stages a ajouter a la deduction automatique (fins non flaguees quest_finish).
+# Stages to add to the automatic deduction (endings not flagged quest_finish).
 STAGES_EXTRA = {
-    # 'quete_id': [stage, ...],
+    # 'quest_id': [stage, ...],
 }
 
-# Stages a retirer de la deduction automatique (intermediaires, dialogues,
-# refus/abandons...). Verifies d'apres le texte du journal (quest_review.txt).
+# Stages to remove from the automatic deduction (intermediate, dialogues,
+# refusals/abandonments...). Verified against the journal text (quest_review.txt).
 _HORT = [5, 10, 20]
 STAGES_EXCLUDE = {
     'a1_1_findspymaster': [20],
@@ -98,7 +98,7 @@ STAGES_EXCLUDE = {
     'va_vampamulet': [10, 25], 'va_vampcountess': [30], 'va_vampmarara': [20, 40],
 }
 
-# Stages qui annulent la completion (branche d'echec).
+# Stages that cancel completion (failure branch).
 FAIL_STAGES = {
     'fg_nchurdamz': [110],
     'il_maidentoken': [120],
@@ -112,9 +112,9 @@ FAIL_STAGES = {
     'b3_zainabbride': [60],
     'eb_invisible': [140],
     'mv_cultistvictim': [110],
-    'mv_fakeslave': [90],       # Tul meurt en chemin
-    'mv_poorpilgrim': [110],    # temps depasse
-    'mv_richtrader': [110],     # le marchand meurt
+    'mv_fakeslave': [90],       # Tul dies on the way
+    'mv_poorpilgrim': [110],    # time ran out
+    'mv_richtrader': [110],     # the merchant dies
 }
 
 PAT_QUOTED = re.compile(r'(?<!Get)Journal\s*,?\s*"([^"]+)"\s*,?\s*(\d+)', re.I)
@@ -122,18 +122,18 @@ PAT_BARE = re.compile(r'(?<!Get)Journal\s*,?\s*([A-Za-z_][A-Za-z0-9_\-]*)\s*,?\s
 PAT_COND = re.compile(
     r'GetJournalIndex\s*,?\s*"?([A-Za-z_][A-Za-z0-9_\-]*)"?\s*(==|=|>=|>|<=|<|!=)\s*(\d+)', re.I)
 
-# comparaison (filtre tes3conv) -> operateur
+# comparison (tes3conv filter) -> operator
 CMP = {'equal': '==', 'notequal': '!=', 'greater': '>', 'greaterequal': '>=',
        'less': '<', 'lessequal': '<='}
 
 
 class Data:
     def __init__(self):
-        self.stages = collections.defaultdict(set)   # stages poses par Journal (scripts)
-        self.entries = collections.defaultdict(set)  # stages ayant une entree de journal
-        self.conds = collections.defaultdict(list)   # (op, valeur) lus comme conditions
-        self.finishes = collections.defaultdict(set)  # quest_finish, si exporte
-        self.texts = {}                              # (quete, stage) -> texte
+        self.stages = collections.defaultdict(set)   # stages set by Journal (scripts)
+        self.entries = collections.defaultdict(set)  # stages having a journal entry
+        self.conds = collections.defaultdict(list)   # (op, value) read as conditions
+        self.finishes = collections.defaultdict(set)  # quest_finish, if exported
+        self.texts = {}                              # (quest, stage) -> text
 
 
 def collect_stages(esm_jsons, scripts_path=None):
@@ -185,7 +185,7 @@ def collect_stages(esm_jsons, scripts_path=None):
 
 
 def terminal_stages(D, qid):
-    """Stages d'entree de journal (< 150) qu'aucune condition ne consomme."""
+    """Journal entry stages (< 150) that no condition consumes."""
     used = set()
     for op, v in D.conds.get(qid, []):
         for s in D.entries.get(qid, ()):
@@ -201,7 +201,7 @@ def terminal_stages(D, qid):
 
 
 def completion_stages(qid, raw, fin, fail, known_stage=None):
-    """Retourne (stage principal, liste triee de tous les stages de fin)."""
+    """Returns (main stage, sorted list of all ending stages)."""
     if qid in STAGES_OVERRIDES:
         found = sorted(set(STAGES_OVERRIDES[qid]))
     else:
@@ -231,19 +231,19 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('esm_json', nargs='+')
     ap.add_argument('--scripts', default=None,
-                    help='dump texte des scripts (optionnel, ameliore la couverture)')
+                    help='script text dump (optional, improves coverage)')
     ap.add_argument('--qc', default='data/quest_completions.yaml')
     ap.add_argument('--out', default='data/quest_finals.yaml')
     ap.add_argument('--recompute', action='store_true',
-                    help='recalcule aussi stage/stages des quetes deja presentes')
+                    help='also recomputes stage/stages of quests already present')
     ap.add_argument('--no-auto', action='store_true',
-                    help="n'ajoute pas les stages sans suite deduits automatiquement")
+                    help="does not add automatically deduced stages without follow-up")
     args = ap.parse_args()
 
     D = collect_stages(args.esm_json, args.scripts)
     if not D.finishes:
-        print('info: aucun quest_finish dans le JSON, fins deduites des conditions '
-              '(filtres Journal / GetJournalIndex)')
+        print('info: no quest_finish in the JSON, endings deduced from conditions '
+              '(Journal / GetJournalIndex filters)')
 
     existing = {}
     if pathlib.Path(args.out).exists():
@@ -279,7 +279,7 @@ def main():
                 row['stages'] = found
             else:
                 row['stages'] = sorted(set(old) | set(found))
-            # purge : stages exclus / d'echec deja ecrits par un run precedent
+            # purge: excluded / failure stages already written by a previous run
             drop = set(STAGES_EXCLUDE.get(qid, [])) | set(fail)
             row['stages'] = sorted((set(row['stages']) - drop) | {row['stage']})
             if qid in STAGES_OVERRIDES:
@@ -289,7 +289,7 @@ def main():
             row['group'] = classify(qid, overrides)
             added = [s for s in row['stages'] if s != row['stage']]
             if added and old != row['stages']:
-                review.append(f'{qid}: stage={row["stage"]} stages={row["stages"]} (existant)')
+                review.append(f'{qid}: stage={row["stage"]} stages={row["stages"]} (existing)')
                 for s in added:
                     review.append(f'    + {s}: {snippet(D, qid, s)}')
             rows.append(row)
@@ -305,7 +305,7 @@ def main():
             'ids': ids[qid],
             'group': classify(qid, overrides),
         })
-        flag = '' if len(found) <= 1 else '  <-- plusieurs fins possibles, verifier'
+        flag = '' if len(found) <= 1 else '  <-- several possible endings, check'
         review.append(f'{qid}: stage={main} stages={found} raw={raw}{flag}')
         for s in found:
             if s != main:
@@ -316,11 +316,11 @@ def main():
     with open(out, 'w', encoding='utf-8') as f:
         yaml.safe_dump(rows, f, sort_keys=False, allow_unicode=True)
     multi = sum(1 for r in rows if len(r['stages']) > 1)
-    print(f'quest finals: {len(rows)} entries -> {out} ({multi} avec plusieurs fins)')
+    print(f'quest finals: {len(rows)} entries -> {out} ({multi} with several endings)')
     rp = out.with_name('quest_review.txt')
     if review:
         rp.write_text('\n'.join(review) + '\n', encoding='utf-8')
-        print(f'a verifier dans {rp}')
+        print(f'to check in {rp}')
     elif rp.exists():
         rp.unlink()
 

@@ -1,12 +1,12 @@
--- Mapping item Archipelago -> action en jeu.
+-- Archipelago item -> in-game action mapping.
 --
--- Les items de transport / progression sans objet physique sont suivis par
--- global.lua (table owned) : ils debloquent les services de voyage.
+-- Transport / progression items without a physical object are tracked by
+-- global.lua (owned table): they unlock travel services.
 local M = {}
 local levelUp = require('scripts.ap.level_up')
 
--- Objets donnes directement dans l'inventaire.
--- cles = id AP, valeur = { recordId, quantite }
+-- Objects given directly to the inventory.
+-- keys = AP id, value = { recordId, quantity }
 local GIVE = {
   [7701001] = { 'gold_001', 100 },
   [7701002] = { 'p_restore_health_s', 1 },
@@ -14,12 +14,12 @@ local GIVE = {
   [7701004] = { 'chitin arrow', 30 },
 }
 
--- Sorts ajoutes au joueur.
+-- Spells added to the player.
 local SPELLS = {}
 
--- Objets de quete par objectif (data/quest_items.yaml -> quest_items.lua) :
--- donnes par Archipelago, et retires de l'inventaire s'ils viennent des
--- quetes tant que l'item AP correspondant n'a pas ete recu.
+-- Quest items per goal (data/quest_items.yaml -> quest_items.lua):
+-- given by Archipelago, and removed from the inventory if they come from
+-- quests as long as the matching AP item has not been received.
 local QUEST_ITEMS = require('scripts.ap.quest_items')
 for _, list in pairs(QUEST_ITEMS) do
   for _, it in ipairs(list) do
@@ -28,9 +28,9 @@ for _, list in pairs(QUEST_ITEMS) do
   end
 end
 
--- Table { apId = { recordIds } } des objets a supprimer pour les objectifs
--- donnes (liste de cles, ou une cle). Sans objectif connu (config pas encore
--- recue) : rien n'est supprime.
+-- Table { apId = { recordIds } } of objects to suppress for the given
+-- goals (list of keys, or one key). Without a known goal (config not yet
+-- received): nothing is suppressed.
 function M.suppressFor(goals)
   if type(goals) == 'string' then goals = { goals } end
   local out = {}
@@ -42,14 +42,14 @@ function M.suppressFor(goals)
   return out
 end
 
--- Objet exige par le script vanilla CharGenDoorExitCaptain pour sortir du
--- Census Office. Tant que le joueur est dans le batiment, on le garde (et on
--- le recree s'il manque), meme si l'item AP n'a pas encore ete recu.
+-- Object required by the vanilla CharGenDoorExitCaptain script to leave the
+-- Census Office. While the player is inside the building, it is kept (and
+-- recreated if missing), even if the AP item has not been received yet.
 M.CENSUS_PACKAGE = 'bk_a1_1_caiuspackage'
 
--- Vrai si la liste d'objets a supprimer contient le package et que le joueur
--- est encore dans le Census Office. On se base sur le record plutot que sur
--- un id AP code en dur : les ids de data/quest_items.yaml peuvent changer.
+-- True if the list of objects to suppress contains the package and the player
+-- is still in the Census Office. We rely on the record rather than on a
+-- hardcoded AP id: the ids in data/quest_items.yaml may change.
 function M.keepInCensus(records, inCensus)
   if not inCensus then return false end
   for _, recordId in ipairs(records or {}) do
@@ -76,8 +76,8 @@ local function giveSpells(player, ids)
   return true
 end
 
--- Applique un item. Retourne true si l'item a ete traite (meme si l'effet
--- exact n'est pas connu), false sinon.
+-- Apply an item. Returns true if the item was handled (even if the exact
+-- effect is unknown), false otherwise.
 function M.apply(player, itemId, idx)
   local types = require('openmw.types')
 
@@ -95,9 +95,9 @@ function M.apply(player, itemId, idx)
     return true
   end
 
-  -- (Bonus de Force supprime)
+  -- (Strength bonus removed)
 
-  -- Piege : maladie / embuscade
+  -- Trap: disease / ambush
   if itemId == 7701200 then
     pcall(function()
       local inv = types.Actor.inventory(player)
@@ -123,7 +123,7 @@ function M.apply(player, itemId, idx)
     return true
   end
 
-  -- Piege : mise a prix (bounty)
+  -- Trap: bounty
   if itemId == 7701201 then
     pcall(function()
       local cur = types.Player.getCrimeLevel(player)
@@ -132,7 +132,7 @@ function M.apply(player, itemId, idx)
     return true
   end
 
-  -- Piege : invocation d'un scamp
+  -- Trap: summon a scamp
   if itemId == 7701202 then
     pcall(function()
       local world = require('openmw.world')
@@ -145,7 +145,7 @@ function M.apply(player, itemId, idx)
     return true
   end
 
-  -- Piege : vol d'or
+  -- Trap: gold theft
   if itemId == 7701203 then
     pcall(function()
       local types = require('openmw.types')
@@ -159,14 +159,14 @@ function M.apply(player, itemId, idx)
     return true
   end
 
-  -- +10 niveaux : la progression est ajoutee par player.lua, car les setters
-  -- de stats ne sont autorises que sur openmw.self (pas depuis le script
-  -- global). On renvoie l'effet a relayer au joueur.
+  -- +10 levels: progression is added by player.lua, because stat setters
+  -- are only allowed on openmw.self (not from the global script). The
+  -- effect is returned to be relayed to the player.
   if itemId == levelUp.ITEM_ID then
     return true, { type = 'level_up', levels = levelUp.LEVELS }
   end
 
-  -- Niveaux de competence : +5 au skill correspondant
+  -- Skill levels: +5 to the matching skill
   if itemId >= 7701300 and itemId <= 7701326 then
     local SKILLS = {
       [7701300] = 'acrobatics', [7701301] = 'alchemy', [7701302] = 'alteration',
@@ -192,8 +192,8 @@ function M.apply(player, itemId, idx)
     return true
   end
 
-  -- Items de transport / progression sans objet : rien a donner, la
-  -- possession est suivie par global.lua.
+  -- Transport / progression items without an object: nothing to give,
+  -- possession is tracked by global.lua.
   if itemId >= 7701100 and itemId <= 7701114 then
     return true
   end

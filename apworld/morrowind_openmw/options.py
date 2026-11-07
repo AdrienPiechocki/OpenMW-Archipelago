@@ -3,17 +3,17 @@ from Options import Toggle, Choice, DefaultOnToggle, PerGameCommonOptions
 
 
 class MainQuest(DefaultOnToggle):
-    """Inclut la quete principale (tuer Dagoth Ur) dans l'objectif. Active
-    (defaut) : elle doit etre terminee pour gagner et ses objets de quete sont
-    fournis par Archipelago. Desactive : la quete principale n'est plus un
-    objectif (ni ses objets, ni ses checks) ; il faut alors choisir au moins un
-    autre objectif (maison, guilde, faction ou quetes daedriques)."""
+    """Include the main quest (kill Dagoth Ur) in the goal. Enabled
+    (default): it must be completed to win and its quest items are
+    provided by Archipelago. Disabled: the main quest is no longer a
+    goal (neither its items nor its checks); at least one other goal must then
+    be chosen (great house, guild, faction or daedric quests)."""
     display_name = "Main Quest"
 
 
 class GreatHouse(Choice):
-    """Grande Maison a terminer EN PLUS de la quete principale si elle est activee
-    (devenir chef, rang 10). Ses objets de quete sont fournis par Archipelago."""
+    """Great House to complete IN ADDITION to the main quest if it is enabled
+    (become leader, rank 10). Its quest items are provided by Archipelago."""
     display_name = "Great House"
     option_none = 0
     option_hlaalu = 1
@@ -23,9 +23,9 @@ class GreatHouse(Choice):
 
 
 class Guild(Choice):
-    """Guilde a terminer EN PLUS de la quete principale si elle est activee
-    (devenir chef, rang 10).
-    Ses objets de quete sont fournis par Archipelago."""
+    """Guild to complete IN ADDITION to the main quest if it is enabled
+    (become leader, rank 10).
+    Its quest items are provided by Archipelago."""
     display_name = "Guild"
     option_none = 0
     option_fighters_guild = 1
@@ -35,9 +35,9 @@ class Guild(Choice):
 
 
 class Faction(Choice):
-    """Faction a terminer EN PLUS de la quete principale si elle est activee
-    (devenir chef, rang 10).
-    Ses objets de quete sont fournis par Archipelago."""
+    """Faction to complete IN ADDITION to the main quest if it is enabled
+    (become leader, rank 10).
+    Its quest items are provided by Archipelago."""
     display_name = "Faction"
     option_none = 0
     option_imperial_cult = 1
@@ -48,10 +48,10 @@ class Faction(Choice):
 
 
 class DaedricQuests(Toggle):
-    """Ajoute les 7 quetes daedriques a l'objectif (les terminer toutes).
-    Chaque quete est verrouillee tant que son item Archipelago
-    (Daedric Quest: <prince>) n'est pas recu, et ses objets de quete viennent
-    d'Archipelago."""
+    """Add the 7 daedric quests to the goal (complete all of them).
+    Each quest is locked until its Archipelago item
+    (Daedric Quest: <prince>) is received, and its quest items come
+    from Archipelago."""
     display_name = "Daedric Quests"
     default = False
 
@@ -72,9 +72,9 @@ class MorrowindOptions(PerGameCommonOptions):
 
 
 def selected_goals(options) -> list:
-    """Objectifs a accomplir : la quete principale (si activee, par defaut) +
-    la grande maison, la guilde et la faction choisies (si != none) + les
-    quetes daedriques (si activees)."""
+    """Goals to complete: the main quest (if enabled, by default) +
+    the chosen great house, guild and faction (if != none) + the
+    daedric quests (if enabled)."""
     goals = []
     main = getattr(options, "main_quest", None)
     if getattr(main, "value", True if main is None else main):
@@ -88,8 +88,8 @@ def selected_goals(options) -> list:
     return goals
 
 
-# Groupe de quetes (tools/quest_groups.py) -> cle d'objectif (data/goals.yaml).
-# Les groupes de maisons / guildes / factions portent le nom de leur objectif.
+# Quest group (tools/quest_groups.py) -> goal key (data/goals.yaml).
+# House / guild / faction groups carry the name of their goal.
 GROUP_GOALS = {"main": "main_quest", "daedric": "daedric_quests"}
 
 

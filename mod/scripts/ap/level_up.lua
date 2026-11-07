@@ -1,12 +1,12 @@
--- Item Archipelago "+10 niveaux".
+-- "+10 levels" Archipelago item.
 --
--- On ne modifie pas directement le niveau courant : on ajoute la progression
--- de niveau vanilla. Le joueur obtient ainsi les vraies fenetres de montee de
--- niveau (choix des attributs, gain de vie) en dormant, au lieu d'un simple
--- numero de niveau sans benefices.
+-- We do not modify the current level directly: we add vanilla level-up
+-- progress. The player thus gets the real level-up windows (attribute
+-- choice, health gain) by sleeping, instead of a plain level number
+-- without benefits.
 local M = {}
 
--- Doit rester synchronise avec apworld/morrowind_openmw/items.py.
+-- Must stay in sync with apworld/morrowind_openmw/items.py.
 M.ITEM_ID = 7703000
 M.LEVELS = 10
 M.DEFAULT_LEVEL_UP_TOTAL = 10

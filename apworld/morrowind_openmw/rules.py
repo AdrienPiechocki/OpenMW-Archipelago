@@ -11,11 +11,11 @@ def set_rules(world: World):
     player = world.player
     multiworld = world.multiworld
 
-    # Quetes Miscellaneous : toutes accessibles librement.
-    # Checks de quetes d'objectif : le mod retire les objets de quete (et verrouille
-    # les quetes daedriques) tant que l'item AP n'est pas recu. On ne sait pas quel
-    # objet sert a quelle quete : le check exige donc TOUS les items de son
-    # objectif (logique prudente, jamais plus permissive que le jeu).
+    # Miscellaneous quests: all freely accessible.
+    # Goal quest checks: the mod removes quest items (and locks
+    # daedric quests) until the AP item is received. We do not know which
+    # item is used for which quest: the check therefore requires ALL items of its
+    # goal (conservative logic, never more permissive than the game).
     for loc in multiworld.get_locations(player):
         data = location_table.get(loc.name)
         if data is None or data.group == "misc":
@@ -24,10 +24,10 @@ def set_rules(world: World):
         if names:
             add_rule(loc, lambda state, n=tuple(names): state.has_all(n, player))
 
-    # Condition de victoire : la quete principale + la grande maison / guilde /
-    # faction choisies sont accomplies en jeu, ce qui exige tous leurs objets de
-    # quete (data/quest_items.yaml). Le mod retire ces objets des quetes tant
-    # que l'item Archipelago n'est pas recu.
+    # Victory condition: the main quest + the chosen great house / guild /
+    # faction are completed in-game, which requires all of their quest
+    # items (data/quest_items.yaml). The mod removes these items from quests while
+    # the Archipelago item has not been received.
     needed = []
     for goal in selected_goals(world.options):
         for name in quest_item_names(goal):

@@ -1,10 +1,10 @@
--- E/S fichiers vers le bridge Archipelago (build non sandboxe requis).
+-- File I/O to the Archipelago bridge (unsandboxed build required).
 --
--- Le bridge publie ses messages dans in.jsonl et lit les checks dans
--- out.jsonl. in.jsonl commence par une ligne {"t":"sync","id":...} : quand
--- le bridge se (re)connecte il remplace le fichier par un nouveau sync,
--- ce qui permet au mod de reperer une nouvelle session sans rejouer les
--- anciens messages d'une autre seed.
+-- The bridge publishes its messages in in.jsonl and reads checks from
+-- out.jsonl. in.jsonl starts with a {"t":"sync","id":...} line: when
+-- the bridge (re)connects it replaces the file with a new sync,
+-- which lets the mod detect a new session without replaying the
+-- old messages from another seed.
 if _VERSION ~= 'Lua 5.1-DW' then error('Requires unsandboxed OpenMW build (LuaJIT)') end
 
 local S = nil
@@ -15,7 +15,7 @@ else
   error('Sandbox bypass refused: ' .. tostring(res))
 end
 
--- Recuperer le module io depuis le bypass.
+-- Retrieve the io module from the bypass.
 local io = _G.io or (S and S.io) or S
 if type(io) ~= 'table' or type(io.open) ~= 'function' then
   if S then
@@ -93,9 +93,9 @@ function M.send(line)
   return true
 end
 
--- Lit uniquement les lignes completes arrivees depuis le dernier appel.
--- Gere le remplacement du fichier par le bridge (nouveau sync) et les
--- lignes partiellement ecrites.
+-- Reads only the complete lines that arrived since the last call.
+-- Handles the file being replaced by the bridge (new sync) and
+-- partially written lines.
 function M.poll()
   local f = io.open(M.dir() .. 'in.jsonl', 'r')
   if not f then return {} end
@@ -136,11 +136,11 @@ end
 
 function M.exec(cmd)
   if io and io.popen then
-    -- Lancer sans fermer le tube : garder le tube ouvert permet au processus
-    -- en arriere-plan de survivre (sinon OpenMW le tue a la fermeture).
+    -- Launch without closing the pipe: keeping the pipe open lets the
+    -- background process survive (otherwise OpenMW kills it on close).
     local f = io.popen(cmd)
-    -- Ne pas fermer f : fuite volontaire d'un descripteur pour garder le
-    -- processus enfant en vie pendant toute la session.
+    -- Do not close f: intentional file descriptor leak to keep the
+    -- child process alive for the whole session.
     _G._ap_bridge_pipe = f
     return true
   end

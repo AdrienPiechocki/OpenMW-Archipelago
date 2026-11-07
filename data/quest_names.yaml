@@ -1,6 +1,6 @@
-# Noms lisibles des quetes Morrowind (titres des pages UESP), par ID de journal.
-# Utilise par tools/extract.py pour nommer les locations Archipelago.
-# Cle : ID de journal en minuscules. Valeur : titre de la page UESP.
+# Readable names of Morrowind quests (UESP page titles), by journal ID.
+# Used by tools/extract.py to name Archipelago locations.
+# Key: journal ID in lowercase. Value: UESP page title.
 a1_10_mehramilo: Vivec Informants
 a1_11_zainsubanigift: Zainsubani Informant
 a1_11_zainsubaniinformant: Zainsubani Informant

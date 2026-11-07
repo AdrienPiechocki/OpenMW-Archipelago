@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-"""Extraction ESM -> YAML (quetes et factions ; plus d'exploration).
+"""ESM -> YAML extraction (quests and factions; no longer exploration).
 
 Usage:
   tes3conv Morrowind.esm morrowind.json
-  tes3conv Tribunal.esm  tribunal.json     # optionnel
-  tes3conv Bloodmoon.esm bloodmoon.json    # optionnel
+  tes3conv Tribunal.esm  tribunal.json     # optional
+  tes3conv Bloodmoon.esm bloodmoon.json    # optional
   python tools/extract.py morrowind.json [tribunal.json bloodmoon.json] --out data/
 
-Corrections :
-  * les appels Journal SANS guillemets (`Journal MG_Apprentice 10`) sont
-    maintenant detectes (avant : seuls les appels avec guillemets, d'ou les
-    guildes / maisons / Morag Tong / culte etc. manquants) ;
-  * les identifiants de quete sont valides contre les dialogues de type
-    Journal de l'ESM (plus de faux positifs) ;
-  * les IDs de locations sont STABLES : les entrees deja presentes dans
-    data/*.yaml gardent leur ID, les nouvelles recoivent max+1. Les seeds et
-    les tables Lua existantes restent donc coherentes.
+Fixes:
+  * Journal calls WITHOUT quotes (`Journal MG_Apprentice 10`) are now
+    detected (before: only calls with quotes, hence the missing guilds /
+    houses / Morag Tong / cult etc.);
+  * quest identifiers are validated against the ESM's Journal-type
+    dialogues (no more false positives);
+  * location IDs are STABLE: entries already present in data/*.yaml keep
+    their ID, new ones get max+1. Seeds and existing Lua tables therefore
+    remain consistent.
 """
 import argparse
 import json
@@ -56,7 +56,7 @@ def next_id_factory(used, base, limit):
         nonlocal cur
         cur += 1
         if cur >= limit:
-            raise SystemExit(f'plage d\'IDs epuisee ({base}-{limit})')
+            raise SystemExit(f'ID range exhausted ({base}-{limit})')
         return cur
     return nxt
 
@@ -69,10 +69,10 @@ def load_records(paths):
 
 
 def scan_quests(paths):
-    """Retourne (journal_ids, pairs, finish) :
-    journal_ids : {lower: nom affiche} des dialogues Journal
-    pairs       : {lower: set(stages)} trouves dans les scripts/resultats
-    finish      : {lower: set(stages)} marques 'quest_finish' dans les infos Journal
+    """Returns (journal_ids, pairs, finish):
+    journal_ids : {lower: display name} of Journal dialogues
+    pairs       : {lower: set(stages)} found in scripts/results
+    finish      : {lower: set(stages)} marked 'quest_finish' in Journal infos
     """
     journal_ids, pairs, finish, journal_stages = {}, {}, {}, {}
     cur_id, cur_is_journal = None, False
@@ -111,11 +111,11 @@ def scan_quests(paths):
     if journal_ids:
         dropped = sorted(q for q in pairs if q not in journal_ids)
         if dropped:
-            print(f'ignores (pas des dialogues Journal) : {len(dropped)} -> {dropped[:10]}...')
+            print(f'ignored (not Journal dialogues): {len(dropped)} -> {dropped[:10]}...')
         pairs = {q: s for q, s in pairs.items() if q in journal_ids}
         names = {q: journal_ids[q] for q in pairs}
     else:
-        print('ATTENTION : aucun dialogue Journal trouve, pas de validation des IDs de quete')
+        print('WARNING: no Journal dialogue found, no quest ID validation')
         names = pairs_names
     return names, pairs, finish
 
@@ -137,7 +137,7 @@ def main():
     dump_yaml(out / 'factions.yaml', factions)
     print(f'factions: {len(factions)}')
 
-    # ---- quetes (IDs stables) --------------------------------------------
+    # ---- quests (stable IDs) ---------------------------------------------
     names, pairs, _finish = scan_quests(args.esm_json)
     overrides = load_overrides(out / 'quest_groups_override.yaml')
 
@@ -180,17 +180,17 @@ def main():
             'region': 'Seyda Neen',
         })
         new_c.append(display)
-    # Les locations Archipelago portent le nom lisible de la quete, pas l'ID
-    # de journal. Les homonymes (plusieurs IDs d'une meme page UESP) sont
-    # suffixes pour rester uniques.
+    # Archipelago locations carry the readable quest name, not the journal
+    # ID. Homonyms (several IDs from the same UESP page) are suffixed to stay
+    # unique.
     mapped = unique_names(comps, name_map)
     for c in comps:
         c['name'] = mapped[str(c['trigger']['quest']).lower()]
     dump_yaml(out / 'quest_completions.yaml', comps)
     print(f'quest completions: {len(comps)} (+{len(new_c)})')
     if new_c:
-        print('nouvelles quetes :', ', '.join(new_c))
-    print("Lance ensuite : python tools/classify_quests.py  (rapport des groupes)")
+        print('new quests:', ', '.join(new_c))
+    print("Next, run: python tools/classify_quests.py  (group report)")
 
 
 if __name__ == '__main__':

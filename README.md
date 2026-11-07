@@ -1,174 +1,174 @@
 # Morrowind Archipelago (OpenMW)
 
-Mod Archipelago pour jouer à Morrowind sous OpenMW comme un monde Archipelago.
+Archipelago mod to play Morrowind under OpenMW as an Archipelago world.
 
-## Composants
+## Components
 
-- `apworld/` : package de génération Archipelago (`morrowind_openmw`)
-- `mod/` : mod OpenMW (Lua, build non sandboxé via LuaJIT)
-- `bridge/` : client/relais Python (websocket <-> fichiers JSONL)
-- `data/` : listes de locations/items (source de vérité)
-- `tools/` : extraction ESM, génération de données
+- `apworld/`: Archipelago generation package (`morrowind_openmw`)
+- `mod/`: OpenMW mod (Lua, unsandboxed build via LuaJIT)
+- `bridge/`: Python client/relay (websocket <-> JSONL files)
+- `data/`: location/item lists (source of truth)
+- `tools/`: ESM extraction, data generation
 
-## Compatibilité
+## Compatibility
 
-- **Mods qui ajoutent ou modifient des quêtes du jeu : non compatibles.** Les quêtes, leurs
-  étapes et leurs IDs de journal sont extraits de `Morrowind.esm` ; un mod qui ajoute une quête,
-  déplace une étape ou change la fin d'une quête existante peut empêcher le check correspondant
-  de se déclencher ou fausser l'objectif.
-- **Mods qui modifient le gameplay : compatibles**, tant qu'ils ne touchent pas au journal des
-  quêtes (équilibrage, objets, magie, voyage, interface, etc.). Par exemple
-  [Carry Unlimited](https://www.nexusmods.com/morrowind/mods/27479), qui augmente la capacité
-  de portage, est recommandé.
+- **Mods that add or modify game quests: not compatible.** Quests, their stages and their
+  journal IDs are extracted from `Morrowind.esm`; a mod that adds a quest, moves a stage or
+  changes the ending of an existing quest can prevent the corresponding check from triggering
+  or skew the objective.
+- **Mods that modify gameplay: compatible**, as long as they do not touch the quest journal
+  (balancing, items, magic, travel, UI, etc.). For example
+  [Carry Unlimited](https://www.nexusmods.com/morrowind/mods/27479), which increases carrying
+  capacity, is recommended.
 
-## Prérequis
+## Requirements
 
-- OpenMW 0.52+ avec LuaJIT non sandboxé (variante `unsandboxed`)
+- OpenMW 0.52+ with unsandboxed LuaJIT (`unsandboxed` variant)
 - Archipelago 0.6.8+
-- Python 3.12+ avec `websockets`, `pyyaml`
+- Python 3.12+ with `websockets`, `pyyaml`
 
-## Extraction des données (ESM)
+## Data extraction (ESM)
 
 ```sh
 tes3conv Morrowind.esm morrowind.json
 
-# 1. quêtes (les IDs existants sont conservés, les nouveaux s'ajoutent)
+# 1. quests (existing IDs are kept, new ones are added)
 python tools/extract.py morrowind.json --out data/
-# 2. stage de complétion des nouvelles quêtes (les entrées existantes sont conservées)
+# 2. completion stage for new quests (existing entries are kept)
 python tools/gen_quest_finals.py morrowind.json
-#    -> vérifier data/quest_review.txt (quêtes à plusieurs fins : ajouter overrides/fail)
-# 2b. objets de quête des autres objectifs (candidats à relire : data/quest_items_candidates.yaml)
+#    -> check data/quest_review.txt (quests with multiple endings: add overrides/fail)
+# 2b. quest items for other objectives (candidates to review: data/quest_items_candidates.yaml)
 python tools/gen_quest_items.py morrowind.json --apply
-# 3. groupes (main / factions / daedric / misc ...) + rapport data/quest_groups_report.txt
+# 3. groups (main / factions / daedric / misc ...) + report data/quest_groups_report.txt
 python tools/classify_quests.py
-# 4. tables Lua (quest_completions.lua, goals.lua, ...)
+# 4. Lua tables (quest_completions.lua, goals.lua, ...)
 python tools/gen_lua.py
 # 5. apworld
 python tools/install_apworld.py
 ```
 
-Les locations de quête portent le nom lisible de la quête (table `data/quest_names.yaml`,
-titres des pages UESP). Les quêtes absentes de la table reçoivent un nom déduit de leur ID.
+Quest locations carry the readable quest name (`data/quest_names.yaml` table,
+UESP page titles). Quests missing from the table get a name derived from their ID.
 
-Les IDs de locations sont stables : relancer l'extraction ne casse ni les seeds ni
-les tables Lua existantes. Pense à régénérer la seed après mise à jour.
+Location IDs are stable: re-running extraction breaks neither seeds nor
+existing Lua tables. Remember to regenerate the seed after updating.
 
-## Objectif et checks
+## Objective and checks
 
-L'objectif par défaut est la **quête principale** (mort de Dagoth Ur). Dans le YAML joueur
-(voir `Morrowind-OpenMW.example.yaml`) tu peux la retirer et/ou y ajouter, chacun optionnel :
+The default objective is the **main quest** (death of Dagoth Ur). In the player YAML
+(see `Morrowind-OpenMW.example.yaml`) you can remove it and/or add, each optional:
 
 ```yaml
 Morrowind OpenMW:
-  main_quest: true             # false = la quête principale n'est plus un objectif
+  main_quest: true             # false = the main quest is no longer an objective
   great_house: hlaalu          # none | hlaalu | redoran | telvanni
   guild: mages_guild           # none | fighters_guild | mages_guild | thieves_guild
   faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong
-  daedric_quests: true         # ajoute les 7 quêtes daedriques à l'objectif
+  daedric_quests: true         # adds the 7 Daedric quests to the objective
 ```
 
-La victoire exige que la quête principale (si `main_quest` est activé) **et** chaque maison / guilde /
-faction choisie (et, si activé, les 7 quêtes daedriques) soient accomplies. Avec `main_quest: false`, il
-faut au moins un autre objectif, sinon la génération s'arrête avec un message d'erreur ; la quête
-principale reste jouable librement, sans objets ni checks Archipelago. Pour une maison, guilde ou faction, c'est atteindre le rang 10 (chef) : le mod affiche
-`AP: rang <faction> = N` dans le log OpenMW à chaque changement de rang. Un objectif accompli le
-reste (mémorisé dans la sauvegarde). Les conditions se règlent dans `data/goals.yaml`
-(puis `python tools/gen_lua.py`).
+Victory requires the main quest (if `main_quest` is enabled) **and** each chosen house / guild /
+faction (and, if enabled, the 7 Daedric quests) to be completed. With `main_quest: false`, at
+least one other objective is required, otherwise generation stops with an error message; the main
+quest remains freely playable, without Archipelago items or checks. For a house, guild or faction,
+this means reaching rank 10 (leader): the mod prints
+`AP: rank <faction> = N` in the OpenMW log on every rank change. A completed objective stays
+completed (remembered in the save). Conditions are set in `data/goals.yaml`
+(then `python tools/gen_lua.py`).
 
-**Checks.** Chaque quête « Miscellaneous » (UESP) donne un check à sa fin. Avec l'option
-`goal_quest_checks` (défaut `true`), **la complétion de chaque quête des objectifs choisis** (quête
-principale, maison / guilde / faction, quêtes daedriques) donne aussi un check. Les quêtes des
-objectifs non choisis, vampires, des extensions, etc. restent ignorées.
+**Checks.** Each "Miscellaneous" quest (UESP) gives a check at its end. With the option
+`goal_quest_checks` (default `true`), **completing each quest of the chosen objectives** (main
+quest, house / guild / faction, Daedric quests) also gives a check. Quests of unchosen
+objectives, vampires, expansions, etc. remain ignored.
 
 ```yaml
   goal_quest_checks: true      # true | false
 ```
 
-- `false` : seules les quêtes Miscellaneous donnent des checks.
-- `true` : ces checks peuvent contenir de la progression, ce qui permet de choisir plusieurs
-  objectifs. Pour rester faisable : chaque check exige **tous** les items de son objectif (le mod
-  retire les objets de quête tant que l'item AP n'est pas reçu ; on ne sait pas lequel sert à quelle
-  quête), et les quêtes à fin exclusive (`fail` dans `data/quest_finals.yaml`) ne contiennent jamais
-  d'item important. Les objets de l'objectif le plus petit doivent tenir dans les quêtes
-  Miscellaneous, puis chaque objectif accompli débloque ses propres checks pour le suivant.
+- `false`: only Miscellaneous quests give checks.
+- `true`: these checks can contain progression, which makes it possible to choose several
+  objectives. To stay feasible: each check requires **all** the items of its objective (the mod
+  removes quest items until the AP item is received; we do not know which one is used for which
+  quest), and quests with an exclusive ending (`fail` in `data/quest_finals.yaml`) never contain
+  important items. The items of the smallest objective must fit in the Miscellaneous quests,
+  then each completed objective unlocks its own checks for the next one.
 
-Seule quête secondaire non prise en charge : **« Ahnassi, a Special Friend »** (`Romance_Ahnassi`),
-car son déroulement dépend du genre du personnage (*gender gated*), ce qui empêche une détection
-fiable de sa complétion. Elle reste jouable, mais ne donne aucun check.
+The only unsupported side quest is **"Ahnassi, a Special Friend"** (`Romance_Ahnassi`),
+because its progression depends on the character's gender (*gender gated*), which prevents
+reliable detection of its completion. It remains playable, but gives no check.
 
-Il n'y a plus de check par étape de journal (ancienne option `quest_granularity: stage`, retirée), ni
-de mode `safe` (`goal_quest_checks: safe` est maintenant `true`, qui correspond à l'ancien `full`).
+There is no longer a check per journal stage (old `quest_granularity: stage` option, removed),
+nor a `safe` mode (`goal_quest_checks: safe` is now `true`, which corresponds to the old `full`).
 
-Si la seed ne peut pas être remplie (trop d'items de progression pour les locations disponibles),
-la génération s'arrête avec un message qui propose `goal_quest_checks: true` ou moins d'objectifs.
-Le mod n'envoie un check de quête d'objectif que si l'option est active et l'objectif choisi
+If the seed cannot be filled (too many progression items for the available locations),
+generation stops with a message suggesting `goal_quest_checks: true` or fewer objectives.
+The mod only sends an objective quest check if the option is enabled and the objective chosen
 (`mod/scripts/ap/goal_checks.lua`).
 
-Le groupe d'une quête est déterminé par son préfixe
-(`tools/quest_groups.py`) ; les exceptions se mettent dans `data/quest_groups_override.yaml`.
-Les quêtes daedriques ne servent à l'objectif et aux checks que quand `daedric_quests` est activé.
+A quest's group is determined by its prefix
+(`tools/quest_groups.py`); exceptions go in `data/quest_groups_override.yaml`.
+Daedric quests only contribute to the objective and checks when `daedric_quests` is enabled.
 
-## Quêtes daedriques (option `daedric_quests`)
+## Daedric quests (option `daedric_quests`)
 
-Quand l'option est activée, les 7 quêtes daedriques (`da_azura`, `da_boethiah`, `da_malacath`,
-`da_mehrunes`, `da_mephala`, `da_molagbal`, `da_sheogorath`) s'ajoutent à l'objectif. Chacune est
-**verrouillée par un item Archipelago** (`Daedric Quest: <prince>`, voir `data/quest_locks.yaml`) :
-tant qu'il n'est pas reçu, le mod remet le journal de la quête à zéro (log `AP: quete verrouillee
-remise a zero : ...`), donc elle ne peut ni avancer ni être terminée. Les 7 items sont de la
-progression, requis pour la victoire. Si le log affiche `impossible de verrouiller`, l'API OpenMW de
-ta version ne permet pas de modifier `quest.stage` depuis le script joueur.
+When the option is enabled, the 7 Daedric quests (`da_azura`, `da_boethiah`, `da_malacath`,
+`da_mehrunes`, `da_mephala`, `da_molagbal`, `da_sheogorath`) are added to the objective. Each is
+**locked by an Archipelago item** (`Daedric Quest: <prince>`, see `data/quest_locks.yaml`):
+until it is received, the mod resets the quest's journal to zero (log `AP: locked quest reset:
+...`), so it can neither advance nor be completed. The 7 items are progression, required for
+victory. If the log shows `unable to lock`, the OpenMW API in your version does not allow
+modifying `quest.stage` from the player script.
 
-## Objets de quête donnés par Archipelago
+## Quest items given by Archipelago
 
-Pour la quête principale (si `main_quest` est activé) et la maison / guilde / faction choisies, **tous leurs objets de quête sont des items Archipelago** (progression)
-placés dans les quêtes Miscellaneous. Le mod retire les copies que les quêtes donneraient
-(`suppress`) tant que l'item AP n'est pas reçu, puis donne l'objet (`give`) à la réception.
-La victoire exige de pouvoir tous les obtenir. Les objets des maisons / guildes / factions non choisies ne
-sont ni dans le pool ni supprimés.
+For the main quest (if `main_quest` is enabled) and the chosen house / guild / faction, **all
+their quest items are Archipelago items** (progression) placed in the Miscellaneous quests. The
+mod removes the copies that the quests would give (`suppress`) until the AP item is received,
+then gives the item (`give`) upon receipt. Victory requires being able to obtain all of them.
+The items of unchosen houses / guilds / factions are neither in the pool nor removed.
 
-Ils sont décrits dans `data/quest_items.yaml` (`main_quest` est rempli ; les maisons, guildes et factions
-se génèrent depuis l'ESM avec `tools/gen_quest_items.py`, puis `gen_lua.py` et
-`install_apworld.py`). Le goal n'est connu du mod qu'une fois connecté au serveur : la
-suppression ne commence qu'à ce moment (la config est ensuite mémorisée dans la sauvegarde).
+They are described in `data/quest_items.yaml` (`main_quest` is filled in; houses, guilds and
+factions are generated from the ESM with `tools/gen_quest_items.py`, then `gen_lua.py` and
+`install_apworld.py`). The goal is only known to the mod once connected to the server:
+suppression only starts at that point (the config is then remembered in the save).
 
-## Notifications en jeu
+## In-game notifications
 
-Chaque item Archipelago **reçu** ou **envoyé** par ton slot affiche un message en jeu :
+Each Archipelago item **received** or **sent** by your slot displays an in-game message:
 
-- `Archipelago : Bob vous envoie Ebony Dagger [Progression]` (item reçu d'un autre joueur)
-- `Archipelago : Mothwing Cloak [Utile] (Fargoth's Ring) obtenu -> Bob` (item de ton monde pour un autre joueur)
-- `Archipelago : Ebony Dagger (Fargoth's Ring) obtenu` (item de ton monde pour toi)
+- `Archipelago: Bob sends you Ebony Dagger [Progression]` (item received from another player)
+- `Archipelago: Mothwing Cloak [Useful] (Fargoth's Ring) obtained -> Bob` (item from your world for another player)
+- `Archipelago: Ebony Dagger (Fargoth's Ring) obtained` (item from your world for you)
 
-Quand le message correspond à un check de quête, le nom de la quête est affiché entre parenthèses.
-Les locations Archipelago utilisent ce nom lisible (titre de la page UESP, table
-`data/quest_names.yaml`) au lieu de l'ID de journal (`MS_FargothRing`). Pour les quêtes
-sans page UESP, un nom est déduit de l'ID. Les homonymes (plusieurs IDs pour une même
-page) reçoivent un suffixe lisible.
+When the message corresponds to a quest check, the quest name is displayed in parentheses.
+Archipelago locations use this readable name (UESP page title, `data/quest_names.yaml` table)
+instead of the journal ID (`MS_FargothRing`). For quests without a UESP page, a name is derived
+from the ID. Homonyms (several IDs for the same page) receive a readable suffix.
 
-Le tag indique la classe de l'item (`[Progression]`, `[Utile]`, `[Piège]`). Les messages sont
-espacés de 2 s et aussi écrits dans le log OpenMW (`AP notification: ...`). Le réglage
-**Item notifications** (page Archipelago du menu des options) les désactive.
+The tag indicates the item's class (`[Progression]`, `[Useful]`, `[Trap]`). Messages are spaced
+2 s apart and also written to the OpenMW log (`AP notification: ...`). The **Item notifications**
+setting (Archipelago page of the options menu) disables them.
 
-Fonctionnement : le bridge reçoit les `PrintJSON` `ItemSend` / `ItemCheat` du serveur, résout les noms
-d'items et de locations avec le datapackage (mis en cache dans `datapackage.json` du `data_dir`) et écrit
-une ligne `{"t":"notify",...}` dans `in.jsonl`. `global.lua` la filtre (id croissant mémorisé dans la
-sauvegarde, rien de plus vieux que 10 min) puis la relaie au script joueur (`AP_Notify`).
-Les items reçus pendant que le jeu était fermé sont appliqués comme avant mais sans notification.
+How it works: the bridge receives the `PrintJSON` `ItemSend` / `ItemCheat` messages from the
+server, resolves item and location names with the datapackage (cached in `datapackage.json` of
+the `data_dir`) and writes a `{"t":"notify",...}` line to `in.jsonl`. `global.lua` filters it
+(increasing id remembered in the save, nothing older than 10 min) then relays it to the player
+script (`AP_Notify`). Items received while the game was closed are applied as before but without
+notification.
 
-Tests : `python3 tools/test_bridge_notify.py` et `luajit tools/test_notify.lua`.
+Tests: `python3 tools/test_bridge_notify.py` and `luajit tools/test_notify.lua`.
 
-## Configuration de la connexion
+## Connection configuration
 
-Tous les paramètres sont dans `mod/scripts/ap/config.lua` (host, port, slot,
-password, data_dir, auto_start_bridge, deathlink). Le bridge Python lit aussi
-les variables d'environnement `AP_HOST`, `AP_PORT`, `AP_SLOT`, `AP_PASSWORD`,
+All settings are in `mod/scripts/ap/config.lua` (host, port, slot,
+password, data_dir, auto_start_bridge, deathlink). The Python bridge also reads
+the environment variables `AP_HOST`, `AP_PORT`, `AP_SLOT`, `AP_PASSWORD`,
 `AP_DATA_DIR`, `AP_DEATHLINK`.
 
-## Installation rapide
+## Quick installation
 
-1. Copier `mod/` dans le dossier de mods OpenMW et activer `archipelago.omwscripts`.
-2. Installer l'apworld : `python3 tools/install_apworld.py`.
-3. Générer une seed avec un YAML joueur `game: Morrowind OpenMW`.
-4. Lancer le serveur Archipelago avec le multidata généré.
-5. Lancer OpenMW : le mod démarre automatiquement le bridge Python.
-
+1. Copy `mod/` into the OpenMW mods folder and enable `archipelago.omwscripts`.
+2. Install the apworld: `python3 tools/install_apworld.py`.
+3. Generate a seed with a player YAML `game: Morrowind OpenMW`.
+4. Start the Archipelago server with the generated multidata.
+5. Start OpenMW: the mod automatically starts the Python bridge.

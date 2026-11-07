@@ -1,4 +1,4 @@
--- Enregistrement des parametres du mod dans le menu OpenMW.
+-- Registration of the mod settings in the OpenMW menu.
 local I = require('openmw.interfaces')
 local core = require('openmw.core')
 local l10n = core.l10n('Archipelago')

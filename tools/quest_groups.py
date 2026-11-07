@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
-"""Classification des quetes par groupe (categories UESP).
+"""Classification of quests by group (UESP categories).
 
-Groupes : main, hlaalu, redoran, telvanni, fighters_guild, mages_guild,
+Groups: main, hlaalu, redoran, telvanni, fighters_guild, mages_guild,
 thieves_guild, imperial_legion, imperial_cult, temple, morag_tong, vampire,
 daedric, blades, east_empire, faction_rules, non_quest, expansion, misc.
 
-Seules les quetes 'misc' (Miscellaneous) donnent des checks (locations
-Archipelago). Les groupes main, factions et daedric servent aux objectifs ('daedric' si
-l'option Daedric Quests est activee) ; 'vampire' et 'expansion' sont ignores
-(ni objectif, ni check).
+Only 'misc' (Miscellaneous) quests give checks (Archipelago locations).
+The main, faction and daedric groups are used for goals ('daedric' if the
+Daedric Quests option is enabled); 'vampire' and 'expansion' are ignored
+(neither goal nor check).
 
-La classification se fait par prefixe d'ID de journal (convention de
-Morrowind.esm). Les exceptions se declarent dans
-data/quest_groups_override.yaml  ({ 'id_de_quete': 'groupe' }).
+Classification is done by journal ID prefix (Morrowind.esm convention).
+Exceptions are declared in data/quest_groups_override.yaml
+({ 'quest_id': 'group' }).
 """
 import pathlib
 import re
 
 import yaml
 
-# Ordre important : premiere regle qui correspond.
+# Order matters: first matching rule.
 PREFIX_RULES = [
     ('main',            r'^(a[1-3]|b[1-8][a-z]?|c[0-3])[_ -]'),
     ('hlaalu',          r'^hh_'),
@@ -29,10 +29,10 @@ PREFIX_RULES = [
     ('mages_guild',     r'^mg_'),
     ('thieves_guild',   r'^tg_'),
     ('imperial_legion', r'^il_'),
-    ('imperial_cult',   r'^ic(\d+)?_'),   # ic_*, mais aussi ic0_ a ic30_
+    ('imperial_cult',   r'^ic(\d+)?_'),   # ic_*, but also ic0_ to ic30_
     ('blades',          r'^blades_'),
     ('east_empire',     r'^eb_'),
-    ('non_quest',       r'^(book|romance)_'),   # pas de vraies quetes
+    ('non_quest',       r'^(book|romance)_'),   # not real quests
     ('faction_rules',   r'^rules_'),
     ('temple',          r'^tt_'),
     ('morag_tong',      r'^mt_'),
@@ -55,7 +55,7 @@ def load_overrides(path=None):
     out = {}
     for k, v in d.items():
         if v not in VALID_GROUPS:
-            raise SystemExit(f'groupe inconnu dans {p}: {k}: {v} (valides: {sorted(VALID_GROUPS)})')
+            raise SystemExit(f'unknown group in {p}: {k}: {v} (valid: {sorted(VALID_GROUPS)})')
         out[str(k).lower()] = v
     return out
 

@@ -1,5 +1,5 @@
--- Test du filtre des checks de quetes d'objectif.
---   luajit tools/test_goal_checks.lua   (depuis la racine du depot)
+-- Test of the goal quest check filter.
+--   luajit tools/test_goal_checks.lua   (from the repository root)
 package.path = 'mod/?.lua;' .. package.path
 local gc = require('scripts.ap.goal_checks')
 

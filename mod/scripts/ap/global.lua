@@ -1,5 +1,5 @@
--- Script global : reception des items, lancement du bridge, application des
--- effets et suppression des copies vanilla des objets cles.
+-- Global script: item reception, bridge launch, effect application
+-- and removal of vanilla copies of key items.
 local core  = require('openmw.core')
 local world = require('openmw.world')
 local types = require('openmw.types')
@@ -24,8 +24,8 @@ local function setting(key, fallback)
   return fallback
 end
 
--- Enregistrement du groupe de parametres dans le stockage global (pour que
--- le script global puisse lire les valeurs au demarrage).
+-- Register the settings group in global storage (so the global script can
+-- read the values at startup).
 local regOk, regErr = pcall(function()
   if not I.Settings then error('I.Settings is nil') end
   if not I.Settings.registerGroup then error('registerGroup missing') end
@@ -48,19 +48,19 @@ local regOk, regErr = pcall(function()
   }
 end)
 if not regOk then
-  -- silencieux en production ; decommenter pour debug
+  -- silent in production; uncomment for debugging
 end
 
--- Index du dernier item applique. -1 = aucun item (l'index Archipelago
--- commence a 0).
+-- Index of the last applied item. -1 = no item (the Archipelago index
+-- starts at 0).
 local lastIdx = -1
-local owned = {}          -- item AP id -> true
-local pending = {}        -- messages "item" en attente d'un joueur charge
-local lastNotify = 0      -- dernier id de notification relayee au joueur
-local pendingNotify = {}  -- notifications en attente d'un joueur charge
-local serverOptions = {}  -- options envoyees dans slot_data
+local owned = {}          -- AP item id -> true
+local pending = {}        -- "item" messages waiting for a loaded player
+local lastNotify = 0      -- last notification id relayed to the player
+local pendingNotify = {}  -- notifications waiting for a loaded player
+local serverOptions = {}  -- options sent in slot_data
 local timer = 0
--- (transportTimer supprime)
+-- (transportTimer removed)
 local bridgeStarted = false
 local bridgeStartedAt = 0
 local lastBridgeCheck = 0
@@ -83,10 +83,10 @@ local function readFile(path)
   return d
 end
 
--- Le bridge ecrit un timestamp Unix dans bridge.heartbeat. On le compare
--- uniquement a os.time() : core.getRealTime() a une autre origine (temps
--- depuis le boot) et rendait tout fichier heartbeat valide pour toujours,
--- y compris apres la mort du bridge.
+-- The bridge writes a Unix timestamp to bridge.heartbeat. We compare it
+-- only with os.time(): core.getRealTime() has a different origin (time
+-- since boot) and made every heartbeat file valid forever, even after
+-- the bridge died.
 local function isBridgeAlive()
   local ok, res = pcall(function()
     return liveness.isBridgeAlive(ap.expand(config.data_dir), os.time(), readFile, 15)
@@ -94,8 +94,8 @@ local function isBridgeAlive()
   return ok and res == true
 end
 
--- Signature des parametres de connexion : si elle change alors que le bridge
--- tourne deja, il est tue et relance avec les nouvelles valeurs.
+-- Connection settings signature: if it changes while the bridge is already
+-- running, it is killed and restarted with the new values.
 local function currentSig()
   return table.concat({
     tostring(setting('host', config.host or '127.0.0.1')),
@@ -116,26 +116,26 @@ local function startBridge()
   local killPrefix = ''
   local oldSig = ap.readFile('bridge.sig')
   if alive and oldSig == sig then
-    -- Bridge deja en cours avec les bons parametres.
+    -- Bridge already running with the correct settings.
     activeSig = sig
     bridgeStarted = true
     return
   end
   if alive then
-    -- Parametres changes : arreter l'ancien bridge puis relancer.
+    -- Settings changed: stop the old bridge then restart.
     local pid = tonumber((ap.readFile('bridge.lock') or ''):match('%d+'))
     if pid then killPrefix = ('kill %d 2>/dev/null; sleep 1; '):format(pid) end
   end
-  -- Changement de serveur (host, port ou slot) : on repart de zero. Les checks
-  -- completes sont dans state.json (checks deja envoyes) et out.jsonl (que le
-  -- bridge rejoue a chaque demarrage), donc les deux sont supprimes, une fois
-  -- l'ancien bridge arrete.
+  -- Server change (host, port or slot): start from scratch. Completed checks
+  -- are in state.json (already sent checks) and out.jsonl (which the bridge
+  -- replays on every start), so both are deleted once the old bridge is
+  -- stopped.
   local function conn(x) return x and x:match('^([^|]*|[^|]*|[^|]*)') end
   if oldSig and conn(oldSig) ~= conn(sig) then
     local d = ap.dir()
     killPrefix = killPrefix .. ('rm -f %s %s %s; '):format(
       shq(d .. 'state.json'), shq(d .. 'out.jsonl'), shq(d .. 'in.jsonl'))
-    print('AP: serveur change, checks completes effaces')
+    print('AP: server changed, completed checks cleared')
   end
   print('AP: startBridge, alive=' .. tostring(alive))
   bridgeStarted = true
@@ -161,7 +161,7 @@ local function startBridge()
     shq(deathlink and '1' or '0')
   )
 
-  -- Le bridge garantit lui-meme son unicite (flock sur bridge.lock).
+  -- The bridge enforces its own uniqueness (flock on bridge.lock).
   local cmd = ('( %snohup env %s %s %s ) >/dev/null 2>&1 </dev/null &'):format(
     killPrefix, env, shq(python), shq(bridge)
   )
@@ -170,8 +170,8 @@ local function startBridge()
     tostring(ok), tostring(host), tostring(port), tostring(slot)))
 end
 
--- Relance le bridge quand les parametres changent (stables depuis 3 s, pour
--- ne pas relancer a chaque frappe).
+-- Restart the bridge when settings change (stable for 3 s, so it does not
+-- restart on every keystroke).
 local function checkSettingsChange()
   local sig = currentSig()
   if sig == activeSig then pendingSig = nil return end
@@ -183,7 +183,7 @@ local function checkSettingsChange()
   end
 end
 
--- Relaye au joueur la liste des items AP recus (deverrouillage des quetes).
+-- Relay the list of received AP items to the player (quest unlocking).
 local function sendOwned()
   local pl = getPlayer()
   if not pl then return end
@@ -202,21 +202,21 @@ local function applyItem(msg)
 
   local itemId = tonumber(msg.id)
   if itemId then
-    -- Marquer avant de donner : la suppression des objets cles ne doit pas
-    -- retirer l'objet que l'on vient d'accorder.
+    -- Mark before giving: removing key items must not remove the item
+    -- that was just granted.
     owned[itemId] = true
     sendOwned()
     local ok, applied, effect = pcall(items.apply, player, itemId, idx)
     if not ok then
-      print('AP: erreur application item ' .. tostring(itemId) .. ': ' .. tostring(applied))
+      print('AP: error applying item ' .. tostring(itemId) .. ': ' .. tostring(applied))
     elseif applied and effect and effect.type == 'level_up' then
-      -- Les stats ne sont modifiables que depuis openmw.self : le script
-      -- joueur applique la progression de niveau.
+      -- Stats can only be modified from openmw.self: the player script
+      -- applies the level progression.
       pcall(function()
         player:sendEvent('AP_LevelUp', { levels = effect.levels })
       end)
     end
-    print(('AP item recu: %s (idx %d)'):format(tostring(itemId), idx))
+    print(('AP item received: %s (idx %d)'):format(tostring(itemId), idx))
   end
   lastIdx = idx
   return true
@@ -231,7 +231,7 @@ local function processPending()
   end
 end
 
--- Relaie au script joueur les notifications d'items (recus / envoyes).
+-- Relay item notifications (received / sent) to the player script.
 local function processNotify()
   if #pendingNotify == 0 then return end
   local pl = getPlayer()
@@ -261,12 +261,12 @@ local function handle(msg)
   elseif msg.t == 'config' then
     serverOptions = msg.options or {}
     if msg.goal ~= nil then serverOptions.goal = msg.goal end
-    -- Relayer l'objectif au script joueur
+    -- Relay the goal to the player script
     local pl = getPlayer()
     if pl then
       pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal }) end)
     end
-    -- Propager death_link (YAML) vers le stockage global pour player.lua
+    -- Propagate death_link (YAML) to global storage for player.lua
     if serverOptions.death_link ~= nil then
       pcall(function()
         storage.globalSection(SETTINGS_KEY):set('deathlink', serverOptions.death_link)
@@ -282,19 +282,19 @@ local function handle(msg)
         pcall(function()
           types.Actor.stats.dynamic.health(player).current = 0
         end)
-        print('AP: DeathLink recu de ' .. tostring(msg.from))
+        print('AP: DeathLink received from ' .. tostring(msg.from))
       end
     end
   elseif msg.t == 'sync' then
-    -- Nouvelle session du bridge : le fichier a deja ete remplace et lu
-    -- depuis le debut par ap.poll(). On ne remet pas lastIdx a zero, sinon
-    -- les items deja appliques seraient donnes une seconde fois.
-    print('AP: bridge synchronise')
+    -- New bridge session: the file has already been replaced and read
+    -- from the start by ap.poll(). We do not reset lastIdx to zero, otherwise
+    -- already applied items would be given a second time.
+    print('AP: bridge synchronized')
   end
 end
 
--- Liste des objectifs (cles de goals.lua) : quete principale + maison /
--- guilde / faction choisies. Ancien format : goal = 'main_quest' ou 0.
+-- List of goals (keys from goals.lua): main quest + chosen house /
+-- guild / faction. Old format: goal = 'main_quest' or 0.
 local function goalKeys()
   local out = {}
   local g = serverOptions.goals
@@ -311,9 +311,9 @@ local function goalKeys()
   return out
 end
 
--- Tant que la config du serveur n'est pas arrivee, on ne connait pas les
--- objectifs choisis. On bloque prudemment les sanctuaires daedriques : ils
--- seront liberes si la seed n'inclut pas l'objectif daedric_quests.
+-- Until the server config arrives, the chosen goals are unknown. Daedric
+-- shrines are blocked as a precaution: they will be released if the seed
+-- does not include the daedric_quests goal.
 local function goalsKnown()
   return serverOptions.goals ~= nil or serverOptions.goal ~= nil
 end
@@ -326,11 +326,12 @@ local function lockApplies(goal)
   return false
 end
 
--- Verrouillage des sanctuaires daedriques AVANT l'action vanilla. Les scripts
--- MWScript (DaedraAzura, ...) testent `OnActivate == 1` ; ce flag n'est pose
--- que par l'action d'activation standard. Annuler l'activation via l'interface
--- Activation empeche donc le script de parler, de modifier le journal et
--- d'activer ses creatures. Un simple reset de journal apres coup est trop tard.
+-- Locking of Daedric shrines BEFORE the vanilla action. MWScript scripts
+-- (DaedraAzura, ...) test `OnActivate == 1`; this flag is only set by the
+-- standard activation action. Cancelling the activation through the
+-- Activation interface therefore prevents the script from speaking, editing
+-- the journal and activating its creatures. A simple journal reset afterwards
+-- is too late.
 local activationRegistered = false
 
 local function ensureActivationHandler()
@@ -347,7 +348,7 @@ local function ensureActivationHandler()
         }, owned, lockApplies)
       end)
       if pok and locked then
-        print('AP: activation verrouillee : ' .. tostring(locked.quest))
+        print('AP: locked activation: ' .. tostring(locked.quest))
         local pl = getPlayer()
         if pl and actor and actor.type == types.Player then
           pcall(function()
@@ -362,16 +363,17 @@ local function ensureActivationHandler()
 end
 
 local function suppressKeyItems(player)
-  -- Les objets 'misc' (quetes secondaires) sont toujours supprimes,
-  -- independamment des objectifs choisis dans la seed : ils ne dependent
-  -- pas d'un goal et leur item AP est toujours dans le pool.
+  -- 'misc' items (secondary quests) are always suppressed, regardless of
+  -- the goals chosen in the seed: they do not depend on a goal and their AP
+  -- item is always in the pool.
   local goals = goalKeys()
   table.insert(goals, 'misc')
   local suppress = items.suppressFor(goals)
   if next(suppress) == nil then return end
   local inv = types.Actor.inventory(player)
-  -- Ne pas supprimer le package dans le Census Office : la porte de sortie
-  -- (MWScript) l'exige pour laisser passer. On le retire apres la sortie.
+  -- Do not remove the package in the Census Office: the exit door
+  -- (MWScript) requires it to let the player through. It is removed after
+  -- leaving.
   local inCensus = false
   pcall(function()
     if player.cell and player.cell.name == 'Seyda Neen, Census and Excise Office' then
@@ -380,9 +382,9 @@ local function suppressKeyItems(player)
   end)
   for apId, records in pairs(suppress) do
     if not owned[apId] then
-      -- Garder le package dans le Census Office pour passer la porte.
+      -- Keep the package in the Census Office to pass through the door.
       if items.keepInCensus(records, inCensus) then
-        -- Accorder temporairement le package s'il manque (pour la porte).
+        -- Temporarily grant the package if it is missing (for the door).
         pcall(function()
           if inv:countOf(items.CENSUS_PACKAGE) == 0 then
             local o = world.createObject(items.CENSUS_PACKAGE, 1)
@@ -405,7 +407,7 @@ end
 
 return {
   eventHandlers = {
-    -- Le joueur demande la config (chargement de sauvegarde / nouvelle partie).
+    -- The player requests the config (save load / new game).
     AP_RequestConfig = function()
       local pl = getPlayer()
       if pl and (serverOptions.goals ~= nil or serverOptions.goal ~= nil) then
@@ -413,7 +415,7 @@ return {
       end
       sendOwned()
     end,
-    -- Mort de Dagoth Ur (actor.lua) -> script joueur.
+    -- Death of Dagoth Ur (actor.lua) -> player script.
     AP_DagothDead = function()
       local pl = getPlayer()
       if pl then pcall(function() pl:sendEvent('AP_DagothDead', {}) end) end
@@ -422,14 +424,14 @@ return {
   engineHandlers = {
     onActivate = function(object, actor)
       if object and object.recordId == 'chargen exit door' then
-        -- Forcer l'ouverture de la porte sans le package de Caius Cosades.
+        -- Force the door open without Caius Cosades' package.
         pcall(function() object:activateBy(actor) end)
       end
     end,
 
     onInit = function()
-      -- (Re)enregistrer le groupe au cas ou le chargement au niveau module
-      -- n'a pas eu lieu (interface non disponible au demarrage).
+      -- (Re)register the group in case loading at module level did not
+      -- happen (interface unavailable at startup).
       pcall(function()
         if I.Settings and I.Settings.registerGroup then
           I.Settings.registerGroup {
@@ -479,21 +481,21 @@ return {
       if player then
         suppressKeyItems(player)
 
-        -- Heartbeat pour le bridge (detecte l'arret du jeu)
+        -- Heartbeat for the bridge (detects the game stopping)
         local now = core.getRealTime()
         if now - (lastHeartbeat or 0) >= 10 then
           lastHeartbeat = now
           ap.send('{"t":"heartbeat"}')
         end
 
-        -- Si le bridge meurt pendant la partie (crash, kill, heartbeat
-        -- perime), le relancer sans attendre un rechargement de sauvegarde.
-        -- On laisse 20 s au bridge qui vient d'etre lance pour ecrire son
-        -- premier heartbeat.
+        -- If the bridge dies during the game (crash, kill, stale
+        -- heartbeat), restart it without waiting for a save reload.
+        -- The bridge that was just started is given 20 s to write its
+        -- first heartbeat.
         if config.auto_start_bridge and now - lastBridgeCheck >= 10 then
           lastBridgeCheck = now
           if now - bridgeStartedAt >= 20 and not isBridgeAlive() then
-            print('AP: bridge inactif, relance')
+            print('AP: bridge inactive, restarting')
             startBridge()
           end
         end
@@ -502,7 +504,7 @@ return {
         if dbgCounter % 30 == 0 then
           local n = 0
           for _ in pairs(owned) do n = n + 1 end
-          print(('AP: lastIdx=%d items_recus=%d'):format(lastIdx, n))
+          print(('AP: lastIdx=%d items_received=%d'):format(lastIdx, n))
         end
       end
     end,
@@ -523,11 +525,11 @@ return {
         lastNotify = tonumber(d.lastNotify) or 0
         owned = d.owned or {}
         serverOptions = d.serverOptions or {}
-        -- Ancienne sauvegarde : lastIdx valait 0 et l'item d'index 0 n'a
-        -- jamais ete applique.
+        -- Old save: lastIdx was 0 and item index 0 was never
+        -- applied.
         if lastIdx == 0 and next(owned) == nil then lastIdx = -1 end
       end
-      -- Relancer le bridge s'il est mort (sinon le garder).
+      -- Restart the bridge if it died (otherwise keep it).
       startBridge()
     end,
   },

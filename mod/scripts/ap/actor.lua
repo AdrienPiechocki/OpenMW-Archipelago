@@ -1,4 +1,4 @@
--- Script d'acteur : detection de la mort de Dagoth Ur (objectif de victoire)
+-- Actor script: detection of Dagoth Ur's death (victory goal)
 local self = require('openmw.self')
 local types = require('openmw.types')
 local core = require('openmw.core')

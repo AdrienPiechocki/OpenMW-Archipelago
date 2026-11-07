@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Candidats d'objets de quete par objectif (goal), extraits de l'ESM avec filtrage / Whitelist.
+"""Quest item candidates per goal, extracted from the ESM with filtering / Whitelist.
 
-Seuls les objets NECESSAIRES A LA PROGRESSION sont retenus, faction par faction :
-  - RemoveItem   : objet remis pour valider une etape (remise de quete) ;
-  - filtre Item  : objet exige dans l'inventaire par le dialogue ;
-  - GetItemCount : objet compte pour valider une condition ;
-  - AddItem      : objet donne au joueur PENDANT la quete, uniquement s'il est
-                   valide par la whitelist de sa faction (sinon c'est une
-                   recompense, pas un objet de progression).
+Only items NEEDED FOR PROGRESSION are kept, faction by faction:
+  - RemoveItem   : item handed over to validate a step (quest turn-in);
+  - Item filter  : item required in the inventory by the dialogue;
+  - GetItemCount : item counted to validate a condition;
+  - AddItem      : item given to the player DURING the quest, only if it is
+                   validated by its faction's whitelist (otherwise it is a
+                   reward, not a progression item).
 
-Usage :
+Usage:
   python tools/gen_quest_items.py morrowind.json [tribunal.json bloodmoon.json] [--apply]
 """
 import argparse
@@ -44,11 +44,11 @@ CONSUMABLE_TYPES = {'alchemy', 'ingredient', 'light'}
 ITEMS_BASE, ITEMS_LIMIT = 7702000, 7703000
 
 # ==============================================================================
-# WHITELIST PAR FACTION — uniquement des objets de PROGRESSION
+# WHITELIST PER FACTION - only PROGRESSION items
 # ==============================================================================
-# Cles = goal (faction). Un objet AddItem n'est retenu que si la whitelist du
-# goal correspondant le contient : c'est le garant que l'objet sert a avancer
-# (documents a remettre, cles, preuves...) et non d'une simple recompense.
+# Keys = goal (faction). An AddItem item is only kept if the whitelist of the
+# corresponding goal contains it: this guarantees that the item helps progress
+# (documents to hand over, keys, evidence...) and is not a simple reward.
 QUEST_ITEMS_BY_GOAL = {
     'main_quest': {
         'bk_a1_1_caiuspackage', 'misc_dwrv_ark_cube00', 'misc_skull_llevule',
@@ -134,14 +134,14 @@ QUEST_ITEMS_BY_GOAL = {
     },
 }
 
-# Motifs partages : match sur l'ID ou le nom de l'objet. Ils ne s'appliquent
-# qu'aux AddItem et captent des familles entieres d'objets de quete.
+# Shared patterns: match on the item ID or name. They only apply to AddItem
+# and capture whole families of quest items.
 # ==============================================================================
-# ALIAS — IDs obsolètes conservés pour compat, mais ignorés par l'audit.
-# La contrepartie réelle (presente dans l'ESM) est dans QUEST_ITEMS_BY_GOAL.
+# ALIAS - obsolete IDs kept for compatibility, but ignored by the audit.
+# The real counterpart (present in the ESM) is in QUEST_ITEMS_BY_GOAL.
 # ==============================================================================
 QUEST_ITEM_ALIASES = {
-    # IDs obsolètes dont la contrepartie réelle (dans l'ESM) est connue
+    # Obsolete IDs whose real counterpart (in the ESM) is known
     'bk_codebook', 'bk_alchemicalformulas', 'bk_ordersfromneminda',
     'bk_hh_sealedorders', 'bk_hh_reallanddeed', 'bk_hh_erroneouslanddeed',
     'bk_rethanmanordeed', 'claymore_chrysamere', 'cuirass_lord',
@@ -151,22 +151,22 @@ QUEST_ITEM_ALIASES = {
     'bk_secrets_of_dwemer_animunculi', 'ring_equity_unique',
     'bk_stronghold_c_redoran', 'bk_stronghold_ld_redoran',
     'bk_stronghold_c_telvanni', 'bk_stronghold_ld_telvanni',
-    # IDs inexistants dans l'ESM vanilla (verifies par grep) : a retenter si
-    # tribunal.json / bloodmoon.json sont passes en entree
+    # IDs absent from the vanilla ESM (verified by grep): retry if
+    # tribunal.json / bloodmoon.json are passed as input
     'bk_orvasdrenjournal', 'sc_gaveloflilmoth', 'bk_triplicate_form',
     'bk_bethamez_plans', 'bk_bethamezplans', 'bk_telvannisecretdocuments',
     'misc_dwrv_ark_tube00', 'ring_fire_unique', 'belt of northern knighthood',
     'bk_indarysmanordeed', 'bk_savortrandelmap', 'bk_teluvarithdeed',
     'shoes_st_rilm_unique',
-    # Objets MONDE non exigés par dialogue/script (accès physique, placement) :
-    # le scan ne peut pas les generer. Si le mod doit les randomiser, les
-    # ajouter à la main dans quest_items.yaml (comme Corprus Cure).
+    # WORLD items not required by dialogue/script (physical access, placement):
+    # the scan cannot generate them. If the mod must randomize them, add them
+    # by hand in quest_items.yaml (like Corprus Cure).
     'gavel of the ordinator', 'misc_dwrv_gear00',
-    'ring_keley',  # nécessaire au tuto (Fargoth's ring), ne pas randomiser
+    'ring_keley',  # needed for the tutorial (Fargoth's ring), do not randomize
 }
 
 QUEST_ITEM_PATTERNS_BY_GOAL = {
-    None: [  # appliques a tous les goals
+    None: [  # applied to all goals
         re.compile(r'^bk_.*deed.*', re.I),
         re.compile(r'^bk_.*contract.*', re.I),
         re.compile(r'^bk_.*note.*', re.I),
@@ -174,7 +174,7 @@ QUEST_ITEM_PATTERNS_BY_GOAL = {
         re.compile(r'^bk_.*report.*', re.I),
         re.compile(r'.*stronghold.*', re.I),
     ],
-    'morag_tong': [  # écrits d'exécution
+    'morag_tong': [  # execution writs
         re.compile(r'^bk_.*writ.*', re.I),
     ],
     'thieves_guild': [
@@ -191,11 +191,11 @@ QUEST_ITEM_PATTERNS_BY_GOAL = {
 
 
 def is_whitelisted(goal, item_id, item_name):
-    """True si l'objet est un objet de progression connu pour CE goal.
+    """True if the item is a known progression item for THIS goal.
 
-    Correspondance sur l'ID du record OU sur le nom affiche de l'objet
-    (certaines entrees de whitelist sont des noms, ex. 'belt of northern
-    knighthood', ou des IDs avec espaces, ex. 'ebony wizard's staff').
+    Matches on the record ID OR on the item's display name (some whitelist
+    entries are names, e.g. 'belt of northern knighthood', or IDs with
+    spaces, e.g. 'ebony wizard's staff').
     """
     item_id_low = item_id.lower()
     item_name_low = (item_name or '').lower()
@@ -229,8 +229,8 @@ def journal_quests(text):
 
 
 def _records_field(info, *keys):
-    """Recupere un champ pouvant etre une liste, ou une liste encodee en
-    chaine JSON (comme 'inventory'/'references' dans l'export ESM)."""
+    """Gets a field that may be a list, or a list encoded as a JSON
+    string (like 'inventory'/'references' in the ESM export)."""
     out = []
     for k in keys:
         v = info.get(k)
@@ -248,23 +248,23 @@ def _records_field(info, *keys):
 
 def filter_items(info):
     out = []
-    # 'filters' et 'conditions' : l'un des deux selon l'outil d'export ESM
+    # 'filters' and 'conditions': one or the other depending on the ESM export tool
     for f in _records_field(info, 'filters', 'conditions'):
         if isinstance(f, dict):
             fn = str(f.get('function', f.get('type', ''))).lower()
             if 'item' in fn and f.get('id'):
                 out.append(str(f['id']).lower())
         elif isinstance(f, (list, tuple)) and len(f) >= 2:
-            # forme plate [fonction, id, ...]
+            # flat form [function, id, ...]
             if 'item' in str(f[0]).lower():
                 out.append(str(f[1]).lower())
     return out
 
 
 def filter_journals(info):
-    """Ids de journal exiges par les filtres du dialogue (JournalType, etc.).
-    Certains DialogueInfo ont un script_text vide : la quete n'y est pas
-    posee par une commande Journal, mais par une condition de filtre."""
+    """Journal IDs required by the dialogue filters (JournalType, etc.).
+    Some DialogueInfo records have an empty script_text: the quest is not set
+    there by a Journal command, but by a filter condition."""
     out = set()
     for f in _records_field(info, 'filters', 'conditions'):
         if isinstance(f, dict):
@@ -295,15 +295,14 @@ def scan(paths, overrides, include_consumables, strict_mode=True):
         if item_rec and rec is None:
             return
         if rec and rec[0] in CONSUMABLE_TYPES and not include_consumables:
-            # Un consommable whitelisté pour CE goal reste un objet de
-            # progression (ex. ingred_diamond_01 pour tg_diamonds).
+            # A consumable whitelisted for THIS goal remains a progression
+            # item (e.g. ingred_diamond_01 for tg_diamonds).
             if not (strict_mode and is_whitelisted(goal, item, rec[1])):
                 return
 
-        # Mode strict : un AddItem n'est retenu que s'il est whitelisté pour
-        # cette faction (objet de progression). RemoveItem / filtre Item /
-        # GetItemCount sont TOUJOURS des objets exigés par la quête : ils
-        # passent sans whitelist.
+        # Strict mode: an AddItem is only kept if it is whitelisted for this
+        # faction (progression item). RemoveItem / Item filter / GetItemCount
+        # are ALWAYS items required by the quest: they pass without whitelist.
         if strict_mode and via == 'AddItem':
             item_name = rec[1] if rec else ""
             if not is_whitelisted(goal, item, item_name):
@@ -318,7 +317,7 @@ def scan(paths, overrides, include_consumables, strict_mode=True):
         t = str(r.get('type', ''))
         if t == 'DialogueInfo':
             text = r.get('script_text') or ''
-            # quetes posees par commande Journal OU par filtre JournalType
+            # quests set by a Journal command OR by a JournalType filter
             qs = journal_quests(text) | filter_journals(r)
             qs = {q for q in qs if not journal_ids or q in journal_ids}
             if not qs:
@@ -329,9 +328,9 @@ def scan(paths, overrides, include_consumables, strict_mode=True):
                     continue
 
                 for m in PAT_REMOVE.finditer(text):
-                    add(goal, m.group(1).lower(), q, 'RemoveItem (Quête)', int(m.group(2) or 1))
+                    add(goal, m.group(1).lower(), q, 'RemoveItem (Quest)', int(m.group(2) or 1))
                 for it in filter_items(r):
-                    add(goal, it, q, 'exige (filtre Item)')
+                    add(goal, it, q, 'required (Item filter)')
                 for m in PAT_COUNT.finditer(text):
                     add(goal, m.group(1).lower(), q, 'GetItemCount')
                 for m in PAT_ADD.finditer(text):
@@ -345,7 +344,7 @@ def scan(paths, overrides, include_consumables, strict_mode=True):
                 if not goal:
                     continue
                 for m in PAT_REMOVE.finditer(text):
-                    add(goal, m.group(1).lower(), q, 'RemoveItem (Quête)', int(m.group(2) or 1))
+                    add(goal, m.group(1).lower(), q, 'RemoveItem (Quest)', int(m.group(2) or 1))
                 for m in PAT_COUNT.finditer(text):
                     add(goal, m.group(1).lower(), q, 'GetItemCount')
                 for m in PAT_ADD.finditer(text):
@@ -358,11 +357,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('esm_json', nargs='+')
     ap.add_argument('--data', default='data')
-    ap.add_argument('--apply', action='store_true', help='ajoute les candidats a quest_items.yaml')
+    ap.add_argument('--apply', action='store_true', help='adds the candidates to quest_items.yaml')
     ap.add_argument('--include-consumables', action='store_true')
-    ap.add_argument('--no-strict', action='store_true', help='Desactive le filtrage par Whitelist/RemoveItem')
+    ap.add_argument('--no-strict', action='store_true', help='Disables Whitelist/RemoveItem filtering')
     ap.add_argument('--goal', action='append',
-                    help='limite la generation a ces goals (repeter l\'option), ex. --goal hlaalu')
+                    help='limits generation to these goals (repeat the option), e.g. --goal hlaalu')
     args = ap.parse_args()
     data = pathlib.Path(args.data)
 
@@ -392,9 +391,9 @@ def main():
         cands.append({'goal': goal, 'record': item, 'name': name, 'count': e['count'],
                       'via': sorted(e['via']), 'quests': sorted(e['sources'])})
 
-    # --- Whitelist introuvable par dialogue/script : recherche dans les
-    # inventaires (PNJ, conteneurs, lvl lists). Un objet de quete porte par
-    # un PNJ (ex. key_orvas_dren sur Orvas Dren) reste un item de progression.
+    # --- Whitelist not found via dialogue/script: search the inventories
+    # (NPCs, containers, lvl lists). A quest item carried by an NPC
+    # (e.g. key_orvas_dren on Orvas Dren) remains a progression item.
     carriers_by_item = {}
     for r in records:
         inv = _records_field(r, 'inventory')
@@ -421,26 +420,26 @@ def main():
                 continue
             name = item_rec.get(w, ('', w))[1]
             cands.append({'goal': goal, 'record': w, 'name': name, 'count': 1,
-                          'via': ['inventaire PNJ/conteneur'],
+                          'via': ['NPC/container inventory'],
                           'quests': sorted(set(carriers))[:5]})
 
     rep = data / 'quest_items_candidates.yaml'
-    rep.write_text('# Candidats generes par tools/gen_quest_items.py (Mode Whitelist Filtré)\n' +
+    rep.write_text('# Candidates generated by tools/gen_quest_items.py (Filtered Whitelist Mode)\n' +
                    yaml.safe_dump(cands, sort_keys=False, allow_unicode=True), encoding='utf-8')
     per_goal = collections.Counter(c['goal'] for c in cands)
-    print(f'{len(cands)} candidats valides -> {rep}')
+    print(f'{len(cands)} valid candidates -> {rep}')
     for g, n in sorted(per_goal.items()):
         print(f'  {g:18} {n}')
 
-    # --- Audit : entrees de whitelist sans candidat -----------------------
-    # Categories :
-    #   alias            -> ignore (ID obsolet, contrepartie reelle connue)
-    #   deja applique    -> ignore (record deja present dans quest_items.yaml)
-    #   ID obsolet       -> l'ID n'existe pas dans l'ESM ; le script propose
-    #                       des records dont le NOM colle aux mots-cles
-    #   non genere       -> le record existe mais aucun candidat : on liste
-    #                       les quetes journalisees qui le mentionnent avec
-    #                       leur classification (ajuster quest_groups_override)
+    # --- Audit: whitelist entries without a candidate ---------------------
+    # Categories:
+    #   alias            -> ignored (obsolete ID, real counterpart known)
+    #   already applied  -> ignored (record already present in quest_items.yaml)
+    #   obsolete ID      -> the ID does not exist in the ESM; the script suggests
+    #                       records whose NAME matches the keywords
+    #   not generated    -> the record exists but no candidate: we list the
+    #                       journal quests that mention it with their
+    #                       classification (adjust quest_groups_override)
     matched = {item for (_goal, item) in found}
     audit_path = data / 'quest_items_whitelist_audit.txt'
     cands_records = {c['record'] for c in cands}
@@ -452,7 +451,7 @@ def main():
                     or w in cands_records:
                 continue
             if item_rec and w not in item_rec:
-                # ID obsolet : suggestion par recherche de nom
+                # obsolete ID: suggestion by name search
                 words = [x for x in re.split(r'[_\s]+', w) if len(x) > 3]
                 sugg = []
                 for rid, (rt, rname) in item_rec.items():
@@ -461,39 +460,39 @@ def main():
                         sugg.append(f'{rid} ({rname})')
                     if len(sugg) >= 5:
                         break
-                lines.append(f'{goal:16} {wid:40} ABSENT de l\'ESM'
-                             + (f' ; candidats par nom : {", ".join(sugg)}' if sugg else ' ; aucune suggestion'))
+                lines.append(f'{goal:16} {wid:40} ABSENT from the ESM'
+                             + (f'; candidates by name: {", ".join(sugg)}' if sugg else '; no suggestion'))
             else:
-                # record present mais non genere : quelles quetes le mentionnent ?
+                # record present but not generated: which quests mention it?
                 mentions = {}
                 for r in records:
                     t = str(r.get('type', ''))
                     if t not in ('DialogueInfo', 'Script'):
                         continue
                     text = r.get('script_text') or r.get('text') or ''
-                    # le record peut etre exige via un filtre de dialogue plutot
-                    # que dans le texte du script
+                    # the record may be required via a dialogue filter rather
+                    # than in the script text
                     if w not in text.lower() and w not in \
                             [str(x).lower() for x in filter_items(r)]:
                         continue
                     for q in journal_quests(text) | filter_journals(r):
-                        g = classify(q, overrides) or 'NON CLASSEE'
+                        g = classify(q, overrides) or 'UNCLASSIFIED'
                         mentions[f'{q} ({g})'] = None
-                det = (' ; quetes le mentionnant : ' + ', '.join(sorted(mentions))) if mentions \
-                    else ' ; aucune quete journalisee ne le mentionne (AddItem hors scan)'
-                lines.append(f'{goal:16} {wid:40} present dans l\'ESM mais non genere{det}')
+                det = ('; quests mentioning it: ' + ', '.join(sorted(mentions))) if mentions \
+                    else '; no journal quest mentions it (AddItem outside scan)'
+                lines.append(f'{goal:16} {wid:40} present in the ESM but not generated{det}')
     if lines:
         audit_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
-        print(f'ATTENTION : {len(lines)} entrees de whitelist sans candidat -> {audit_path}')
+        print(f'WARNING: {len(lines)} whitelist entries without a candidate -> {audit_path}')
         for l in lines:
             print(f'  {l}')
 
     if args.apply and cands:
-        # Index record -> id deja attribue (dans quest_items.yaml ou dans cands).
-        # Un meme record peut appartenir a plusieurs goals (ex. bk_chroniclesnchuleft
-        # pour mages_guild et telvanni) : il doit alors partager le meme id AP,
-        # sinon recevoir l'item d'un goal ne marque pas l'autre comme possede et
-        # le mod supprime la copie vanilla.
+        # Record index -> id already assigned (in quest_items.yaml or in cands).
+        # The same record may belong to several goals (e.g. bk_chroniclesnchuleft
+        # for mages_guild and telvanni): it must then share the same AP id,
+        # otherwise receiving the item from one goal does not mark the other as
+        # owned and the mod removes the vanilla copy.
         record_to_id = {}
         for e in existing:
             for r in e.get('suppress', []) or []:
@@ -507,12 +506,12 @@ def main():
             rec = c['record']
             rec_low = rec.lower()
             if rec_low in record_to_id:
-                # Doublon : reutiliser l'id existant, ne pas incrementer next_id.
+                # Duplicate: reuse the existing id, do not increment next_id.
                 item_id = record_to_id[rec_low]
             else:
                 next_id += 1
                 if next_id >= ITEMS_LIMIT:
-                    raise SystemExit('plage d\'IDs d\'items epuisee')
+                    raise SystemExit('item ID range exhausted')
                 item_id = next_id
                 record_to_id[rec_low] = item_id
             if name.lower() in known_names:
@@ -522,8 +521,8 @@ def main():
                 json.dumps(name, ensure_ascii=False), item_id, c['goal'],
                 json.dumps(rec), c['count'], json.dumps(rec)))
         with open(qi_path, 'a', encoding='utf-8') as f:
-            f.write('\n# --- ajoutes par tools/gen_quest_items.py --apply ---\n' + '\n'.join(lines) + '\n')
-        print(f'{len(cands)} entrees ajoutees a {qi_path}')
+            f.write('\n# --- added by tools/gen_quest_items.py --apply ---\n' + '\n'.join(lines) + '\n')
+        print(f'{len(cands)} entries added to {qi_path}')
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
-"""Test de la construction des notifications d'items du bridge.
+"""Test for building the bridge's item notifications.
 
-Depuis la racine du depot :
+From the repository root:
     python3 tools/test_bridge_notify.py
 """
 import os
@@ -40,41 +40,41 @@ def build(msg):
     return bridge.build_notify(msg, ME, players, games, names)
 
 
-# Recu d'un autre joueur : nom d'item dans NOTRE jeu, expediteur = proprietaire.
+# Received from another player: item name in OUR game, sender = owner.
 check('recv', build(send(ME, BOB, 10, 600, 1)),
       {'t': 'notify', 'item': 'Ebony Dagger', 'flags': 1, 'dir': 'recv',
        'player': 'Bob', 'location': 'Dirtmouth Chest'})
 
-# Envoye a un autre joueur : nom d'item dans SON jeu, location dans le notre.
+# Sent to another player: item name in THEIR game, location in ours.
 check('send', build(send(BOB, ME, 20, 500, 2)),
       {'t': 'notify', 'item': 'Mothwing Cloak', 'flags': 2, 'dir': 'send',
        'player': 'Bob', 'location': 'Fargoth Quest'})
 
-# Objet de notre monde pour nous : une seule notification, dir = self.
+# Item from our world for us: a single notification, dir = self.
 check('self', build(send(ME, ME, 10, 500, 4)),
       {'t': 'notify', 'item': 'Ebony Dagger', 'flags': 4, 'dir': 'self',
        'location': 'Fargoth Quest'})
 
-# Commande serveur (/send) : recu sans expediteur.
+# Server command (/send): received without a sender.
 n = build(send(ME, 0, 10, -1, 0, kind='ItemCheat'))
 check('cheat dir', n and n['dir'], 'recv')
 check('cheat no player', n and 'player' in n, False)
 
-# Sans rapport avec nous : ignore.
+# Unrelated to us: ignored.
 check('unrelated', build(send(BOB, BOB, 20, 600)), None)
 check('other kind', build({'cmd': 'PrintJSON', 'type': 'Chat', 'message': 'hi'}), None)
 check('no slot', bridge.build_notify(send(ME, BOB, 10, 600), None, players, games, names), None)
 
-# Nom inconnu : repli lisible.
+# Unknown name: readable fallback.
 n = build(send(ME, BOB, 999, 777))
-check('unknown item', n['item'], 'objet #999')
+check('unknown item', n['item'], 'item #999')
 check('unknown location absent', 'location' in n, False)
 
-# Ids strictement croissants, meme dans la meme milliseconde.
+# Strictly increasing ids, even within the same millisecond.
 a, b = bridge.next_notify_id(), bridge.next_notify_id()
 check('ids increase', b > a, True)
 
-# Jeux a telecharger : cache vide -> tout ; checksum identique -> rien.
+# Games to download: empty cache -> all; identical checksum -> none.
 check('missing all', bridge.missing_games({'Hollow Knight', None}, {}), ['Hollow Knight'])
 bridge.names['Hollow Knight'] = {'checksum': 'abc', 'items': {}, 'locations': {}}
 check('cached ok', bridge.missing_games({'Hollow Knight'}, {'Hollow Knight': 'abc'}), [])

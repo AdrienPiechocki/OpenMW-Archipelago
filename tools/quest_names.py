@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Noms lisibles des quetes, pour les locations Archipelago et les logs.
+"""Readable quest names, for Archipelago locations and logs.
 
-Morrowind ne stocke que des IDs de journal (`A1_10_MehraMilo`, `MS_FargothRing`,
-...). Les noms affiches viennent des pages de quete UESP, mises en cache dans
-`data/quest_names.yaml`. Les quetes sans page connue recoivent un nom deduit de
-leur ID (prefixe de faction retire, camelCase separe).
+Morrowind only stores journal IDs (`A1_10_MehraMilo`, `MS_FargothRing`,
+...). Display names come from UESP quest pages, cached in
+`data/quest_names.yaml`. Quests without a known page get a name derived from
+their ID (faction prefix removed, camelCase split).
 
-Usage :
-  python tools/quest_names.py                       # verifie data/quest_completions.yaml
-  python tools/quest_names.py --write               # renomme les locations
+Usage:
+  python tools/quest_names.py                       # checks data/quest_completions.yaml
+  python tools/quest_names.py --write               # renames the locations
   python tools/quest_names.py --write --file data/quest_completions.yaml
 """
 import argparse
@@ -21,7 +21,7 @@ import yaml
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DEFAULT_MAP = ROOT / 'data' / 'quest_names.yaml'
 
-# Prefixes de journal de Morrowind.esm (faction / chapitre / quete).
+# Journal prefixes of Morrowind.esm (faction / chapter / quest).
 PREFIXES = {
     'a1', 'a2', 'a3',
     'b1', 'b2', 'b2a', 'b2b', 'b2c', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8',
@@ -29,10 +29,10 @@ PREFIXES = {
     'ms', 'mv', 'mt', 'fg', 'mg', 'tg', 'hh', 'hr', 'ht', 'ic', 'il',
     'tt', 'eb', 'da', 'va', 'cx', 'blades', 'town', 'romance',
 }
-# Morceaux de code isoles (MT_S_*).
+# Isolated code fragments (MT_S_*).
 CODE_WORDS = {'s'}
 
-# Repli pour les rares quetes sans page UESP (ou dont la page ne donne pas l'ID).
+# Fallback for the rare quests without a UESP page (or whose page does not give the ID).
 FALLBACK = {
     'a2_1_supplies': 'Supplies',
     'a2_1_supplies2': 'Supplies 2',
@@ -64,7 +64,7 @@ FALLBACK = {
 
 
 def load_names(path=None):
-    """Charge {id_de_journal_minuscule: nom_lisible}."""
+    """Loads {lowercase_journal_id: readable_name}."""
     p = pathlib.Path(path or DEFAULT_MAP)
     if not p.exists():
         return {}
@@ -81,7 +81,7 @@ def _is_code_token(token):
         return True
     if re.fullmatch(r'\d+', t):
         return True
-    # A1, B2a, IC2, IC30... (mais pas un mot comme Supplies2)
+    # A1, B2a, IC2, IC30... (but not a word like Supplies2)
     if len(t) <= 5 and re.fullmatch(r'[A-Za-z]+\d+[A-Za-z]?', t):
         return True
     # MT, MS, IC...
@@ -91,7 +91,7 @@ def _is_code_token(token):
 
 
 def _split_words(text):
-    # camelCase, sigles, lettres/chiffres (BackDoor1 -> Back Door 1)
+    # camelCase, acronyms, letters/digits (BackDoor1 -> Back Door 1)
     text = re.sub(r'(?<=[a-z0-9])(?=[A-Z])', ' ', text)
     text = re.sub(r'(?<=[A-Z])(?=[A-Z][a-z])', ' ', text)
     text = re.sub(r'(?<=[A-Za-z])(?=\d)', ' ', text)
@@ -108,7 +108,7 @@ def _cap(word):
 
 
 def derive_name(qid):
-    """Nom de repli deduit de l'ID (sans prefixe de faction ni code)."""
+    """Fallback name derived from the ID (without faction prefix or code)."""
     qid = str(qid)
     key = qid.lower()
     if key in FALLBACK:
@@ -122,7 +122,7 @@ def derive_name(qid):
     if not toks:
         toks = [raw]
 
-    # A1_7HuleeyaInformant : le 7 colle au nom.
+    # A1_7HuleeyaInformant: the 7 sticks to the name.
     toks[0] = re.sub(r'^\d+', '', toks[0]) or toks[0]
     words = [_cap(w) for w in _split_words(' '.join(toks))]
     name = ' '.join(words).strip()
@@ -132,19 +132,19 @@ def derive_name(qid):
 
 
 def quest_name(qid, names=None):
-    """Nom lisible d'une quete : page UESP si connue, sinon ID derive."""
+    """Readable name of a quest: UESP page if known, otherwise derived ID."""
     names = names if names is not None else load_names()
     key = str(qid).lower()
     return names.get(key) or derive_name(qid)
 
 
 def _qualifier(qid, base, names):
-    """Detail qui distingue une quete d'une autre portant le meme nom."""
-    # L'ID est plus precis que le titre UESP quand plusieurs IDs partagent une
-    # meme page (sous-quetes, variantes, etc.).
+    """Detail that distinguishes a quest from another with the same name."""
+    # The ID is more precise than the UESP title when several IDs share the
+    # same page (sub-quests, variants, etc.).
     derived = derive_name(qid)
-    # On retire les mots deja presents dans le nom commun. Les mots d'une
-    # lettre sont conserves : ils distinguent souvent deux variantes (A/B).
+    # Words already present in the common name are removed. One-letter words
+    # are kept: they often distinguish two variants (A/B).
     base_words = {
         w.lower() for w in re.findall(r"[A-Za-z0-9']+", base) if len(w) > 1
     }
@@ -156,11 +156,11 @@ def _qualifier(qid, base, names):
 
 
 def unique_names(rows, names=None):
-    """{id_de_journal: nom_unique} pour des lignes de location.
+    """{journal_id: unique_name} for location rows.
 
-    `rows` : dicts avec `trigger.quest` (ou `quest`) et `group`.
-    Les homonymes (plusieurs IDs d'une meme page UESP) recoivent un suffixe
-    lisible, par exemple « Sleepers Awake - Alvura ».
+    `rows`: dicts with `trigger.quest` (or `quest`) and `group`.
+    Homonyms (several IDs from the same UESP page) receive a readable
+    suffix, for example "Sleepers Awake - Alvura".
     """
     names = names if names is not None else load_names()
     entries = []
@@ -185,15 +185,15 @@ def unique_names(rows, names=None):
             used.add(base)
             continue
 
-        # Plusieurs IDs partagent le meme titre UESP : suffixe distinctif.
+        # Several IDs share the same UESP title: distinctive suffix.
         seen = collections.Counter()
         for qid, _group in items:
             suffix = _qualifier(qid, base, names) or 'complete'
             seen[suffix.lower()] += 1
             if seen[suffix.lower()] > 1:
                 suffix = f'{suffix} {seen[suffix.lower()]}'
-            # Pas de parentheses : le nom est deja affiche entre parentheses
-            # dans les notifications de check.
+            # No parentheses: the name is already displayed in parentheses
+            # in check notifications.
             name = f'{base} - {suffix}'
             n = 2
             while name in used:
@@ -205,7 +205,7 @@ def unique_names(rows, names=None):
 
 
 def rewrite_completions(path, names=None):
-    """Renomme toutes les entrees de data/quest_completions.yaml."""
+    """Renames all entries in data/quest_completions.yaml."""
     p = pathlib.Path(path)
     rows = yaml.safe_load(p.read_text(encoding='utf-8')) or []
     mapped = unique_names(rows, names)
@@ -223,8 +223,8 @@ def rewrite_completions(path, names=None):
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--file', default='data/quest_completions.yaml')
-    ap.add_argument('--map', default=None, help='table des noms (defaut: data/quest_names.yaml)')
-    ap.add_argument('--write', action='store_true', help='reecrit les noms dans --file')
+    ap.add_argument('--map', default=None, help='name table (default: data/quest_names.yaml)')
+    ap.add_argument('--write', action='store_true', help='rewrites the names in --file')
     args = ap.parse_args()
 
     names = load_names(args.map)
@@ -234,11 +234,11 @@ def main():
     report = collections.Counter(mapped.values())
     dupes = {n: c for n, c in report.items() if c > 1}
     if dupes:
-        raise SystemExit(f'noms encore en double : {dupes}')
-    print(f'{len(mapped)} locations, {len(report)} noms uniques')
+        raise SystemExit(f'names still duplicated: {dupes}')
+    print(f'{len(mapped)} locations, {len(report)} unique names')
     if args.write:
         rewrite_completions(p, names)
-        print(f'noms ecrits dans {p}')
+        print(f'names written to {p}')
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Test des noms lisibles des quetes (locations Archipelago).
+"""Test for readable quest names (Archipelago locations).
 
-Depuis la racine du depot :
+From the repository root:
     python3 tools/test_quest_names.py
 """
 import pathlib
@@ -29,27 +29,27 @@ def check(name, got, want):
         print(f'ok   {name}')
 
 
-check('nombre de locations', len(mapped), len(rows))
-check('noms uniques', len(set(mapped.values())), len(rows))
+check('location count', len(mapped), len(rows))
+check('unique names', len(set(mapped.values())), len(rows))
 
 for qid, location in mapped.items():
-    # Aucun nom ne doit etre l'ID de journal brut (avec ou sans suffixe).
+    # No name must be the raw journal ID (with or without suffix).
     low = location.lower()
     if low == qid or low.startswith(qid + ' '):
-        check(f'nom lisible pour {qid}', location, 'un nom humain')
+        check(f'readable name for {qid}', location, 'a human name')
 
-check('nom UESP', mapped['a1_1_findspymaster'], 'Report to Caius Cosades')
-check('nom UESP avec sous-quete', mapped['a1_10_mehramilo'], 'Vivec Informants - Mehra Milo')
-check('ID sans separateur', mapped['a1_7huleeyainformant'], 'Vivec Informants - Huleeya Informant')
-check('nom simple', mapped['ms_fargothring'], "Fargoth's Ring")
-check('variante en echec', mapped['ic2_muck_not'], 'Gathering Muck - failed')
-check('sous-quete', mapped['a1_sleepers_alvura'], 'Sleepers Awake - Alvura')
+check('UESP name', mapped['a1_1_findspymaster'], 'Report to Caius Cosades')
+check('UESP name with sub-quest', mapped['a1_10_mehramilo'], 'Vivec Informants - Mehra Milo')
+check('ID without separator', mapped['a1_7huleeyainformant'], 'Vivec Informants - Huleeya Informant')
+check('simple name', mapped['ms_fargothring'], "Fargoth's Ring")
+check('failed variant', mapped['ic2_muck_not'], 'Gathering Muck - failed')
+check('sub-quest', mapped['a1_sleepers_alvura'], 'Sleepers Awake - Alvura')
 
-check('repli camelCase', derive_name('A1_7HuleeyaInformant'), 'Huleeya Informant')
-check('repli prefixe faction', derive_name('MT_S_BalancedArmor'), 'Balanced Armor')
-check('repli prefixe ville', derive_name('town_Sadrith'), 'Sadrith')
-check('repli chiffre', derive_name('A2_1_Supplies2'), 'Supplies 2')
-check('table prioritaire', quest_name('MS_FargothRing', names), "Fargoth's Ring")
+check('camelCase fallback', derive_name('A1_7HuleeyaInformant'), 'Huleeya Informant')
+check('faction prefix fallback', derive_name('MT_S_BalancedArmor'), 'Balanced Armor')
+check('town prefix fallback', derive_name('town_Sadrith'), 'Sadrith')
+check('digit fallback', derive_name('A2_1_Supplies2'), 'Supplies 2')
+check('priority table', quest_name('MS_FargothRing', names), "Fargoth's Ring")
 
 if fails:
     print(f'{fails} failure(s)')

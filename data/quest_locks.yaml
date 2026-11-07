@@ -1,11 +1,11 @@
-# Quetes verrouillees par Archipelago : tant que l'item AP correspondant n'est pas
-# recu, la quete ne peut pas progresser (le mod remet son journal a zero). Actif
-# uniquement si l'objectif `goal` correspondant est selectionne dans le YAML joueur
-# (daedric_quests : option "Daedric Quests"). Chaque item est de la progression.
-#   name       nom de l'item AP (unique)      id     ID d'item AP (stable)
-#   goal       cle d'objectif                 quest  ID de quete (journal), en minuscules
-#   scripts    scripts MWScript des activateurs (blocage avant OnActivate)
-#   activators IDs des records ACTI (repli si un mod renomme le script)
+# Quests locked by Archipelago: until the corresponding AP item is
+# received, the quest cannot progress (the mod resets its journal to zero). Active
+# only if the corresponding `goal` objective is selected in the player YAML
+# (daedric_quests: option "Daedric Quests"). Each item is progression.
+#   name       AP item name (unique)        id     AP item ID (stable)
+#   goal       objective key                 quest  quest ID (journal), lowercase
+#   scripts    MWScript scripts of activators (lock before OnActivate)
+#   activators ACTI record IDs (fallback if a mod renames the script)
 - {name: "Daedric Quest: Azura", id: 7701400, goal: daedric_quests, quest: da_azura, scripts: [DaedraAzura], activators: [active_dae_azura]}
 - {name: "Daedric Quest: Boethiah", id: 7701401, goal: daedric_quests, quest: da_boethiah, scripts: [DaedraBoethiah, DaedraBoethiah2], activators: [Ex_DAE_Boethiah_fixed, active_dae_boethiah, active_dae_boethiah_ruin, active_DAE_B_Bo_Head]}
 - {name: "Daedric Quest: Malacath", id: 7701402, goal: daedric_quests, quest: da_malacath, scripts: [DaedraMalacath], activators: [active_dae_malacath]}

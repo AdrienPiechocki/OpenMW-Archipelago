@@ -1,32 +1,32 @@
--- Notifications en jeu pour les items Archipelago recus / envoyes.
+-- In-game notifications for received / sent Archipelago items.
 --
--- Le bridge ecrit dans in.jsonl des messages
+-- The bridge writes messages to in.jsonl:
 --   {"t":"notify","id":..,"ts":..,"dir":"recv|send|self","item":..,
 --    "player":..,"location":..,"flags":n}
--- global.lua les filtre (accept) puis les relaie au script joueur, qui les
--- met en file et les affiche (format) a intervalle regulier.
+-- global.lua filters them (accept) then relays them to the player script,
+-- which queues them and displays them (format) at a regular interval.
 local M = {}
 
-M.MAX_AGE = 600   -- secondes : au-dela, une notification est consideree perimee
-M.MAX_QUEUE = 30  -- taille maximale de la file d'affichage
-M.GAP = 2.0       -- secondes entre deux messages affiches
+M.MAX_AGE = 600   -- seconds: beyond this, a notification is considered stale
+M.MAX_QUEUE = 30  -- maximum display queue size
+M.GAP = 2.0       -- seconds between two displayed messages
 
 local function hasBit(flags, n)
   return math.floor(flags / (2 ^ n)) % 2 == 1
 end
 
--- Flags Archipelago : 1 = progression, 2 = utile, 4 = piege.
+-- Archipelago flags: 1 = progression, 2 = useful, 4 = trap.
 function M.flagTag(flags)
   flags = tonumber(flags) or 0
-  if hasBit(flags, 2) then return ' [Piège]' end
+  if hasBit(flags, 2) then return ' [Trap]' end
   if hasBit(flags, 0) then return ' [Progression]' end
-  if hasBit(flags, 1) then return ' [Utile]' end
+  if hasBit(flags, 1) then return ' [Useful]' end
   return ''
 end
 
--- Vrai si la notification est nouvelle (id > dernier id vu) et recente.
--- Les ids sont croissants : in.jsonl est relu depuis le debut a chaque
--- chargement de sauvegarde, ce filtre evite de rejouer d'anciens messages.
+-- True if the notification is new (id > last seen id) and recent.
+-- Ids increase: in.jsonl is re-read from the start on every save load,
+-- this filter avoids replaying old messages.
 function M.accept(msg, lastId, now)
   if type(msg) ~= 'table' then return false end
   local id = tonumber(msg.id)
@@ -36,10 +36,9 @@ function M.accept(msg, lastId, now)
   return true
 end
 
--- Texte affiche pour une notification, nil si le message est inutilisable.
--- Les checks de quete (locations Archipelago) indiquent le nom de la quete
--- entre parentheses et la completion du check ; les autres messages gardent
--- l'ancien format.
+-- Display text for a notification, nil if the message is unusable.
+-- Quest checks (Archipelago locations) show the quest name in parentheses
+-- and the check completion; other messages keep the old format.
 function M.format(d)
   if type(d) ~= 'table' then return nil end
   local item = tostring(d.item or '?')
@@ -52,19 +51,19 @@ function M.format(d)
 
   if d.dir == 'self' then
     if loc then
-      return 'Archipelago : ' .. item .. tag .. ' (' .. loc .. ') obtenu'
+      return 'Archipelago: ' .. item .. tag .. ' (' .. loc .. ') obtained'
     end
-    return 'Archipelago : vous avez trouvé ' .. item .. tag
+    return 'Archipelago: you found ' .. item .. tag
   elseif d.dir == 'send' then
     if loc then
-      return 'Archipelago : ' .. item .. tag .. ' (' .. loc .. ') obtenu -> ' .. (who or '?')
+      return 'Archipelago: ' .. item .. tag .. ' (' .. loc .. ') obtained -> ' .. (who or '?')
     end
-    return 'Archipelago : vous envoyez ' .. item .. tag .. ' à ' .. (who or '?')
+    return 'Archipelago: you sent ' .. item .. tag .. ' to ' .. (who or '?')
   elseif d.dir == 'recv' then
     if who then
-      return 'Archipelago : ' .. who .. ' vous envoie ' .. item .. tag
+      return 'Archipelago: ' .. who .. ' sends you ' .. item .. tag
     end
-    return 'Archipelago : vous recevez ' .. item .. tag
+    return 'Archipelago: you receive ' .. item .. tag
   end
   return nil
 end

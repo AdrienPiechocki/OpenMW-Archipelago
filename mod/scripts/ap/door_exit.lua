@@ -1,5 +1,5 @@
--- Script local attache a la porte de sortie du Census Office.
--- Permet de sortir sans le package de Caius Cosades.
+-- Local script attached to the Census Office exit door.
+-- Allows leaving without Caius Cosades' package.
 local self = require('openmw.self')
 
 local activated = false

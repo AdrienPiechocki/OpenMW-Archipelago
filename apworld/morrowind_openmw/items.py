@@ -28,17 +28,17 @@ item_table: Dict[str, MorrowindItemData] = {
     "Healing Potion": MorrowindItemData(code=BASE_ITEM + 2, classification=ItemClassification.filler),
     "Soul Gem": MorrowindItemData(code=BASE_ITEM + 3, classification=ItemClassification.filler),
     "Arrow (30)": MorrowindItemData(code=BASE_ITEM + 4, classification=ItemClassification.filler),
-    # +10 niveaux : ajoute la progression de 10 montees de niveau vanilla.
-    # Le joueur dort pour choisir ses attributs (voir mod/scripts/ap/level_up.lua).
+    # +10 levels: adds the progression of 10 vanilla level-ups.
+    # The player sleeps to choose attributes (see mod/scripts/ap/level_up.lua).
     "Level Up (+10)": MorrowindItemData(
         code=BASE_ITEM + 2000, classification=ItemClassification.useful, frequency=4
     ),
-    # "Niveau de Levitation" et "Bonus de Force" supprimes
-    "Piege: Maladie": MorrowindItemData(code=BASE_ITEM + 200, classification=ItemClassification.trap),
-    "Piege: Bounty": MorrowindItemData(code=BASE_ITEM + 201, classification=ItemClassification.trap),
-    "Piege: Summon Scamp": MorrowindItemData(code=BASE_ITEM + 202, classification=ItemClassification.trap),
-    "Piege: Steal Gold": MorrowindItemData(code=BASE_ITEM + 203, classification=ItemClassification.trap),
-    # Niveaux de competence (+5)
+    # "Levitation Level" and "Strength Bonus" removed
+    "Trap: Disease": MorrowindItemData(code=BASE_ITEM + 200, classification=ItemClassification.trap),
+    "Trap: Bounty": MorrowindItemData(code=BASE_ITEM + 201, classification=ItemClassification.trap),
+    "Trap: Summon Scamp": MorrowindItemData(code=BASE_ITEM + 202, classification=ItemClassification.trap),
+    "Trap: Steal Gold": MorrowindItemData(code=BASE_ITEM + 203, classification=ItemClassification.trap),
+    # Skill levels (+5)
     "Skill: Acrobatics": MorrowindItemData(code=BASE_ITEM + 300, classification=ItemClassification.useful),
     "Skill: Alchemy": MorrowindItemData(code=BASE_ITEM + 301, classification=ItemClassification.useful),
     "Skill: Alteration": MorrowindItemData(code=BASE_ITEM + 302, classification=ItemClassification.useful),
@@ -68,8 +68,8 @@ item_table: Dict[str, MorrowindItemData] = {
     "Skill: Unarmored": MorrowindItemData(code=BASE_ITEM + 326, classification=ItemClassification.useful),
 }
 
-# Objets de quete par objectif (goal) : data/quest_items.yaml.
-# Ils ne sont dans le pool que si le goal choisi correspond.
+# Quest items per goal: data/quest_items.yaml.
+# They are only in the pool if the selected goal matches.
 def _load_yaml(filename):
     text = None
     try:
@@ -86,23 +86,23 @@ def _load_yaml(filename):
 
 
 quest_items = _load_yaml('quest_items.yaml')
-# Quetes verrouillees : un item de progression par quete (data/quest_locks.yaml).
+# Locked quests: one progression item per quest (data/quest_locks.yaml).
 quest_locks = _load_yaml('quest_locks.yaml')
 
 for _it in quest_items + quest_locks:
     _goal = _it['goal']
     if _goal == 'misc':
-        # Objets de quetes secondaires : toujours dans le pool, mais "useful"
-        # (ils ne sont pas necessaires a la victoire). Sinon ils satureraient
-        # les locations de progression et feraient echouer la capacite.
+        # Miscellaneous quest items: always in the pool, but "useful"
+        # (they are not required for victory). Otherwise they would saturate
+        # progression locations and make the capacity check fail.
         item_table[_it['name']] = MorrowindItemData(
             code=_it['id'],
             classification=ItemClassification.useful,
             can_create=lambda options: True,
         )
     else:
-        # Objets des objectifs (main, maisons, guildes, factions, daedric) :
-        # seulement si l'objectif est choisi, et en progression.
+        # Goal items (main, houses, guilds, factions, daedric):
+        # only if the goal is selected, and as progression.
         item_table[_it['name']] = MorrowindItemData(
             code=_it['id'],
             classification=ItemClassification.progression,
@@ -111,8 +111,8 @@ for _it in quest_items + quest_locks:
 
 
 def quest_item_names(goal_key):
-    """Noms des items AP necessaires pour l'objectif `goal_key` : objets de
-    quete + items de deverrouillage de quetes."""
+    """Names of the AP items required for goal `goal_key`: quest items
+    + quest unlock items."""
     return [i['name'] for i in quest_items + quest_locks if i['goal'] == goal_key]
 
 

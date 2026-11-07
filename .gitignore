@@ -5,3 +5,5 @@ data/*
 !data/quest_names.yaml
 tools/__pycache__/*
 bridge/__pycache__/*
+apworld/morrowind_openmw/data/*
+apworld/morrowind_openmw.apworld
