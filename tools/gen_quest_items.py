@@ -10,7 +10,9 @@ Only items NEEDED FOR PROGRESSION are kept, faction by faction:
                    reward, not a progression item).
 
 Usage:
-  python tools/gen_quest_items.py morrowind.json [tribunal.json bloodmoon.json] [--apply]
+  python tools/gen_quest_items.py morrowind.json [bloodmoon.json] [--apply]
+  (bloodmoon.json: required for the East Empire Company items; tribunal.json: not needed,
+  no Tribunal goal has quest items)
 """
 import argparse
 import collections
@@ -35,6 +37,7 @@ GOAL_OF_GROUP = {
     'fighters_guild': 'fighters_guild', 'mages_guild': 'mages_guild',
     'thieves_guild': 'thieves_guild', 'imperial_legion': 'imperial_legion',
     'imperial_cult': 'imperial_cult', 'temple': 'temple', 'morag_tong': 'morag_tong',
+    'east_empire_company': 'east_empire_company',   # Bloodmoon: needs bloodmoon.json
     'misc': 'misc',
 }
 

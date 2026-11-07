@@ -8,14 +8,32 @@ local ap    = require('scripts.ap.io')
 local json  = require('scripts.ap.json')
 local config = require('scripts.ap.config')
 local levelUp = require('scripts.ap.level_up')
+local startBoost = require('scripts.ap.start_boost')
+-- Expansion quest groups: <expansion>_<category> (tribunal_main, tribunal_side,
+-- bloodmoon_main, bloodmoon_side). Checks only if the group is enabled in the
+-- seed (slot_data.options.expansion_groups). Never gating. The Bloodmoon
+-- East Empire Company quests (group east_empire_company) follow the `faction`
+-- option like the other faction goals.
+local EXPANSION_GROUPS = {
+  tribunal_main = true, tribunal_side = true,
+  bloodmoon_main = true, bloodmoon_side = true,
+}
 local goalChecks = {
   GROUP_GOALS = { main = 'main_quest', daedric = 'daedric_quests' },
   goalOfGroup = function(group)
     local m = { main = 'main_quest', daedric = 'daedric_quests' }
     return m[group] or group
   end,
-  allowed = function(group, goalList)
+  EXPANSION_GROUPS = EXPANSION_GROUPS,
+  allowed = function(group, goalList, expansionGroups)
     if group == nil or group == 'misc' then return true end
+    if EXPANSION_GROUPS[group] then
+      if type(expansionGroups) ~= 'table' then return false end
+      for _, k in ipairs(expansionGroups) do
+        if k == group then return true end
+      end
+      return false
+    end
     if type(goalList) ~= 'table' then return false end
     local m = { main = 'main_quest', daedric = 'daedric_quests' }
     local key = m[group] or group
@@ -35,6 +53,9 @@ local LOCKS = require('scripts.ap.quest_locks')   -- goal -> { {id = AP item, qu
 
 local sent = {}
 local goalSent = false
+local startingLevel = nil   -- YAML starting_level (1-40), received from the server
+local startBoostDone = false -- level + attribute / skill bonus already applied (remembered in the save)
+local expansionGroups = nil -- enabled expansion groups ('tribunal_main', 'bloodmoon_side'...), received from the server
 local goalList = nil        -- GOALS keys to complete (main quest + house/guild/faction), received from the server
 local reachedGoals = {}     -- key -> true, remembered once reached
 local ownedIds = {}         -- received AP item ids (relayed by global.lua)
@@ -182,10 +203,28 @@ local function enforceLocks(quests)
   end
 end
 
+-- Starting level: applied once, as soon as the tutorial is over.
+local function applyStartBoost(quests)
+  if startBoostDone or not startingLevel then return end
+  if startingLevel <= 1 then
+    startBoostDone = true       -- level 1 = vanilla: nothing to do
+    return
+  end
+  if questStage(quests, startBoost.TRIGGER_QUEST) < startBoost.TRIGGER_STAGE then return end
+  startBoostDone = true
+  if startBoost.apply(types, self, startingLevel) then
+    print(('AP: starting level %d applied (+%d attributes and skills)'):format(startingLevel, startingLevel))
+    pcall(function()
+      ui.showMessage(('Archipelago: starting level %d (+%d to attributes and skills)'):format(startingLevel, startingLevel))
+    end)
+  end
+end
+
 local function pollQuests()
   local quests = types.Player.quests(self)
   if not quests then return end
   enforceLocks(quests)
+  applyStartBoost(quests)
   for qkey in pairs(allQuests) do
     local stage = questStage(quests, qkey)
     if stage > 0 then
@@ -193,7 +232,7 @@ local function pollQuests()
       -- goals if the Goal Quest Checks option is enabled.
       local info = QUEST_COMPLETE_LOOKUP[qkey]
       if info and questComplete(qkey, stage)
-          and goalChecks.allowed(info[4], goalList) then
+          and goalChecks.allowed(info[4], goalList, expansionGroups) then
         for _, cid in ipairs(info[3] or {}) do check(cid) end
       end
     end
@@ -272,7 +311,7 @@ local function onUpdate(dt)
 end
 
 local function onSave()
-  return { sent = sent, goalSent = goalSent, goalList = goalList, reachedGoals = reachedGoals, ownedIds = ownedIds }
+  return { sent = sent, goalSent = goalSent, goalList = goalList, expansionGroups = expansionGroups, startingLevel = startingLevel, startBoostDone = startBoostDone, reachedGoals = reachedGoals, ownedIds = ownedIds }
 end
 
 local function requestConfig()
@@ -284,6 +323,9 @@ local function onLoad(d)
     sent = d.sent or {}
     goalSent = d.goalSent or false
     goalList = d.goalList
+    expansionGroups = d.expansionGroups
+    startingLevel = d.startingLevel
+    startBoostDone = d.startBoostDone or false
     reachedGoals = d.reachedGoals or {}
     ownedIds = d.ownedIds or {}
   end
@@ -311,6 +353,24 @@ end
 -- data.goal = 'main_quest' or 0.
 local function onConfig(data)
   if type(data) ~= 'table' then return end
+
+  -- Starting level (starting_level option). Absent (old server): unchanged.
+  local sl = startBoost.clampLevel(data.startingLevel)
+  if sl then
+    if sl ~= startingLevel then print('AP: starting level = ' .. sl) end
+    startingLevel = sl
+  end
+
+  -- Enabled expansion groups (tribunal_main_quest, bloodmoon_side_quests...
+  -- options). Absent (old server): the previous value is kept.
+  if type(data.expansionGroups) == 'table' then
+    local exp = {}
+    for _, k in ipairs(data.expansionGroups) do exp[#exp + 1] = lower(k) end
+    if table.concat(exp, ',') ~= table.concat(expansionGroups or {}, ',') then
+      print('AP: expansion groups = ' .. (#exp > 0 and table.concat(exp, ', ') or 'none'))
+    end
+    expansionGroups = exp
+  end
 
   -- Resync: AP_Config only arrives after the bridge connects. The bridge may
   -- have reset its checks to zero (new seed) while `sent` persists in the

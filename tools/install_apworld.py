@@ -8,7 +8,7 @@ NAME = 'morrowind_openmw.apworld'
 data_src = os.path.join(ROOT, 'data')
 data_dst = os.path.join(src, 'morrowind_openmw', 'data')
 os.makedirs(data_dst, exist_ok=True)
-for name in ('quest_items.yaml', 'quest_locks.yaml', 'quest_completions.yaml', 'quest_finals.yaml', 'locations.yaml', 'items.yaml'):
+for name in ('quest_items.yaml', 'quest_locks.yaml', 'quest_completions.yaml', 'quest_finals.yaml', 'quest_exclusive.yaml', 'locations.yaml', 'items.yaml'):
     s = os.path.join(data_src, name)
     if os.path.exists(s):
         shutil.copy2(s, os.path.join(data_dst, name))

@@ -11,5 +11,8 @@ return {
   imperial_legion = { faction = 'imperial legion', rank = 10 },
   temple = { faction = 'temple', rank = 10 },
   morag_tong = { faction = 'morag tong', rank = 10, quests = { { quest = 'mt_grandmaster', stage = 100 } } },
+  east_empire_company = { faction = 'east empire company', rank = 9 },
   daedric_quests = { group = 'daedric' },
+  tribunal = { quests = { { quest = 'tr_sothasil', stage = 100 } } },
+  bloodmoon = { quests = { { quest = 'bm_wildhunt', stage = 100 } } },
 }

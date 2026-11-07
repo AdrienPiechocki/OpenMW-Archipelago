@@ -14,7 +14,7 @@ import sys
 import yaml
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from quest_groups import classify, load_overrides  # noqa: E402
+from quest_groups import classify, load_overrides, load_categories  # noqa: E402
 
 
 def qid_of(row):
@@ -29,6 +29,7 @@ def main():
     args = ap.parse_args()
     data = pathlib.Path(args.data)
     overrides = load_overrides(data / 'quest_groups_override.yaml')
+    cats = load_categories(data / 'expansion_categories.yaml')
 
     by_quest = {}
     for name in ('quests.yaml', 'quest_completions.yaml', 'quest_finals.yaml'):
@@ -37,7 +38,7 @@ def main():
             continue
         rows = yaml.safe_load(p.read_text(encoding='utf-8')) or []
         for r in rows:
-            g = classify(qid_of(r), overrides)
+            g = classify(qid_of(r), overrides, cats)
             r['group'] = g
             by_quest[str(qid_of(r)).lower()] = g
         p.write_text(yaml.safe_dump(rows, sort_keys=False, allow_unicode=True), encoding='utf-8')

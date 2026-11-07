@@ -577,3 +577,28 @@ va_vampdust: Dust of the Vampire
 va_vamphunter: The Vampire Hunter
 va_vampmarara: The Weary Vampire
 va_vamprich: The Boy Who Would Be Undead
+
+# Bloodmoon: East Empire Company (Raven Rock colony), journals CO_*
+co_1: "Establish the Mine"
+co_10: "Razing the Forest"
+co_11: "Hiring Guards"
+co_12: "Protect Falco"
+co_12a: "The Assassin"
+co_13: "Under Siege"
+co_13a: "Drastic Measures"
+co_2: "A Blocked Door"
+co_3: "Missing Supply Ship"
+co_3a: "Missing Supply Ship"
+co_3b: "Missing Supply Ship"
+co_4: "Setting up Shop"
+co_5: "Supply Route Problems"
+co_6: "To Catch a Thief"
+co_6a: "Aiding and Abetting"
+co_7: "Bar Brawl"
+co_8: "Discovery in the Mine"
+co_8a: "Discovery in the Mine"
+co_9: "Race Against the Clock"
+co_9a: "Stop the Messenger"
+co_choice: "Making a Choice"
+co_estate: "The Factor's Estate"
+colony_update: "Raven Rock Updates"

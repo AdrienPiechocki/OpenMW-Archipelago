@@ -68,6 +68,30 @@ def load_records(paths):
                 yield r
 
 
+def origin_of(path):
+    """ESM a JSON dump comes from: morrowind | tribunal | bloodmoon."""
+    name = pathlib.Path(path).name.lower()
+    for key in ('tribunal', 'bloodmoon'):
+        if key in name:
+            return key
+    return 'morrowind'
+
+
+def scan_origins(paths):
+    """{lower journal id: 'tribunal' | 'bloodmoon'} for journals DEFINED by an
+    expansion (absent from Morrowind.esm). Expansions that merely add infos to
+    a vanilla journal do not change its group."""
+    defined = {}
+    for path in paths:
+        origin = origin_of(path)
+        with open(path, encoding='utf-8') as f:
+            for r in json.load(f):
+                if r.get('type') == 'Dialogue' and \
+                        str(r.get('dialogue_type', '')).lower() == 'journal' and r.get('id'):
+                    defined.setdefault(str(r['id']).lower(), origin)
+    return {q: o for q, o in defined.items() if o != 'morrowind'}
+
+
 def scan_quests(paths):
     """Returns (journal_ids, pairs, finish):
     journal_ids : {lower: display name} of Journal dialogues
@@ -127,6 +151,16 @@ def main():
     args = ap.parse_args()
     out = pathlib.Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
+
+    # ---- origin of the journals (Tribunal / Bloodmoon options) ------------
+    origins = scan_origins(args.esm_json)
+    if origins:
+        dump_yaml(out / 'quest_sources.yaml', dict(sorted(origins.items())))
+        n_t = sum(1 for o in origins.values() if o == 'tribunal')
+        print(f'quest origins: {n_t} Tribunal, {len(origins) - n_t} Bloodmoon -> quest_sources.yaml')
+    elif len(args.esm_json) > 1:
+        print('WARNING: no journal defined by an expansion found '
+              '(the JSON file names must contain "tribunal" / "bloodmoon")')
 
     # ---- factions ---------------------------------------------------------
     factions, seen = [], set()

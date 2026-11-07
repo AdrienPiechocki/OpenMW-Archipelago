@@ -10,7 +10,7 @@ Morrowind OpenMW:
   main_quest: true
   great_house: none     # none | hlaalu | redoran | telvanni
   guild: none           # none | fighters_guild | mages_guild | thieves_guild
-  faction: none         # none | imperial_cult | imperial_legion | temple | morag_tong
+  faction: none         # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company (Bloodmoon.esm)
 
   # Adds the 7 Daedric quests to the objective. Each one is locked until its
   # Archipelago item ("Daedric Quest: <prince>") is received.
@@ -19,5 +19,20 @@ Morrowind OpenMW:
   # Trap items (Disease, Bounty, Summon Scamp, Steal Gold) in the item pool.
   # false = no traps (replaced by filler).
   traps: true
+
+  # Starting level (1-40). After the tutorial, the level is set to this value and
+  # each attribute and skill gets +N (capped at 100). 1 = vanilla.
+  starting_level: 1
+
+  # Expansions (Tribunal.esm / Bloodmoon.esm must be loaded in OpenMW):
+  #   *_main_quest:  checks of the main quest AND it becomes a goal
+  #                  (Tribunal: death of Almalexia, Bloodmoon: Hircine's Hunt)
+  #   *_side_quests: checks for the other quests of the expansion (never a goal)
+  # Tribunal has no faction quests. The only Bloodmoon faction, the East Empire
+  # Company, is chosen with `faction: east_empire_company`.
+  tribunal_main_quest: false
+  tribunal_side_quests: false
+  bloodmoon_main_quest: false
+  bloodmoon_side_quests: false
 
   death_link: true

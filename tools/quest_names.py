@@ -32,6 +32,12 @@ PREFIXES = {
 # Isolated code fragments (MT_S_*).
 CODE_WORDS = {'s'}
 
+# Journals whose ID is only <prefix>_<number>[letter] (CO_1, CO_3B...): without a
+# UESP name in quest_names.yaml, the name is "<label> <number><letter>".
+PREFIX_LABELS = {
+    'co': 'Raven Rock Colony',   # Bloodmoon East Empire Company (CO_1 .. CO_13, CO_1A ...)
+}
+
 # Fallback for the rare quests without a UESP page (or whose page does not give the ID).
 FALLBACK = {
     'a2_1_supplies': 'Supplies',
@@ -119,6 +125,13 @@ def derive_name(qid):
     toks = re.split(r'[_\-]+', raw)
     while toks and _is_code_token(toks[0]):
         toks.pop(0)
+    # Nothing but a number / letter left (CO_1, CO_1A, CO_3B): use the prefix label,
+    # otherwise the names collapse into "Co_1", "A", "B" ("A - A", "A - A 2"...).
+    parts = re.split(r'[_\-]+', raw)
+    tail = ''.join(parts[1:])
+    if parts[0].lower() in PREFIX_LABELS and re.fullmatch(r'\d*[A-Za-z]?', tail):
+        name = f'{PREFIX_LABELS[parts[0].lower()]} {tail.upper()}'.strip()
+        return name + (' (failed)' if failed else '')
     if not toks:
         toks = [raw]
 
@@ -143,6 +156,9 @@ def _qualifier(qid, base, names):
     # The ID is more precise than the UESP title when several IDs share the
     # same page (sub-quests, variants, etc.).
     derived = derive_name(qid)
+    for label in PREFIX_LABELS.values():      # "Raven Rock Colony 3A" -> "3A"
+        if derived.startswith(label + ' '):
+            derived = derived[len(label) + 1:]
     # Words already present in the common name are removed. One-letter words
     # are kept: they often distinguish two variants (A/B).
     base_words = {

@@ -4,7 +4,11 @@ data/*
 !data/goals.yaml
 !data/quest_names.yaml
 !data/quest_groups_override.yaml
+!data/expansion_categories.yaml
+!data/quest_exclusive.yaml
 tools/__pycache__/*
 bridge/__pycache__/*
 apworld/morrowind_openmw/data/*
 apworld/morrowind_openmw.apworld
+/apworld/morrowind_openmw/__pycache__
+/tools/__pycache__

@@ -42,5 +42,17 @@ morag_tong:
   rank: 10                                        # Grandmaster
   quests:
     - {quest: mt_grandmaster, stage: 100}         # confirmed ID (UESP): 100 or 110 = new Grandmaster
+east_empire_company:
+  faction: east empire company                    # Bloodmoon faction (Bloodmoon.esm required)
+  rank: 9                                         # Factor (rank 8 in UESP numbering, 9 ranks)
 daedric_quests:
   group: daedric                                  # the 7 Daedric quests done (option "Daedric Quests")
+# Expansions: when an expansion main-quest option (tribunal_main_quest /
+# bloodmoon_main_quest) is enabled, its main
+# quest becomes a goal. Journal IDs and finish stages from UESP.
+tribunal:
+  quests:
+    - {quest: tr_sothasil, stage: 100}            # The Mad God: death of Almalexia
+bloodmoon:
+  quests:
+    - {quest: bm_wildhunt, stage: 100}            # Hircine's Hunt: the Hunter is defeated

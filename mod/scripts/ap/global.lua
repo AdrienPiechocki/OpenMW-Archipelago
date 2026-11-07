@@ -264,7 +264,7 @@ local function handle(msg)
     -- Relay the goal to the player script
     local pl = getPlayer()
     if pl then
-      pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal }) end)
+      pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal, expansionGroups = serverOptions.expansion_groups, startingLevel = serverOptions.starting_level }) end)
     end
     -- Propagate death_link (YAML) to global storage for player.lua
     if serverOptions.death_link ~= nil then
@@ -411,7 +411,7 @@ return {
     AP_RequestConfig = function()
       local pl = getPlayer()
       if pl and (serverOptions.goals ~= nil or serverOptions.goal ~= nil) then
-        pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal }) end)
+        pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal, expansionGroups = serverOptions.expansion_groups, startingLevel = serverOptions.starting_level }) end)
       end
       sendOwned()
     end,

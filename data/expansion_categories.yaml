@@ -1,0 +1,19 @@
+# Category of the Tribunal / Bloodmoon quests (journal IDs, lowercase).
+# A journal DEFINED by an expansion ESM (data/quest_sources.yaml) is classified:
+#   1. Bloodmoon only: listed under east_empire_company or starting with one of
+#      east_empire_company_prefixes -> group east_empire_company (goal group of
+#      the `faction: east_empire_company` option),
+#   2. listed under main -> <expansion>_main (option <expansion>_main_quest),
+#   3. else <expansion>_side (option <expansion>_side_quests).
+# Tribunal has no faction quests.
+# After editing: python tools/classify_quests.py && python tools/gen_lua.py
+# data/quest_groups_report.txt lists the prefixes of each group: check it.
+main:
+  - tr_sothasil          # The Mad God (goal, stage 100: Almalexia is dead)
+  - tr_dbattack
+  - bm_wildhunt          # Hircine's Hunt (goal, stage 100: the Hunter is defeated)
+side: []
+east_empire_company:     # explicit journal IDs of the Raven Rock colony quests (not CO_*)
+  - colony_update        # Raven Rock Updates
+east_empire_company_prefixes:
+  - co_                  # TO VERIFY in quest_groups_report.txt (colony journals)

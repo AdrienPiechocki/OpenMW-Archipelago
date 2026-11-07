@@ -16,6 +16,7 @@ Archipelago mod to play Morrowind under OpenMW as an Archipelago world.
   journal IDs are extracted from `Morrowind.esm`; a mod that adds a quest, moves a stage or
   changes the ending of an existing quest can prevent the corresponding check from triggering
   or skew the objective.
+- **Tribunal / Bloodmoon: optional** (`tribunal_*` / `bloodmoon_*` options, see below).
 - **Mods that modify gameplay: compatible**, as long as they do not touch the quest journal
   (balancing, items, magic, travel, UI, etc.). For example
   [Carry Unlimited](https://www.nexusmods.com/morrowind/mods/27479), which increases carrying
@@ -31,14 +32,21 @@ Archipelago mod to play Morrowind under OpenMW as an Archipelago world.
 
 ```sh
 tes3conv Morrowind.esm morrowind.json
+tes3conv Tribunal.esm  tribunal.json     # optional (tribunal_* options)
+tes3conv Bloodmoon.esm bloodmoon.json    # optional (bloodmoon_* options)
 
-# 1. quests (existing IDs are kept, new ones are added)
-python tools/extract.py morrowind.json --out data/
+# 1. quests (existing IDs are kept, new ones are added). The JSON file names must
+#    contain "tribunal" / "bloodmoon": the group of a journal comes from the ESM
+#    that defines it (data/quest_sources.yaml).
+python tools/extract.py morrowind.json tribunal.json bloodmoon.json --out data/
 # 2. completion stage for new quests (existing entries are kept)
-python tools/gen_quest_finals.py morrowind.json
+python tools/gen_quest_finals.py morrowind.json tribunal.json bloodmoon.json
 #    -> check data/quest_review.txt (quests with multiple endings: add overrides/fail)
 # 2b. quest items for other objectives (candidates to review: data/quest_items_candidates.yaml)
-python tools/gen_quest_items.py morrowind.json --apply
+#    bloodmoon.json is needed for the East Empire Company items (faction: east_empire_company);
+#    tribunal.json is not (no Tribunal goal has quest items). Without bloodmoon.json it still runs,
+#    but that faction then has no items.
+python tools/gen_quest_items.py morrowind.json bloodmoon.json --apply
 # 3. groups (main / factions / daedric / misc ...) + report data/quest_groups_report.txt
 python tools/classify_quests.py
 # 4. Lua tables (quest_completions.lua, goals.lua, ...)
@@ -63,9 +71,14 @@ Morrowind OpenMW:
   main_quest: true             # false = the main quest is no longer an objective
   great_house: hlaalu          # none | hlaalu | redoran | telvanni
   guild: mages_guild           # none | fighters_guild | mages_guild | thieves_guild
-  faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong
+  faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company
   daedric_quests: true         # adds the 7 Daedric quests to the objective
   traps: true                  # false = no trap items in the pool
+  starting_level: 1            # 1-40: starting level and bonus (see below)
+  tribunal_main_quest: false       # true = Tribunal main quest: checks + goal
+  tribunal_side_quests: false      # true = other Tribunal quests give checks
+  bloodmoon_main_quest: false      # same two options for Bloodmoon
+  bloodmoon_side_quests: false
 ```
 
 Victory requires the main quest (if `main_quest` is enabled) **and** each chosen house / guild /
@@ -80,7 +93,7 @@ completed (remembered in the save). Conditions are set in `data/goals.yaml`
 **Checks.** Each "Miscellaneous" quest (UESP) gives a check at its end. With the option
 `goal_quest_checks` (default `true`), **completing each quest of the chosen objectives** (main
 quest, house / guild / faction, Daedric quests) also gives a check. Quests of unchosen
-objectives, vampires, expansions, etc. remain ignored.
+objectives, vampires, etc. remain ignored.
 
 ```yaml
   goal_quest_checks: true      # true | false
@@ -93,6 +106,64 @@ objectives, vampires, expansions, etc. remain ignored.
   quest), and quests with an exclusive ending (`fail` in `data/quest_finals.yaml`) never contain
   important items. The items of the smallest objective must fit in the Miscellaneous quests,
   then each completed objective unlocks its own checks for the next one.
+
+## Starting level (option `starting_level`)
+
+`starting_level: N` (1 to 40, default 1 = vanilla). Once the tutorial is over, i.e. when
+the journal reaches `A1_1_FindSpymaster` index 1 (Sellus Gravius gave the package, race, class and
+birthsign are final), the mod applies **once** per save:
+
+- the level is set to N (no level-up window);
+- **+N** to each of the 8 attributes and 27 skills, capped at 100 (a value already above
+  is not lowered);
+- the health that level-ups would have given: `(N - 1) x 0.1 x Endurance` (computed with the
+  final Endurance, slightly more than vanilla where it grows gradually).
+
+The log shows `AP: starting level N applied`. With N = 1 nothing changes. Existing saves
+that are already past the tutorial receive the bonus the first time the mod connects.
+`Level Up (+10)` items remain additional. The class's major/minor skill choice and the
+vanilla level-up multipliers are unchanged.
+
+## Expansions (`tribunal_*` and `bloodmoon_*` options)
+
+Each expansion has **two independent options**:
+
+| Option | Effect |
+|---|---|
+| `<expansion>_main_quest` | Checks for the main quest **and** the main quest becomes a goal (like the great house or guild goals), so an expansion alone is enough to have a goal, even with `main_quest: false` |
+| `<expansion>_side_quests` | Checks for every other quest of the expansion (never a goal) |
+
+Tribunal has no faction quests. The only Bloodmoon faction, the **East Empire Company**
+(Raven Rock colony), is chosen with `faction: east_empire_company` like the other factions: goal =
+rank **Factor** (`east empire company`, rank 9 in `data/goals.yaml`), its quests give checks, and
+it requires `Bloodmoon.esm`.
+
+Goal quest of each `<expansion>_main_quest`:
+
+| Option | Goal quest | Reached when |
+|---|---|---|
+| `tribunal_main_quest` | The Mad God (`TR_SothaSil`) | stage 100: Almalexia is dead |
+| `bloodmoon_main_quest` | Hircine's Hunt (`BM_WildHunt`) | stage 100: the Hunter is defeated |
+
+IDs and stages are in `data/goals.yaml` (then `python tools/gen_lua.py`). No quest item is
+provided by Archipelago for these goals, and expansion quests never gate an item: the logic
+does not model access to Mournhold or Solstheim, so these checks are considered always reachable.
+
+- `Tribunal.esm` / `Bloodmoon.esm` must be loaded in `openmw.cfg` for the quests to exist. Enabling
+  an option without its DLC makes the seed impossible to complete: the goal never triggers.
+- Disabled (default): no location, no goal, and the mod ignores the quests of that category, even
+  if the DLC is loaded.
+- Category of a quest (`tools/quest_groups.py`, `data/expansion_categories.yaml`): Bloodmoon EEC
+  quests -> group `east_empire_company`; listed main quests -> `<expansion>_main`; the rest ->
+  `<expansion>_side`. `quest_groups_override.yaml` accepts `tribunal_main`, `bloodmoon_side`... to move
+  an exception.
+- Quests with an exclusive ending (`fail` in `data/quest_finals.yaml`) and mutually exclusive journals
+  (`data/quest_exclusive.yaml`, candidates: `tools/list_variants.py`) never hold an important item.
+- Data: a journal belongs to an expansion if it is **defined** by its ESM (`data/quest_sources.yaml`,
+  written by `tools/extract.py`); `quest_groups_override.yaml` can still move an exception. After
+  updating the data, run `classify_quests.py`, `gen_lua.py`, `install_apworld.py`, then
+  regenerate the seed. Location IDs of existing quests do not change.
+- The log shows `AP: expansion groups = tribunal_main, bloodmoon_side...` and `AP: goals = ...` once connected.
 
 The only unsupported side quest is **"Ahnassi, a Special Friend"** (`Romance_Ahnassi`),
 because its progression depends on the character's gender (*gender gated*), which prevents

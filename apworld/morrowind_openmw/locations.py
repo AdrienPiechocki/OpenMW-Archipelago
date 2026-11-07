@@ -6,7 +6,7 @@ except Exception:
 
 from BaseClasses import Location
 from typing import NamedTuple, Callable, Dict
-from .options import MorrowindOptions, selected_goals, goal_of_group
+from .options import MorrowindOptions, selected_goals, goal_of_group, selected_expansion_groups, EXPANSION_GROUPS
 
 
 class MorrowindLocation(Location):
@@ -50,6 +50,20 @@ except Exception:
         with open(_p, encoding='utf-8') as f:
             _qf_text = f.read()
 risky_quests = set()
+# Mutually exclusive journals (data/quest_exclusive.yaml): never hold an important item.
+_qe_text = None
+try:
+    from importlib import resources as _res
+    _qe_text = _res.files(__package__).joinpath('data', 'quest_exclusive.yaml').read_text(encoding='utf-8')
+except Exception:
+    _p = os.path.join(os.path.dirname(__file__), 'data', 'quest_exclusive.yaml')
+    if os.path.exists(_p):
+        with open(_p, encoding='utf-8') as f:
+            _qe_text = f.read()
+if yaml is not None and _qe_text:
+    for _grp in yaml.safe_load(_qe_text) or []:
+        for _q in _grp:
+            risky_quests.add(str(_q).lower())
 if yaml is not None and _qf_text:
     for _q in yaml.safe_load(_qf_text) or []:
         if _q.get('fail'):
@@ -79,6 +93,16 @@ if yaml is not None and _qc_text:
             location_table[name] = MorrowindLocationData(
                 region=region, code=code, group=group,
                 can_create=lambda options: True,
+                excluded=lambda options, r=risky: r,
+            )
+        elif group in EXPANSION_GROUPS:
+            # Tribunal / Bloodmoon quests (groups tribunal_main,
+            # tribunal_side, bloodmoon_main, bloodmoon_side): checks only if the option of their
+            # group is enabled; never gating. Same safety rule as misc quests:
+            # a quest with a failure branch never holds an important item.
+            location_table[name] = MorrowindLocationData(
+                region=region, code=code, group=group,
+                can_create=lambda options, g=group: g in selected_expansion_groups(options),
                 excluded=lambda options, r=risky: r,
             )
         else:

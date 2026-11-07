@@ -4,7 +4,7 @@ from Options import OptionError
 from .items import MorrowindItem, item_table, item_name_groups, quest_item_names
 from .locations import MorrowindLocation, location_table
 from .regions import region_table
-from .options import MorrowindOptions, selected_goals, goal_of_group
+from .options import MorrowindOptions, selected_goals, goal_of_group, is_free_group, selected_expansions, selected_expansion_groups
 from .rules import set_rules
 from typing import Dict, Any
 
@@ -38,7 +38,8 @@ class MorrowindWorld(World):
             raise OptionError(
                 f"Morrowind OpenMW ({self.player_name}): no goals selected. "
                 "main_quest is disabled: choose at least one great house, a "
-                "guild, a faction or daedric_quests: true (or re-enable main_quest).")
+                "guild, a faction, daedric_quests: true, tribunal_main_quest: true or "
+                "bloodmoon_main_quest: true (or re-enable main_quest).")
 
     def create_item(self, name: str) -> MorrowindItem:
         data = item_table[name]
@@ -101,9 +102,9 @@ class MorrowindWorld(World):
         goals = selected_goals(self.options)
         need = {g: len(quest_item_names(g)) for g in goals}
         free = sum(1 for l in open_locs if l.name in location_table
-                   and location_table[l.name].group == "misc")
+                   and is_free_group(location_table[l.name].group))
         gated = {g: sum(1 for l in open_locs if l.name in location_table
-                        and location_table[l.name].group != "misc"
+                        and not is_free_group(location_table[l.name].group)
                         and goal_of_group(location_table[l.name].group) == g)
                  for g in goals}
         for g in sorted(goals, key=lambda k: need[k]):
@@ -149,6 +150,12 @@ class MorrowindWorld(World):
                 "faction": self.options.faction.current_key,
                 "daedric_quests": bool(self.options.daedric_quests.value),
                 "traps": bool(self.options.traps.value),
+                "starting_level": int(self.options.starting_level.value),
+                # Enabled expansion groups (tribunal_main, bloodmoon_side...): the
+                # mod only sends the checks of the quests in these groups.
+                "expansion_groups": selected_expansion_groups(self.options),
+                # Expansions with at least one enabled group (informational).
+                "expansions": selected_expansions(self.options),
                 "death_link": bool(getattr(self.options.death_link, "value", self.options.death_link)),
                 "goal_quest_checks": 1,
             },
