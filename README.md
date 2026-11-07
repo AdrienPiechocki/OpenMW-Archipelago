@@ -65,6 +65,7 @@ Morrowind OpenMW:
   guild: mages_guild           # none | fighters_guild | mages_guild | thieves_guild
   faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong
   daedric_quests: true         # adds the 7 Daedric quests to the objective
+  traps: true                  # false = no trap items in the pool
 ```
 
 Victory requires the main quest (if `main_quest` is enabled) **and** each chosen house / guild /

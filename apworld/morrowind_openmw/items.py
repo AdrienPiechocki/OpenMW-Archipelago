@@ -23,6 +23,12 @@ class MorrowindItemData(NamedTuple):
 
 BASE_ITEM = 7701000
 
+
+def _traps_enabled(options) -> bool:
+    """Trap items are only in the pool if the `traps` option is enabled."""
+    t = getattr(options, "traps", None)
+    return bool(getattr(t, "value", True if t is None else t))
+
 item_table: Dict[str, MorrowindItemData] = {
     "Gold (100)": MorrowindItemData(code=BASE_ITEM + 1, classification=ItemClassification.filler),
     "Healing Potion": MorrowindItemData(code=BASE_ITEM + 2, classification=ItemClassification.filler),
@@ -34,10 +40,10 @@ item_table: Dict[str, MorrowindItemData] = {
         code=BASE_ITEM + 2000, classification=ItemClassification.progression, frequency=4
     ),
     # "Levitation Level" and "Strength Bonus" removed
-    "Trap: Disease": MorrowindItemData(code=BASE_ITEM + 200, classification=ItemClassification.trap),
-    "Trap: Bounty": MorrowindItemData(code=BASE_ITEM + 201, classification=ItemClassification.trap),
-    "Trap: Summon Scamp": MorrowindItemData(code=BASE_ITEM + 202, classification=ItemClassification.trap),
-    "Trap: Steal Gold": MorrowindItemData(code=BASE_ITEM + 203, classification=ItemClassification.trap),
+    "Trap: Disease": MorrowindItemData(code=BASE_ITEM + 200, classification=ItemClassification.trap, can_create=_traps_enabled),
+    "Trap: Bounty": MorrowindItemData(code=BASE_ITEM + 201, classification=ItemClassification.trap, can_create=_traps_enabled),
+    "Trap: Summon Scamp": MorrowindItemData(code=BASE_ITEM + 202, classification=ItemClassification.trap, can_create=_traps_enabled),
+    "Trap: Steal Gold": MorrowindItemData(code=BASE_ITEM + 203, classification=ItemClassification.trap, can_create=_traps_enabled),
     # Skill levels (+5)
     "Skill: Acrobatics": MorrowindItemData(code=BASE_ITEM + 300, classification=ItemClassification.useful),
     "Skill: Alchemy": MorrowindItemData(code=BASE_ITEM + 301, classification=ItemClassification.useful),

@@ -55,6 +55,12 @@ class DaedricQuests(Toggle):
     default = False
 
 
+class Traps(DefaultOnToggle):
+    """Include trap items (Disease, Bounty, Summon Scamp, Steal Gold) in the
+    item pool. Disabled: no trap is generated, they are replaced by filler."""
+    display_name = "Traps"
+
+
 class DeathLink(Toggle):
     display_name = "Death Link"
     default = True
@@ -67,6 +73,7 @@ class MorrowindOptions(PerGameCommonOptions):
     guild: Guild = Guild.default
     faction: Faction = Faction.default
     daedric_quests: DaedricQuests = DaedricQuests.default
+    traps: Traps = Traps.default
     death_link: DeathLink = DeathLink.default
 
 

@@ -148,6 +148,7 @@ class MorrowindWorld(World):
                 "guild": self.options.guild.current_key,
                 "faction": self.options.faction.current_key,
                 "daedric_quests": bool(self.options.daedric_quests.value),
+                "traps": bool(self.options.traps.value),
                 "death_link": bool(getattr(self.options.death_link, "value", self.options.death_link)),
                 "goal_quest_checks": 1,
             },
