@@ -10,6 +10,17 @@ Mod Archipelago pour jouer à Morrowind sous OpenMW comme un monde Archipelago.
 - `data/` : listes de locations/items (source de vérité)
 - `tools/` : extraction ESM, génération de données
 
+## Compatibilité
+
+- **Mods qui ajoutent ou modifient des quêtes du jeu : non compatibles.** Les quêtes, leurs
+  étapes et leurs IDs de journal sont extraits de `Morrowind.esm` ; un mod qui ajoute une quête,
+  déplace une étape ou change la fin d'une quête existante peut empêcher le check correspondant
+  de se déclencher ou fausser l'objectif.
+- **Mods qui modifient le gameplay : compatibles**, tant qu'ils ne touchent pas au journal des
+  quêtes (équilibrage, objets, magie, voyage, interface, etc.). Par exemple
+  [Carry Unlimited](https://www.nexusmods.com/morrowind/mods/27479), qui augmente la capacité
+  de portage, est recommandé.
+
 ## Prérequis
 
 - OpenMW 0.52+ avec LuaJIT non sandboxé (variante `unsandboxed`)
@@ -80,6 +91,10 @@ objectifs non choisis, vampires, des extensions, etc. restent ignorées.
   quête), et les quêtes à fin exclusive (`fail` dans `data/quest_finals.yaml`) ne contiennent jamais
   d'item important. Les objets de l'objectif le plus petit doivent tenir dans les quêtes
   Miscellaneous, puis chaque objectif accompli débloque ses propres checks pour le suivant.
+
+Seule quête secondaire non prise en charge : **« Ahnassi, a Special Friend »** (`Romance_Ahnassi`),
+car son déroulement dépend du genre du personnage (*gender gated*), ce qui empêche une détection
+fiable de sa complétion. Elle reste jouable, mais ne donne aucun check.
 
 Il n'y a plus de check par étape de journal (ancienne option `quest_granularity: stage`, retirée), ni
 de mode `safe` (`goal_quest_checks: safe` est maintenant `true`, qui correspond à l'ancien `full`).
