@@ -52,12 +52,12 @@ function M.format(d)
 
   if d.dir == 'self' then
     if loc then
-      return 'Archipelago : ' .. item .. tag .. ' (' .. loc .. ') obtenu [check complété]'
+      return 'Archipelago : ' .. item .. tag .. ' (' .. loc .. ') obtenu'
     end
     return 'Archipelago : vous avez trouvé ' .. item .. tag
   elseif d.dir == 'send' then
     if loc then
-      return 'Archipelago : ' .. item .. tag .. ' (' .. loc .. ') obtenu [check complété] -> ' .. (who or '?')
+      return 'Archipelago : ' .. item .. tag .. ' (' .. loc .. ') obtenu -> ' .. (who or '?')
     end
     return 'Archipelago : vous envoyez ' .. item .. tag .. ' à ' .. (who or '?')
   elseif d.dir == 'recv' then

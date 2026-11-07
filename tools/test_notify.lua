@@ -32,13 +32,13 @@ check('recv without sender', notify.format({ dir = 'recv', item = 'Gold' }),
 check('send', notify.format({ dir = 'send', item = 'Cloak', player = 'Bob' }),
   'Archipelago : vous envoyez Cloak à Bob')
 check('send quest check', notify.format({ dir = 'send', item = 'Cloak', player = 'Bob', location = 'Fargoth' }),
-  'Archipelago : Cloak (Fargoth) obtenu [check complété] -> Bob')
+  'Archipelago : Cloak (Fargoth) obtenu -> Bob')
 check('send quest check with flag', notify.format({ dir = 'send', item = 'Cloak', player = 'Bob', location = 'Fargoth', flags = 2 }),
-  'Archipelago : Cloak [Utile] (Fargoth) obtenu [check complété] -> Bob')
+  'Archipelago : Cloak [Utile] (Fargoth) obtenu -> Bob')
 check('self', notify.format({ dir = 'self', item = 'Dagger', location = 'Fargoth' }),
-  'Archipelago : Dagger (Fargoth) obtenu [check complété]')
+  'Archipelago : Dagger (Fargoth) obtenu')
 check('self quest check with flag', notify.format({ dir = 'self', item = 'Dagger', location = 'Fargoth', flags = 1 }),
-  'Archipelago : Dagger [Progression] (Fargoth) obtenu [check complété]')
+  'Archipelago : Dagger [Progression] (Fargoth) obtenu')
 check('self without location', notify.format({ dir = 'self', item = 'Gold' }),
   'Archipelago : vous avez trouvé Gold')
 check('empty location falls back', notify.format({ dir = 'self', item = 'Gold', location = '' }),

@@ -121,8 +121,8 @@ suppression ne commence qu'à ce moment (la config est ensuite mémorisée dans 
 Chaque item Archipelago **reçu** ou **envoyé** par ton slot affiche un message en jeu :
 
 - `Archipelago : Bob vous envoie Ebony Dagger [Progression]` (item reçu d'un autre joueur)
-- `Archipelago : Mothwing Cloak [Utile] (Fargoth's Ring) obtenu [check complété] -> Bob` (item de ton monde pour un autre joueur)
-- `Archipelago : Ebony Dagger (Fargoth's Ring) obtenu [check complété]` (item de ton monde pour toi)
+- `Archipelago : Mothwing Cloak [Utile] (Fargoth's Ring) obtenu -> Bob` (item de ton monde pour un autre joueur)
+- `Archipelago : Ebony Dagger (Fargoth's Ring) obtenu` (item de ton monde pour toi)
 
 Quand le message correspond à un check de quête, le nom de la quête est affiché entre parenthèses.
 Les locations Archipelago utilisent ce nom lisible (titre de la page UESP, table
