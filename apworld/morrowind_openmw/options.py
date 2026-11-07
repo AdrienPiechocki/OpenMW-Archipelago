@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-from Options import Toggle, Choice, DefaultOnToggle, PerGameCommonOptions
-
+from Options import Toggle, Choice, DefaultOnToggle, PerGameCommonOptions, Range
 
 class MainQuest(DefaultOnToggle):
     """Include the main quest (kill Dagoth Ur) in the goal. Enabled
@@ -96,3 +95,9 @@ GROUP_GOALS = {"main": "main_quest", "daedric": "daedric_quests"}
 def goal_of_group(group: str) -> str:
     return GROUP_GOALS.get(group, group)
 
+class HintCost(Range):
+    """Pourcentage du nombre total d'emplacements que coûte un indice."""
+    display_name = "Hint Cost"
+    range_start = 0
+    range_end = 100
+    default = 1  # Définir à 1 pour 1%
