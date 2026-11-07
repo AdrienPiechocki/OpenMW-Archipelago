@@ -72,13 +72,16 @@ if yaml is not None and _qc_text:
         code = q.get('id')
         region = q.get('region') or 'Seyda Neen'
         group = q.get('group', 'misc')
+        risky = str((q.get('trigger') or {}).get('quest', '')).lower() in risky_quests
         if group == 'misc':
+            # Une quete misc a branche d'echec peut rendre son check impossible :
+            # jamais d'item important dessus (sinon seed infaisable).
             location_table[name] = MorrowindLocationData(
                 region=region, code=code, group=group,
                 can_create=lambda options: True,
+                excluded=lambda options, r=risky: r,
             )
         else:
-            risky = str((q.get('trigger') or {}).get('quest', '')).lower() in risky_quests
             location_table[name] = MorrowindLocationData(
                 region=region, code=code, group=group,
                 can_create=lambda options, g=group: _goal_quest_can_create(options, g),
