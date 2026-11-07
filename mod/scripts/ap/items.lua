@@ -185,7 +185,7 @@ function M.apply(player, itemId, idx)
         local types = require('openmw.types')
         local stat = types.NPC.stats.skills[skill](player)
         if stat then
-          stat.base = (stat.base or 0) + 5
+          stat.base = (stat.base or 0) + 15
         end
       end)
     end
