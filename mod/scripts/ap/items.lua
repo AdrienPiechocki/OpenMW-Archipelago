@@ -52,6 +52,28 @@ function M.suppressFor(goals)
   return out
 end
 
+-- Number of copies of each record the player may hold, for the quest items
+-- ALREADY received from Archipelago: { recordId = count }.
+-- Used to remove the duplicate when the vanilla copy lying in the world is
+-- picked up after the AP copy was given (the suppression only removes the
+-- vanilla copy as long as the AP item has not been received).
+-- Several AP ids can give the same record (e.g. a scroll shared by two
+-- goals): the allowed counts are added, one time per AP id.
+function M.allowedCounts(goals, owned)
+  if type(goals) == 'string' then goals = { goals } end
+  local out, seen = {}, {}
+  for _, goal in ipairs(goals or {}) do
+    for _, it in ipairs(QUEST_ITEMS[goal] or {}) do
+      if it.give and it.suppress and owned[it.id] and not seen[it.id] then
+        seen[it.id] = true
+        local record, count = it.give[1], it.give[2] or 1
+        out[record] = (out[record] or 0) + count
+      end
+    end
+  end
+  return out
+end
+
 -- Object required by the vanilla CharGenDoorExitCaptain script to leave the
 -- Census Office. While the player is inside the building, it is kept (and
 -- recreated if missing), even if the AP item has not been received yet.

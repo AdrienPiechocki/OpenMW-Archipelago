@@ -57,8 +57,9 @@ local LOCKS = require('scripts.ap.quest_locks')   -- goal -> { {id = AP item, qu
 
 local sent = {}
 local goalSent = false
-local startingLevel = nil   -- YAML starting_level (1-40), received from the server
-local startBoostDone = false -- level + attribute / skill bonus already applied (remembered in the save)
+local startAttributes = nil  -- YAML attribute_<id> bonuses { strength = 5 ... } (non-zero only), received from the server
+local startSkills = nil      -- YAML skill_<id> bonuses { longblade = 10 ... } (non-zero only), received from the server
+local startBoostDone = false -- attribute / skill bonuses already applied (remembered in the save)
 local expansionGroups = nil -- enabled expansion groups ('tribunal_main', 'bloodmoon_side'...), received from the server
 local goalList = nil        -- GOALS keys to complete (main quest + house/guild/faction), received from the server
 local reachedGoals = {}     -- key -> true, remembered once reached
@@ -214,19 +215,20 @@ local function enforceLocks(quests)
   end
 end
 
--- Starting level: applied once, as soon as the tutorial is over.
+-- Starting bonuses: applied once, as soon as the tutorial is over.
 local function applyStartBoost(quests)
-  if startBoostDone or not startingLevel then return end
-  if startingLevel <= 1 then
-    startBoostDone = true       -- level 1 = vanilla: nothing to do
+  if startBoostDone or not startAttributes or not startSkills then return end
+  if startBoost.isEmpty(startAttributes, startSkills) then
+    startBoostDone = true       -- all bonuses at 0 = vanilla: nothing to do
     return
   end
   if questStage(quests, startBoost.TRIGGER_QUEST) < startBoost.TRIGGER_STAGE then return end
   startBoostDone = true
-  if startBoost.apply(types, self, startingLevel) then
-    print(('AP: starting level %d applied (+%d attributes and skills)'):format(startingLevel, startingLevel))
+  if startBoost.apply(types, self, startAttributes, startSkills) then
+    local total = startBoost.total(startAttributes, startSkills)
+    print(('AP: starting bonuses applied (%d points in total)'):format(total))
     pcall(function()
-      ui.showMessage(('Archipelago: starting level %d (+%d to attributes and skills)'):format(startingLevel, startingLevel))
+      ui.showMessage(('Archipelago: starting bonuses applied (+%d in total)'):format(total))
     end)
   end
 end
@@ -415,7 +417,7 @@ local function onUpdate(dt)
 end
 
 local function onSave()
-  return { sent = sent, goalSent = goalSent, goalList = goalList, expansionGroups = expansionGroups, startingLevel = startingLevel, startBoostDone = startBoostDone, reachedGoals = reachedGoals, ownedIds = ownedIds }
+  return { sent = sent, goalSent = goalSent, goalList = goalList, expansionGroups = expansionGroups, startAttributes = startAttributes, startSkills = startSkills, startBoostDone = startBoostDone, reachedGoals = reachedGoals, ownedIds = ownedIds }
 end
 
 local function requestConfig()
@@ -428,7 +430,8 @@ local function onLoad(d)
     goalSent = d.goalSent or false
     goalList = d.goalList
     expansionGroups = d.expansionGroups
-    startingLevel = d.startingLevel
+    startAttributes = d.startAttributes
+    startSkills = d.startSkills
     startBoostDone = d.startBoostDone or false
     reachedGoals = d.reachedGoals or {}
     ownedIds = d.ownedIds or {}
@@ -474,11 +477,15 @@ end
 local function onConfig(data)
   if type(data) ~= 'table' then return end
 
-  -- Starting level (starting_level option). Absent (old server): unchanged.
-  local sl = startBoost.clampLevel(data.startingLevel)
-  if sl then
-    if sl ~= startingLevel then print('AP: starting level = ' .. sl) end
-    startingLevel = sl
+  -- Starting bonuses (attribute_<id> / skill_<id> options). Absent (old
+  -- server): unchanged.
+  local sa = startBoost.cleanAttributes(data.attributeBonuses)
+  local ss = startBoost.cleanSkills(data.skillBonuses)
+  if sa and ss then
+    if not startBoostDone then
+      print(('AP: starting bonuses = %d points'):format(startBoost.total(sa, ss)))
+    end
+    startAttributes, startSkills = sa, ss
   end
 
   -- quest_rewards option: absent (old server) = disabled.

@@ -305,7 +305,7 @@ local function handle(msg)
     -- Relay the goal to the player script
     local pl = getPlayer()
     if pl then
-      pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal, expansionGroups = serverOptions.expansion_groups, startingLevel = serverOptions.starting_level, questRewards = serverOptions.quest_rewards }) end)
+      pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal, expansionGroups = serverOptions.expansion_groups, attributeBonuses = serverOptions.attribute_bonuses, skillBonuses = serverOptions.skill_bonuses, questRewards = serverOptions.quest_rewards }) end)
     end
     -- Propagate death_link (YAML) to global storage for player.lua
     if serverOptions.death_link ~= nil then
@@ -419,6 +419,42 @@ local function ensureActivationHandler()
   if ok then activationRegistered = true end
 end
 
+-- Duplicates: a quest item lying in the world can be picked up AFTER the
+-- matching AP item was received (the AP copy is already in the inventory,
+-- so the vanilla copy is no longer suppressed). The inventory is limited to
+-- the quantity given by Archipelago: the excess is removed. A copy that is
+-- consumed or given away is never recreated here (only AP gives items).
+local CAP_INTERVAL = 0.5
+local capTimer = 0
+
+local function capOwnedItems(player, dt)
+  capTimer = capTimer + (dt or 0)
+  if capTimer < CAP_INTERVAL then return end
+  capTimer = 0
+  local goals = goalKeys()
+  table.insert(goals, 'misc')
+  local allowed = items.allowedCounts(goals, owned)
+  if next(allowed) == nil then return end
+  local inv = types.Actor.inventory(player)
+  for recordId, maxCount in pairs(allowed) do
+    local okC, have = pcall(function() return inv:countOf(recordId) end)
+    if okC and have and have > maxCount then
+      local excess = have - maxCount
+      local okF, objects = pcall(function() return inv:findAll(recordId) end)
+      if okF and objects then
+        for _, obj in ipairs(objects) do
+          if excess <= 0 then break end
+          local n = math.min(obj.count or 1, excess)
+          if pcall(function() obj:remove(n) end) then
+            excess = excess - n
+          end
+        end
+        print(('AP: duplicate of %s removed (%d kept)'):format(recordId, maxCount))
+      end
+    end
+  end
+end
+
 local function suppressKeyItems(player)
   -- 'misc' items (secondary quests) are always suppressed, regardless of
   -- the goals chosen in the seed: they do not depend on a goal and their AP
@@ -468,7 +504,7 @@ return {
     AP_RequestConfig = function()
       local pl = getPlayer()
       if pl and (serverOptions.goals ~= nil or serverOptions.goal ~= nil) then
-        pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal, expansionGroups = serverOptions.expansion_groups, startingLevel = serverOptions.starting_level, questRewards = serverOptions.quest_rewards }) end)
+        pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal, expansionGroups = serverOptions.expansion_groups, attributeBonuses = serverOptions.attribute_bonuses, skillBonuses = serverOptions.skill_bonuses, questRewards = serverOptions.quest_rewards }) end)
       end
       sendOwned()
     end,
@@ -549,6 +585,7 @@ return {
       local player = getPlayer()
       if player then
         suppressKeyItems(player)
+        capOwnedItems(player, dt)
 
         -- Heartbeat for the bridge (detects the game stopping)
         local now = core.getRealTime()

@@ -75,7 +75,8 @@ Morrowind OpenMW:
   faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company | ja_natta_syndicate
   daedric_quests: true         # adds the 7 vanilla Daedric quests to the objective
   traps: true                  # false = no trap items in the pool
-  starting_level: 1            # 1-40: starting level and bonus (see below)
+  attribute_strength: 0        # 0-100: starting bonus per attribute (see below)
+  skill_longblade: 0           # 0-100: starting bonus per skill (see below)
   tribunal_main_quest: false       # true = Tribunal main quest: checks + goal
   tribunal_side_quests: false      # true = other Tribunal quests give checks
   bloodmoon_main_quest: false      # same two options for Bloodmoon
@@ -108,22 +109,29 @@ objectives, vampires, etc. remain ignored.
   important items. The items of the smallest objective must fit in the Miscellaneous quests,
   then each completed objective unlocks its own checks for the next one.
 
-## Starting level (option `starting_level`)
+## Starting attribute and skill bonuses (options `attribute_<id>` and `skill_<id>`)
 
-`starting_level: N` (1 to 40, default 1 = vanilla). Once the tutorial is over, i.e. when
-the journal reaches `A1_1_FindSpymaster` index 1 (Sellus Gravius gave the package, race, class and
-birthsign are final), the mod applies **once** per save:
+Each of the 8 attributes and 27 skills has its own option, from 0 to 100 (default 0 = vanilla):
 
-- the level is set to N (no level-up window);
-- **+N** to each of the 8 attributes and 27 skills, capped at 100 (a value already above
-  is not lowered);
-- the health that level-ups would have given: `(N - 1) x 0.1 x Endurance` (computed with the
-  final Endurance, slightly more than vanilla where it grows gradually).
+- attributes: `attribute_strength`, `attribute_intelligence`, `attribute_willpower`,
+  `attribute_agility`, `attribute_speed`, `attribute_endurance`, `attribute_personality`,
+  `attribute_luck`;
+- skills: `skill_acrobatics`, `skill_alchemy`, `skill_alteration`, `skill_armorer`,
+  `skill_athletics`, `skill_axe`, `skill_block`, `skill_bluntweapon`, `skill_conjuration`,
+  `skill_destruction`, `skill_enchant`, `skill_handtohand`, `skill_heavyarmor`, `skill_illusion`,
+  `skill_lightarmor`, `skill_longblade`, `skill_marksman`, `skill_mediumarmor`,
+  `skill_mercantile`, `skill_mysticism`, `skill_restoration`, `skill_security`,
+  `skill_shortblade`, `skill_sneak`, `skill_spear`, `skill_speechcraft`, `skill_unarmored`.
 
-The log shows `AP: starting level N applied`. With N = 1 nothing changes. Existing saves
-that are already past the tutorial receive the bonus the first time the mod connects.
-`Level Up (+10)` items remain additional. The class's major/minor skill choice and the
-vanilla level-up multipliers are unchanged.
+The value is a **bonus** added to the stat chosen by the character (race, class, birthsign), not
+an absolute value. Once the tutorial is over, i.e. when the journal reaches `A1_1_FindSpymaster`
+index 1 (Sellus Gravius gave the package, race, class and birthsign are final), the mod applies
+**once** per save `new value = min(100, base + bonus)` to every stat with a non-zero bonus (a
+value already above 100 is not lowered). The log shows `AP: starting bonuses applied`.
+
+Existing saves that are already past the tutorial receive the bonuses the first time the mod
+connects. The character level is **not** changed (the old `starting_level` option is removed), and
+neither is the health. `Level Up (+10)` and skill items remain additional.
 
 ## Expansions (`tribunal_*` and `bloodmoon_*` options)
 
@@ -286,6 +294,11 @@ For the main quest (if `main_quest` is enabled) and the chosen house / guild / f
 their quest items are Archipelago items** (progression) placed in the Miscellaneous quests. The
 mod removes the copies that the quests would give (`suppress`) until the AP item is received,
 then gives the item (`give`) upon receipt. Victory requires being able to obtain all of them.
+
+**No duplicates.** If the AP item is received *before* the copy lying in the world is picked up
+(the AP copy is then already in the inventory), the vanilla copy is no longer suppressed. The mod
+therefore limits the inventory to the quantity given by Archipelago for every received quest item
+(checked twice a second): the excess is removed (`AP: duplicate of <record> removed` in the log).
 The items of unchosen houses / guilds / factions are neither in the pool nor removed.
 
 They are described in `data/quest_items.yaml` (`main_quest` is filled in; houses, guilds and

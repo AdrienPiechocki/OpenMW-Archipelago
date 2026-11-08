@@ -5,14 +5,15 @@ from .items import MorrowindItem, item_table, item_name_groups, quest_item_names
 from .locations import MorrowindLocation, location_table
 from .regions import region_table
 from .options import (MorrowindOptions, selected_goals, goal_of_group, is_free_group, selected_expansions,
-                      selected_expansion_groups, selected_tr_groups, TR_MAIN_GOAL, UNVERIFIED_GOALS)
+                      selected_expansion_groups, selected_tr_groups, TR_MAIN_GOAL, UNVERIFIED_GOALS,
+                      start_bonuses, start_option_groups)
 from .rules import set_rules
 from typing import Dict, Any
 import logging
 
 
 class MorrowindWebWorld(WebWorld):
-    pass
+    option_groups = start_option_groups()
 
 
 class MorrowindWorld(World):
@@ -168,7 +169,9 @@ class MorrowindWorld(World):
                 "daedric_quests": bool(self.options.daedric_quests.value),
                 "traps": bool(self.options.traps.value),
                 "quest_rewards": bool(self.options.quest_rewards.value),
-                "starting_level": int(self.options.starting_level.value),
+                # Starting bonuses (only non-zero entries): { "strength": 5, ... }
+                "attribute_bonuses": start_bonuses(self.options)[0],
+                "skill_bonuses": start_bonuses(self.options)[1],
                 # Enabled expansion groups (tribunal_main, bloodmoon_side...): the
                 # mod only sends the checks of the quests in these groups.
                 # Tamriel Rebuilt groups (tr_main, tr_side, tr_<faction>...) are

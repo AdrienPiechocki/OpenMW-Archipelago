@@ -65,16 +65,221 @@ class DaedricQuests(Toggle):
     default = False
 
 
-class StartingLevel(Range):
-    """Starting level of the character (1-100). Once the tutorial is over
-    (character creation finished), the level is set to this value and each
-    attribute and skill is increased by this amount (capped at 100). The
-    health that level-ups would have given is added too. 1 = vanilla (no
-    bonus)."""
-    display_name = "Starting Level"
-    range_start = 1
+class _StartBonus(Range):
+    """Base of the starting attribute / skill bonuses (not a player option)."""
+    range_start = 0
     range_end = 100
-    default = 1
+    default = 0
+
+
+class AttributeStrength(_StartBonus):
+    """Bonus added to Strength once the tutorial is over (character creation
+    finished). 0 = vanilla. The attribute is capped at 100 and never lowered."""
+    display_name = "Attribute: Strength"
+
+
+class AttributeIntelligence(_StartBonus):
+    """Bonus added to Intelligence once the tutorial is over (character creation
+    finished). 0 = vanilla. The attribute is capped at 100 and never lowered."""
+    display_name = "Attribute: Intelligence"
+
+
+class AttributeWillpower(_StartBonus):
+    """Bonus added to Willpower once the tutorial is over (character creation
+    finished). 0 = vanilla. The attribute is capped at 100 and never lowered."""
+    display_name = "Attribute: Willpower"
+
+
+class AttributeAgility(_StartBonus):
+    """Bonus added to Agility once the tutorial is over (character creation
+    finished). 0 = vanilla. The attribute is capped at 100 and never lowered."""
+    display_name = "Attribute: Agility"
+
+
+class AttributeSpeed(_StartBonus):
+    """Bonus added to Speed once the tutorial is over (character creation
+    finished). 0 = vanilla. The attribute is capped at 100 and never lowered."""
+    display_name = "Attribute: Speed"
+
+
+class AttributeEndurance(_StartBonus):
+    """Bonus added to Endurance once the tutorial is over (character creation
+    finished). 0 = vanilla. The attribute is capped at 100 and never lowered."""
+    display_name = "Attribute: Endurance"
+
+
+class AttributePersonality(_StartBonus):
+    """Bonus added to Personality once the tutorial is over (character creation
+    finished). 0 = vanilla. The attribute is capped at 100 and never lowered."""
+    display_name = "Attribute: Personality"
+
+
+class AttributeLuck(_StartBonus):
+    """Bonus added to Luck once the tutorial is over (character creation
+    finished). 0 = vanilla. The attribute is capped at 100 and never lowered."""
+    display_name = "Attribute: Luck"
+
+
+class SkillAcrobatics(_StartBonus):
+    """Bonus added to the Acrobatics skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Acrobatics"
+
+
+class SkillAlchemy(_StartBonus):
+    """Bonus added to the Alchemy skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Alchemy"
+
+
+class SkillAlteration(_StartBonus):
+    """Bonus added to the Alteration skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Alteration"
+
+
+class SkillArmorer(_StartBonus):
+    """Bonus added to the Armorer skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Armorer"
+
+
+class SkillAthletics(_StartBonus):
+    """Bonus added to the Athletics skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Athletics"
+
+
+class SkillAxe(_StartBonus):
+    """Bonus added to the Axe skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Axe"
+
+
+class SkillBlock(_StartBonus):
+    """Bonus added to the Block skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Block"
+
+
+class SkillBluntweapon(_StartBonus):
+    """Bonus added to the Blunt Weapon skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Blunt Weapon"
+
+
+class SkillConjuration(_StartBonus):
+    """Bonus added to the Conjuration skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Conjuration"
+
+
+class SkillDestruction(_StartBonus):
+    """Bonus added to the Destruction skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Destruction"
+
+
+class SkillEnchant(_StartBonus):
+    """Bonus added to the Enchant skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Enchant"
+
+
+class SkillHandtohand(_StartBonus):
+    """Bonus added to the Hand-to-hand skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Hand-to-hand"
+
+
+class SkillHeavyarmor(_StartBonus):
+    """Bonus added to the Heavy Armor skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Heavy Armor"
+
+
+class SkillIllusion(_StartBonus):
+    """Bonus added to the Illusion skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Illusion"
+
+
+class SkillLightarmor(_StartBonus):
+    """Bonus added to the Light Armor skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Light Armor"
+
+
+class SkillLongblade(_StartBonus):
+    """Bonus added to the Long Blade skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Long Blade"
+
+
+class SkillMarksman(_StartBonus):
+    """Bonus added to the Marksman skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Marksman"
+
+
+class SkillMediumarmor(_StartBonus):
+    """Bonus added to the Medium Armor skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Medium Armor"
+
+
+class SkillMercantile(_StartBonus):
+    """Bonus added to the Mercantile skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Mercantile"
+
+
+class SkillMysticism(_StartBonus):
+    """Bonus added to the Mysticism skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Mysticism"
+
+
+class SkillRestoration(_StartBonus):
+    """Bonus added to the Restoration skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Restoration"
+
+
+class SkillSecurity(_StartBonus):
+    """Bonus added to the Security skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Security"
+
+
+class SkillShortblade(_StartBonus):
+    """Bonus added to the Short Blade skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Short Blade"
+
+
+class SkillSneak(_StartBonus):
+    """Bonus added to the Sneak skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Sneak"
+
+
+class SkillSpear(_StartBonus):
+    """Bonus added to the Spear skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Spear"
+
+
+class SkillSpeechcraft(_StartBonus):
+    """Bonus added to the Speechcraft skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Speechcraft"
+
+
+class SkillUnarmored(_StartBonus):
+    """Bonus added to the Unarmored skill once the tutorial is over (character
+    creation finished). 0 = vanilla. The skill is capped at 100 and never lowered."""
+    display_name = "Skill: Unarmored"
 
 
 class TribunalMainQuest(Toggle):
@@ -167,7 +372,41 @@ class MorrowindOptions(PerGameCommonOptions):
     guild: Guild = Guild.default
     faction: Faction = Faction.default
     daedric_quests: DaedricQuests = DaedricQuests.default
-    starting_level: StartingLevel = StartingLevel.default
+    attribute_strength: AttributeStrength = AttributeStrength.default
+    attribute_intelligence: AttributeIntelligence = AttributeIntelligence.default
+    attribute_willpower: AttributeWillpower = AttributeWillpower.default
+    attribute_agility: AttributeAgility = AttributeAgility.default
+    attribute_speed: AttributeSpeed = AttributeSpeed.default
+    attribute_endurance: AttributeEndurance = AttributeEndurance.default
+    attribute_personality: AttributePersonality = AttributePersonality.default
+    attribute_luck: AttributeLuck = AttributeLuck.default
+    skill_acrobatics: SkillAcrobatics = SkillAcrobatics.default
+    skill_alchemy: SkillAlchemy = SkillAlchemy.default
+    skill_alteration: SkillAlteration = SkillAlteration.default
+    skill_armorer: SkillArmorer = SkillArmorer.default
+    skill_athletics: SkillAthletics = SkillAthletics.default
+    skill_axe: SkillAxe = SkillAxe.default
+    skill_block: SkillBlock = SkillBlock.default
+    skill_bluntweapon: SkillBluntweapon = SkillBluntweapon.default
+    skill_conjuration: SkillConjuration = SkillConjuration.default
+    skill_destruction: SkillDestruction = SkillDestruction.default
+    skill_enchant: SkillEnchant = SkillEnchant.default
+    skill_handtohand: SkillHandtohand = SkillHandtohand.default
+    skill_heavyarmor: SkillHeavyarmor = SkillHeavyarmor.default
+    skill_illusion: SkillIllusion = SkillIllusion.default
+    skill_lightarmor: SkillLightarmor = SkillLightarmor.default
+    skill_longblade: SkillLongblade = SkillLongblade.default
+    skill_marksman: SkillMarksman = SkillMarksman.default
+    skill_mediumarmor: SkillMediumarmor = SkillMediumarmor.default
+    skill_mercantile: SkillMercantile = SkillMercantile.default
+    skill_mysticism: SkillMysticism = SkillMysticism.default
+    skill_restoration: SkillRestoration = SkillRestoration.default
+    skill_security: SkillSecurity = SkillSecurity.default
+    skill_shortblade: SkillShortblade = SkillShortblade.default
+    skill_sneak: SkillSneak = SkillSneak.default
+    skill_spear: SkillSpear = SkillSpear.default
+    skill_speechcraft: SkillSpeechcraft = SkillSpeechcraft.default
+    skill_unarmored: SkillUnarmored = SkillUnarmored.default
     tribunal_main_quest: TribunalMainQuest = TribunalMainQuest.default
     tribunal_side_quests: TribunalSideQuests = TribunalSideQuests.default
     bloodmoon_main_quest: BloodmoonMainQuest = BloodmoonMainQuest.default
@@ -179,6 +418,34 @@ class MorrowindOptions(PerGameCommonOptions):
     traps: Traps = Traps.default
     quest_rewards: QuestRewards = QuestRewards.default
     death_link: DeathLink = DeathLink.default
+
+
+# Starting bonuses (options attribute_<id> / skill_<id>): ids match the OpenMW
+# Lua stat ids (scripts/ap/start_boost.lua).
+ATTRIBUTE_KEYS = ('strength', 'intelligence', 'willpower', 'agility', 'speed', 'endurance', 'personality', 'luck')
+SKILL_KEYS = ('acrobatics', 'alchemy', 'alteration', 'armorer', 'athletics', 'axe', 'block', 'bluntweapon', 'conjuration', 'destruction', 'enchant', 'handtohand', 'heavyarmor', 'illusion', 'lightarmor', 'longblade', 'marksman', 'mediumarmor', 'mercantile', 'mysticism', 'restoration', 'security', 'shortblade', 'sneak', 'spear', 'speechcraft', 'unarmored')
+
+
+def start_bonuses(options) -> tuple:
+    """({attribute id: bonus}, {skill id: bonus}), only the non-zero bonuses."""
+    def collect(prefix, keys):
+        out = {}
+        for k in keys:
+            v = int(getattr(getattr(options, f"{prefix}_{k}"), "value", 0))
+            if v > 0:
+                out[k] = v
+        return out
+    return collect("attribute", ATTRIBUTE_KEYS), collect("skill", SKILL_KEYS)
+
+
+def start_option_groups() -> list:
+    """Web UI groups for the attribute / skill bonus options."""
+    from Options import OptionGroup
+    mod = globals()
+    return [
+        OptionGroup("Starting attribute bonuses", [mod[f"Attribute{''.join(w.capitalize() for w in k.split('_'))}"] for k in ATTRIBUTE_KEYS]),
+        OptionGroup("Starting skill bonuses", [mod[f"Skill{''.join(w.capitalize() for w in k.split('_'))}"] for k in SKILL_KEYS]),
+    ]
 
 
 def selected_goals(options) -> list:

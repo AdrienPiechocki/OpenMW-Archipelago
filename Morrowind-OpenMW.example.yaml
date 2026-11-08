@@ -20,9 +20,44 @@ Morrowind OpenMW:
   # false = no traps (replaced by filler).
   traps: true
 
-  # Starting level (1-40). After the tutorial, the level is set to this value and
-  # each attribute and skill gets +N (capped at 100). 1 = vanilla.
-  starting_level: 1
+  # Starting bonuses (0-100, 0 = vanilla). Each value is ADDED to the stat of your
+  # character once the tutorial is over (capped at 100, never lowered).
+  attribute_strength: 0
+  attribute_intelligence: 0
+  attribute_willpower: 0
+  attribute_agility: 0
+  attribute_speed: 0
+  attribute_endurance: 0
+  attribute_personality: 0
+  attribute_luck: 0
+
+  skill_acrobatics: 0
+  skill_alchemy: 0
+  skill_alteration: 0
+  skill_armorer: 0
+  skill_athletics: 0
+  skill_axe: 0
+  skill_block: 0
+  skill_bluntweapon: 0
+  skill_conjuration: 0
+  skill_destruction: 0
+  skill_enchant: 0
+  skill_handtohand: 0
+  skill_heavyarmor: 0
+  skill_illusion: 0
+  skill_lightarmor: 0
+  skill_longblade: 0
+  skill_marksman: 0
+  skill_mediumarmor: 0
+  skill_mercantile: 0
+  skill_mysticism: 0
+  skill_restoration: 0
+  skill_security: 0
+  skill_shortblade: 0
+  skill_sneak: 0
+  skill_spear: 0
+  skill_speechcraft: 0
+  skill_unarmored: 0
 
   # Expansions (Tribunal.esm / Bloodmoon.esm must be loaded in OpenMW):
   #   *_main_quest:  checks of the main quest AND it becomes a goal
