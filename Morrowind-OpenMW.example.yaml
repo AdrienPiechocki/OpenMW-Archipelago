@@ -16,7 +16,7 @@ Morrowind OpenMW:
   # Archipelago item ("Daedric Quest: <prince>") is received.
   daedric_quests: false
 
-  # Trap items (Disease, Bounty, Summon Scamp, Steal Gold) in the item pool.
+  # Trap items (Damage, Bounty, Summon Scamp, Steal Gold) in the item pool.
   # false = no traps (replaced by filler).
   traps: true
 
