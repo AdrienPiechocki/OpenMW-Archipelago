@@ -5,32 +5,48 @@
 
 local M = {}
 
-local function entryFor(activators, record)
-  if not activators or not record then return nil end
-  -- The MWScript script is the main criterion: vanilla shrines
-  -- test `OnActivate == 1` and share their scripts between several
-  -- records (statue, ruin, altar).
-  if record.mwscript and activators.by_script then
-    local entry = activators.by_script[record.mwscript]
-    if entry then return entry end
-  end
-  -- Fall back to the ACTI record ID if a mod renames the script.
-  if record.id and activators.by_record then
-    return activators.by_record[record.id]
-  end
-  return nil
-end
+-- OpenMW returns record IDs and MWScript names in lowercase, while the
+-- generated tables use the ESM's original casing (TR_m7_Meridia_Shrine).
+-- We therefore match on lowercase keys (index built once per table).
+local lowered = setmetatable({}, { __mode = 'k' })
 
--- Return the lock entry that should block this activation, or nil
--- if the activation is allowed. `owned`: table of AP item id -> true.
--- `goalActive(goal, group)` also checks the optional group of the entry
--- (e.g. `tr_daedric`: both daedric_quests and the TR option).
-function M.blockedLock(activators, record, owned, goalActive)
-  local entry = entryFor(activators, record)
-  if not entry then return nil end
-  if owned and owned[entry.id] then return nil end
-  if goalActive and not goalActive(entry.goal, entry.group) then return nil end
-  return entry
-end
+local function lowerIndex(tbl)
+if not tbl then return nil end
+  local idx = lowered[tbl]
+  if not idx then
+    idx = {}
+    for k, v in pairs(tbl) do idx[tostring(k):lower()] = v end
+      lowered[tbl] = idx
+      end
+      return idx
+      end
 
-return M
+      local function entryFor(activators, record)
+      if not activators or not record then return nil end
+        -- The MWScript script is the main criterion: vanilla shrines
+        -- test `OnActivate == 1` and share their scripts between several
+        -- records (statue, ruin, altar).
+        if record.mwscript and record.mwscript ~= '' and activators.by_script then
+          local entry = lowerIndex(activators.by_script)[tostring(record.mwscript):lower()]
+          if entry then return entry end
+            end
+            -- Fall back to the ACTI record ID if a mod renames the script.
+            if record.id and activators.by_record then
+              return lowerIndex(activators.by_record)[tostring(record.id):lower()]
+              end
+              return nil
+              end
+
+              -- Return the lock entry that should block this activation, or nil
+              -- if the activation is allowed. `owned`: table of AP item id -> true.
+              -- `goalActive(goal, group)` also checks the optional group of the entry
+              -- (e.g. `tr_daedric`: both daedric_quests and the TR option).
+              function M.blockedLock(activators, record, owned, goalActive)
+              local entry = entryFor(activators, record)
+              if not entry then return nil end
+                if owned and owned[entry.id] then return nil end
+                  if goalActive and not goalActive(entry.goal, entry.group) then return nil end
+                    return entry
+                    end
+
+                    return M
