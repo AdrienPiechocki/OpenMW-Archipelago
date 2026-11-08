@@ -167,6 +167,7 @@ class MorrowindWorld(World):
                 "faction": self.options.faction.current_key,
                 "daedric_quests": bool(self.options.daedric_quests.value),
                 "traps": bool(self.options.traps.value),
+                "quest_rewards": bool(self.options.quest_rewards.value),
                 "starting_level": int(self.options.starting_level.value),
                 # Enabled expansion groups (tribunal_main, bloodmoon_side...): the
                 # mod only sends the checks of the quests in these groups.

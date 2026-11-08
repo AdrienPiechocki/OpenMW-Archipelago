@@ -52,6 +52,7 @@ local storage = require('openmw.storage')
 local QUEST_COMPLETE_LOOKUP = require('scripts.ap.quest_completions') -- ['quest'] = {stage, {fails}, {ids}, group, {alternative ending stages}}
 local EXCLUSIVE = require('scripts.ap.quest_exclusive') -- ['quest'] = { members of its mutually exclusive group (itself included) }
 local GOALS = require('scripts.ap.goals')
+local REWARDS = require('scripts.ap.quest_rewards') -- list of { item, loc, record, count, quest, stage, group, name }
 local LOCKS = require('scripts.ap.quest_locks')   -- goal -> { {id = AP item, quest} }
 
 local sent = {}
@@ -63,6 +64,9 @@ local goalList = nil        -- GOALS keys to complete (main quest + house/guild/
 local reachedGoals = {}     -- key -> true, remembered once reached
 local ownedIds = {}         -- received AP item ids (relayed by global.lua)
 local lockWarned = {}
+local rewardsOn = false     -- quest_rewards option (YAML), received from the server
+local rewardBase = {}       -- reward record -> inventory count already accounted for
+local rewardSuspect = {}    -- reward record -> true: increase seen, confirmed at the next poll
 local dagothDead = false
 local wasDead = false
 local deathlinkTime = 0
@@ -227,11 +231,71 @@ local function applyStartBoost(quests)
   end
 end
 
+-- Quest rewards (unique items, quest_rewards option). When a reward record
+-- enters the inventory (count above the baseline) while its quest has reached
+-- the stage that gives it, the vanilla copy is removed (global script) and the
+-- location check is sent. The copy given by Archipelago itself is not counted
+-- (AP_RewardGiven raises the baseline). An increase is only confirmed at the
+-- NEXT poll, so that the event of a copy given by Archipelago has the time to
+-- arrive. Once the check is sent, the item is no longer watched.
+local function inventoryCount(record)
+  local ok, n = pcall(function() return types.Actor.inventory(self):countOf(record) end)
+  return ok and tonumber(n) or 0
+end
+
+local function pollRewards(quests)
+  if not rewardsOn then return end
+  for _, r in ipairs(REWARDS) do
+    if not sent[r.loc] then
+      local cnt = inventoryCount(r.record)
+      local base = rewardBase[r.record]
+      if base == nil then
+        rewardBase[r.record] = cnt     -- first observation: baseline
+      else
+        local delta = cnt - base
+        local gated = delta > 0
+          and questStage(quests, r.quest) >= (r.stage or 1)
+          and goalChecks.allowed(r.group, goalList, expansionGroups)
+        if gated then
+          if rewardSuspect[r.record] then
+            local n = math.min(delta, r.count or 1)
+            rewardSuspect[r.record] = nil
+            rewardBase[r.record] = cnt - n
+            core.sendGlobalEvent('AP_RemoveReward', { record = r.record, count = n })
+            check(r.loc)
+            print('AP: quest reward randomized: ' .. tostring(r.record) .. ' (' .. tostring(r.quest) .. ')')
+            pcall(function()
+              ui.showMessage('Archipelago: reward sent (' .. tostring(r.name):gsub('^Reward: ', '') .. ')')
+            end)
+          else
+            rewardSuspect[r.record] = true     -- wait for the next poll
+          end
+        else
+          rewardSuspect[r.record] = nil
+          rewardBase[r.record] = cnt           -- sold, dropped, or other source
+        end
+      end
+    end
+  end
+end
+
+-- Copy of a reward given by Archipelago (global.lua / items.lua): raise the
+-- baseline so that it is not taken for the vanilla reward.
+local function onRewardGiven(data)
+  if type(data) ~= 'table' or not data.record then return end
+  local rec = lower(data.record)
+  if rewardBase[rec] ~= nil then
+    rewardBase[rec] = rewardBase[rec] + (tonumber(data.count) or 1)
+  end
+  rewardSuspect[rec] = nil
+end
+
 local function pollQuests()
   local quests = types.Player.quests(self)
   if not quests then return end
   enforceLocks(quests)
   applyStartBoost(quests)
+  pollRewards(quests)
   for qkey in pairs(allQuests) do
     local stage = questStage(quests, qkey)
     if stage > 0 then
@@ -417,6 +481,9 @@ local function onConfig(data)
     startingLevel = sl
   end
 
+  -- quest_rewards option: absent (old server) = disabled.
+  rewardsOn = data.questRewards == true
+
   -- Enabled expansion groups (tribunal_main_quest, bloodmoon_side_quests...
   -- options). Absent (old server): the previous value is kept.
   if type(data.expansionGroups) == 'table' then
@@ -546,6 +613,7 @@ return {
   eventHandlers = {
     AP_DeathLink = onDeathLink,
     AP_Config = onConfig,
+    AP_RewardGiven = onRewardGiven,
     AP_Owned = onOwned,
     AP_LevelUp = onLevelUp,
     AP_SkillBoost = onSkillBoost,

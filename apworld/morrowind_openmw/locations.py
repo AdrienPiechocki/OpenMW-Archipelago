@@ -7,7 +7,7 @@ except Exception:
 from BaseClasses import Location
 from typing import NamedTuple, Callable, Dict
 from .options import (MorrowindOptions, selected_goals, goal_of_group, selected_expansion_groups,
-                      selected_tr_groups, EXPANSION_GROUPS, TR_GROUPS)
+                      selected_tr_groups, EXPANSION_GROUPS, TR_GROUPS, quest_rewards_enabled, group_active)
 
 
 class MorrowindLocation(Location):
@@ -122,3 +122,33 @@ if yaml is not None and _qc_text:
                 can_create=lambda options, g=group: _goal_quest_can_create(options, g),
                 excluded=lambda options, r=risky: _goal_quest_excluded(options, r),
             )
+
+
+# Quest rewards (unique items): one location per reward, sent when the vanilla
+# reward would reach the player (data/quest_rewards.yaml). Same group (and
+# therefore same logic, see rules.py) and same region as the quest itself.
+# Created only if the quest_rewards option is on and the group is enabled.
+_qr_text = None
+try:
+    from importlib import resources as _res
+    _qr_text = _res.files(__package__).joinpath('data', 'quest_rewards.yaml').read_text(encoding='utf-8')
+except Exception:
+    _p = os.path.join(os.path.dirname(__file__), 'data', 'quest_rewards.yaml')
+    if os.path.exists(_p):
+        with open(_p, encoding='utf-8') as f:
+            _qr_text = f.read()
+
+if yaml is not None and _qr_text:
+    for _r in yaml.safe_load(_qr_text) or []:
+        _qid = str(_r['quest']).lower()
+        if _qid in no_completion_quests:
+            continue
+        # Location names must be unique: item name + quest.
+        location_table[f"{_r['name']} @ {_qid}"] = MorrowindLocationData(
+            region=_r.get('region') or 'Seyda Neen',
+            code=_r['loc_id'],
+            group=_r['group'],
+            can_create=lambda options, g=_r['group']: quest_rewards_enabled(options) and group_active(options, g),
+            # A quest with a failure branch may never give its reward.
+            excluded=lambda options, r=(_qid in risky_quests): r,
+        )

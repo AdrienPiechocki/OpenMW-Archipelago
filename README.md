@@ -249,6 +249,37 @@ python tools/list_tr.py tr_mainland.json --journals                  # check the
 
 Tests: `python3 tools/test_tamriel_rebuilt.py`.
 
+## Quest rewards (option `quest_rewards`)
+
+When enabled, the **unique items** given as quest rewards (named weapons, armor, rings, books...)
+that are not needed for progression are randomized:
+
+- each reward is an Archipelago **location** (`Reward: <item> @ <quest>`) and an **item** of the pool
+  (`Reward: <item>`, *useful*), in the same group as its quest: the quest's goal, expansion or
+  Tamriel Rebuilt group must be enabled, and the location uses the same logic as the quest's checks;
+- when the vanilla reward reaches your inventory (its quest has reached the stage that gives it),
+  the mod **removes** it and sends the check (log `AP: quest reward randomized: <record>`). The item
+  is given back when the matching Archipelago item is received, wherever it was placed;
+- gold, consumables (potions, ingredients, lights) and items that can also be obtained outside the
+  quest (carried by an NPC / container / leveled list, or placed in a cell) are ignored; so are
+  items required by a quest (handed over, required by a dialogue, counted) and the progression
+  items of `data/quest_items.yaml`. A quest with a failure branch never holds an important item.
+
+Detection is based on the inventory (increase of the reward's count): an increase is confirmed at
+the next poll (`poll_interval`) so that a copy given by Archipelago is not taken for the vanilla one.
+Once the check is sent, the item is no longer watched.
+
+Data: `data/quest_rewards.yaml` (empty by default), generated from the ESMs:
+
+```
+python tools/gen_quest_rewards.py morrowind.json tribunal.json bloodmoon.json tr_mainland.json        # dry run
+python tools/gen_quest_rewards.py morrowind.json tribunal.json bloodmoon.json tr_mainland.json --apply
+python tools/gen_lua.py            # mod/scripts/ap/quest_rewards.lua
+python tools/install_apworld.py    # copies the data into the apworld
+```
+
+Existing ids are kept when the file is regenerated. Test: `python3 tools/test_quest_rewards.py`.
+
 ## Quest items given by Archipelago
 
 For the main quest (if `main_quest` is enabled) and the chosen house / guild / faction, **all

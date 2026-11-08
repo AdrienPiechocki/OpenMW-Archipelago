@@ -6,7 +6,7 @@ try:
     import yaml
 except Exception:  # pragma: no cover
     yaml = None
-from .options import MorrowindOptions, group_enabled, selected_goals
+from .options import MorrowindOptions, group_enabled, selected_goals, quest_rewards_enabled, group_active
 
 
 class MorrowindItem(Item):
@@ -117,6 +117,20 @@ for _it in quest_items + quest_locks:
                 g in selected_goals(options) and group_enabled(options, grp)
             ),
         )
+
+
+# Quest rewards (unique items): data/quest_rewards.yaml. One useful item per
+# reward, only if the quest_rewards option is on and the quest's group is
+# enabled in the seed (same condition as the matching location).
+quest_rewards = _load_yaml('quest_rewards.yaml')
+for _r in quest_rewards:
+    item_table[_r['name']] = MorrowindItemData(
+        code=_r['item_id'],
+        classification=ItemClassification.useful,
+        can_create=lambda options, grp=_r['group']: (
+            quest_rewards_enabled(options) and group_active(options, grp)
+        ),
+    )
 
 
 def quest_item_names(goal_key, options=None):

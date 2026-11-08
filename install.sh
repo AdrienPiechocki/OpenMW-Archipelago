@@ -102,6 +102,12 @@ ITEMS_JSONS=("$WORK/morrowind.json")
 "$PYTHON" tools/gen_quest_items.py "${ITEMS_JSONS[@]}" --apply
 echo "-> candidats à relire : data/quest_items_candidates.yaml"
 
+# --- 2c. Récompenses de quêtes (option quest_rewards) -------------------------
+# Objets uniques donnés par les quêtes, hors objets de progression : après 2b
+# (quest_items.yaml fait partie des exclusions), tous les JSON (TR inclus).
+step "2c Récompenses de quêtes"
+"$PYTHON" tools/gen_quest_rewards.py "${JSONS[@]}" --completions data/quest_completions.yaml --apply
+
 # --- 3. Groupes --------------------------------------------------------------
 step "3/5 Classification des quêtes"
 "$PYTHON" tools/classify_quests.py
@@ -129,3 +135,4 @@ if [ "$HAS_TR" -eq 1 ]; then
 fi
 echo "Pense à copier mod/ dans les mods OpenMW, activer archipelago.omwscripts,"
 echo "et à régénérer la seed après mise à jour des données."
+echo "Récompenses de quêtes randomisées : quest_rewards: true dans le YAML (liste : data/quest_rewards.yaml)."

@@ -305,7 +305,7 @@ local function handle(msg)
     -- Relay the goal to the player script
     local pl = getPlayer()
     if pl then
-      pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal, expansionGroups = serverOptions.expansion_groups, startingLevel = serverOptions.starting_level }) end)
+      pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal, expansionGroups = serverOptions.expansion_groups, startingLevel = serverOptions.starting_level, questRewards = serverOptions.quest_rewards }) end)
     end
     -- Propagate death_link (YAML) to global storage for player.lua
     if serverOptions.death_link ~= nil then
@@ -468,9 +468,34 @@ return {
     AP_RequestConfig = function()
       local pl = getPlayer()
       if pl and (serverOptions.goals ~= nil or serverOptions.goal ~= nil) then
-        pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal, expansionGroups = serverOptions.expansion_groups, startingLevel = serverOptions.starting_level }) end)
+        pcall(function() pl:sendEvent('AP_Config', { goals = serverOptions.goals, goal = serverOptions.goal, expansionGroups = serverOptions.expansion_groups, startingLevel = serverOptions.starting_level, questRewards = serverOptions.quest_rewards }) end)
       end
       sendOwned()
+    end,
+    -- Vanilla quest reward detected by player.lua: removed from the inventory
+    -- (the player script sends the matching check; the AP item gives it back).
+    AP_RemoveReward = function(d)
+      if type(d) ~= 'table' or not d.record then return end
+      local pl = getPlayer()
+      if not pl then return end
+      local left = tonumber(d.count) or 1
+      local ok, objs = pcall(function()
+        return types.Actor.inventory(pl):findAll(d.record)
+      end)
+      if ok and objs then
+        for _, obj in ipairs(objs) do
+          if left <= 0 then break end
+          local n = tonumber(obj.count) or 1
+          if n <= left then
+            pcall(function() obj:remove() end)
+            left = left - n
+          else
+            pcall(function() obj:remove(left) end)
+            left = 0
+          end
+        end
+      end
+      print('AP: vanilla reward removed: ' .. tostring(d.record) .. ' (' .. tostring((tonumber(d.count) or 1) - left) .. ')')
     end,
     -- Death of Dagoth Ur (actor.lua) -> player script.
     AP_DagothDead = function()

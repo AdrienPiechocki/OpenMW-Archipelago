@@ -143,6 +143,18 @@ class Traps(DefaultOnToggle):
     display_name = "Traps"
 
 
+class QuestRewards(Toggle):
+    """Randomize quest rewards: the UNIQUE items (named weapons, armor, rings,
+    books...) given by quests that are not needed for progression become
+    Archipelago checks (the vanilla reward is removed when you would receive
+    it) and their items go into the pool. Gold and consumables are ignored.
+    Only quests whose checks are enabled (goal, expansion or Tamriel Rebuilt
+    group) have randomized rewards. Requires data/quest_rewards.yaml
+    (tools/gen_quest_rewards.py)."""
+    display_name = "Quest Rewards"
+    default = True
+
+
 class DeathLink(Toggle):
     display_name = "Death Link"
     default = True
@@ -165,6 +177,7 @@ class MorrowindOptions(PerGameCommonOptions):
     tamriel_rebuilt_factions: TamrielRebuiltFactions = TamrielRebuiltFactions.default
     tamriel_rebuilt_daedric_quests: TamrielRebuiltDaedricQuests = TamrielRebuiltDaedricQuests.default
     traps: Traps = Traps.default
+    quest_rewards: QuestRewards = QuestRewards.default
     death_link: DeathLink = DeathLink.default
 
 
@@ -277,6 +290,20 @@ def group_enabled(options, group) -> bool:
     if not group:
         return True
     return group in selected_expansion_groups(options) or group in selected_tr_groups(options)
+
+
+def quest_rewards_enabled(options) -> bool:
+    return _enabled(options, "quest_rewards")
+
+
+def group_active(options, group) -> bool:
+    """True if the checks of a quest group exist in the seed (free group,
+    enabled expansion / Tamriel Rebuilt group, or selected goal)."""
+    if group == "misc":
+        return True
+    if group in EXPANSION_GROUPS or group in TR_GROUPS:
+        return group_enabled(options, group)
+    return goal_of_group(group) in selected_goals(options)
 
 
 def goal_of_group(group: str) -> str:

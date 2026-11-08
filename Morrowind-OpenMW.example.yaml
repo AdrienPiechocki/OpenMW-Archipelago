@@ -47,4 +47,10 @@ Morrowind OpenMW:
   tamriel_rebuilt_factions: false
   tamriel_rebuilt_daedric_quests: false
 
+  # Quest rewards: the UNIQUE items (named weapons, armor, rings, books...) given by quests
+  # and not needed for progression become checks; their items go into the pool.
+  # The vanilla reward is removed from your inventory when you would receive it.
+  # Gold and consumables are ignored. Only quests whose checks are enabled are affected.
+  quest_rewards: false
+
   death_link: true

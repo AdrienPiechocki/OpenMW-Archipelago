@@ -28,6 +28,16 @@ for _, list in pairs(QUEST_ITEMS) do
   end
 end
 
+-- Quest rewards (data/quest_rewards.yaml -> quest_rewards.lua): the vanilla
+-- reward is removed by player.lua / global.lua and replaced by a check; the
+-- matching AP item gives it back (same record, same quantity).
+local REWARDS = require('scripts.ap.quest_rewards')
+local REWARD_BY_ITEM = {}
+for _, r in ipairs(REWARDS) do
+  GIVE[r.item] = { r.record, r.count }
+  REWARD_BY_ITEM[r.item] = r
+end
+
 -- Table { apId = { recordIds } } of objects to suppress for the given
 -- goals (list of keys, or one key). Without a known goal (config not yet
 -- received): nothing is suppressed.
@@ -86,6 +96,11 @@ function M.apply(player, itemId, idx)
     print('AP: apply ' .. tostring(itemId) .. ' -> give ' .. tostring(g[1]) .. ' x' .. tostring(g[2]))
     local ok = giveObject(player, g[1], g[2])
     print('AP: giveObject(' .. tostring(g[1]) .. ') = ' .. tostring(ok))
+    -- Reward given back by Archipelago: tell the player script so that it
+    -- does not mistake this copy for the vanilla reward (player.lua).
+    if ok and REWARD_BY_ITEM[itemId] then
+      pcall(function() player:sendEvent('AP_RewardGiven', { record = g[1], count = g[2] }) end)
+    end
     return true
   end
 
