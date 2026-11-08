@@ -13,7 +13,6 @@ local ACTIVATORS = require('scripts.ap.quest_lock_activators')
 local config = require('scripts.ap.config')
 local liveness = require('scripts.ap.liveness')
 local notify = require('scripts.ap.notify')
-local lastDeathlink = 0
 
 local SETTINGS_KEY = 'SettingsArchipelago'
 local function setting(key, fallback)
@@ -55,6 +54,7 @@ end
 -- Index of the last applied item. -1 = no item (the Archipelago index
 -- starts at 0).
 local lastIdx = -1
+local firstPollDone = false  -- the 1st poll after a load replays the whole in.jsonl
 local owned = {}          -- AP item id -> true
 local pending = {}        -- "item" messages waiting for a loaded player
 local lastNotify = 0      -- last notification id relayed to the player
@@ -274,20 +274,21 @@ local function handle(msg)
       end)
     end
   elseif msg.t == 'deathlink' then
-    local id = tonumber(msg.id) or 0
-    if id > lastDeathlink then
-      lastDeathlink = id
-      local dl = serverOptions.death_link
-      if dl == nil then dl = setting('deathlink', config.deathlink) end
-      if dl and msg.from ~= setting('slot', config.config and config.slot or msg.from) then
-        local player = getPlayer()
-        if player then
-          pcall(function() player:sendEvent('AP_DeathLink', {}) end)
-          print('AP: DeathLink received from ' .. tostring(msg.from))
-        end
+    -- Ignore DeathLinks replayed from in.jsonl when a save is loaded
+    -- (otherwise: death loop on every reload).
+    if msg._replay then return end
+    local okT, nowT = pcall(os.time)
+    local ts = tonumber(msg.ts)
+    if okT and ts and (nowT - ts) > 30 then return end
+    local dl = serverOptions.death_link
+    if dl == nil then dl = setting('deathlink', config.deathlink) end
+    if dl and msg.from ~= setting('slot', config.slot) then
+      local player = getPlayer()
+      if player then
+        pcall(function() player:sendEvent('AP_DeathLink', {}) end)
+        print('AP: DeathLink received from ' .. tostring(msg.from))
       end
     end
-
   elseif msg.t == 'sync' then
     -- New bridge session: the file has already been replaced and read
     -- from the start by ap.poll(). We do not reset lastIdx to zero, otherwise
@@ -467,9 +468,12 @@ return {
       if interval < 0.2 then interval = 0.2 end
       if timer >= interval then
         timer = 0
+        local replay = not firstPollDone
+        firstPollDone = true
         for _, line in ipairs(ap.poll()) do
           local ok, msg = pcall(json.decode, line)
           if ok and msg then
+            if replay then msg._replay = true end
             local hok, herr = pcall(handle, msg)
             if not hok then print('AP: message invalide: ' .. tostring(herr)) end
           end
@@ -518,7 +522,6 @@ return {
         owned = owned,
         serverOptions = serverOptions,
         lastNotify = lastNotify,
-        lastDeathlink = lastDeathlink,
       }
     end,
 
@@ -529,7 +532,6 @@ return {
         lastNotify = tonumber(d.lastNotify) or 0
         owned = d.owned or {}
         serverOptions = d.serverOptions or {}
-        lastDeathlink = tonumber(d.lastDeathlink) or 0
         -- Old save: lastIdx was 0 and item index 0 was never
         -- applied.
         if lastIdx == 0 and next(owned) == nil then lastIdx = -1 end

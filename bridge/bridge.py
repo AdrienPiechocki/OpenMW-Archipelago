@@ -406,8 +406,7 @@ async def recv_loop(ws, connected_event):
                     src = data.get('source')
                     print('BRIDGE: DeathLink received from', src, flush=True)
                     if src and src != SLOT:
-                        write_in({'t': 'deathlink', 'id': next_notify_id(), 'ts': int(time.time()),
-                                  'from': src, 'cause': data.get('cause')})
+                        write_in({'t': 'deathlink', 'from': src, 'cause': data.get('cause'), 'ts': int(time.time())})
             elif cmd == 'DataPackage':
                 games = ((m.get('data') or {}).get('games')) or {}
                 for game, g in games.items():
