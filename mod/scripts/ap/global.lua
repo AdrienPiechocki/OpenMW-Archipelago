@@ -15,7 +15,55 @@ local liveness = require('scripts.ap.liveness')
 local notify = require('scripts.ap.notify')
 
 local SETTINGS_KEY = 'SettingsArchipelago'
+-- Connection settings (host / port / slot / password) are read from a
+-- plain text file in the bridge data dir (connection.cfg), NOT from OpenMW's
+-- settings storage: the storage kept a stale copy (old port) that overrode
+-- the value typed in the options page. The options page (settings.lua, MENU
+-- script) writes this file whenever a value is edited, from the main menu or
+-- in game. If the file does not exist yet it is created from config.lua.
+-- Changes are picked up within a few seconds (the bridge restarts by itself).
+local CONN_FILE = 'connection.cfg'
+local CONN_KEYS = { host = true, port = true, slot = true, password = true, deathlink = true }
+local connCache, connReadAt = nil, -1e9
+
+local function loadConn()
+  local now = core.getRealTime()
+  if connCache and now - connReadAt < 1 then return connCache end
+  connReadAt = now
+  local txt = ap.readFile(CONN_FILE)
+  if not txt then
+    txt = table.concat({
+      '# Archipelago connection (read by the OpenMW mod).',
+      '# Edit and save: the bridge restarts automatically within a few seconds.',
+      'host = ' .. tostring(config.host or '127.0.0.1'),
+      'port = ' .. tostring(config.port or 38281),
+      'slot = ' .. tostring(config.slot or 'TestMW'),
+      'password = ' .. tostring(config.password or ''),
+      'deathlink = ' .. tostring(config.deathlink ~= false),
+      'notifications = true',
+      '',
+    }, '\n')
+    ap.writeFile(CONN_FILE, txt)
+  end
+  local t = {}
+  for line in txt:gmatch('[^\r\n]+') do
+    if not line:match('^%s*[#;]') then
+      local k, v = line:match('^%s*([%w_]+)%s*=%s*(.-)%s*$')
+      if k then t[k:lower()] = v end
+    end
+  end
+  connCache = t
+  return t
+end
+
 local function setting(key, fallback)
+  if CONN_KEYS[key] then
+    local v = loadConn()[key]
+    if key == 'port' then v = tonumber(v) end
+    if key == 'deathlink' and v ~= nil then v = (v == 'true') end
+    if v ~= nil and (v ~= '' or key == 'password') then return v end
+    return fallback
+  end
   local ok, sec = pcall(function() return storage.globalSection(SETTINGS_KEY) end)
   if ok and sec then
     local v = sec:get(key)
@@ -29,23 +77,7 @@ end
 local regOk, regErr = pcall(function()
   if not I.Settings then error('I.Settings is nil') end
   if not I.Settings.registerGroup then error('registerGroup missing') end
-  I.Settings.registerGroup {
-    key = SETTINGS_KEY,
-    page = 'Archipelago',
-    l10n = 'Archipelago',
-    name = 'groupName',
-    description = '',
-    permanentStorage = true,
-    order = 0,
-    settings = {
-      { key = 'host', renderer = 'textLine', name = 'hostName', description = 'hostDesc', default = config.host or '127.0.0.1' },
-      { key = 'port', renderer = 'number', name = 'portName', description = 'portDesc', default = config.port or 38281, argument = { integer = true, min = 1, max = 65535 } },
-      { key = 'slot', renderer = 'textLine', name = 'slotName', description = 'slotDesc', default = config.slot or 'TestMW' },
-      { key = 'password', renderer = 'textLine', name = 'passwordName', description = 'passwordDesc', default = config.password or '' },
-      { key = 'deathlink', renderer = 'checkbox', name = 'deathlinkName', description = 'deathlinkDesc', default = config.deathlink ~= false },
-      { key = 'notifications', renderer = 'checkbox', name = 'notificationsName', description = 'notificationsDesc', default = true },
-    }
-  }
+  I.Settings.registerGroup(require('scripts.ap.settings_def').group())
 end)
 if not regOk then
   -- silent in production; uncomment for debugging
@@ -446,23 +478,7 @@ return {
       -- happen (interface unavailable at startup).
       pcall(function()
         if I.Settings and I.Settings.registerGroup then
-          I.Settings.registerGroup {
-            key = SETTINGS_KEY,
-            page = 'Archipelago',
-            l10n = 'Archipelago',
-            name = 'groupName',
-            description = '',
-            permanentStorage = true,
-            order = 0,
-            settings = {
-              { key = 'host', renderer = 'textLine', name = 'hostName', description = 'hostDesc', default = config.host or '127.0.0.1' },
-              { key = 'port', renderer = 'number', name = 'portName', description = 'portDesc', default = config.port or 38281, argument = { integer = true, min = 1, max = 65535 } },
-              { key = 'slot', renderer = 'textLine', name = 'slotName', description = 'slotDesc', default = config.slot or 'TestMW' },
-              { key = 'password', renderer = 'textLine', name = 'passwordName', description = 'passwordDesc', default = config.password or '' },
-              { key = 'deathlink', renderer = 'checkbox', name = 'deathlinkName', description = 'deathlinkDesc', default = config.deathlink ~= false },
-              { key = 'notifications', renderer = 'checkbox', name = 'notificationsName', description = 'notificationsDesc', default = true },
-            }
-          }
+          I.Settings.registerGroup(require('scripts.ap.settings_def').group())
         end
       end)
       startBridge()

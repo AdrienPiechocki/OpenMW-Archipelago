@@ -297,6 +297,12 @@ local notifyQueue = {}
 local notifyWait = 0
 
 local function notificationsEnabled()
+  -- Value written by the options page into connection.cfg (see settings.lua).
+  local okF, txt = pcall(function() return ap.readFile('connection.cfg') end)
+  if okF and txt then
+    local v = txt:match('\n%s*notifications%s*=%s*(%a+)')
+    if v then return v:lower() == 'true' end
+  end
   local ok, sec = pcall(function() return storage.globalSection('SettingsArchipelago') end)
   if ok and sec then
     local v = sec:get('notifications')
