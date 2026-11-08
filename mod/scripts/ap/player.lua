@@ -372,8 +372,20 @@ local function onInit()
   requestConfig()
 end
 
-local function onDeathLink()
+local function onDeathLink(data)
   deathlinkTime = core.getRealTime()   -- anti-écho : pas de renvoi de cette mort
+  pcall(function()
+    local from = (type(data) == 'table' and data.from) and tostring(data.from) or '?'
+    local cause = (type(data) == 'table' and data.cause) and tostring(data.cause) or ''
+    local msg
+    if cause ~= '' then
+      msg = 'DeathLink: ' .. cause
+      if not msg:find(from, 1, true) then msg = msg .. ' (' .. from .. ')' end
+    else
+      msg = 'DeathLink: ' .. from .. ' died'
+    end
+    ui.showMessage(msg)
+  end)
   local ok, err = pcall(function()
     types.Actor.stats.dynamic.health(self).current = 0
   end)

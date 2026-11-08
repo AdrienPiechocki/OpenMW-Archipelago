@@ -293,7 +293,7 @@ local function handle(msg)
     if dl and msg.from ~= setting('slot', config.slot) then
       local player = getPlayer()
       if player then
-        pcall(function() player:sendEvent('AP_DeathLink', {}) end)
+        pcall(function() player:sendEvent('AP_DeathLink', { from = msg.from, cause = msg.cause }) end)
         print('AP: DeathLink received from ' .. tostring(msg.from))
       end
     end

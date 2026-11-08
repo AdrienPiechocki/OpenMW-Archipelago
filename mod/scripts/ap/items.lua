@@ -164,16 +164,23 @@ function M.apply(player, itemId, idx)
     return true
   end
 
-  -- Trap: summon a scamp
+  -- Trap: summon a hostile scamp next to the player
   if itemId == 7701202 then
-    pcall(function()
+    local ok, err = pcall(function()
       local world = require('openmw.world')
-      local pos = player.position
+      local util = require('openmw.util')
+      -- Position: 150 units in front of the player (teleport needs a
+      -- util.vector3, not a plain table).
+      local offset = player.rotation:apply(util.vector3(0, 150, 0))
+      local pos = player.position + offset
       local c = world.createObject('scamp', 1)
-      if c and pos then
-        c:teleport(player.cell, { x = pos.x + 200, y = pos.y + 200, z = pos.z })
-      end
+      if not c then error('createObject(scamp) returned nil') end
+      c:teleport(player.cell, pos)
+      -- Hostile on arrival (handled in actor.lua, attached to creatures).
+      c:sendEvent('AP_Attack', { target = player })
+      print('AP: scamp trap spawned')
     end)
+    if not ok then print('AP: scamp trap failed: ' .. tostring(err)) end
     return true
   end
 
