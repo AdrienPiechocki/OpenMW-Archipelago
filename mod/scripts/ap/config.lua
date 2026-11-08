@@ -15,7 +15,7 @@ return {
   -- ~ is replaced by the home directory.
   data_dir = '~/.local/share/openmw/ap',
   python = 'python3',
-  bridge_path = '~/.local/share/openmw/bridge.py',
+  bridge_path = '~/.local/share/openmw/ap/bridge.py',
   auto_start_bridge = true,
 
   -- Gameplay
