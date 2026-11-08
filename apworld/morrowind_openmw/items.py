@@ -40,7 +40,7 @@ item_table: Dict[str, MorrowindItemData] = {
         code=BASE_ITEM + 2000, classification=ItemClassification.progression, frequency=4
     ),
     # "Levitation Level" and "Strength Bonus" removed
-    "Trap: Disease": MorrowindItemData(code=BASE_ITEM + 200, classification=ItemClassification.trap, can_create=_traps_enabled),
+    "Trap: Damage": MorrowindItemData(code=BASE_ITEM + 200, classification=ItemClassification.trap, can_create=_traps_enabled),
     "Trap: Bounty": MorrowindItemData(code=BASE_ITEM + 201, classification=ItemClassification.trap, can_create=_traps_enabled),
     "Trap: Summon Scamp": MorrowindItemData(code=BASE_ITEM + 202, classification=ItemClassification.trap, can_create=_traps_enabled),
     "Trap: Steal Gold": MorrowindItemData(code=BASE_ITEM + 203, classification=ItemClassification.trap, can_create=_traps_enabled),

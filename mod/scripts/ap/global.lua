@@ -216,6 +216,10 @@ local function applyItem(msg)
       pcall(function()
         player:sendEvent('AP_LevelUp', { levels = effect.levels })
       end)
+    elseif applied and effect and effect.type == 'damage' then
+      pcall(function()
+        player:sendEvent('AP_Damage', { amount = effect.amount })
+      end)
     elseif applied and effect and effect.type == 'skill' then
       pcall(function()
         player:sendEvent('AP_SkillBoost', { skill = effect.skill, amount = effect.amount })

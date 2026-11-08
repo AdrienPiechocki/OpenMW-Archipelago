@@ -335,7 +335,8 @@ async def handle_out(line, ws_ref, connected_event):
             await ws_send(ws, [{
                 'cmd': 'Bounce',
                 'tags': ['DeathLink'],
-                'data': {'time': time.time(), 'source': SLOT, 'cause': msg.get('cause', '')},
+                'data': {'time': time.time(), 'source': SLOT,
+                         'cause': '%s %s (Morrowind)' % (SLOT, msg.get('cause') or 'died')},
             }])
             print('BRIDGE: DeathLink sent', flush=True)
     elif t == 'goal':

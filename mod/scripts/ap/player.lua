@@ -278,7 +278,12 @@ local function checkDeath()
     local enabled = deathlinkEnabled()
     print(('AP: death detected (deathlink=%s, %.1fs since last received)'):format(tostring(enabled), now - deathlinkTime))
     if (now - deathlinkTime) > 5 and enabled then
-      local sent = ap.send('{"t":"death","cause":"player"}')
+      local place = nil
+      pcall(function()
+        local c = self.cell
+        place = (c.name and c.name ~= '' and c.name) or c.region
+      end)
+      local sent = ap.send(json.encode({ t = 'death', cause = place and ('died in ' .. tostring(place)) or 'died' }))
       print('AP: death written to out.jsonl: ' .. tostring(sent))
       lastDeathTime = now
     end
@@ -474,6 +479,15 @@ local function onSkillBoost(data)
   end)
 end
 
+-- Trap damage (relayed by global.lua). Never kills: leaves at least 1 HP.
+local function onDamage(data)
+  local amount = (type(data) == 'table' and tonumber(data.amount)) or 20
+  pcall(function()
+    local health = types.Actor.stats.dynamic.health(self)
+    health.current = math.max(1, (health.current or 0) - amount)
+  end)
+end
+
 -- Daedric shrine activation blocked by global.lua (missing AP item).
 local function onLockedActivation(data)
   local name = 'daedric shrine'
@@ -503,6 +517,7 @@ return {
     AP_Owned = onOwned,
     AP_LevelUp = onLevelUp,
     AP_SkillBoost = onSkillBoost,
+    AP_Damage = onDamage,
     AP_LockedActivation = onLockedActivation,
     AP_Notify = onNotify,
     AP_DagothDead = onDagothDead,

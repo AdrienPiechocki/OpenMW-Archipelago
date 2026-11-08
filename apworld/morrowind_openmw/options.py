@@ -99,7 +99,7 @@ class BloodmoonSideQuests(Toggle):
 
 
 class Traps(DefaultOnToggle):
-    """Include trap items (Disease, Bounty, Summon Scamp, Steal Gold) in the
+    """Include trap items (Damage, Bounty, Summon Scamp, Steal Gold) in the
     item pool. Disabled: no trap is generated, they are replaced by filler."""
     display_name = "Traps"
 
