@@ -4,6 +4,8 @@
 # (daedric_quests: option "Daedric Quests"). Each item is progression.
 #   name       AP item name (unique)        id     AP item ID (stable)
 #   goal       objective key                 quest  quest ID (journal), lowercase
+#   group      optional quest group (e.g. tr_daedric): the lock is active only
+#              if that group is enabled in the seed (Tamriel Rebuilt options)
 #   scripts    MWScript scripts of activators (lock before OnActivate)
 #   activators ACTI record IDs (fallback if a mod renames the script)
 - {name: "Daedric Quest: Azura", id: 7701400, goal: daedric_quests, quest: da_azura, scripts: [DaedraAzura], activators: [active_dae_azura]}
@@ -13,3 +15,9 @@
 - {name: "Daedric Quest: Mephala", id: 7701404, goal: daedric_quests, quest: da_mephala, scripts: [DaedraMephala], activators: [active_dae_mephala, active_velothi_altar_Mephala]}
 - {name: "Daedric Quest: Molag Bal", id: 7701405, goal: daedric_quests, quest: da_molagbal, scripts: [DaedraMolagBal], activators: [active_dae_molagbal]}
 - {name: "Daedric Quest: Sheogorath", id: 7701406, goal: daedric_quests, quest: da_sheogorath, scripts: [DaedraSheogorath], activators: [active_dae_sheogorath]}
+# Tamriel Rebuilt princes: only locked if BOTH daedric_quests and
+# tamriel_rebuilt_daedric_quests are enabled (group tr_daedric).
+- {name: "Daedric Quest: Clavicus Vile", id: 7701407, goal: daedric_quests, group: tr_daedric, quest: tr_m1_da_clavicus, scripts: [TR_m1_DA_Clavicus_Statue_sc], activators: [TR_m1_Clavicus_Shrine]}
+- {name: "Daedric Quest: Sanguine", id: 7701408, goal: daedric_quests, group: tr_daedric, quest: tr_m1_da_sanguine, scripts: [TR_m1_DA_SanguineQuest], activators: [TR_m1_Sanguine_Shrine]}
+- {name: "Daedric Quest: Meridia", id: 7701409, goal: daedric_quests, group: tr_daedric, quest: tr_m7_da_meridia, scripts: [TR_m7_Meridia_Shrine], activators: [TR_m7_Statue_Meridia]}
+- {name: "Daedric Quest: Namira", id: 7701410, goal: daedric_quests, group: tr_daedric, quest: tr_m7_da_namira, scripts: [TR_m7_DA_Namira_Statue_sc], activators: [TR_m7_Statue_Namira]}

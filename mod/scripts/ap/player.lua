@@ -186,13 +186,17 @@ end
 
 -- Locked quests: as long as the unlocking AP item has not been received, the
 -- quest cannot progress (journal reset to zero on every check).
--- Only applies if the matching goal is selected (e.g. Daedric Quests).
+-- Only applies if the matching goal is selected (e.g. Daedric Quests) and,
+-- for entries with a `group` (TR daedric princes), if that group is enabled
+-- in the seed (tamriel_rebuilt_daedric_quests too).
 local function enforceLocks(quests)
   if not goalList then return end
   for goal, list in pairs(LOCKS) do
     if goalActive(goal) then
       for _, lk in ipairs(list) do
-        if not ownedIds[lk.id] and questStage(quests, lk.quest) > 0 then
+        local enabled = not lk.group
+          or goalChecks.allowed(lk.group, goalList, expansionGroups)
+        if enabled and not ownedIds[lk.id] and questStage(quests, lk.quest) > 0 then
           local ok = pcall(function() quests[lk.quest].stage = 0 end)
           if ok then
             print('AP: locked quest reset to zero: ' .. lk.quest)

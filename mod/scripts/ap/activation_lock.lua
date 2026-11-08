@@ -23,11 +23,13 @@ end
 
 -- Return the lock entry that should block this activation, or nil
 -- if the activation is allowed. `owned`: table of AP item id -> true.
+-- `goalActive(goal, group)` also checks the optional group of the entry
+-- (e.g. `tr_daedric`: both daedric_quests and the TR option).
 function M.blockedLock(activators, record, owned, goalActive)
   local entry = entryFor(activators, record)
   if not entry then return nil end
   if owned and owned[entry.id] then return nil end
-  if goalActive and not goalActive(entry.goal) then return nil end
+  if goalActive and not goalActive(entry.goal, entry.group) then return nil end
   return entry
 end
 

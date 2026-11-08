@@ -21,7 +21,7 @@ def set_rules(world: World):
         data = location_table.get(loc.name)
         if data is None or is_free_group(data.group):
             continue
-        names = quest_item_names(goal_of_group(data.group))
+        names = quest_item_names(goal_of_group(data.group), world.options)
         if names:
             add_rule(loc, lambda state, n=tuple(names): state.has_all(n, player))
 
@@ -31,7 +31,7 @@ def set_rules(world: World):
     # the Archipelago item has not been received.
     needed = []
     for goal in selected_goals(world.options):
-        for name in quest_item_names(goal):
+        for name in quest_item_names(goal, world.options):
             if name not in needed:
                 needed.append(name)
     if needed:

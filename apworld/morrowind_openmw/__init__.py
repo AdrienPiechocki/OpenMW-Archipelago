@@ -117,7 +117,7 @@ class MorrowindWorld(World):
                 "Enable goal_quest_checks (more locations for progression) or "
                 "remove some goals (great house / guild / faction / daedric_quests).")
         goals = selected_goals(self.options)
-        need = {g: len(quest_item_names(g)) for g in goals}
+        need = {g: len(quest_item_names(g, self.options)) for g in goals}
         free = sum(1 for l in open_locs if l.name in location_table
                    and is_free_group(location_table[l.name].group))
         gated = {g: sum(1 for l in open_locs if l.name in location_table

@@ -267,6 +267,18 @@ def selected_tr_groups(options) -> list:
     return out
 
 
+def group_enabled(options, group) -> bool:
+    """True if a quest group is enabled in the seed.
+
+    Used by quest locks that depend on more than their goal (e.g. the TR
+    Daedric princes, group `tr_daedric`, need both `daedric_quests` and
+    `tamriel_rebuilt_daedric_quests`). A lock without a group is always
+    enabled (its goal alone gates it)."""
+    if not group:
+        return True
+    return group in selected_expansion_groups(options) or group in selected_tr_groups(options)
+
+
 def goal_of_group(group: str) -> str:
     if group == "tr_main":
         return TR_MAIN_GOAL

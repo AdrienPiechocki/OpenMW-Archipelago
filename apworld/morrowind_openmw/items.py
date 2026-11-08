@@ -6,7 +6,7 @@ try:
     import yaml
 except Exception:  # pragma: no cover
     yaml = None
-from .options import MorrowindOptions, selected_goals
+from .options import MorrowindOptions, group_enabled, selected_goals
 
 
 class MorrowindItem(Item):
@@ -97,6 +97,7 @@ quest_locks = _load_yaml('quest_locks.yaml')
 
 for _it in quest_items + quest_locks:
     _goal = _it['goal']
+    _group = _it.get('group')
     if _goal == 'misc':
         # Miscellaneous quest items: always in the pool, but "useful"
         # (they are not required for victory). Otherwise they would saturate
@@ -112,14 +113,23 @@ for _it in quest_items + quest_locks:
         item_table[_it['name']] = MorrowindItemData(
             code=_it['id'],
             classification=ItemClassification.progression,
-            can_create=lambda options, g=_goal: g in selected_goals(options),
+            can_create=lambda options, g=_goal, grp=_group: (
+                g in selected_goals(options) and group_enabled(options, grp)
+            ),
         )
 
 
-def quest_item_names(goal_key):
+def quest_item_names(goal_key, options=None):
     """Names of the AP items required for goal `goal_key`: quest items
-    + quest unlock items."""
-    return [i['name'] for i in quest_items + quest_locks if i['goal'] == goal_key]
+    + quest unlock items.
+
+    Locks with a `group` (e.g. the TR Daedric princes) are only included
+    when that group is enabled in the seed: their item does not exist
+    otherwise."""
+    locks = quest_locks
+    if options is not None:
+        locks = [i for i in quest_locks if group_enabled(options, i.get('group'))]
+    return [i['name'] for i in quest_items + locks if i['goal'] == goal_key]
 
 
 item_name_groups = {

@@ -8,5 +8,9 @@ return {
     { id = 7701404, quest = 'da_mephala' },
     { id = 7701405, quest = 'da_molagbal' },
     { id = 7701406, quest = 'da_sheogorath' },
+    { id = 7701407, quest = 'tr_m1_da_clavicus', group = 'tr_daedric' },
+    { id = 7701408, quest = 'tr_m1_da_sanguine', group = 'tr_daedric' },
+    { id = 7701409, quest = 'tr_m7_da_meridia', group = 'tr_daedric' },
+    { id = 7701410, quest = 'tr_m7_da_namira', group = 'tr_daedric' },
   },
 }

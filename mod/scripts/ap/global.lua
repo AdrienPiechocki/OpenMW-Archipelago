@@ -362,10 +362,23 @@ local function goalsKnown()
   return serverOptions.goals ~= nil or serverOptions.goal ~= nil
 end
 
-local function lockApplies(goal)
+-- Optional quest group of a lock (e.g. `tr_daedric`): it must be enabled in
+-- the seed (slot_data.options.expansion_groups carries TR groups too).
+-- Absent group = only the goal matters.
+local function groupEnabled(group)
+  if not group then return true end
+  local groups = serverOptions.expansion_groups
+  if type(groups) ~= 'table' then return false end
+  for _, k in ipairs(groups) do
+    if tostring(k):lower() == group then return true end
+  end
+  return false
+end
+
+local function lockApplies(goal, group)
   if not goalsKnown() then return true end
   for _, k in ipairs(goalKeys()) do
-    if k == goal then return true end
+    if k == goal then return groupEnabled(group) end
   end
   return false
 end

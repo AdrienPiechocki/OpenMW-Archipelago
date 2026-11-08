@@ -6,6 +6,7 @@ From the repository root:
 import importlib.util
 import pathlib
 import sys
+import tempfile
 import types
 
 fake = types.ModuleType('Options')
@@ -21,6 +22,8 @@ spec.loader.exec_module(opts)
 sys.path.insert(0, str(root / 'tools'))
 import quest_groups as qg  # noqa: E402
 import gen_quest_finals as gqf  # noqa: E402
+import gen_lua as gl  # noqa: E402
+import yaml  # noqa: E402
 
 
 class Val:
@@ -67,6 +70,15 @@ check('TR factions off: nothing', opts.selected_tr_groups(make(house='indoril'))
 check('TR daedric needs daedric_quests', opts.selected_tr_groups(make(tamriel_rebuilt_daedric_quests=True)), [])
 check('TR daedric with daedric_quests', opts.selected_tr_groups(make(daedric=True, tamriel_rebuilt_daedric_quests=True)),
       ['tr_daedric'])
+check('lock group without TR option', opts.group_enabled(
+    make(daedric=True, tamriel_rebuilt_daedric_quests=False), 'tr_daedric'), False)
+check('lock group without daedric goal', opts.group_enabled(
+    make(daedric=False, tamriel_rebuilt_daedric_quests=True), 'tr_daedric'), False)
+check('TR daedric lock group enabled', opts.group_enabled(
+    make(daedric=True, tamriel_rebuilt_daedric_quests=True), 'tr_daedric'), True)
+check('lock without group always enabled', opts.group_enabled(make(), None), True)
+check('expansion lock group enabled',
+      opts.group_enabled(make(tribunal_main_quest=True), 'tribunal_main'), True)
 check('indoril goal', opts.selected_goals(make(house='indoril')), ['main_quest', 'indoril'])
 check('ja_natta goal', opts.selected_goals(make(faction='ja_natta_syndicate')), ['main_quest', 'ja_natta_syndicate'])
 check('indoril option value', getattr(opts.GreatHouse, 'option_indoril', None), 4)
@@ -104,6 +116,50 @@ check('TR failure-only journals', gqf.FAIL_ONLY,
       {'tr_m1_fw_ic6_lorefail': [300], 'tr_m3_aim_dreugh1b': [200, 250]})
 check('a failure-only journal is never a completion',
       any(q in gqf.STAGES_OVERRIDES or q in gqf.STAGE_OVERRIDES for q in gqf.FAIL_ONLY), False)
+
+# ---- quest locks (Tamriel Rebuilt Daedric princes) --------------------------
+locks = yaml.safe_load((root / 'data/quest_locks.yaml').read_text())
+tr_locks = [l for l in locks if l.get('group') == 'tr_daedric']
+check('4 TR daedric locks', len(tr_locks), 4)
+check('TR lock ids', [l['id'] for l in tr_locks], [7701407, 7701408, 7701409, 7701410])
+check('all lock ids unique', len({l['id'] for l in locks}), len(locks))
+check('vanilla locks have no group', [l.get('group') for l in locks if l['id'] < 7701407],
+      [None] * 7)
+expected_tr_locks = {
+    'tr_m1_da_clavicus': ('Daedric Quest: Clavicus Vile', 'TR_m1_DA_Clavicus_Statue_sc',
+                          'TR_m1_Clavicus_Shrine'),
+    'tr_m1_da_sanguine': ('Daedric Quest: Sanguine', 'TR_m1_DA_SanguineQuest',
+                          'TR_m1_Sanguine_Shrine'),
+    'tr_m7_da_meridia': ('Daedric Quest: Meridia', 'TR_m7_Meridia_Shrine',
+                         'TR_m7_Statue_Meridia'),
+    'tr_m7_da_namira': ('Daedric Quest: Namira', 'TR_m7_DA_Namira_Statue_sc',
+                        'TR_m7_Statue_Namira'),
+}
+by_quest = {l['quest']: l for l in tr_locks}
+check('TR lock quests', sorted(by_quest), sorted(expected_tr_locks))
+for quest, (name, script, activator) in expected_tr_locks.items():
+    lk = by_quest.get(quest, {})
+    check(f'{quest}: goal', lk.get('goal'), 'daedric_quests')
+    check(f'{quest}: name', lk.get('name'), name)
+    check(f'{quest}: script', lk.get('scripts'), [script])
+    check(f'{quest}: activator', lk.get('activators'), [activator])
+
+# The generated Lua tables must carry the group (used by the mod to gate the
+# locks on tamriel_rebuilt_daedric_quests).
+with tempfile.TemporaryDirectory() as td:
+    td = pathlib.Path(td)
+    gl.gen_quest_locks(root / 'data/quest_locks.yaml', td / 'locks.lua')
+    gl.gen_quest_lock_activators(root / 'data/quest_locks.yaml', td / 'activators.lua')
+    locks_lua = (td / 'locks.lua').read_text()
+    activators_lua = (td / 'activators.lua').read_text()
+check('generated lock group', "quest = 'tr_m7_da_namira', group = 'tr_daedric'" in locks_lua,
+      True)
+check('generated activator group',
+      "['TR_m7_Statue_Namira'] = { id = 7701410, quest = 'tr_m7_da_namira', "
+      "goal = 'daedric_quests', name = 'Daedric Quest: Namira', group = 'tr_daedric' }"
+      in activators_lua, True)
+check('generated locks count', locks_lua.count('id = '), 11)
+check('generated activators keep vanilla entries', "['DaedraAzura']" in activators_lua, True)
 
 # ---- classification (IDs confirmed on UESP) -----------------------------------
 cats = {'main': {'tr_m1_fm_x'}, 'main_prefixes': (), 'daedric': {'tr_m1_da_y'}, 'daedric_prefixes': (),

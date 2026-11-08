@@ -73,7 +73,7 @@ Morrowind OpenMW:
   great_house: hlaalu          # none | hlaalu | redoran | telvanni | indoril (Tamriel Rebuilt)
   guild: mages_guild           # none | fighters_guild | mages_guild | thieves_guild
   faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company | ja_natta_syndicate
-  daedric_quests: true         # adds the 7 Daedric quests to the objective
+  daedric_quests: true         # adds the 7 vanilla Daedric quests to the objective
   traps: true                  # false = no trap items in the pool
   starting_level: 1            # 1-40: starting level and bonus (see below)
   tribunal_main_quest: false       # true = Tribunal main quest: checks + goal
@@ -83,7 +83,7 @@ Morrowind OpenMW:
 ```
 
 Victory requires the main quest (if `main_quest` is enabled) **and** each chosen house / guild /
-faction (and, if enabled, the 7 Daedric quests) to be completed. With `main_quest: false`, at
+faction (and, if enabled, the 7 vanilla Daedric quests) to be completed. With `main_quest: false`, at
 least one other objective is required, otherwise generation stops with an error message; the main
 quest remains freely playable, without Archipelago items or checks. For a house, guild or faction,
 this means reaching rank 10 (leader): the mod prints
@@ -184,13 +184,19 @@ Daedric quests only contribute to the objective and checks when `daedric_quests`
 
 ## Daedric quests (option `daedric_quests`)
 
-When the option is enabled, the 7 Daedric quests (`da_azura`, `da_boethiah`, `da_malacath`,
-`da_mehrunes`, `da_mephala`, `da_molagbal`, `da_sheogorath`) are added to the objective. Each is
-**locked by an Archipelago item** (`Daedric Quest: <prince>`, see `data/quest_locks.yaml`):
-until it is received, the mod resets the quest's journal to zero (log `AP: locked quest reset:
-...`), so it can neither advance nor be completed. The 7 items are progression, required for
-victory. If the log shows `unable to lock`, the OpenMW API in your version does not allow
-modifying `quest.stage` from the player script.
+When the option is enabled, the 7 vanilla Daedric quests (`da_azura`, `da_boethiah`,
+`da_malacath`, `da_mehrunes`, `da_mephala`, `da_molagbal`, `da_sheogorath`) are added to the
+objective. Each is **locked by an Archipelago item** (`Daedric Quest: <prince>`, see
+`data/quest_locks.yaml`): until it is received, the mod resets the quest's journal to zero (log
+`AP: locked quest reset: ...`), so it can neither advance nor be completed. The 7 items are
+progression, required for victory. If the log shows `unable to lock`, the OpenMW API in your
+version does not allow modifying `quest.stage` from the player script.
+
+With `tamriel_rebuilt_daedric_quests` also enabled, four Tamriel Rebuilt princes join the
+objective and are locked the same way (`Daedric Quest: Clavicus Vile`, `Sanguine`, `Meridia`,
+`Namira`; group `tr_daedric`). Their locks and items only exist when **both** options are
+enabled. The Namira sub-journals (`tr_m7_da_nam_*`) are not locked separately: the sanctuary
+script gates them behind the main `tr_m7_da_namira` journal.
 
 ## Tamriel Rebuilt (`tamriel_rebuilt_*` options)
 
@@ -202,7 +208,7 @@ default; a disabled option means no location, no goal, and the mod ignores those
 | `tamriel_rebuilt_main_quest` | The TR main quest (*Foul Murder*, epilogue of the Morrowind main quest) is added to the main quest goal: checks **and** it must be completed to win. Ignored if `main_quest: false` |
 | `tamriel_rebuilt_side_quests` | Checks for the TR miscellaneous quests (never a goal) |
 | `tamriel_rebuilt_factions` | Checks for the TR quests of the `great_house` / `guild` / `faction` you chose (unchosen ones are ignored). They require the quest items of that goal, like the vanilla quests of the same faction |
-| `tamriel_rebuilt_daedric_quests` | Checks for the TR Daedric quests, added to the Daedric goal. Ignored if `daedric_quests: false`. They are **not** locked by AP items |
+| `tamriel_rebuilt_daedric_quests` | Checks for the TR Daedric quests, added to the Daedric goal. Ignored if `daedric_quests: false`. Each prince is **locked by an AP item** (`Daedric Quest: <prince>`) when both options are enabled |
 
 New choices: `great_house: indoril` and `faction: ja_natta_syndicate` (`ja-natta_syndicate` is also
 accepted). Goal: rank 10 (`data/goals.yaml`). The faction IDs are verified in `Tamriel_Data.esm`:

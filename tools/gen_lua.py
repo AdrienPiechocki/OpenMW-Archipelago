@@ -131,7 +131,10 @@ def gen_quest_locks(path, out_path):
     for goal, lst in by_goal.items():
         lines.append('  %s = {' % goal)
         for lk in lst:
-            lines.append("    { id = %d, quest = %s }," % (lk['id'], _lq(str(lk['quest']).lower())))
+            fields = "id = %d, quest = %s" % (lk['id'], _lq(str(lk['quest']).lower()))
+            if lk.get('group'):
+                fields += ", group = %s" % _lq(lk['group'])
+            lines.append("    { %s }," % fields)
         lines.append('  },')
     lines.append('}')
     pathlib.Path(out_path).parent.mkdir(parents=True, exist_ok=True)
@@ -145,6 +148,8 @@ def gen_quest_lock_activators(path, out_path):
     for lk in locks:
         entry = "id = %d, quest = %s, goal = %s, name = %s" % (
             lk['id'], _lq(str(lk['quest']).lower()), _lq(lk['goal']), _lq(lk['name']))
+        if lk.get('group'):
+            entry += ", group = %s" % _lq(lk['group'])
         for script in lk.get('scripts') or []:
             by_script[script] = entry
         for record in lk.get('activators') or []:
