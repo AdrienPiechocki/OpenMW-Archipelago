@@ -76,57 +76,6 @@ local function giveSpells(player, ids)
   return true
 end
 
--- Damage trap: finds an instant "damage health" spell among the loaded
--- records (target magnitude ~20) and applies it to the player.
-local DAMAGE_EFFECTS = { damagehealth = true, firedamage = true, frostdamage = true, shockdamage = true, poison = true }
-local TARGET_DAMAGE = 20
-local damageSpell = nil   -- { id, effects = { idx } } (cached)
-
-local function findDamageSpell()
-  if damageSpell ~= nil then return damageSpell or nil end
-  local best, bestScore = nil, math.huge
-  pcall(function()
-    local core = require('openmw.core')
-    for _, sp in ipairs(core.magic.spells.records) do
-      if sp.type == core.magic.SPELL_TYPE.Spell and sp.effects and #sp.effects > 0 then
-        local idxs, ok, mag = {}, true, 0
-        for i, e in ipairs(sp.effects) do
-          local eid = tostring(e.id):lower()
-          if DAMAGE_EFFECTS[eid] and (e.duration or 0) <= 1 then
-            idxs[#idxs + 1] = i - 1            -- 0-based indexes
-            mag = mag + ((e.magnitudeMin or 0) + (e.magnitudeMax or 0)) / 2
-          else
-            ok = false; break                  -- pure damage spells only
-          end
-        end
-        if ok and mag > 0 then
-          local score = math.abs(mag - TARGET_DAMAGE)
-          if score < bestScore then
-            best, bestScore = { id = sp.id, effects = idxs }, score
-          end
-        end
-      end
-    end
-  end)
-  damageSpell = best or false
-  if best then print('AP: damage trap spell = ' .. tostring(best.id)) end
-  return best
-end
-
-function M.castDamageSpell(player)
-  local sp = findDamageSpell()
-  if not sp then return false end
-  local ok, err = pcall(function()
-    local types = require('openmw.types')
-    types.Actor.activeSpells(player):add({
-      id = sp.id, effects = sp.effects, name = 'Archipelago Trap',
-      caster = player, stackable = true,
-    })
-  end)
-  if not ok then print('AP: damage spell failed: ' .. tostring(err)) end
-  return ok
-end
-
 -- Apply an item. Returns true if the item was handled (even if the exact
 -- effect is unknown), false otherwise.
 function M.apply(player, itemId, idx)
@@ -148,11 +97,10 @@ function M.apply(player, itemId, idx)
 
   -- (Strength bonus removed)
 
-  -- Trap: damage spell cast on the player
+  -- Trap: damage = 90% of the player's max health (applied by player.lua,
+  -- which never kills: leaves at least 1 HP).
   if itemId == 7701200 then
-    if M.castDamageSpell(player) then return true end
-    -- Fallback (no usable damage spell): direct damage, relayed to player.lua.
-    return true, { type = 'damage', amount = 20 }
+    return true, { type = 'damage', fraction = 0.9 }
   end
 
   -- Trap: bounty

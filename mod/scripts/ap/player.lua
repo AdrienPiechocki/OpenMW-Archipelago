@@ -497,12 +497,20 @@ local function onSkillBoost(data)
   end)
 end
 
--- Trap damage (relayed by global.lua). Never kills: leaves at least 1 HP.
+-- Trap damage (relayed by global.lua): `fraction` of max health (items.lua sends 0.9),
+-- or a flat `amount`. Never kills: leaves at least 1 HP.
 local function onDamage(data)
-  local amount = (type(data) == 'table' and tonumber(data.amount)) or 20
+  local fraction = type(data) == 'table' and tonumber(data.fraction) or nil
+  local amount = type(data) == 'table' and tonumber(data.amount) or nil
   pcall(function()
     local health = types.Actor.stats.dynamic.health(self)
-    health.current = math.max(1, (health.current or 0) - amount)
+    local dmg
+    if fraction then
+      dmg = ((health.base or 0) + (health.modifier or 0)) * fraction
+    else
+      dmg = amount or 20
+    end
+    health.current = math.max(1, (health.current or 0) - dmg)
   end)
 end
 

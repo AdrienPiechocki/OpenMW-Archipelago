@@ -250,7 +250,7 @@ local function applyItem(msg)
       end)
     elseif applied and effect and effect.type == 'damage' then
       pcall(function()
-        player:sendEvent('AP_Damage', { amount = effect.amount })
+        player:sendEvent('AP_Damage', { amount = effect.amount, fraction = effect.fraction })
       end)
     elseif applied and effect and effect.type == 'skill' then
       pcall(function()
