@@ -205,7 +205,14 @@ default; a disabled option means no location, no goal, and the mod ignores those
 | `tamriel_rebuilt_daedric_quests` | Checks for the TR Daedric quests, added to the Daedric goal. Ignored if `daedric_quests: false`. They are **not** locked by AP items |
 
 New choices: `great_house: indoril` and `faction: ja_natta_syndicate` (`ja-natta_syndicate` is also
-accepted). Goal: rank 10 (`data/goals.yaml`, entries `indoril` and `ja_natta_syndicate`).
+accepted). Goal: rank 10 (`data/goals.yaml`). The faction IDs are verified in `Tamriel_Data.esm`:
+`T_Mw_HouseIndoril` (High Councilor) and `T_Mw_JaNattaSyndicate` (Boss), 10 ranks each.
+
+The main-quest goal is the last journal of *Foul Murder*: `TR_NecMQ_3` at stage 200 (keeping the
+truth about Nerevar). The earlier journals (`TR_NecMQ_2` / `TR_NecMQ_2Path`, the ringlet quests)
+are mutually exclusive branches; requiring them all, as the old `tr_main` group goal did, made the
+goal impossible. Stage 200 is the only successful ending: stages 190/195 are the Simine/Alvu-death
+softlocks. All the `tr_main` quests still give checks.
 
 **Status: data still to generate.** TR quests are not shipped in `data/`: IDs come from the ESM.
 
@@ -221,15 +228,18 @@ python tools/list_tr.py tr_mainland.json --journals                  # check the
 1. **Classification.** A journal `TR_m<N>_...` is a TR quest. Its group (`tools/quest_groups.py`):
    `tr_main` / `tr_daedric` (IDs listed in `data/tr_categories.yaml`), `tr_<faction>` (faction token
    in the ID: `HH` Hlaalu, `HT` Telvanni, `TT` Temple, `JNS` Ja-Natta confirmed on UESP; `HR`, `FG`,
-   `MG`, `TG`, `IL`, `IC`, `MT` assumed), else `tr_side`. Fill `main` (Foul Murder) and `daedric`
-   in `data/tr_categories.yaml`: until then, `tamriel_rebuilt_main_quest: true` stops generation
-   with an error (no data for the goal).
-2. **Goals to verify.** `indoril` / `ja_natta_syndicate` in `data/goals.yaml` use guessed faction
-   ids (`t_mw_houseindoril`, `t_mw_janattasyndicate`) and rank 10: check them with `list_tr.py
-   --factions`. UESP lists no Indoril questline in the released TR (only Hlaalu, Redoran, Telvanni):
-   if the faction has no ranks to climb, `great_house: indoril` cannot be won. Generation logs a
-   warning for these two goals.
+   `MG`, `TG`, `IL`, `IC`, `MT` assumed), else `tr_side`. The Foul Murder journals are recognised
+   by the `tr_necmq_` prefix (`main_prefixes` in `data/tr_categories.yaml`).
+2. **Goals.** The faction ids/ranks of `indoril` / `ja_natta_syndicate` are verified against
+   `Tamriel_Data.esm` (see above), so generation no longer warns about them. The main-quest goal is
+   `TR_NecMQ_3` stage 200, not the whole `tr_main` group.
 3. No TR quest item is provided by Archipelago (like Tribunal).
+4. **Failure-only journals.** Some TR journals only ever record a failure (the alternate *The Star
+   Wound* journal `TR_m1_FW_IC6_LoreFail`, and `TR_m3_Aim_Dreugh1b` for *Finding Jelyn the Sailor*).
+   They are listed in `FAIL_ONLY` (`tools/gen_quest_finals.py`), written with `fail_only: true`
+   (stage 0, no completion stage) and produce **no check**: a location that can never fire is
+   dropped by `locations.py` and `gen_lua.py` skips them. `TR_m4_Bal0_Troubles_A` (*Troubles on the
+   Road*) is a real alternate ending (stage 200) and is treated as a normal completion.
 
 Tests: `python3 tools/test_tamriel_rebuilt.py`.
 

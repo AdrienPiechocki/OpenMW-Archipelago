@@ -213,7 +213,9 @@ TR_GROUPS = ("tr_main", "tr_side", "tr_daedric") + tuple(f"tr_{k}" for k in TR_F
 
 # Goals whose game data (faction id / rank) are not confirmed against the TR ESM:
 # generation logs a warning (tools/list_tr.py --factions to check them).
-UNVERIFIED_GOALS = ("indoril", "ja_natta_syndicate")
+# Both TR faction goals are verified: T_Mw_HouseIndoril / T_Mw_JaNattaSyndicate
+# exist in Tamriel_Data.esm with 10 ranks each. Keep the hook for future goals.
+UNVERIFIED_GOALS = ()
 
 
 # Expansions and their quest categories (the East Empire Company faction is not

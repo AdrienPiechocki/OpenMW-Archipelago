@@ -20,6 +20,7 @@ opts = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(opts)
 sys.path.insert(0, str(root / 'tools'))
 import quest_groups as qg  # noqa: E402
+import gen_quest_finals as gqf  # noqa: E402
 
 
 class Val:
@@ -81,8 +82,28 @@ check('TR groups in sync with quest_groups.py', opts.TR_GROUPS, qg.TR_GROUPS)
 check('TR faction keys in sync', opts.TR_FACTION_KEYS, qg.TR_FACTION_KEYS)
 check('every TR faction key is a goal key',
       all(k in __import__('yaml').safe_load((root / 'data/goals.yaml').read_text()) for k in opts.TR_FACTION_KEYS), True)
-check('TR main goal key in goals.yaml',
-      opts.TR_MAIN_GOAL in __import__('yaml').safe_load((root / 'data/goals.yaml').read_text()), True)
+goals = __import__('yaml').safe_load((root / 'data/goals.yaml').read_text())
+check('TR main goal key in goals.yaml', opts.TR_MAIN_GOAL in goals, True)
+check('TR main goal = TR_NecMQ_3 stage 200',
+      goals[opts.TR_MAIN_GOAL].get('quests'), [{'quest': 'tr_necmq_3', 'stage': 200}])
+check('TR main goal is not the impossible tr_main group',
+      'group' in goals[opts.TR_MAIN_GOAL], False)
+check('indoril faction id', goals['indoril'].get('faction'), 'T_Mw_HouseIndoril')
+check('indoril rank', goals['indoril'].get('rank'), 10)
+check('ja_natta faction id', goals['ja_natta_syndicate'].get('faction'), 'T_Mw_JaNattaSyndicate')
+check('ja_natta rank', goals['ja_natta_syndicate'].get('rank'), 10)
+check('no unverified TR goal', opts.UNVERIFIED_GOALS, ())
+check('TR main completion stage 200', gqf.STAGE_OVERRIDES.get('tr_necmq_3'), 200)
+check('TR main only success stage', gqf.STAGES_OVERRIDES.get('tr_necmq_3'), [200])
+check('TR main softlocks are failures', gqf.FAIL_STAGES.get('tr_necmq_3'), [190, 195, 199])
+check('TR alternate completion (Troubles on the Road)',
+      gqf.STAGES_OVERRIDES.get('tr_m4_bal0_troubles_a'), [200])
+check('TR alternate completion main stage',
+      gqf.STAGE_OVERRIDES.get('tr_m4_bal0_troubles_a'), 200)
+check('TR failure-only journals', gqf.FAIL_ONLY,
+      {'tr_m1_fw_ic6_lorefail': [300], 'tr_m3_aim_dreugh1b': [200, 250]})
+check('a failure-only journal is never a completion',
+      any(q in gqf.STAGES_OVERRIDES or q in gqf.STAGE_OVERRIDES for q in gqf.FAIL_ONLY), False)
 
 # ---- classification (IDs confirmed on UESP) -----------------------------------
 cats = {'main': {'tr_m1_fm_x'}, 'main_prefixes': (), 'daedric': {'tr_m1_da_y'}, 'daedric_prefixes': (),

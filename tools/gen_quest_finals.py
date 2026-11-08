@@ -13,8 +13,10 @@ neither a dialogue (Journal filter) nor a script (GetJournalIndex) uses as a
 condition has no follow-up: it is a possible ending (candidate). The
 quest_finish stages are added if they exist (tes3conv does not always export
 them), then known failure stages are removed. As a fallback, we take the
-highest Journal stage (< 150). Overrides fix known branches. Automatically
-added stages are listed in quest_review.txt.
+highest Journal stage (< 150: vanilla convention; a quest whose real ending
+is above that must be listed in STAGES_OVERRIDES, as Foul Murder is).
+Overrides fix known branches. Automatically added stages are listed in
+quest_review.txt.
 
 Usage:
   tes3conv Morrowind.esm morrowind.json
@@ -52,6 +54,11 @@ STAGE_OVERRIDES = {
     'eb_invisible': 120,
     'mv_cultistvictim': 100,
     'mv_3_charming': 90,
+    # Tamriel Rebuilt: Foul Murder only succeeds at stage 200. The automatic
+    # "< 150" cap would stop at 110 (a dialogue branch, not an ending).
+    'tr_necmq_3': 200,
+    # Troubles on the Road: alternate ending, report to Yan-Ahhe (stage 200).
+    'tr_m4_bal0_troubles_a': 200,
 }
 
 # COMPLETE list of completion stages, when the automatic deduction
@@ -60,6 +67,23 @@ STAGE_OVERRIDES = {
 # the quest; 140 is only a follow-up at Pelagiad, often never reached.
 STAGES_OVERRIDES = {
     'mv_3_charming': [90, 100, 120, 130],
+    # Tamriel Rebuilt (Foul Murder). These journals are dialogue branches:
+    # only one of their stages is reached per playthrough, so every branch is
+    # a valid completion. They are above the default "< 150" cap, which is
+    # why they need explicit overrides.
+    'tr_necmq_2': [60, 65],                       # summon or refuse
+    'tr_necmq_2path': [35, 75],                   # Simine or Alvu ritual
+    'tr_necmq_3': [200],                          # keep the truth (success)
+    'tr_necmq_3death': [115, 120, 125, 130, 135],
+    'tr_necmq_3moment': [140, 145, 150, 155],
+    'tr_necmq_3tribunal': [160, 165, 170, 175, 180, 185],
+    # Ringlets: give it to Simine or to Alvu.
+    'tr_necmq_destroyer': [110, 115],
+    'tr_necmq_madman': [55, 70],
+    'tr_necmq_outcast': [35, 40],
+    'tr_necmq_schemer': [60, 75],
+    # Troubles on the Road: alternate ending (report to Yan-Ahhe, stage 200).
+    'tr_m4_bal0_troubles_a': [200],
 }
 
 # Stages to add to the automatic deduction (endings not flagged quest_finish).
@@ -116,6 +140,24 @@ FAIL_STAGES = {
     'mv_fakeslave': [90],       # Tul dies on the way
     'mv_poorpilgrim': [110],    # time ran out
     'mv_richtrader': [110],     # the merchant dies
+    # Foul Murder: Simine (190) or Alvu (195) dies; 199 is the resulting
+    # softlock marker. None of them may validate the main quest.
+    'tr_necmq_3': [190, 195, 199],
+}
+
+# Journals that only contain failure entries (no successful ending). They must
+# never become an Archipelago check: the mod would watch a journal that can
+# only report a failure. The generator writes stage 0 / stages [] /
+# fail_only: true, and does NOT report them as unknown. The failure stages are
+# kept for documentation (they can never complete the quest anyway).
+FAIL_ONLY = {
+    # Imperial Cult: The Star Wound. Alternate failure journal set by
+    # TR_m1_IC6_Wisemomanscript when the wise woman dies; the successful
+    # journal is tr_m1_fw_ic6_lore.
+    'tr_m1_fw_ic6_lorefail': [300],
+    # Finding Jelyn the Sailor. Alternate failure journal: caught in the cargo
+    # hold (200) or expelled by Captain Obedur (250).
+    'tr_m3_aim_dreugh1b': [200, 250],
 }
 
 PAT_QUOTED = re.compile(r'(?<!Get)Journal\s*,?\s*"([^"]+)"\s*,?\s*(\d+)', re.I)
@@ -321,6 +363,20 @@ def main():
     overrides = load_overrides(pathlib.Path(args.qc).parent / 'quest_groups_override.yaml')
     rows, review, unknown = [], [], []
     for qid in sorted(ids):
+        if qid in FAIL_ONLY:
+            # Failure-only journal: no check may be created (see FAIL_ONLY).
+            row = dict(existing.get(qid) or {})
+            row['quest'] = qid
+            row['stage'] = 0
+            row['stages'] = []
+            row['fail'] = sorted(set(FAIL_STAGES.get(qid, [])) | set(FAIL_ONLY[qid]))
+            row['ids'] = ids[qid]
+            row['group'] = classify(qid, overrides)
+            row['fail_only'] = True
+            row.pop('unknown', None)
+            rows.append(row)
+            continue
+
         raw = sorted(s for s in D.stages.get(qid, set()) if s < 150)
         fin = set(s for s in D.finishes.get(qid, set()) if s < 150)
         if not args.no_auto:
@@ -330,6 +386,7 @@ def main():
 
         if qid in existing:
             row = dict(existing[qid])
+            row.pop('fail_only', None)  # only FAIL_ONLY journals are failure-only
             fail = sorted(set(row.get('fail') or []) | set(FAIL_STAGES.get(qid, [])))
             known = None if args.recompute else row.get('stage')
             if known is not None and known <= 0:

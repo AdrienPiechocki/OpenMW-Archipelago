@@ -57,16 +57,19 @@ bloodmoon:
   quests:
     - {quest: bm_wildhunt, stage: 100}            # Hircine's Hunt: the Hunter is defeated
 # Tamriel Rebuilt (TR_Mainland.esm + Tamriel_Data.esm required).
-# Main quest: only a goal if main_quest AND tamriel_rebuilt_main_quest are enabled. Goal =
-# ALL quests of group tr_main done (journals listed in data/tr_categories.yaml, Foul Murder).
+# Main quest (Foul Murder): only a goal if main_quest AND tamriel_rebuilt_main_quest are enabled.
+# The quest line is TR_NecMQ_1 -> (TR_NecMQ_2 or TR_NecMQ_2Path) -> ringlets -> TR_NecMQ_3.
+# TR_NecMQ_3 stage 200 is the only successful resolution: stages 190/195 are the
+# Simine/Alvu-death softlocks. The intermediate journals are mutually exclusive
+# branches, so requiring the whole tr_main group (as before) was impossible.
 tamriel_rebuilt_main:
-  group: tr_main
-# TO VERIFY against the ESM (python tools/list_tr.py tr_mainland.json --factions): faction id
-# (lowercase) and rank count. UESP lists no completed House Indoril questline in the released TR:
-# if the faction has no ranks to climb, this goal can never be reached.
+  quests:
+    - {quest: tr_necmq_3, stage: 200}             # keep the truth about Nerevar
+# Faction ids/ranks verified in Tamriel_Data.esm (build/tamriel_data.json):
+# T_Mw_HouseIndoril and T_Mw_JaNattaSyndicate, 10 ranks each (rank 10 = leader).
 indoril:
-  faction: t_mw_houseindoril                      # TO VERIFY
-  rank: 10                                        # TO VERIFY
+  faction: T_Mw_HouseIndoril
+  rank: 10                                        # High Councilor
 ja_natta_syndicate:
-  faction: t_mw_janattasyndicate                  # TO VERIFY
-  rank: 10                                        # TO VERIFY (leader rank)
+  faction: T_Mw_JaNattaSyndicate
+  rank: 10                                        # Boss

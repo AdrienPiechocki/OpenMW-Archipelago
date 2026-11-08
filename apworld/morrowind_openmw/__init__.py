@@ -43,8 +43,9 @@ class MorrowindWorld(World):
                 "guild, a faction, daedric_quests: true, tribunal_main_quest: true or "
                 "bloodmoon_main_quest: true (or re-enable main_quest).")
         goals = selected_goals(self.options)
-        # TR main quest goal = completion of ALL quests of the tr_main group:
-        # without data for this group the goal could never be reached.
+        # TR main quest goal = TR_NecMQ_3 stage 200 (see data/goals.yaml). The
+        # tr_main group still supplies the checks: without that data the goal
+        # and its checks could never be reached.
         if TR_MAIN_GOAL in goals and not any(d.group == "tr_main" for d in location_table.values()):
             raise OptionError(
                 f"Morrowind OpenMW ({self.player_name}): tamriel_rebuilt_main_quest is enabled "

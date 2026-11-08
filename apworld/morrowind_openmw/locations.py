@@ -54,10 +54,16 @@ except Exception:
         with open(_p, encoding='utf-8') as f:
             _qf_text = f.read()
 risky_quests = set()
+no_completion_quests = set()
 if yaml is not None and _qf_text:
     for _q in yaml.safe_load(_qf_text) or []:
-        if _q.get('fail'):
-            risky_quests.add(str(_q['quest']).lower())
+        _qid = str(_q.get('quest', '')).lower()
+        if _q.get('fail') and not _q.get('fail_only'):
+            risky_quests.add(_qid)
+        # Failure-only journal (or no completion stage at all): the check can
+        # never fire, so it must not become a dead location.
+        if _q.get('fail_only') or int(_q.get('stage') or 0) <= 0:
+            no_completion_quests.add(_qid)
 
 
 def _goal_quest_can_create(options, g):
@@ -76,7 +82,11 @@ if yaml is not None and _qc_text:
         code = q.get('id')
         region = q.get('region') or 'Seyda Neen'
         group = q.get('group', 'misc')
-        risky = str((q.get('trigger') or {}).get('quest', '')).lower() in risky_quests
+        qid = str((q.get('trigger') or {}).get('quest', '')).lower()
+        if qid in no_completion_quests:
+            # Failure-only journal / no successful stage: no check, no location.
+            continue
+        risky = qid in risky_quests
         if group == 'misc':
             # A misc quest with a failure branch can make its check impossible:
             # never put an important item on it (otherwise the seed is unbeatable).

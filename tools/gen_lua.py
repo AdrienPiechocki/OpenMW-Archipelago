@@ -11,6 +11,10 @@ def gen_quest_completions(qc_path, out_path):
         for q in data:
             qid = str(q['quest']).replace("'", "\\'").lower()
             stage = int(q.get('stage', 0))
+            # Failure-only journals (or no completion at all): no check can
+            # ever fire, so never expose them to the mod.
+            if q.get('fail_only') or stage <= 0:
+                continue
             fail = q.get('fail') or []
             group = q.get('group', 'misc')
             # All groups keep their ids: the mod only sends those of goal

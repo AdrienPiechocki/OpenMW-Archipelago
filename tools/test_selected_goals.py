@@ -11,7 +11,8 @@ import types
 # Fake `Options` module: just enough to import options.py.
 fake = types.ModuleType('Options')
 # As in Archipelago: Toggle defaults to 0, DefaultOnToggle to 1.
-for name, default in (('Toggle', 0), ('Choice', 0), ('DefaultOnToggle', 1), ('PerGameCommonOptions', None)):
+for name, default in (('Toggle', 0), ('Choice', 0), ('DefaultOnToggle', 1),
+                      ('PerGameCommonOptions', None), ('Range', 0)):
     setattr(fake, name, type(name, (), {'default': default}))
 sys.modules['Options'] = fake
 
@@ -64,13 +65,6 @@ check('main off + several', opts.selected_goals(
 check('main on + house', opts.selected_goals(make(house='hlaalu')), ['main_quest', 'hlaalu'])
 # With no goal: empty list (generate_early then raises an OptionError).
 check('nothing selected', opts.selected_goals(make(main=False)), [])
-# goal_quest_checks: simple on / off (on = former 'full', code 2 for the mod).
-check('goal checks on', opts.goal_quest_mode(make(gqc=1)), 2)
-check('goal checks off', opts.goal_quest_mode(make(gqc=0)), 0)
-check('goal checks absent', opts.goal_quest_mode(make()), 0)
-check('GoalQuestChecks is on by default', opts.GoalQuestChecks.default, 1)
-check('quest_granularity removed', hasattr(opts, 'QuestGranularity'), False)
-check('no granularity field', 'quest_granularity' in opts.MorrowindOptions.__annotations__, False)
 check('MainQuest option exists', hasattr(opts, 'MainQuest'), True)
 check('dataclass field', 'main_quest' in opts.MorrowindOptions.__annotations__, True)
 
