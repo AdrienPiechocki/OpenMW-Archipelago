@@ -6,7 +6,8 @@ except Exception:
 
 from BaseClasses import Location
 from typing import NamedTuple, Callable, Dict
-from .options import MorrowindOptions, selected_goals, goal_of_group, selected_expansion_groups, EXPANSION_GROUPS
+from .options import (MorrowindOptions, selected_goals, goal_of_group, selected_expansion_groups,
+                      selected_tr_groups, EXPANSION_GROUPS, TR_GROUPS)
 
 
 class MorrowindLocation(Location):
@@ -92,6 +93,17 @@ if yaml is not None and _qc_text:
             location_table[name] = MorrowindLocationData(
                 region=region, code=code, group=group,
                 can_create=lambda options, g=group: g in selected_expansion_groups(options),
+                excluded=lambda options, r=risky: r,
+            )
+        elif group in TR_GROUPS:
+            # Tamriel Rebuilt quests (tr_main, tr_side, tr_daedric, tr_<faction>):
+            # created only if their group is enabled by the tamriel_rebuilt_*
+            # options (selected_tr_groups also checks the matching goal).
+            # Same safety rule: a quest with a failure branch never holds an
+            # important item.
+            location_table[name] = MorrowindLocationData(
+                region=region, code=code, group=group,
+                can_create=lambda options, g=group: g in selected_tr_groups(options),
                 excluded=lambda options, r=risky: r,
             )
         else:

@@ -5,7 +5,8 @@ Usage:
   tes3conv Morrowind.esm morrowind.json
   tes3conv Tribunal.esm  tribunal.json     # optional
   tes3conv Bloodmoon.esm bloodmoon.json    # optional
-  python tools/extract.py morrowind.json [tribunal.json bloodmoon.json] --out data/
+  tes3conv TR_Mainland.esm tr_mainland.json  # optional (Tamriel Rebuilt)
+  python tools/extract.py morrowind.json [tribunal.json bloodmoon.json tr_mainland.json] --out data/
 
 Fixes:
   * Journal calls WITHOUT quotes (`Journal MG_Apprentice 10`) are now
@@ -27,7 +28,7 @@ import sys
 import yaml
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from quest_groups import classify, load_overrides  # noqa: E402
+from quest_groups import classify, load_overrides, TR_GROUPS  # noqa: E402
 from quest_names import load_names, quest_name, unique_names  # noqa: E402
 
 PAT_QUOTED = re.compile(r'(?<![A-Za-z])Journal[ \t]*,?[ \t]*"([^"\r\n]+)"[ \t]*,?[ \t]*(\d+)', re.I)
@@ -69,11 +70,13 @@ def load_records(paths):
 
 
 def origin_of(path):
-    """ESM a JSON dump comes from: morrowind | tribunal | bloodmoon."""
+    """ESM a JSON dump comes from: morrowind | tribunal | bloodmoon | tamriel_rebuilt."""
     name = pathlib.Path(path).name.lower()
     for key in ('tribunal', 'bloodmoon'):
         if key in name:
             return key
+    if 'tr_mainland' in name or 'tamriel_rebuilt' in name:
+        return 'tamriel_rebuilt'
     return 'morrowind'
 
 
@@ -156,11 +159,11 @@ def main():
     origins = scan_origins(args.esm_json)
     if origins:
         dump_yaml(out / 'quest_sources.yaml', dict(sorted(origins.items())))
-        n_t = sum(1 for o in origins.values() if o == 'tribunal')
-        print(f'quest origins: {n_t} Tribunal, {len(origins) - n_t} Bloodmoon -> quest_sources.yaml')
+        counts = {o: sum(1 for x in origins.values() if x == o) for o in sorted(set(origins.values()))}
+        print('quest origins: ' + ', '.join(f'{n} {o}' for o, n in counts.items()) + ' -> quest_sources.yaml')
     elif len(args.esm_json) > 1:
         print('WARNING: no journal defined by an expansion found '
-              '(the JSON file names must contain "tribunal" / "bloodmoon")')
+              '(the JSON file names must contain "tribunal" / "bloodmoon" / "tr_mainland")')
 
     # ---- factions ---------------------------------------------------------
     factions, seen = [], set()
@@ -179,11 +182,17 @@ def main():
     have = {(str(q['trigger']['quest']).lower(), int(q['trigger']['stage'])) for q in quests}
     nxt = next_id_factory([q['id'] for q in quests], STAGE_BASE, STAGE_LIMIT)
     n_before = len(quests)
+    n_tr_skipped = 0
     for qid in sorted(pairs):
         for stage in sorted(pairs[qid]):
             if (qid, stage) in have:
                 continue
             display = names[qid]
+            # quests.yaml (one row per stage) is a legacy file used by neither the apworld nor
+            # the mod. Tamriel Rebuilt has too many stages for its 10000-ID range: skipped.
+            if classify(display, overrides) in TR_GROUPS:
+                n_tr_skipped += 1
+                continue
             quests.append({
                 'id': nxt(),
                 'name': f'{display} (stage {stage})',
@@ -193,7 +202,7 @@ def main():
                 'region': 'Seyda Neen',
             })
     dump_yaml(out / 'quests.yaml', quests)
-    print(f'quests (stages): {len(quests)} (+{len(quests) - n_before})')
+    print(f'quests (stages): {len(quests)} (+{len(quests) - n_before}); {n_tr_skipped} Tamriel Rebuilt stages skipped (unused)')
 
     comps = load_yaml(out / 'quest_completions.yaml')
     name_map_path = out / 'quest_names.yaml'

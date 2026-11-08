@@ -16,6 +16,7 @@ Archipelago mod to play Morrowind under OpenMW as an Archipelago world.
   journal IDs are extracted from `Morrowind.esm`; a mod that adds a quest, moves a stage or
   changes the ending of an existing quest can prevent the corresponding check from triggering
   or skew the objective.
+- **Tamriel Rebuilt: optional** (`tamriel_rebuilt_*` options, see below).
 - **Tribunal / Bloodmoon: optional** (`tribunal_*` / `bloodmoon_*` options, see below).
 - **Mods that modify gameplay: compatible**, as long as they do not touch the quest journal
   (balancing, items, magic, travel, UI, etc.). For example
@@ -69,9 +70,9 @@ The default objective is the **main quest** (death of Dagoth Ur). In the player 
 ```yaml
 Morrowind OpenMW:
   main_quest: true             # false = the main quest is no longer an objective
-  great_house: hlaalu          # none | hlaalu | redoran | telvanni
+  great_house: hlaalu          # none | hlaalu | redoran | telvanni | indoril (Tamriel Rebuilt)
   guild: mages_guild           # none | fighters_guild | mages_guild | thieves_guild
-  faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company
+  faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company | ja_natta_syndicate
   daedric_quests: true         # adds the 7 Daedric quests to the objective
   traps: true                  # false = no trap items in the pool
   starting_level: 1            # 1-40: starting level and bonus (see below)
@@ -190,6 +191,47 @@ until it is received, the mod resets the quest's journal to zero (log `AP: locke
 ...`), so it can neither advance nor be completed. The 7 items are progression, required for
 victory. If the log shows `unable to lock`, the OpenMW API in your version does not allow
 modifying `quest.stage` from the player script.
+
+## Tamriel Rebuilt (`tamriel_rebuilt_*` options)
+
+Requires `Tamriel_Data.esm` and `TR_Mainland.esm` in `openmw.cfg`. All options are disabled by
+default; a disabled option means no location, no goal, and the mod ignores those quests.
+
+| Option | Effect |
+|---|---|
+| `tamriel_rebuilt_main_quest` | The TR main quest (*Foul Murder*, epilogue of the Morrowind main quest) is added to the main quest goal: checks **and** it must be completed to win. Ignored if `main_quest: false` |
+| `tamriel_rebuilt_side_quests` | Checks for the TR miscellaneous quests (never a goal) |
+| `tamriel_rebuilt_factions` | Checks for the TR quests of the `great_house` / `guild` / `faction` you chose (unchosen ones are ignored). They require the quest items of that goal, like the vanilla quests of the same faction |
+| `tamriel_rebuilt_daedric_quests` | Checks for the TR Daedric quests, added to the Daedric goal. Ignored if `daedric_quests: false`. They are **not** locked by AP items |
+
+New choices: `great_house: indoril` and `faction: ja_natta_syndicate` (`ja-natta_syndicate` is also
+accepted). Goal: rank 10 (`data/goals.yaml`, entries `indoril` and `ja_natta_syndicate`).
+
+**Status: data still to generate.** TR quests are not shipped in `data/`: IDs come from the ESM.
+
+```sh
+tes3conv Tamriel_Data.esm tamriel_data.json
+tes3conv TR_Mainland.esm  tr_mainland.json     # the file name must contain "tr_mainland"
+python tools/extract.py morrowind.json tribunal.json bloodmoon.json tr_mainland.json --out data/
+# then gen_quest_finals.py / classify_quests.py / gen_lua.py / install_apworld.py as above
+python tools/list_tr.py tr_mainland.json --factions --grep indoril   # faction id + ranks
+python tools/list_tr.py tr_mainland.json --journals                  # check the groups
+```
+
+1. **Classification.** A journal `TR_m<N>_...` is a TR quest. Its group (`tools/quest_groups.py`):
+   `tr_main` / `tr_daedric` (IDs listed in `data/tr_categories.yaml`), `tr_<faction>` (faction token
+   in the ID: `HH` Hlaalu, `HT` Telvanni, `TT` Temple, `JNS` Ja-Natta confirmed on UESP; `HR`, `FG`,
+   `MG`, `TG`, `IL`, `IC`, `MT` assumed), else `tr_side`. Fill `main` (Foul Murder) and `daedric`
+   in `data/tr_categories.yaml`: until then, `tamriel_rebuilt_main_quest: true` stops generation
+   with an error (no data for the goal).
+2. **Goals to verify.** `indoril` / `ja_natta_syndicate` in `data/goals.yaml` use guessed faction
+   ids (`t_mw_houseindoril`, `t_mw_janattasyndicate`) and rank 10: check them with `list_tr.py
+   --factions`. UESP lists no Indoril questline in the released TR (only Hlaalu, Redoran, Telvanni):
+   if the faction has no ranks to climb, `great_house: indoril` cannot be won. Generation logs a
+   warning for these two goals.
+3. No TR quest item is provided by Archipelago (like Tribunal).
+
+Tests: `python3 tools/test_tamriel_rebuilt.py`.
 
 ## Quest items given by Archipelago
 

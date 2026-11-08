@@ -6,6 +6,7 @@ data/*
 !data/quest_groups_override.yaml
 !data/expansion_categories.yaml
 !data/quest_exclusive.yaml
+!data/tr_categories.yaml
 tools/__pycache__/*
 bridge/__pycache__/*
 apworld/morrowind_openmw/data/*

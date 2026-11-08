@@ -4,9 +4,11 @@ from Options import OptionError
 from .items import MorrowindItem, item_table, item_name_groups, quest_item_names
 from .locations import MorrowindLocation, location_table
 from .regions import region_table
-from .options import MorrowindOptions, selected_goals, goal_of_group, is_free_group, selected_expansions, selected_expansion_groups
+from .options import (MorrowindOptions, selected_goals, goal_of_group, is_free_group, selected_expansions,
+                      selected_expansion_groups, selected_tr_groups, TR_MAIN_GOAL, UNVERIFIED_GOALS)
 from .rules import set_rules
 from typing import Dict, Any
+import logging
 
 
 class MorrowindWebWorld(WebWorld):
@@ -40,6 +42,20 @@ class MorrowindWorld(World):
                 "main_quest is disabled: choose at least one great house, a "
                 "guild, a faction, daedric_quests: true, tribunal_main_quest: true or "
                 "bloodmoon_main_quest: true (or re-enable main_quest).")
+        goals = selected_goals(self.options)
+        # TR main quest goal = completion of ALL quests of the tr_main group:
+        # without data for this group the goal could never be reached.
+        if TR_MAIN_GOAL in goals and not any(d.group == "tr_main" for d in location_table.values()):
+            raise OptionError(
+                f"Morrowind OpenMW ({self.player_name}): tamriel_rebuilt_main_quest is enabled "
+                "but the apworld contains no Tamriel Rebuilt main quest data. Generate it first "
+                "(README, section Tamriel Rebuilt) or disable tamriel_rebuilt_main_quest.")
+        unverified = [g for g in goals if g in UNVERIFIED_GOALS]
+        if unverified:
+            logging.warning(
+                "Morrowind OpenMW (%s): goal(s) %s use faction id / rank not yet confirmed "
+                "against TR_Mainland.esm (python tools/list_tr.py --factions); if they are "
+                "wrong, the seed cannot be completed in game.", self.player_name, ", ".join(unverified))
 
     def create_item(self, name: str) -> MorrowindItem:
         data = item_table[name]
@@ -153,9 +169,17 @@ class MorrowindWorld(World):
                 "starting_level": int(self.options.starting_level.value),
                 # Enabled expansion groups (tribunal_main, bloodmoon_side...): the
                 # mod only sends the checks of the quests in these groups.
-                "expansion_groups": selected_expansion_groups(self.options),
+                # Tamriel Rebuilt groups (tr_main, tr_side, tr_<faction>...) are
+                # sent through the same channel: the mod checks only enabled groups.
+                "expansion_groups": selected_expansion_groups(self.options) + selected_tr_groups(self.options),
                 # Expansions with at least one enabled group (informational).
                 "expansions": selected_expansions(self.options),
+                "tamriel_rebuilt": {
+                    "main_quest": TR_MAIN_GOAL in goals,
+                    "side_quests": bool(self.options.tamriel_rebuilt_side_quests.value),
+                    "factions": bool(self.options.tamriel_rebuilt_factions.value),
+                    "daedric_quests": bool(self.options.tamriel_rebuilt_daedric_quests.value),
+                },
                 "death_link": bool(getattr(self.options.death_link, "value", self.options.death_link)),
                 "goal_quest_checks": 1,
             },

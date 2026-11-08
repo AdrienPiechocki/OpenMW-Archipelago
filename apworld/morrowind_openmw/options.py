@@ -12,12 +12,15 @@ class MainQuest(DefaultOnToggle):
 
 class GreatHouse(Choice):
     """Great House to complete IN ADDITION to the main quest if it is enabled
-    (become leader, rank 10). Its quest items are provided by Archipelago."""
+    (become leader, rank 10). Its quest items are provided by Archipelago.
+    indoril is the Tamriel Rebuilt house (TR_Mainland.esm required)."""
     display_name = "Great House"
     option_none = 0
     option_hlaalu = 1
     option_redoran = 2
     option_telvanni = 3
+    # Tamriel Rebuilt (TR_Mainland.esm + Tamriel_Data.esm required in OpenMW).
+    option_indoril = 4
     default = 0
 
 
@@ -37,7 +40,8 @@ class Faction(Choice):
     """Faction to complete IN ADDITION to the main quest if it is enabled
     (become leader, rank 10).
     Its quest items are provided by Archipelago. east_empire_company is the
-    Bloodmoon faction (rank Factor): it requires Bloodmoon.esm in OpenMW."""
+    Bloodmoon faction (rank Factor): it requires Bloodmoon.esm in OpenMW.
+    ja_natta_syndicate is a Tamriel Rebuilt faction (TR_Mainland.esm)."""
     display_name = "Faction"
     option_none = 0
     option_imperial_cult = 1
@@ -45,6 +49,10 @@ class Faction(Choice):
     option_temple = 3
     option_morag_tong = 4
     option_east_empire_company = 5
+    # Tamriel Rebuilt faction (TR_Mainland.esm + Tamriel_Data.esm required).
+    option_ja_natta_syndicate = 6
+    # Accepted spelling in player YAMLs: `faction: ja-natta_syndicate`.
+    locals()["alias_ja-natta_syndicate"] = 6
     default = 0
 
 
@@ -98,6 +106,37 @@ class BloodmoonSideQuests(Toggle):
     default = False
 
 
+class TamrielRebuiltMainQuest(Toggle):
+    """Tamriel Rebuilt: add the TR main quest (Foul Murder, epilogue of the
+    Morrowind main quest) to the main quest goal. Only effective if
+    main_quest is enabled. Gives checks AND must be completed to win.
+    Requires TR_Mainland.esm and Tamriel_Data.esm in OpenMW."""
+    display_name = "Tamriel Rebuilt: Main Quest"
+    default = False
+
+
+class TamrielRebuiltSideQuests(Toggle):
+    """Tamriel Rebuilt: the miscellaneous quests of TR (neither main,
+    faction nor Daedric quests) give a check. Never a goal."""
+    display_name = "Tamriel Rebuilt: Side Quests"
+    default = False
+
+
+class TamrielRebuiltFactions(Toggle):
+    """Tamriel Rebuilt: the TR quests of the great house / guild / faction
+    chosen in great_house, guild and faction give checks (they are part of
+    that goal's checks). TR quests of unchosen factions are ignored."""
+    display_name = "Tamriel Rebuilt: Factions"
+    default = False
+
+
+class TamrielRebuiltDaedricQuests(Toggle):
+    """Tamriel Rebuilt: the TR Daedric quests give checks and are added to
+    the Daedric goal. Only effective if daedric_quests is enabled."""
+    display_name = "Tamriel Rebuilt: Daedric Quests"
+    default = False
+
+
 class Traps(DefaultOnToggle):
     """Include trap items (Damage, Bounty, Summon Scamp, Steal Gold) in the
     item pool. Disabled: no trap is generated, they are replaced by filler."""
@@ -121,6 +160,10 @@ class MorrowindOptions(PerGameCommonOptions):
     tribunal_side_quests: TribunalSideQuests = TribunalSideQuests.default
     bloodmoon_main_quest: BloodmoonMainQuest = BloodmoonMainQuest.default
     bloodmoon_side_quests: BloodmoonSideQuests = BloodmoonSideQuests.default
+    tamriel_rebuilt_main_quest: TamrielRebuiltMainQuest = TamrielRebuiltMainQuest.default
+    tamriel_rebuilt_side_quests: TamrielRebuiltSideQuests = TamrielRebuiltSideQuests.default
+    tamriel_rebuilt_factions: TamrielRebuiltFactions = TamrielRebuiltFactions.default
+    tamriel_rebuilt_daedric_quests: TamrielRebuiltDaedricQuests = TamrielRebuiltDaedricQuests.default
     traps: Traps = Traps.default
     death_link: DeathLink = DeathLink.default
 
@@ -143,12 +186,34 @@ def selected_goals(options) -> list:
     for exp in EXPANSIONS:
         if _enabled(options, f"{exp}_main_quest"):
             goals.append(exp)
+    # Tamriel Rebuilt main quest: only integrated into the main quest goal.
+    if "main_quest" in goals and _enabled(options, "tamriel_rebuilt_main_quest"):
+        goals.append(TR_MAIN_GOAL)
     return goals
 
 
 # Quest group (tools/quest_groups.py) -> goal key (data/goals.yaml).
 # House / guild / faction groups carry the name of their goal.
 GROUP_GOALS = {"main": "main_quest", "daedric": "daedric_quests"}
+
+# Tamriel Rebuilt (TR_Mainland.esm). Each TR quest belongs to ONE group:
+#   tr_main      main quest (Foul Murder) -> goal TR_MAIN_GOAL, only with main_quest
+#   tr_daedric   TR Daedric quests        -> goal daedric_quests
+#   tr_<faction> TR quests of a house / guild / faction -> goal <faction>
+#   tr_side      everything else          -> free checks
+# Must stay in sync with tools/quest_groups.py (checked by tools/test_tamriel_rebuilt.py).
+TR_MAIN_GOAL = "tamriel_rebuilt_main"
+TR_FACTION_KEYS = (
+    "hlaalu", "redoran", "telvanni", "indoril",
+    "fighters_guild", "mages_guild", "thieves_guild",
+    "imperial_cult", "imperial_legion", "temple", "morag_tong",
+    "ja_natta_syndicate",
+)
+TR_GROUPS = ("tr_main", "tr_side", "tr_daedric") + tuple(f"tr_{k}" for k in TR_FACTION_KEYS)
+
+# Goals whose game data (faction id / rank) are not confirmed against the TR ESM:
+# generation logs a warning (tools/list_tr.py --factions to check them).
+UNVERIFIED_GOALS = ("indoril", "ja_natta_syndicate")
 
 
 # Expansions and their quest categories (the East Empire Company faction is not
@@ -161,7 +226,7 @@ EXPANSION_GROUPS = tuple(f"{e}_{c}" for e in EXPANSIONS for c in EXPANSION_CATEG
 
 # Quest groups that give checks without being a goal: Miscellaneous quests
 # (always) and expansion quests (if the option of their group is enabled).
-FREE_GROUPS = ("misc",) + EXPANSION_GROUPS
+FREE_GROUPS = ("misc", "tr_side") + EXPANSION_GROUPS
 
 
 def _enabled(options, name) -> bool:
@@ -185,7 +250,28 @@ def selected_expansions(options) -> list:
     return [e for e in EXPANSIONS if any(g.startswith(e + "_") for g in groups)]
 
 
+def selected_tr_groups(options) -> list:
+    """Enabled Tamriel Rebuilt groups, e.g. ["tr_side", "tr_hlaalu"]."""
+    goals = selected_goals(options)
+    out = []
+    if _enabled(options, "tamriel_rebuilt_side_quests"):
+        out.append("tr_side")
+    if TR_MAIN_GOAL in goals:
+        out.append("tr_main")
+    if "daedric_quests" in goals and _enabled(options, "tamriel_rebuilt_daedric_quests"):
+        out.append("tr_daedric")
+    if _enabled(options, "tamriel_rebuilt_factions"):
+        out += [f"tr_{g}" for g in goals if g in TR_FACTION_KEYS]
+    return out
+
+
 def goal_of_group(group: str) -> str:
+    if group == "tr_main":
+        return TR_MAIN_GOAL
+    if group == "tr_daedric":
+        return "daedric_quests"
+    if group.startswith("tr_") and group[3:] in TR_FACTION_KEYS:
+        return group[3:]
     return GROUP_GOALS.get(group, group)
 
 class HintCost(Range):

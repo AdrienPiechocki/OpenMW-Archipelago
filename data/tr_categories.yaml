@@ -1,0 +1,23 @@
+# Category of the Tamriel Rebuilt quests (journal IDs, lowercase). Used by
+# tools/quest_groups.py for every journal DEFINED by TR_Mainland.esm
+# (data/quest_sources.yaml) or whose ID matches ^tr_m<N>_ .
+#   1. listed under main / starting with main_prefixes      -> tr_main
+#   2. listed under daedric / starting with daedric_prefixes -> tr_daedric
+#   3. a faction token in TR_m<N>_[<place>_]<TOKEN>_*        -> tr_<faction>
+#   4. everything else                                       -> tr_side
+# TO FILL IN from the ESM (python tools/list_tr.py tr_mainland.json --journals):
+#   - the Foul Murder journals (UESP "Tamriel Rebuilt:Foul Murder"),
+#   - the Daedric quest journals (UESP lists none yet in the released TR),
+#   - the token of House Indoril, if TR has a questline for it (none listed on UESP).
+# Tokens confirmed on UESP: hh, ht, tt, jns. The others (hr, fg, mg, tg, il, ic, mt) follow
+# the same naming but are NOT confirmed.
+# After editing: python tools/classify_quests.py && python tools/gen_lua.py
+# Foul Murder = TR_NecMQ_* (12 journals, seen in the install.sh output).
+main: []
+main_prefixes: [tr_necmq_]
+# Daedric Prince quests: TR_m1_DA_Clavicus / Sanguine, TR_m7_DA_Meridia / Namira (+ TR_m7_DA_Nam_* steps).
+# NB: TR_m3_OE_DA_* (Duke Affair) is NOT Daedric: do not use a generic "_da_" token.
+daedric: []
+daedric_prefixes: [tr_m1_da_, tr_m7_da_]
+faction_tokens:
+  hi: indoril           # TR_m3_HI_* (Gorne, Beroth, Nanaav, Roa Dyr, Ilvi, Sandil, MQ1)

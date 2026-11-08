@@ -5,7 +5,8 @@ Groups: main, hlaalu, redoran, telvanni, fighters_guild, mages_guild,
 thieves_guild, imperial_legion, imperial_cult, temple, morag_tong, vampire,
 daedric, east_empire, faction_rules, non_quest, misc, plus the
 expansion groups <expansion>_<category> (tribunal_main, tribunal_side,
-bloodmoon_main, bloodmoon_side) and east_empire_company (the only Bloodmoon
+bloodmoon_main, bloodmoon_side), the Tamriel Rebuilt groups (tr_main, tr_side,
+tr_daedric, tr_<faction>) and east_empire_company (the only Bloodmoon
 faction: goal group of the `faction` option).
 
 Only 'misc' (Miscellaneous) quests give checks (Archipelago locations), plus
@@ -52,19 +53,76 @@ PREFIX_RULES = [
     ('morag_tong',      r'^mt_'),
     ('vampire',         r'^va_'),
     ('daedric',         r'^da_'),
+    ('tamriel_rebuilt', r'^tr_m\d+[a-z]?_'),   # TR journals (TR_m3_..): BEFORE the Tribunal rule
     ('tribunal',        r'^tr_'),
     ('bloodmoon',       r'^bm_'),
 ]
 PREFIX_RULES = [(g, re.compile(p)) for g, p in PREFIX_RULES]
 
+# Tamriel Rebuilt (TR_Mainland.esm). Keep in sync with apworld/.../options.py.
+TR_FACTION_KEYS = (
+    'hlaalu', 'redoran', 'telvanni', 'indoril',
+    'fighters_guild', 'mages_guild', 'thieves_guild',
+    'imperial_cult', 'imperial_legion', 'temple', 'morag_tong',
+    'ja_natta_syndicate',
+)
+TR_GROUPS = ('tr_main', 'tr_side', 'tr_daedric') + tuple(f'tr_{k}' for k in TR_FACTION_KEYS)
+# Faction token of a TR journal id (TR_m<N>_[<place>_]<TOKEN>_...). CONFIRMED on UESP:
+# hh (TR_m4_HH_Ulvo4), ht (TR_m2_HT_Vaerin_q2), tt (TR_m3_TT_Lloris1), jns (TR_m7_Ns_JNS_7).
+# The others follow the same naming but are NOT confirmed: check with tools/list_tr.py.
+# data/tr_categories.yaml (faction_tokens) completes / overrides this table.
+DEFAULT_TR_TOKENS = {
+    'hh': 'hlaalu', 'ht': 'telvanni', 'tt': 'temple', 'jns': 'ja_natta_syndicate',
+    'hr': 'redoran', 'fg': 'fighters_guild', 'mg': 'mages_guild', 'tg': 'thieves_guild',
+    'il': 'imperial_legion', 'ic': 'imperial_cult', 'mt': 'morag_tong',
+}
+
 EXPANSIONS = ('tribunal', 'bloodmoon')
+ORIGINS = EXPANSIONS + ('tamriel_rebuilt',)
 EXPANSION_CATEGORIES = ('main', 'side')
 EXPANSION_GROUPS = tuple(f'{e}_{c}' for e in EXPANSIONS for c in EXPANSION_CATEGORIES)
-VALID_GROUPS = ({g for g, _ in PREFIX_RULES} | {'misc', 'east_empire_company'} | set(EXPANSIONS) | set(EXPANSION_GROUPS))
+VALID_GROUPS = ({g for g, _ in PREFIX_RULES} | {'misc', 'east_empire_company'} | set(EXPANSIONS) | set(EXPANSION_GROUPS)
+                | set(TR_GROUPS) | {'tamriel_rebuilt'})
 
 _DATA = pathlib.Path(__file__).resolve().parent.parent / 'data'
 DEFAULT_OVERRIDES = _DATA / 'quest_groups_override.yaml'
 DEFAULT_CATEGORIES = _DATA / 'expansion_categories.yaml'
+DEFAULT_TR_CATEGORIES = _DATA / 'tr_categories.yaml'
+
+
+def load_tr_categories(path=None):
+    """data/tr_categories.yaml: {'main': ids, 'main_prefixes': (...), 'daedric': ids,
+    'daedric_prefixes': (...), 'tokens': {token: faction key}} (lowercase)."""
+    p = pathlib.Path(path or DEFAULT_TR_CATEGORIES)
+    d = (yaml.safe_load(p.read_text(encoding='utf-8')) or {}) if p.exists() else {}
+    tokens = dict(DEFAULT_TR_TOKENS)
+    for tok, key in (d.get('faction_tokens') or {}).items():
+        if key not in TR_FACTION_KEYS:
+            raise SystemExit(f'unknown faction in {p}: {tok}: {key} (valid: {list(TR_FACTION_KEYS)})')
+        tokens[str(tok).lower()] = key
+    return {
+        'main': {str(q).lower() for q in (d.get('main') or [])},
+        'main_prefixes': tuple(str(x).lower() for x in (d.get('main_prefixes') or [])),
+        'daedric': {str(q).lower() for q in (d.get('daedric') or [])},
+        'daedric_prefixes': tuple(str(x).lower() for x in (d.get('daedric_prefixes') or [])),
+        'tokens': tokens,
+    }
+
+
+def tr_group(qid, tr_cats=None):
+    """Group of a Tamriel Rebuilt journal: tr_main, tr_daedric, tr_<faction> or tr_side."""
+    q = str(qid).strip().lower()
+    c = tr_cats if tr_cats is not None else load_tr_categories()
+    if q in c['main'] or (c['main_prefixes'] and q.startswith(c['main_prefixes'])):
+        return 'tr_main'
+    if q in c['daedric'] or (c['daedric_prefixes'] and q.startswith(c['daedric_prefixes'])):
+        return 'tr_daedric'
+    # TR_m<N>_<TOKEN>_... or TR_m<N>_<place>_<TOKEN>_...: the token is one of the 2 parts after mN
+    for tok in q.split('_')[2:4]:
+        key = c['tokens'].get(tok)
+        if key:
+            return f'tr_{key}'
+    return 'tr_side'
 
 
 def load_categories(path=None):
@@ -97,8 +155,8 @@ def load_overrides(path=None):
     if src.exists():
         d = yaml.safe_load(src.read_text(encoding='utf-8')) or {}
         for k, v in d.items():
-            if v not in EXPANSIONS:
-                raise SystemExit(f'unknown origin in {src}: {k}: {v} (valid: {list(EXPANSIONS)})')
+            if v not in ORIGINS:
+                raise SystemExit(f'unknown origin in {src}: {k}: {v} (valid: {list(ORIGINS)})')
             out[str(k).lower()] = v
     if p.exists():
         d = yaml.safe_load(p.read_text(encoding='utf-8')) or {}
@@ -109,7 +167,7 @@ def load_overrides(path=None):
     return out
 
 
-def classify(qid, overrides=None, cats=None):
+def classify(qid, overrides=None, cats=None, tr_cats=None):
     q = str(qid).strip().lower()
     group = None
     if overrides and q in overrides:
@@ -121,4 +179,6 @@ def classify(qid, overrides=None, cats=None):
                 break
     if group in EXPANSIONS:              # origin only -> add the category
         return expansion_group(group, q, cats)
+    if group == 'tamriel_rebuilt':       # origin only -> faction / main / daedric / side
+        return tr_group(q, tr_cats)
     return group or 'misc'

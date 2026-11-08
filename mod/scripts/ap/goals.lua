@@ -15,4 +15,7 @@ return {
   daedric_quests = { group = 'daedric' },
   tribunal = { quests = { { quest = 'tr_sothasil', stage = 100 } } },
   bloodmoon = { quests = { { quest = 'bm_wildhunt', stage = 100 } } },
+  tamriel_rebuilt_main = { group = 'tr_main' },
+  indoril = { faction = 't_mw_houseindoril', rank = 10 },
+  ja_natta_syndicate = { faction = 't_mw_janattasyndicate', rank = 10 },
 }

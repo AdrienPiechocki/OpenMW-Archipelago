@@ -4,11 +4,13 @@
 # dans ~/.local/share/openmw/ap/.
 #
 # Usage :
-#   ./install.sh /chemin/vers/Data\ Files
+#   ./install.sh /chemin/vers/Data\ Files [/dossier/TR [/dossier/Tamriel_Data]]
 #   MW_DATA="/chemin/vers/Data Files" ./install.sh
 #
 # Variables optionnelles :
 #   MW_DATA        dossier contenant Morrowind.esm (Tribunal.esm / Bloodmoon.esm facultatifs)
+#   TD_DATA        dossier contenant Tamriel_Data.esm (défaut : TR_DATA puis MW_DATA), facultatif ; 3e argument équivalent
+#   TR_DATA        dossier contenant TR_Mainland.esm (défaut : MW_DATA), facultatif ; 2e argument équivalent
 #   TES3CONV       commande tes3conv (défaut : tes3conv)
 #   PYTHON         interpréteur Python (défaut : python3)
 #   AP_DATA_DIR    dossier de données du bridge (défaut : ~/.local/share/openmw/ap)
@@ -19,6 +21,8 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
 
 MW_DATA="${1:-${MW_DATA:-}}"
+TR_DATA="${2:-${TR_DATA:-$MW_DATA}}"
+TD_DATA="${3:-${TD_DATA:-}}"
 TES3CONV="${TES3CONV:-tes3conv}"
 PYTHON="${PYTHON:-python3}"
 AP_DATA_DIR="${AP_DATA_DIR:-$HOME/.local/share/openmw/ap}"
@@ -43,13 +47,14 @@ command -v "$PYTHON" >/dev/null 2>&1 || die "$PYTHON introuvable"
 mkdir -p "$WORK"
 
 # --- Conversion ESM -> JSON --------------------------------------------------
-# Les noms des JSON doivent contenir « tribunal » / « bloodmoon » (README).
+# Les noms des JSON doivent contenir « tribunal » / « bloodmoon » / « tr_mainland » (README).
 step "Conversion des ESM avec tes3conv"
 "$TES3CONV" "$MW_DATA/Morrowind.esm" "$WORK/morrowind.json"
 JSONS=("$WORK/morrowind.json")
 
 HAS_TRIBUNAL=0
 HAS_BLOODMOON=0
+HAS_TR=0
 if [ -f "$MW_DATA/Tribunal.esm" ]; then
   "$TES3CONV" "$MW_DATA/Tribunal.esm" "$WORK/tribunal.json"
   JSONS+=("$WORK/tribunal.json")
@@ -63,6 +68,22 @@ if [ -f "$MW_DATA/Bloodmoon.esm" ]; then
   HAS_BLOODMOON=1
 else
   echo "(Bloodmoon.esm absent : options bloodmoon_* et East Empire Company inutilisables)"
+fi
+if [ -f "$TR_DATA/TR_Mainland.esm" ]; then
+  "$TES3CONV" "$TR_DATA/TR_Mainland.esm" "$WORK/tr_mainland.json"
+  JSONS+=("$WORK/tr_mainland.json")
+  HAS_TR=1
+  # Les factions TR (Indoril, Ja-Natta...) sont définies dans Tamriel_Data.esm : JSON à part,
+  # utilisé seulement par tools/list_tr.py (il ne doit pas être passé à extract.py).
+  for d in "${TD_DATA:-}" "$TR_DATA" "$MW_DATA"; do
+    if [ -n "$d" ] && [ -f "$d/Tamriel_Data.esm" ]; then
+      "$TES3CONV" "$d/Tamriel_Data.esm" "$WORK/tamriel_data.json"
+      break
+    fi
+  done
+  [ -f "$WORK/tamriel_data.json" ] || echo "(Tamriel_Data.esm introuvable : définir TD_DATA pour lister les factions TR)"
+else
+  echo "(TR_Mainland.esm absent : options tamriel_rebuilt_*, great_house: indoril et faction: ja_natta_syndicate inutilisables)"
 fi
 
 # --- 1. Quêtes ---------------------------------------------------------------
@@ -102,5 +123,9 @@ echo "$BRIDGE_SRC -> $BRIDGE_DST"
 
 echo
 echo "Installation terminée."
+if [ "$HAS_TR" -eq 1 ]; then
+  echo "Tamriel Rebuilt : compléter data/tr_categories.yaml (Foul Murder, quêtes daedriques),"
+  echo "puis vérifier les factions : $PYTHON tools/list_tr.py $WORK/tamriel_data.json $WORK/tr_mainland.json --factions --grep indoril"
+fi
 echo "Pense à copier mod/ dans les mods OpenMW, activer archipelago.omwscripts,"
 echo "et à régénérer la seed après mise à jour des données."

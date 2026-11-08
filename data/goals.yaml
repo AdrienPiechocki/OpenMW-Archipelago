@@ -56,3 +56,17 @@ tribunal:
 bloodmoon:
   quests:
     - {quest: bm_wildhunt, stage: 100}            # Hircine's Hunt: the Hunter is defeated
+# Tamriel Rebuilt (TR_Mainland.esm + Tamriel_Data.esm required).
+# Main quest: only a goal if main_quest AND tamriel_rebuilt_main_quest are enabled. Goal =
+# ALL quests of group tr_main done (journals listed in data/tr_categories.yaml, Foul Murder).
+tamriel_rebuilt_main:
+  group: tr_main
+# TO VERIFY against the ESM (python tools/list_tr.py tr_mainland.json --factions): faction id
+# (lowercase) and rank count. UESP lists no completed House Indoril questline in the released TR:
+# if the faction has no ranks to climb, this goal can never be reached.
+indoril:
+  faction: t_mw_houseindoril                      # TO VERIFY
+  rank: 10                                        # TO VERIFY
+ja_natta_syndicate:
+  faction: t_mw_janattasyndicate                  # TO VERIFY
+  rank: 10                                        # TO VERIFY (leader rank)
