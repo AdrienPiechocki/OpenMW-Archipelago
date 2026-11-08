@@ -3,7 +3,7 @@
 
 Groups: main, hlaalu, redoran, telvanni, fighters_guild, mages_guild,
 thieves_guild, imperial_legion, imperial_cult, temple, morag_tong, vampire,
-daedric, blades, east_empire, faction_rules, non_quest, misc, plus the
+daedric, east_empire, faction_rules, non_quest, misc, plus the
 expansion groups <expansion>_<category> (tribunal_main, tribunal_side,
 bloodmoon_main, bloodmoon_side) and east_empire_company (the only Bloodmoon
 faction: goal group of the `faction` option).
@@ -12,6 +12,9 @@ Only 'misc' (Miscellaneous) quests give checks (Archipelago locations), plus
 the expansion quests whose group option is enabled (tribunal_main_quest,
 tribunal_side_quests, bloodmoon_*); east_empire_company gives checks when it is
 the chosen `faction`.
+The Blades quests (blades_*, Caius Cosades' agents) are counted in the 'main'
+group: filler checks of the main quest, only active if the main quest goal is
+selected.
 The main, faction and daedric groups are used for goals ('daedric' if the
 Daedric Quests option is enabled); 'vampire' is ignored (neither goal nor
 check).
@@ -33,7 +36,7 @@ import yaml
 
 # Order matters: first matching rule.
 PREFIX_RULES = [
-    ('main',            r'^(a[1-3]|b[1-8][a-z]?|c[0-3])[_ -]'),
+    ('main',            r'^((a[1-3]|b[1-8][a-z]?|c[0-3])[_ -]|blades_)'),
     ('hlaalu',          r'^hh_'),
     ('redoran',         r'^hr_'),
     ('telvanni',        r'^ht_'),
@@ -42,7 +45,6 @@ PREFIX_RULES = [
     ('thieves_guild',   r'^tg_'),
     ('imperial_legion', r'^il_'),
     ('imperial_cult',   r'^ic(\d+)?_'),   # ic_*, but also ic0_ to ic30_
-    ('blades',          r'^blades_'),
     ('east_empire',     r'^eb_'),
     ('non_quest',       r'^(book|romance)_'),   # not real quests
     ('faction_rules',   r'^rules_'),
