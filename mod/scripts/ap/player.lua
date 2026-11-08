@@ -461,6 +461,19 @@ local function onLevelUp(data)
   end)
 end
 
+-- Skill boost item (relayed by global.lua: setters only work on self).
+local function onSkillBoost(data)
+  if type(data) ~= 'table' or not data.skill then return end
+  local amount = tonumber(data.amount) or 15
+  pcall(function()
+    local stat = types.NPC.stats.skills[data.skill](self)
+    stat.base = math.min(100, (stat.base or 0) + amount)
+  end)
+  pcall(function()
+    ui.showMessage(('Archipelago item: +%d %s'):format(amount, tostring(data.skill)))
+  end)
+end
+
 -- Daedric shrine activation blocked by global.lua (missing AP item).
 local function onLockedActivation(data)
   local name = 'daedric shrine'
@@ -489,6 +502,7 @@ return {
     AP_Config = onConfig,
     AP_Owned = onOwned,
     AP_LevelUp = onLevelUp,
+    AP_SkillBoost = onSkillBoost,
     AP_LockedActivation = onLockedActivation,
     AP_Notify = onNotify,
     AP_DagothDead = onDagothDead,

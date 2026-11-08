@@ -181,13 +181,8 @@ function M.apply(player, itemId, idx)
     }
     local skill = SKILLS[itemId]
     if skill then
-      pcall(function()
-        local types = require('openmw.types')
-        local stat = types.NPC.stats.skills[skill](player)
-        if stat then
-          stat.base = (stat.base or 0) + 15
-        end
-      end)
+      -- Stat setters are only allowed on openmw.self: relayed to player.lua.
+      return true, { type = 'skill', skill = skill, amount = 15 }
     end
     return true
   end
