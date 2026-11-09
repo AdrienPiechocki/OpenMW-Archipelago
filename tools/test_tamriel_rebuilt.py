@@ -67,6 +67,13 @@ check('TR factions: chosen ones only',
                                    tamriel_rebuilt_factions=True)),
       ['tr_indoril', 'tr_mages_guild', 'tr_ja_natta_syndicate'])
 check('TR factions off: nothing', opts.selected_tr_groups(make(house='indoril')), [])
+check('TR EEC faction enables the EEC questline',
+      opts.selected_tr_groups(make(faction='east_empire_company', tamriel_rebuilt_factions=True)),
+      ['tr_east_empire_company'])
+check('TR EEC questline off without tamriel_rebuilt_factions',
+      opts.selected_tr_groups(make(faction='east_empire_company')), [])
+check('TR EEC questline off without the EEC goal',
+      opts.selected_tr_groups(make(tamriel_rebuilt_factions=True)), [])
 check('TR daedric needs daedric_quests', opts.selected_tr_groups(make(tamriel_rebuilt_daedric_quests=True)), [])
 check('TR daedric with daedric_quests', opts.selected_tr_groups(make(daedric=True, tamriel_rebuilt_daedric_quests=True)),
       ['tr_daedric'])
@@ -88,6 +95,8 @@ check('ja_natta option value', getattr(opts.Faction, 'option_ja_natta_syndicate'
 check('goal of tr_main', opts.goal_of_group('tr_main'), 'tamriel_rebuilt_main')
 check('goal of tr_daedric', opts.goal_of_group('tr_daedric'), 'daedric_quests')
 check('goal of tr_hlaalu', opts.goal_of_group('tr_hlaalu'), 'hlaalu')
+check('goal of tr_east_empire_company', opts.goal_of_group('tr_east_empire_company'), 'east_empire_company')
+check('EEC is not a free group', opts.is_free_group('tr_east_empire_company'), False)
 check('tr_side is free', opts.is_free_group('tr_side'), True)
 check('tr_main is not free', opts.is_free_group('tr_main'), False)
 check('TR groups in sync with quest_groups.py', opts.TR_GROUPS, qg.TR_GROUPS)
@@ -167,10 +176,18 @@ cats = {'main': {'tr_m1_fm_x'}, 'main_prefixes': (), 'daedric': {'tr_m1_da_y'}, 
 for q, want in {
     'TR_m4_HH_Ulvo4': 'tr_hlaalu', 'TR_m2_HT_Vaerin_q2': 'tr_telvanni', 'TR_m3_TT_Lloris1c': 'tr_temple',
     'TR_m7_Ns_JNS_7': 'tr_ja_natta_syndicate', 'TR_m3_Kha_UndyingRivalry': 'tr_side',
+    'TR_m1_EEC_Lora': 'tr_east_empire_company', 'TR_m3_EEC_Cano1': 'tr_east_empire_company',
+    'TR_m1_FW_IC2_Taxes': 'tr_imperial_cult', 'TR_m1_FW_MG01': 'tr_mages_guild',
+    'TR_m1_FW_MG07a': 'tr_mages_guild', 'TR_m2_He_TG1': 'tr_thieves_guild',
+    'TR_m2_TGi_ComplicatComp': 'tr_side',
     'TR_m3_OE_OhWhatCustoms': 'tr_side', 'TR_m7_Ida_Net': 'tr_side', 'TR_m4_wil_TaxmanIndalruhn': 'tr_side',
     'TR_m1_FM_X': 'tr_main', 'TR_m1_DA_Y': 'tr_daedric',
 }.items():
     check(f'classify {q}', qg.classify(q, None, None, cats), want)
+check('eec token loaded from data/tr_categories.yaml',
+      qg.load_tr_categories()['tokens'].get('eec'), 'east_empire_company')
+check('TR EEC quests are faction checks, not side checks',
+      qg.classify('TR_m1_EEC_Lora', None, None), 'tr_east_empire_company')
 check('Tribunal ids are not TR', qg.classify('tr_sothasil'), 'tribunal_main')
 check('Tribunal dbattack not TR', qg.classify('TR_DBAttack').startswith('tribunal'), True)
 check('vanilla untouched', qg.classify('hh_ineedtospeaktothecaptain'), 'hlaalu')

@@ -182,7 +182,14 @@ def assign(rewards, existing):
         key = (r['quest'], r['record'])
         old = by_key.get(key)
         if old:
-            out.append(old)
+            # Keep the stable ids / item name, but refresh the metadata from
+            # the current scan: a quest reclassification must move its reward
+            # to the new group (otherwise the reward location stays enabled
+            # while the quest check is disabled).
+            updated = dict(old)
+            for field in ('record', 'count', 'quest', 'stage', 'group', 'region'):
+                updated[field] = r[field]
+            out.append(updated)
             continue
         name = f"Reward: {r['item_name']}"
         if name in names_used:

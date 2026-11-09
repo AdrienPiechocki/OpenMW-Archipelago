@@ -75,7 +75,8 @@ Morrowind OpenMW:
   #                                  (only if main_quest: true)
   #   tamriel_rebuilt_side_quests:   checks for the TR miscellaneous quests (never a goal)
   #   tamriel_rebuilt_factions:      checks for the TR quests of the great_house / guild / faction
-  #                                  chosen above (other factions are ignored)
+  #                                  chosen above (other factions are ignored); faction:
+  #                                  east_empire_company also enables the TR EEC questline
   #   tamriel_rebuilt_daedric_quests: checks for the TR Daedric quests (only if daedric_quests: true)
   tamriel_rebuilt_main_quest: false
   tamriel_rebuilt_side_quests: false

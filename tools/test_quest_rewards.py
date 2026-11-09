@@ -90,6 +90,21 @@ check('ids kept', [(e['item_id'], e['loc_id']) for e in second[:2]],
 check('duplicate name disambiguated', second[2]['name'], 'Reward: Ring of Tests (mq_a)')
 check('names unique', len({e['name'] for e in second}), len(second))
 
+# A quest reclassification must refresh the reward group while keeping the
+# stable ids / name (otherwise the reward location stays enabled even though
+# the quest check is disabled).
+reclassified = [dict(r) for r in rewards]
+for r in reclassified:
+    if r['quest'] == 'tr_x':
+        r['group'] = 'tr_east_empire_company'
+third = g.assign(reclassified, first)
+old_tr = next(e for e in first if e['quest'] == 'tr_x')
+new_tr = next(e for e in third if e['quest'] == 'tr_x')
+check('reclassification updates group', new_tr['group'], 'tr_east_empire_company')
+check('reclassification keeps ids', (new_tr['item_id'], new_tr['loc_id']),
+      (old_tr['item_id'], old_tr['loc_id']))
+check('reclassification keeps name', new_tr['name'], old_tr['name'])
+
 # YAML dump -> reload -> Lua generation.
 with tempfile.TemporaryDirectory() as tmp:
     ypath = pathlib.Path(tmp) / 'quest_rewards.yaml'

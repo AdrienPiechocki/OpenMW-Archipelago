@@ -64,18 +64,23 @@ TR_FACTION_KEYS = (
     'hlaalu', 'redoran', 'telvanni', 'indoril',
     'fighters_guild', 'mages_guild', 'thieves_guild',
     'imperial_cult', 'imperial_legion', 'temple', 'morag_tong',
-    'ja_natta_syndicate',
+    'ja_natta_syndicate', 'east_empire_company',
 )
 TR_GROUPS = ('tr_main', 'tr_side', 'tr_daedric') + tuple(f'tr_{k}' for k in TR_FACTION_KEYS)
 # Faction token of a TR journal id (TR_m<N>_[<place>_]<TOKEN>_...). CONFIRMED on UESP:
-# hh (TR_m4_HH_Ulvo4), ht (TR_m2_HT_Vaerin_q2), tt (TR_m3_TT_Lloris1), jns (TR_m7_Ns_JNS_7).
+# hh (TR_m4_HH_Ulvo4), ht (TR_m2_HT_Vaerin_q2), tt (TR_m3_TT_Lloris1), jns (TR_m7_Ns_JNS_7),
+# eec (TR_m1_EEC_Lora / TR_m3_EEC_*, the East Empire Company questline).
 # The others follow the same naming but are NOT confirmed: check with tools/list_tr.py.
 # data/tr_categories.yaml (faction_tokens) completes / overrides this table.
 DEFAULT_TR_TOKENS = {
     'hh': 'hlaalu', 'ht': 'telvanni', 'tt': 'temple', 'jns': 'ja_natta_syndicate',
     'hr': 'redoran', 'fg': 'fighters_guild', 'mg': 'mages_guild', 'tg': 'thieves_guild',
     'il': 'imperial_legion', 'ic': 'imperial_cult', 'mt': 'morag_tong',
+    'eec': 'east_empire_company',
 }
+# Faction tokens followed by a number and an optional variant letter:
+# IC1, MG01, TG1, MG07a (the vanilla convention is ^ic(\d+)?_).
+TR_NUMBERED_TOKEN = re.compile(r'^([a-z]+)\d+[a-z]?$')
 
 EXPANSIONS = ('tribunal', 'bloodmoon')
 ORIGINS = EXPANSIONS + ('tamriel_rebuilt',)
@@ -117,9 +122,14 @@ def tr_group(qid, tr_cats=None):
         return 'tr_main'
     if q in c['daedric'] or (c['daedric_prefixes'] and q.startswith(c['daedric_prefixes'])):
         return 'tr_daedric'
-    # TR_m<N>_<TOKEN>_... or TR_m<N>_<place>_<TOKEN>_...: the token is one of the 2 parts after mN
-    for tok in q.split('_')[2:4]:
-        key = c['tokens'].get(tok)
+    # TR_m<N>_<TOKEN>_... or TR_m<N>_<place>_<TOKEN>_...: the token is one of the 2 parts after mN.
+    # Faction tokens may carry a number and an optional variant letter: IC1, MG01, TG1, MG07a.
+    for part in q.split('_')[2:4]:
+        key = c['tokens'].get(part)
+        if key is None:
+            m = TR_NUMBERED_TOKEN.match(part)
+            if m:
+                key = c['tokens'].get(m.group(1))
         if key:
             return f'tr_{key}'
     return 'tr_side'

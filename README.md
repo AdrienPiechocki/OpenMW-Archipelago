@@ -145,7 +145,8 @@ Each expansion has **two independent options**:
 Tribunal has no faction quests. The only Bloodmoon faction, the **East Empire Company**
 (Raven Rock colony), is chosen with `faction: east_empire_company` like the other factions: goal =
 rank **Factor** (`east empire company`, rank 9 in `data/goals.yaml`), its quests give checks, and
-it requires `Bloodmoon.esm`.
+it requires `Bloodmoon.esm`. With `tamriel_rebuilt_factions`, the same choice also enables the
+Tamriel Rebuilt East Empire Company questline (group `tr_east_empire_company`).
 
 Goal quest of each `<expansion>_main_quest`:
 
@@ -241,9 +242,10 @@ python tools/list_tr.py tr_mainland.json --journals                  # check the
 
 1. **Classification.** A journal `TR_m<N>_...` is a TR quest. Its group (`tools/quest_groups.py`):
    `tr_main` / `tr_daedric` (IDs listed in `data/tr_categories.yaml`), `tr_<faction>` (faction token
-   in the ID: `HH` Hlaalu, `HT` Telvanni, `TT` Temple, `JNS` Ja-Natta confirmed on UESP; `HR`, `FG`,
-   `MG`, `TG`, `IL`, `IC`, `MT` assumed), else `tr_side`. The Foul Murder journals are recognised
-   by the `tr_necmq_` prefix (`main_prefixes` in `data/tr_categories.yaml`).
+   in the ID: `HH` Hlaalu, `HT` Telvanni, `TT` Temple, `JNS` Ja-Natta, `EEC` East Empire Company
+   confirmed on UESP; `HR`, `FG`, `MG`, `TG`, `IL`, `IC`, `MT` assumed), else `tr_side`. A faction
+   token may carry a number and a variant letter (`IC1`, `MG01`, `TG1`, `MG07a`). The Foul Murder
+   journals are recognised by the `tr_necmq_` prefix (`main_prefixes` in `data/tr_categories.yaml`).
 2. **Goals.** The faction ids/ranks of `indoril` / `ja_natta_syndicate` are verified against
    `Tamriel_Data.esm` (see above), so generation no longer warns about them. The main-quest goal is
    `TR_NecMQ_3` stage 200, not the whole `tr_main` group.

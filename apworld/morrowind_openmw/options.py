@@ -41,7 +41,9 @@ class Faction(Choice):
     (become leader, rank 10).
     Its quest items are provided by Archipelago. east_empire_company is the
     Bloodmoon faction (rank Factor): it requires Bloodmoon.esm in OpenMW.
-    ja_natta_syndicate is a Tamriel Rebuilt faction (TR_Mainland.esm)."""
+    With tamriel_rebuilt_factions it also enables the Tamriel Rebuilt East
+    Empire Company questline. ja_natta_syndicate is a Tamriel Rebuilt faction
+    (TR_Mainland.esm)."""
     display_name = "Faction"
     option_none = 0
     option_imperial_cult = 1
@@ -330,7 +332,9 @@ class TamrielRebuiltSideQuests(Toggle):
 class TamrielRebuiltFactions(Toggle):
     """Tamriel Rebuilt: the TR quests of the great house / guild / faction
     chosen in great_house, guild and faction give checks (they are part of
-    that goal's checks). TR quests of unchosen factions are ignored."""
+    that goal's checks). TR quests of unchosen factions are ignored.
+    The East Empire Company questline is enabled by faction:
+    east_empire_company."""
     display_name = "Tamriel Rebuilt: Factions"
     default = False
 
@@ -480,6 +484,8 @@ GROUP_GOALS = {"main": "main_quest", "daedric": "daedric_quests"}
 #   tr_main      main quest (Foul Murder) -> goal TR_MAIN_GOAL, only with main_quest
 #   tr_daedric   TR Daedric quests        -> goal daedric_quests
 #   tr_<faction> TR quests of a house / guild / faction -> goal <faction>
+#                (east_empire_company covers the TR EEC questline too: it is
+#                enabled only when the `faction` option is east_empire_company)
 #   tr_side      everything else          -> free checks
 # Must stay in sync with tools/quest_groups.py (checked by tools/test_tamriel_rebuilt.py).
 TR_MAIN_GOAL = "tamriel_rebuilt_main"
@@ -487,7 +493,7 @@ TR_FACTION_KEYS = (
     "hlaalu", "redoran", "telvanni", "indoril",
     "fighters_guild", "mages_guild", "thieves_guild",
     "imperial_cult", "imperial_legion", "temple", "morag_tong",
-    "ja_natta_syndicate",
+    "ja_natta_syndicate", "east_empire_company",
 )
 TR_GROUPS = ("tr_main", "tr_side", "tr_daedric") + tuple(f"tr_{k}" for k in TR_FACTION_KEYS)
 
