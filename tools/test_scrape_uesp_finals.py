@@ -9,6 +9,7 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import scrape_uesp_finals as uesp  # noqa: E402
+import gen_quest_finals as gqf  # noqa: E402
 
 fails = 0
 
@@ -98,6 +99,15 @@ check('refusal: decided not to attempt / no time for',
       bool(uesp.FAIL_HINTS.search("I've decided not to attempt to find Nelos. I have no time for this.")), True)
 check('success text is not a refusal',
       bool(uesp.FAIL_HINTS.search('I delivered the shipment to Yak gro-Skandar.')), False)
+
+# Fargoth's Hiding Place: stage 30 is the refusal and lookoutScript treats it as
+# terminal. It must be a failure, never a completion.
+check('ms_lookout refusal stage is a failure', gqf.FAIL_STAGES.get('ms_lookout'), [30])
+check('ms_lookout only succeeds at stage 100', gqf.STAGES_OVERRIDES.get('ms_lookout'), [100])
+main, stages = gqf.completion_stages('ms_lookout', [10, 20, 30, 40, 50, 100],
+                                     [30, 40, 50, 100], [30], None, [10, 20, 30, 40, 50, 100])
+check('ms_lookout completion excludes the refusal stage', stages, [100])
+check('ms_lookout main stage is 100', main, 100)
 
 if fails:
     print(f'{fails} failure(s)')

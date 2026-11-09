@@ -1652,6 +1652,10 @@ FAIL_STAGES = {
     'mv_richtrader': [110],     # the merchant dies
     'mv_thieftrader': [30, 35], # refused to help Lucan
     'mv_victimromance': [50],   # refused to look for Nelos
+    # Fargoth's Hiding Place: stage 30 is the refusal ("No? Well, I'll find
+    # someone else to do it, then."). lookoutScript treats it as terminal, so
+    # it must not validate the quest; the only success is stage 100.
+    'ms_lookout': [30],
     # Foul Murder: Simine (190) or Alvu (195) dies; 199 is the resulting
     # softlock marker. None of them may validate the main quest.
     'tr_necmq_3': [190, 195, 199],

@@ -512,7 +512,7 @@ return {
   ['ms_holyelf'] = { 120, {  }, { 7720510 }, 'tribunal_side', { 40, 50 } },
   ['ms_jobashaabolitionist'] = { 100, {  }, { 7720511 }, 'misc', {  } },
   ['ms_jobhunt'] = { 30, {  }, { 7720512 }, 'tribunal_side', {  } },
-  ['ms_lookout'] = { 100, {  }, { 7720513 }, 'misc', {  } },
+  ['ms_lookout'] = { 100, { 30 }, { 7720513 }, 'misc', {  } },
   ['ms_matchmaker'] = { 70, {  }, { 7720514 }, 'tribunal_side', {  } },
   ['ms_museum'] = { 10, {  }, { 7720515 }, 'tribunal_side', {  } },
   ['ms_natural'] = { 40, {  }, { 7720516 }, 'tribunal_side', { 30 } },
