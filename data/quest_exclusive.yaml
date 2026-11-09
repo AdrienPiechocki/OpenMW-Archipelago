@@ -7,16 +7,8 @@
 # Example:
 # - [co_12, co_12a]
 
-# Morrowind Main Quest / Blades & Informants
-- [a2_1_supplies, a2_1_supplies2]
+# Morrowind Main Quest
 - [b8_backdoor1, b8_backdoor2, b8_backdoor3, b8_backdoor4, b8_backdoor5, b8_backdoor6]
-- [blades_elone, blades_elone2]
-- [blades_gildan, blades_gildan2]
-- [blades_nine_toes, blades_nine_toes2]
-- [blades_rithleen, blades_rithleen2]
-- [blades_sjorvar, blades_sjorvar2]
-- [blades_surane, blades_surane2]
-- [blades_tyermaillin, blades_tyermaillin2]
 
 # Bloodmoon (Extension / Raven Rock Colony / Skaal)
 - [bm_airship, bm_airship_a, bm_airship_c]
