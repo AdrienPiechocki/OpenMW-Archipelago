@@ -51,7 +51,7 @@ PREFIX_RULES = [
     ('faction_rules',   r'^rules_'),
     ('temple',          r'^tt_'),
     ('morag_tong',      r'^mt_'),
-    ('vampire',         r'^(va|m4_Bal|m4_VA)_'),
+    ('vampire',         r'^va_'),
     ('daedric',         r'^da_'),
     ('tamriel_rebuilt', r'^tr_m\d+[a-z]?_'),   # TR journals (TR_m3_..): BEFORE the Tribunal rule
     ('tribunal',        r'^tr_'),
@@ -81,6 +81,9 @@ DEFAULT_TR_TOKENS = {
 # Faction tokens followed by a number and an optional variant letter:
 # IC1, MG01, TG1, MG07a (the vanilla convention is ^ic(\d+)?_).
 TR_NUMBERED_TOKEN = re.compile(r'^([a-z]+)\d+[a-z]?$')
+# TR vampire quests: TR_m4_Bal_* / Bal0..Bal5 and TR_m4_VA_* -> 'vampire',
+# like the vanilla va_* journals (ignored: neither goal nor check).
+TR_VAMPIRE = re.compile(r'^(tr_m4_bal[0-5]?|tr_m4_va)_')
 
 EXPANSIONS = ('tribunal', 'bloodmoon')
 ORIGINS = EXPANSIONS + ('tamriel_rebuilt',)
@@ -122,6 +125,8 @@ def tr_group(qid, tr_cats=None):
         return 'tr_main'
     if q in c['daedric'] or (c['daedric_prefixes'] and q.startswith(c['daedric_prefixes'])):
         return 'tr_daedric'
+    if TR_VAMPIRE.match(q):            # TR_m4_Bal* / TR_m4_VA_* (see the yaml)
+        return 'vampire'
     # TR_m<N>_<TOKEN>_... or TR_m<N>_<place>_<TOKEN>_...: the token is one of the 2 parts after mN.
     # Faction tokens may carry a number and an optional variant letter: IC1, MG01, TG1, MG07a.
     for part in q.split('_')[2:4]:
