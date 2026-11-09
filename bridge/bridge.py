@@ -9,6 +9,17 @@ Fixes compared to the previous version:
   * heartbeat independent of the connection;
   * inactivity watchdog that works even when the connection is open;
   * reads out.jsonl in binary (correct offsets, partial lines).
+
+Resilience (alt+tab / reconnections):
+  * out.jsonl is read by a permanent task, independent of the connection:
+    the inactivity watchdog no longer kills a bridge that is offline or
+    reconnecting while the game is active, and the offset is kept across
+    reconnections (no more full replay, in particular of old deaths);
+  * checks are only considered delivered once the server acknowledges them
+    (Connected.checked_locations / RoomUpdate): a check that was written to a
+    dead socket is sent again (mod resync or periodic reconciliation);
+  * handle_out never raises: a failed send no longer drops the remaining
+    lines of the batch.
 """
 import asyncio
 import fcntl
@@ -64,6 +75,14 @@ session = {
 }
 # game -> {'checksum': str, 'items': {id: name}, 'locations': {id: name}}
 names = {}
+
+# Connection shared by the background tasks (event created in main()).
+conn = {'ws': None, 'event': None}
+tail_ctl = {'skip': False}   # set on a new seed: ignore what out.jsonl already holds
+attempts = {}            # check id -> sends since the last 'Connected'
+MAX_ATTEMPTS = 8
+RECONCILE_EVERY = 15     # seconds
+session['server_checked'] = set()   # locations the server confirmed (session)
 
 
 # --------------------------------------------------------------------------
@@ -277,16 +296,34 @@ async def watchdog_loop():
             os._exit(0)
 
 
-async def tail_out(ws_ref, connected_event):
-    """Reads new lines from out.jsonl and processes them."""
+async def safe_send(ws, cmds):
+    """Sends to the server; never raises (a dead socket must not abort the
+    processing of out.jsonl). Returns True if the packet was handed to the
+    socket (not a delivery guarantee: see server_checked)."""
+    try:
+        await ws_send(ws, cmds)
+        return True
+    except Exception as e:
+        print('BRIDGE: send failed:', repr(e), flush=True)
+        return False
+
+
+async def tail_out():
+    """Permanent reader of out.jsonl (connected or not)."""
     global last_activity
     offset = 0
+    replay = True   # first pass of this process / after a truncation: old lines
     while True:
         try:
+            if tail_ctl['skip']:
+                tail_ctl['skip'] = False
+                offset = OUT.stat().st_size if OUT.exists() else 0
+                replay = False
             if OUT.exists():
                 size = OUT.stat().st_size
                 if size < offset:  # file truncated
                     offset = 0
+                    replay = True
                 if size > offset:
                     with open(OUT, 'rb') as f:
                         f.seek(offset)
@@ -299,59 +336,89 @@ async def tail_out(ws_ref, connected_event):
                         chunk = data[:end].decode('utf-8', errors='replace')
                         for line in chunk.split('\n'):
                             line = line.strip()
-                            if line:
-                                await handle_out(line, ws_ref, connected_event)
+                            if not line:
+                                continue
+                            try:
+                                await handle_out(line, replay)
+                            except Exception as e:
+                                print('handle_out error:', repr(e), flush=True)
+                        replay = False
+                elif replay:
+                    replay = False
         except Exception as e:
             print('tail error:', repr(e), flush=True)
         await asyncio.sleep(0.5)
 
 
-async def handle_out(line, ws_ref, connected_event):
+async def handle_out(line, replay=False):
     try:
         msg = json.loads(line)
     except Exception:
         return
     t = msg.get('t')
-    ws = ws_ref['ws']
-    online = connected_event.is_set() and ws is not None
+    ws = conn['ws']
+    online = conn['event'].is_set() and ws is not None
 
     if t == 'check':
         try:
             cid = int(msg['id'])
         except Exception:
             return
-        if cid in state['checked']:
-            return
         # Always remember: if not yet authenticated, the check will be sent
         # by the 'Connected' handler.
-        state['checked'].add(cid)
-        save_state()
-        if online:
+        if cid not in state['checked']:
+            state['checked'].add(cid)
+            save_state()
+        # Delivered only once the server acknowledged it. A check already
+        # known locally but not confirmed (socket that died silently) is sent
+        # again: the mod resends all its checks after a freeze / reconnection.
+        if online and cid not in session['server_checked'] \
+                and attempts.get(cid, 0) < MAX_ATTEMPTS:
+            attempts[cid] = attempts.get(cid, 0) + 1
             print('BRIDGE: sending check', cid, flush=True)
-            await ws_send(ws, [{'cmd': 'LocationChecks', 'locations': [cid]}])
+            await safe_send(ws, [{'cmd': 'LocationChecks', 'locations': [cid]}])
     elif t == 'death':
+        if replay:
+            return   # old death read again after a restart: never relayed
         print('BRIDGE: death line read (online=%s, deathlink=%s)' % (online, DEATHLINK), flush=True)
         if online and DEATHLINK:
-            await ws_send(ws, [{
+            if await safe_send(ws, [{
                 'cmd': 'Bounce',
                 'tags': ['DeathLink'],
                 'data': {'time': time.time(), 'source': SLOT,
                          'cause': '%s %s (Morrowind)' % (SLOT, msg.get('cause') or 'died')},
-            }])
-            print('BRIDGE: DeathLink sent', flush=True)
+            }]):
+                print('BRIDGE: DeathLink sent', flush=True)
     elif t == 'goal':
         if not state['goal_sent']:
             state['goal_sent'] = True
             save_state()
         if online:
-            await ws_send(ws, [{'cmd': 'StatusUpdate', 'status': 30}])
+            await safe_send(ws, [{'cmd': 'StatusUpdate', 'status': 30}])
     # 'hello' and 'heartbeat': only for last_activity
+
+
+async def reconcile_loop():
+    """Sends again the checks the server has not acknowledged."""
+    while True:
+        await asyncio.sleep(RECONCILE_EVERY)
+        ws = conn['ws']
+        if not (conn['event'].is_set() and ws is not None):
+            continue
+        missing = sorted(c for c in state['checked']
+                         if c not in session['server_checked']
+                         and attempts.get(c, 0) < MAX_ATTEMPTS)
+        if missing:
+            for c in missing:
+                attempts[c] = attempts.get(c, 0) + 1
+            print('BRIDGE: reconcile, %d unacknowledged check(s) sent again' % len(missing), flush=True)
+            await safe_send(ws, [{'cmd': 'LocationChecks', 'locations': missing}])
 
 
 # --------------------------------------------------------------------------
 # Server reception
 # --------------------------------------------------------------------------
-async def recv_loop(ws, connected_event):
+async def recv_loop(ws):
     async for raw in ws:
         try:
             msgs = json.loads(raw)
@@ -371,7 +438,7 @@ async def recv_loop(ws, connected_event):
                 # New session: replaces in.jsonl.
                 write_sync()
                 write_in({'t': 'config', 'goal': sd.get('goal'), 'options': options})
-                connected_event.set()
+                conn['event'].set()
                 # Item notifications: slot identity and datapackage.
                 session['slot'] = m.get('slot')
                 session['players'] = {
@@ -389,12 +456,26 @@ async def recv_loop(ws, connected_event):
                 session['ready'] = not todo
                 if todo:
                     await ws_send(ws, [{'cmd': 'GetDataPackage', 'games': todo}])
-                # Resend all known checks (the server deduplicates).
-                if state['checked']:
-                    await ws_send(ws, [{'cmd': 'LocationChecks',
-                                        'locations': sorted(state['checked'])}])
+                # What the server already knows; send the rest (the server
+                # deduplicates anyway).
+                session['server_checked'] = set(
+                    int(x) for x in (m.get('checked_locations') or []))
+                attempts.clear()
+                missing = sorted(state['checked'] - session['server_checked'])
+                print('BRIDGE: %d known check(s), %d to send' % (
+                    len(state['checked']), len(missing)), flush=True)
+                if missing:
+                    for c in missing:
+                        attempts[c] = 1
+                    await safe_send(ws, [{'cmd': 'LocationChecks', 'locations': missing}])
                 if state['goal_sent']:
-                    await ws_send(ws, [{'cmd': 'StatusUpdate', 'status': 30}])
+                    await safe_send(ws, [{'cmd': 'StatusUpdate', 'status': 30}])
+            elif cmd == 'RoomUpdate':
+                for x in (m.get('checked_locations') or []):
+                    try:
+                        session['server_checked'].add(int(x))
+                    except (TypeError, ValueError):
+                        pass
             elif cmd == 'ConnectionRefused':
                 print('BRIDGE: connection refused:', m.get('errors'), flush=True)
             elif cmd == 'ReceivedItems':
@@ -435,11 +516,12 @@ async def recv_loop(ws, connected_event):
 async def run_once():
     scheme = 'wss' if HOST not in ('127.0.0.1', 'localhost') else 'ws'
     uri = f'{scheme}://{HOST}:{PORT}'
-    ws_ref = {'ws': None}
-    connected_event = asyncio.Event()  # set only on 'Connected'
+    conn['event'].clear()
+    session['server_checked'] = set()
 
-    async with websockets.connect(uri, max_size=None) as ws:
-        ws_ref['ws'] = ws
+    async with websockets.connect(uri, max_size=None,
+                                  ping_interval=20, ping_timeout=30) as ws:
+        conn['ws'] = ws
         version = None
         try:
             raw = await asyncio.wait_for(ws.recv(), timeout=10)
@@ -452,10 +534,19 @@ async def run_once():
                     session['checksums'] = m.get('datapackage_checksums') or {}
                     seed_name = m.get('seed_name')
                     if seed_name is not None and seed_name != state['seed_name']:
-                        print('BRIDGE: new seed detected, resetting checks', flush=True)
-                        state['checked'] = set()
-                        state['goal_sent'] = False
-                        state['seed_name'] = seed_name
+                        if state['seed_name'] is None:
+                            # First connection ever: keep the checks already
+                            # read from out.jsonl (out.jsonl is read before
+                            # the connection), only remember the seed.
+                            state['seed_name'] = seed_name
+                        else:
+                            print('BRIDGE: new seed detected, resetting checks', flush=True)
+                            state['checked'] = set()
+                            state['goal_sent'] = False
+                            state['seed_name'] = seed_name
+                            # Old seed's lines still in out.jsonl must not be
+                            # replayed; the mod resends its own checks.
+                            tail_ctl['skip'] = True
                         save_state()
         except Exception as e:
             print('BRIDGE: no RoomInfo:', repr(e), flush=True)
@@ -472,23 +563,25 @@ async def run_once():
             'slot_data': True,
         }])
 
-        recv_task = asyncio.create_task(recv_loop(ws, connected_event))
-        tail_task = asyncio.create_task(tail_out(ws_ref, connected_event))
-        done, pending = await asyncio.wait({recv_task, tail_task},
-                                           return_when=asyncio.FIRST_COMPLETED)
-        for t in pending:
-            t.cancel()
-        for t in done:
-            if t.exception():
-                raise t.exception()
+        try:
+            await recv_loop(ws)
+        finally:
+            conn['ws'] = None
+            conn['event'].clear()
 
 
 async def main():
     load_state()
     load_datapackage_cache()
     OUT.touch(exist_ok=True)
-    asyncio.create_task(heartbeat_loop())
-    asyncio.create_task(watchdog_loop())
+    conn['event'] = asyncio.Event()
+    # Strong references: the loop only keeps weak ones.
+    background = [
+        asyncio.create_task(heartbeat_loop()),
+        asyncio.create_task(watchdog_loop()),
+        asyncio.create_task(tail_out()),
+        asyncio.create_task(reconcile_loop()),
+    ]
     backoff = 1
     while True:
         try:

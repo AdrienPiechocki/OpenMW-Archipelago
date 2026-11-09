@@ -97,7 +97,7 @@ local timer = 0
 local bridgeStarted = false
 local bridgeStartedAt = 0
 local lastBridgeCheck = 0
-local dbgCounter = 0
+local lastStatusLog = -60
 local lastHeartbeat = 0
 
 local function getPlayer()
@@ -288,6 +288,38 @@ local function processNotify()
   pendingNotify = {}
 end
 
+-- Resync of the checks: the player script resends every check it knows
+-- (idempotent on the bridge / server side). Needed after anything that can
+-- lose checks between the game and the server: new bridge session, bridge
+-- restarted, game frozen in the background (alt+tab) while the bridge
+-- disconnects and reconnects. Several delayed shots, because the bridge
+-- needs a few seconds to reconnect to the server.
+local RESYNC_GAP = 5          -- seconds without a frame = the game was frozen
+local resyncDue = {}          -- real times at which AP_Resync is sent
+local lastFrame = nil
+local wasAlive = nil
+
+local function requestResync(reason, delays)
+  local now = core.getRealTime()
+  for _, d in ipairs(delays or { 3 }) do
+    resyncDue[#resyncDue + 1] = now + d
+  end
+  print('AP: resync scheduled (' .. tostring(reason) .. ')')
+end
+
+local function processResync()
+  if #resyncDue == 0 then return end
+  local pl = getPlayer()
+  if not pl then return end
+  local now = core.getRealTime()
+  local keep, fire = {}, false
+  for _, t in ipairs(resyncDue) do
+    if t <= now then fire = true else keep[#keep + 1] = t end
+  end
+  resyncDue = keep
+  if fire then pcall(function() pl:sendEvent('AP_Resync', {}) end) end
+end
+
 local function handle(msg)
   if type(msg) ~= 'table' then return end
 
@@ -334,6 +366,7 @@ local function handle(msg)
     -- from the start by ap.poll(). We do not reset lastIdx to zero, otherwise
     -- already applied items would be given a second time.
     print('AP: bridge synchronized')
+    requestResync('bridge sync', { 2, 15 })
   end
 end
 
@@ -578,8 +611,18 @@ return {
         end
       end
 
+      -- Game frozen in the background (alt+tab): the bridge loses the
+      -- heartbeat, disconnects, then reconnects when the game is back.
+      local nowF = core.getRealTime()
+      if lastFrame and nowF - lastFrame > RESYNC_GAP then
+        print(('AP: frame gap of %.0f s'):format(nowF - lastFrame))
+        requestResync('frame gap', { 5, 20, 45 })
+      end
+      lastFrame = nowF
+
       processPending()
       processNotify()
+      processResync()
       checkSettingsChange()
 
       local player = getPlayer()
@@ -600,14 +643,21 @@ return {
         -- first heartbeat.
         if config.auto_start_bridge and now - lastBridgeCheck >= 10 then
           lastBridgeCheck = now
-          if now - bridgeStartedAt >= 20 and not isBridgeAlive() then
+          local alive = isBridgeAlive()
+          if now - bridgeStartedAt >= 20 and not alive then
             print('AP: bridge inactive, restarting')
             startBridge()
           end
+          -- Bridge back after being down: resend the checks.
+          if alive and wasAlive == false then
+            requestResync('bridge back', { 3, 20 })
+          end
+          wasAlive = alive
         end
 
-        dbgCounter = dbgCounter + 1
-        if dbgCounter % 30 == 0 then
+        -- Status line once a minute (it used to be printed every 30 frames).
+        if now - lastStatusLog >= 60 then
+          lastStatusLog = now
           local n = 0
           for _ in pairs(owned) do n = n + 1 end
           print(('AP: lastIdx=%d items_received=%d'):format(lastIdx, n))

@@ -155,47 +155,57 @@ ID_RE = re.compile(r'\(([A-Za-z0-9_\-\' ]+)\)\s*$')
 
 
 def parse_stage_tables(html):
-    """[(journal id (lowercase), {stage: (finishes, text)})] of a quest page."""
+    """[(journal id (lowercase), {stage: (finishes, text)})] of a quest page.
+
+    A page can hold SEVERAL journal ids, either in separate tables or in ONE
+    table: a one-cell title row "Quest name (JOURNAL_ID)" then starts a new
+    section in the middle of the table (e.g. TR_m1_FG_Past / TR_m1_FG_Past2),
+    without a new "Index | Finishes Quest" header. Each section is parsed on
+    its own: merging them would mix the stages of two different journals.
+    """
     soup = BeautifulSoup(html, 'html.parser')
     out = []
     for table in soup.find_all('table'):
         rows = table.find_all('tr')
-        head = None
-        for i, tr in enumerate(rows[:3]):
-            cells = [c.get_text(' ', strip=True).lower() for c in tr.find_all(['th', 'td'])]
-            if 'index' in cells and any('journal' in c for c in cells):
-                head = i
-                break
-        if head is None:
+        if not any(
+            'index' in [c.get_text(' ', strip=True).lower() for c in tr.find_all(['th', 'td'])]
+            for tr in rows[:3]
+        ):
             continue
-        # title: caption, a one-cell row above the header, or the text before the table
-        title = ''
+        cur_id, stages = None, {}
+
+        def flush():
+            if cur_id and stages:
+                out.append((cur_id, dict(stages)))
+
+        # title given by a <caption> or by the text before the table
         cap = table.find('caption')
         if cap:
-            title = cap.get_text(' ', strip=True)
-        for tr in rows[:head]:
-            title = title or tr.get_text(' ', strip=True)
-        if not ID_RE.search(title):
-            prev = table.find_previous(string=ID_RE)
-            title = str(prev).strip() if prev else title
-        m = ID_RE.search(title)
-        if not m:
-            continue
-        qid = m.group(1).strip().lower()
-        stages = {}
-        for tr in rows[head + 1:]:
+            m = ID_RE.search(cap.get_text(' ', strip=True))
+            if m:
+                cur_id = m.group(1).strip().lower()
+        for tr in rows:
             cells = tr.find_all(['td', 'th'])
-            if len(cells) < 2:
+            texts = [c.get_text(' ', strip=True) for c in cells]
+            low = [t.lower() for t in texts]
+            if 'index' in low and any('journal' in t for t in low):
+                if cur_id is None:   # no title row/caption yet: text before the table
+                    prev = table.find_previous(string=ID_RE)
+                    m = ID_RE.search(str(prev).strip()) if prev else None
+                    cur_id = m.group(1).strip().lower() if m else None
                 continue
-            idx = cells[0].get_text(' ', strip=True)
-            if not idx.isdigit():
+            if len(cells) == 1:      # one-cell row: title of a (new) journal id
+                m = ID_RE.search(texts[0])
+                if m:
+                    flush()
+                    cur_id, stages = m.group(1).strip().lower(), {}
+                continue
+            if len(cells) < 2 or cur_id is None or not texts[0].isdigit():
                 continue
             line = tr.get_text(' ', strip=True)
             fin = 'finishes quest' in line.lower() or 'finishes' in cells[1].get_text().lower()
-            text = cells[-1].get_text(' ', strip=True)
-            stages[int(idx)] = (fin, text)
-        if stages:
-            out.append((qid, stages))
+            stages[int(texts[0])] = (fin, texts[-1])
+        flush()
     return out
 
 
@@ -247,6 +257,7 @@ def analyse(quests, cur, finals_stages, wanted):
             continue
         diffs.append({
             'quest': qid, 'now': now, 'overridden': qid in cur['STAGES_OVERRIDES'],
+            'known_fail': sorted(known_fail),
             'uesp': fin, 'success': success, 'suspects': suspects,
             'texts': {s: stages[s][1] for s in fin},
         })
@@ -294,32 +305,74 @@ def write_outputs(outdir, diffs, no_finish, matches, scanned):
 
 
 BEGIN, END = '# BEGIN UESP OVERRIDES (tools/scrape_uesp_finals.py)', '# END UESP OVERRIDES'
+BEGIN_MIXED = '# BEGIN UESP MIXED OVERRIDES (tools/scrape_uesp_finals.py)'
+END_MIXED = '# END UESP MIXED OVERRIDES'
 
 
-def apply_to_script(script, sure):
-    """Inserts the sure entries right after the STAGES_OVERRIDES dict (idempotent)."""
-    path = pathlib.Path(script)
-    src = path.read_text(encoding='utf-8')
-    lines = src.split('\n')
-    # drop a previous generated block
-    if BEGIN in src:
-        a = next(i for i, l in enumerate(lines) if l.strip() == BEGIN)
-        b = next(i for i, l in enumerate(lines) if l.strip() == END)
+def uesp_updates(diffs, early=0.5):
+    """What to write for every journal whose stages differ from UESP.
+
+    Once the tables are parsed per journal id, UESP is the reference: the
+    completion stages of a journal are ALL its "Finishes quest" stages (the
+    failure-looking ones too: a lost duel still closes the quest, so it must
+    still give its check; only the FAIL_STAGES known to the generator are
+    left out). The current stages are NOT merged in: they may come from the
+    generator's guess ("highest stage") or from an earlier, mis-parsed run,
+    and would keep early stages that fire the check when the quest starts.
+
+    A journal with a UESP stage far below its own last one (< early * max) is
+    not written: UESP sometimes flags an early stage by mistake and the check
+    would fire as soon as the quest starts. It is returned in `review`.
+    Hand-written STAGES_OVERRIDES (d['overridden']) are never touched.
+    """
+    out, review = {}, {}
+    for d in diffs:
+        if d['overridden']:
+            continue
+        known = set(d.get('known_fail') or [])
+        target = sorted(set(d['uesp']) - known)
+        if not target or target == sorted(d['now'] or []):
+            continue
+        top = max(target)
+        if any(st < early * top for st in target):
+            review[d['quest']] = target
+        else:
+            out[d['quest']] = target
+    return out, review
+
+
+def _drop_block(lines, begin, end):
+    if any(l.strip() == begin for l in lines):
+        a = next(i for i, l in enumerate(lines) if l.strip() == begin)
+        b = next(i for i, l in enumerate(lines) if l.strip() == end)
         del lines[a:b + 1]
-        src = '\n'.join(lines)
+    return lines
+
+
+def apply_to_script(script, updates):
+    """Writes the updates as ONE block right after the STAGES_OVERRIDES dict.
+
+    Idempotent: the blocks written by a previous run (also the two-block
+    layout of older versions of this script) are removed first.
+    """
+    path = pathlib.Path(script)
+    lines = path.read_text(encoding='utf-8').split('\n')
+    for begin, end in ((BEGIN, END), (BEGIN_MIXED, END_MIXED)):
+        lines = _drop_block(lines, begin, end)
+    src = '\n'.join(lines)
     tree = ast.parse(src)
     end = next(n.end_lineno for n in tree.body
                if isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Name)
                and n.targets[0].id == 'STAGES_OVERRIDES')
-    block = [BEGIN, '# Only journals that were not overridden by hand and have no failure-looking',
-             '# "Finishes quest" stage. Delete a line here and move it up to keep a manual value.',
+    block = [BEGIN, '# Completion stages = every UESP "Finishes quest" stage of the journal.',
+             '# Not overridden by hand. Delete a line here and move it up to keep a manual value.',
              'STAGES_OVERRIDES.update({']
-    block += [f"    {d['quest']!r}: {d['success']}," for d in sure]
+    block += [f"    {q!r}: {v}," for q, v in sorted(updates.items())]
     block += ['})', END]
     lines = src.split('\n')
     lines[end:end] = [''] + block
     path.write_text('\n'.join(lines), encoding='utf-8')
-    print(f'{len(sure)} entries written into {script}')
+    print(f'{len(updates)} entries written into {script}')
 
 
 def main():
@@ -358,8 +411,15 @@ def main():
     sure = write_outputs(args.outdir, diffs, no_finish, matches, len(quests))
     print(f'{len(quests)} journal ids on UESP, {matches} match, {len(diffs)} differ '
           f'({len(sure)} high-confidence). See {args.outdir}/uesp_finals_report.txt')
-    if args.apply and sure:
-        apply_to_script(args.script, sure)
+    updates, review = uesp_updates(diffs)
+    if review:
+        (pathlib.Path(args.outdir) / 'uesp_to_review.txt').write_text(
+            'Not applied (a UESP finishing stage is far below the last one):\n'
+            + '\n'.join(f'{q}: {v}' for q, v in sorted(review.items())) + '\n', encoding='utf-8')
+    print(f'{len(updates)} journal(s) to write, {len(review)} to review by hand '
+          f'(see {args.outdir}/uesp_to_review.txt)')
+    if args.apply and updates:
+        apply_to_script(args.script, updates)
 
 
 if __name__ == '__main__':

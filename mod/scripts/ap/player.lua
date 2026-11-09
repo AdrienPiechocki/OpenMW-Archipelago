@@ -78,8 +78,13 @@ local function lower(s) return tostring(s or ''):lower() end
 
 local function check(id)
   if not id or sent[id] then return end
+  -- Only remembered as sent if the line really reached out.jsonl: otherwise
+  -- the check would be lost for good (neither resent nor retried by the poll).
+  if not ap.send(('{"t":"check","id":%d}'):format(id)) then
+    print('AP: check ' .. tostring(id) .. ' could not be written, will retry')
+    return
+  end
   sent[id] = true
-  ap.send(('{"t":"check","id":%d}'):format(id))
   print('AP check sent: ' .. tostring(id))
 end
 
@@ -420,6 +425,62 @@ local function onSave()
   return { sent = sent, goalSent = goalSent, goalList = goalList, expansionGroups = expansionGroups, startAttributes = startAttributes, startSkills = startSkills, startBoostDone = startBoostDone, reachedGoals = reachedGoals, ownedIds = ownedIds }
 end
 
+-- Resends every check already obtained (and the goal): idempotent on the
+-- bridge side, deduplicated by the server. Called on load, when the config
+-- arrives, and on AP_Resync (new bridge session, bridge back, game that was
+-- frozen in the background).
+local function resendAll()
+  local n = 0
+  for id in pairs(sent) do
+    n = n + 1
+    ap.send(('{"t":"check","id":%d}'):format(id))
+  end
+  print(('AP: %d check(s) resent'):format(n))
+  if goalSent then
+    ap.send('{"t":"goal"}')
+  end
+end
+
+-- Diagnostic: journal quests (known to the mod) that still have a check not
+-- sent, with the reason. One line per quest, printed again only when it
+-- changes. complete=false: stage below the threshold / failure stage;
+-- allowed=false: quest group not enabled by the seed (goal / expansion).
+local lastDiag = {}
+local function diagnose()
+  local ok, quests = pcall(function() return types.Player.quests(self) end)
+  if not ok or not quests then return end
+  local pending = 0
+  for qkey in pairs(QUEST_COMPLETE_LOOKUP) do
+    local stage = questStage(quests, qkey)
+    local info = QUEST_COMPLETE_LOOKUP[qkey]
+    if stage > 0 and info then
+      local missing = 0
+      for _, cid in ipairs(info[3] or {}) do
+        if not sent[cid] then missing = missing + 1 end
+      end
+      if missing > 0 then
+        pending = pending + 1
+        local line = ('%s stage=%d threshold=%s fail=%s complete=%s allowed=%s group=%s missing=%d'):format(
+          qkey, stage, tostring(info[1]), table.concat(info[2] or {}, '/'),
+          tostring(questComplete(qkey, stage)),
+          tostring(goalChecks.allowed(info[4], goalList, expansionGroups)),
+          tostring(info[4]), missing)
+        if lastDiag[qkey] ~= line then
+          lastDiag[qkey] = line
+          print('AP: pending ' .. line)
+        end
+      end
+    end
+  end
+  print(('AP: diag: %d quest(s) in the journal with a check not sent'):format(pending))
+end
+
+local function onResync()
+  print('AP: resync, resending checks')
+  resendAll()
+  pcall(diagnose)
+end
+
 local function requestConfig()
   pcall(function() core.sendGlobalEvent('AP_RequestConfig', {}) end)
 end
@@ -437,12 +498,7 @@ local function onLoad(d)
     ownedIds = d.ownedIds or {}
   end
   -- resync: resend all already obtained checks (idempotent on the bridge side)
-  for id in pairs(sent) do
-    ap.send(('{"t":"check","id":%d}'):format(id))
-  end
-  if goalSent then
-    ap.send('{"t":"goal"}')
-  end
+  resendAll()
   requestConfig()
 end
 
@@ -506,13 +562,7 @@ local function onConfig(data)
   -- have reset its checks to zero (new seed) while `sent` persists in the
   -- save: we resend everything (idempotent on the bridge side, deduplicated
   -- by the server).
-  for id in pairs(sent) do
-    ap.send(('{"t":"check","id":%d}'):format(id))
-  end
-  if goalSent then
-    ap.send('{"t":"goal"}')
-  end
-
+  resendAll()
 
   local raw = {}
   if type(data.goals) == 'table' then
@@ -620,6 +670,7 @@ return {
   eventHandlers = {
     AP_DeathLink = onDeathLink,
     AP_Config = onConfig,
+    AP_Resync = onResync,
     AP_RewardGiven = onRewardGiven,
     AP_Owned = onOwned,
     AP_LevelUp = onLevelUp,
