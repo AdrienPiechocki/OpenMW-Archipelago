@@ -9,6 +9,7 @@ local json  = require('scripts.ap.json')
 local config = require('scripts.ap.config')
 local levelUp = require('scripts.ap.level_up')
 local startBoost = require('scripts.ap.start_boost')
+local factionReq = require('scripts.ap.faction_requirements')
 -- Expansion quest groups: <expansion>_<category> (tribunal_main, tribunal_side,
 -- bloodmoon_main, bloodmoon_side). Checks only if the group is enabled in the
 -- seed (slot_data.options.expansion_groups). Never gating. The Bloodmoon
@@ -65,6 +66,7 @@ local goalList = nil        -- GOALS keys to complete (main quest + house/guild/
 local reachedGoals = {}     -- key -> true, remembered once reached
 local ownedIds = {}         -- received AP item ids (relayed by global.lua)
 local lockWarned = {}
+local reqWarned = {}
 local rewardsOn = false     -- quest_rewards option (YAML), received from the server
 local rewardBase = {}       -- reward record -> inventory count already accounted for
 local rewardSuspect = {}    -- reward record -> true: increase seen, confirmed at the next poll
@@ -153,7 +155,17 @@ local function keyReached(key, quests)
       lastRank[g.faction] = r
       print(('AP: rank %s = %d (goal: %d)'):format(g.faction, r, g.rank or 10))
     end
-    if r >= (g.rank or 10) then ok = true end
+    -- The goal only counts once the "<faction> Requirements added" item has
+    -- been received (progression item of the apworld).
+    local reqId = factionReq.ITEM_IDS[key]
+    if r >= (g.rank or 10) then
+      if not reqId or ownedIds[reqId] then
+        ok = true
+      elseif not reqWarned[key] then
+        reqWarned[key] = true
+        print(('AP: %s rank reached but the Requirements item is missing: goal on hold'):format(key))
+      end
+    end
   end
 
   if g.group then
@@ -614,17 +626,24 @@ local function onLevelUp(data)
   end)
 end
 
--- Skill boost item (relayed by global.lua: setters only work on self).
-local function onSkillBoost(data)
-  if type(data) ~= 'table' or not data.skill then return end
-  local amount = tonumber(data.amount) or 15
+-- "<faction> Requirements added" item (relayed by global.lua: setters only
+-- work on self): attributes / skills raised to the faction's max requirements.
+local function onFactionRequirements(data)
+  if type(data) ~= 'table' or not data.faction then return end
+  local raised, err = factionReq.apply(core, types, self, data.faction)
+  local label = tostring(data.faction)
   pcall(function()
-    local stat = types.NPC.stats.skills[data.skill](self)
-    stat.base = math.min(100, (stat.base or 0) + amount)
+    local rec = core.factions.records[tostring(data.faction):lower()]
+    if rec and rec.name then label = rec.name end
   end)
-  pcall(function()
-    ui.showMessage(('Archipelago item: +%d %s'):format(amount, tostring(data.skill)))
-  end)
+  if raised then
+    print(('AP: requirements of %s applied (%d stat(s) raised)'):format(tostring(data.faction), raised))
+    pcall(function()
+      ui.showMessage(('Archipelago item: %s requirements added'):format(label))
+    end)
+  else
+    print('AP: faction requirements failed: ' .. tostring(err))
+  end
 end
 
 -- Trap damage (relayed by global.lua): `fraction` of max health (items.lua sends 0.9),
@@ -674,7 +693,7 @@ return {
     AP_RewardGiven = onRewardGiven,
     AP_Owned = onOwned,
     AP_LevelUp = onLevelUp,
-    AP_SkillBoost = onSkillBoost,
+    AP_FactionRequirements = onFactionRequirements,
     AP_Damage = onDamage,
     AP_LockedActivation = onLockedActivation,
     AP_Notify = onNotify,

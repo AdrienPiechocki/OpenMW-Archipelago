@@ -252,9 +252,9 @@ local function applyItem(msg)
       pcall(function()
         player:sendEvent('AP_Damage', { amount = effect.amount, fraction = effect.fraction })
       end)
-    elseif applied and effect and effect.type == 'skill' then
+    elseif applied and effect and effect.type == 'faction_requirements' then
       pcall(function()
-        player:sendEvent('AP_SkillBoost', { skill = effect.skill, amount = effect.amount })
+        player:sendEvent('AP_FactionRequirements', { faction = effect.faction, goal = effect.goal })
       end)
     end
     print(('AP item received: %s (idx %d)'):format(tostring(itemId), idx))

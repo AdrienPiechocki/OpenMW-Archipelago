@@ -4,6 +4,8 @@
 -- global.lua (owned table): they unlock travel services.
 local M = {}
 local levelUp = require('scripts.ap.level_up')
+local FACTION_REQ = require('scripts.ap.faction_requirements')
+local GOALS = require('scripts.ap.goals')
 
 -- Objects given directly to the inventory.
 -- keys = AP id, value = { recordId, quantity }
@@ -190,23 +192,13 @@ function M.apply(player, itemId, idx)
     return true, { type = 'level_up', levels = levelUp.LEVELS }
   end
 
-  -- Skill levels: +5 to the matching skill
-  if itemId >= 7701300 and itemId <= 7701326 then
-    local SKILLS = {
-      [7701300] = 'acrobatics', [7701301] = 'alchemy', [7701302] = 'alteration',
-      [7701303] = 'armorer', [7701304] = 'athletics', [7701305] = 'axe',
-      [7701306] = 'block', [7701307] = 'bluntweapon', [7701308] = 'conjuration',
-      [7701309] = 'destruction', [7701310] = 'enchant', [7701311] = 'handtohand',
-      [7701312] = 'heavyarmor', [7701313] = 'illusion', [7701314] = 'lightarmor',
-      [7701315] = 'longblade', [7701316] = 'marksman', [7701317] = 'mediumarmor',
-      [7701318] = 'mercantile', [7701319] = 'mysticism', [7701320] = 'restoration',
-      [7701321] = 'security', [7701322] = 'shortblade', [7701323] = 'sneak',
-      [7701324] = 'spear', [7701325] = 'speechcraft', [7701326] = 'unarmored',
-    }
-    local skill = SKILLS[itemId]
-    if skill then
-      -- Stat setters are only allowed on openmw.self: relayed to player.lua.
-      return true, { type = 'skill', skill = skill, amount = 15 }
+  -- "<faction> Requirements added": stats are only writable from openmw.self,
+  -- so the effect is relayed to player.lua (see faction_requirements.lua).
+  local goalKey = FACTION_REQ.GOAL_BY_ITEM[itemId]
+  if goalKey then
+    local g = GOALS[goalKey]
+    if g and g.faction then
+      return true, { type = 'faction_requirements', faction = g.faction, goal = goalKey }
     end
     return true
   end

@@ -44,35 +44,40 @@ item_table: Dict[str, MorrowindItemData] = {
     "Trap: Bounty": MorrowindItemData(code=BASE_ITEM + 201, classification=ItemClassification.trap, can_create=_traps_enabled),
     "Trap: Summon Scamp": MorrowindItemData(code=BASE_ITEM + 202, classification=ItemClassification.trap, can_create=_traps_enabled),
     "Trap: Steal Gold": MorrowindItemData(code=BASE_ITEM + 203, classification=ItemClassification.trap, can_create=_traps_enabled),
-    # Skill levels (+5)
-    "Skill: Acrobatics": MorrowindItemData(code=BASE_ITEM + 300, classification=ItemClassification.useful),
-    "Skill: Alchemy": MorrowindItemData(code=BASE_ITEM + 301, classification=ItemClassification.useful),
-    "Skill: Alteration": MorrowindItemData(code=BASE_ITEM + 302, classification=ItemClassification.useful),
-    "Skill: Armorer": MorrowindItemData(code=BASE_ITEM + 303, classification=ItemClassification.useful),
-    "Skill: Athletics": MorrowindItemData(code=BASE_ITEM + 304, classification=ItemClassification.useful),
-    "Skill: Axe": MorrowindItemData(code=BASE_ITEM + 305, classification=ItemClassification.useful),
-    "Skill: Block": MorrowindItemData(code=BASE_ITEM + 306, classification=ItemClassification.useful),
-    "Skill: Blunt Weapon": MorrowindItemData(code=BASE_ITEM + 307, classification=ItemClassification.useful),
-    "Skill: Conjuration": MorrowindItemData(code=BASE_ITEM + 308, classification=ItemClassification.useful),
-    "Skill: Destruction": MorrowindItemData(code=BASE_ITEM + 309, classification=ItemClassification.useful),
-    "Skill: Enchant": MorrowindItemData(code=BASE_ITEM + 310, classification=ItemClassification.useful),
-    "Skill: Hand to Hand": MorrowindItemData(code=BASE_ITEM + 311, classification=ItemClassification.useful),
-    "Skill: Heavy Armor": MorrowindItemData(code=BASE_ITEM + 312, classification=ItemClassification.useful),
-    "Skill: Illusion": MorrowindItemData(code=BASE_ITEM + 313, classification=ItemClassification.useful),
-    "Skill: Light Armor": MorrowindItemData(code=BASE_ITEM + 314, classification=ItemClassification.useful),
-    "Skill: Long Blade": MorrowindItemData(code=BASE_ITEM + 315, classification=ItemClassification.useful),
-    "Skill: Marksman": MorrowindItemData(code=BASE_ITEM + 316, classification=ItemClassification.useful),
-    "Skill: Medium Armor": MorrowindItemData(code=BASE_ITEM + 317, classification=ItemClassification.useful),
-    "Skill: Mercantile": MorrowindItemData(code=BASE_ITEM + 318, classification=ItemClassification.useful),
-    "Skill: Mysticism": MorrowindItemData(code=BASE_ITEM + 319, classification=ItemClassification.useful),
-    "Skill: Restoration": MorrowindItemData(code=BASE_ITEM + 320, classification=ItemClassification.useful),
-    "Skill: Security": MorrowindItemData(code=BASE_ITEM + 321, classification=ItemClassification.useful),
-    "Skill: Short Blade": MorrowindItemData(code=BASE_ITEM + 322, classification=ItemClassification.useful),
-    "Skill: Sneak": MorrowindItemData(code=BASE_ITEM + 323, classification=ItemClassification.useful),
-    "Skill: Spear": MorrowindItemData(code=BASE_ITEM + 324, classification=ItemClassification.useful),
-    "Skill: Speechcraft": MorrowindItemData(code=BASE_ITEM + 325, classification=ItemClassification.useful),
-    "Skill: Unarmored": MorrowindItemData(code=BASE_ITEM + 326, classification=ItemClassification.useful),
 }
+
+# "<faction> Requirements added": one progression item per faction goal
+# (great house / guild / faction). In game it raises the player's attributes
+# and skills to the faction's maximum rank requirements (see
+# mod/scripts/ap/faction_requirements.lua, ids must stay in sync).
+# Replaces the old "Skill: <name>" (+15) items.
+FACTION_REQUIREMENTS = {
+    # goal key: (item code, faction display name)
+    "hlaalu": (BASE_ITEM + 500, "Hlaalu"),
+    "redoran": (BASE_ITEM + 501, "Redoran"),
+    "telvanni": (BASE_ITEM + 502, "Telvanni"),
+    "indoril": (BASE_ITEM + 503, "Indoril"),
+    "fighters_guild": (BASE_ITEM + 504, "Fighters Guild"),
+    "mages_guild": (BASE_ITEM + 505, "Mages Guild"),
+    "thieves_guild": (BASE_ITEM + 506, "Thieves Guild"),
+    "imperial_cult": (BASE_ITEM + 507, "Imperial Cult"),
+    "imperial_legion": (BASE_ITEM + 508, "Imperial Legion"),
+    "temple": (BASE_ITEM + 509, "Temple"),
+    "morag_tong": (BASE_ITEM + 510, "Morag Tong"),
+    "east_empire_company": (BASE_ITEM + 511, "East Empire Company"),
+    "ja_natta_syndicate": (BASE_ITEM + 512, "Ja-Natta Syndicate"),
+}
+FACTION_REQUIREMENT_NAMES = {
+    goal: f"{label} Requirements added" for goal, (_code, label) in FACTION_REQUIREMENTS.items()
+}
+
+for _goal, (_code, _label) in FACTION_REQUIREMENTS.items():
+    item_table[FACTION_REQUIREMENT_NAMES[_goal]] = MorrowindItemData(
+        code=_code,
+        classification=ItemClassification.progression,
+        can_create=lambda options, g=_goal: g in selected_goals(options),
+    )
+
 
 # Quest items per goal: data/quest_items.yaml.
 # They are only in the pool if the selected goal matches.
@@ -143,9 +148,14 @@ def quest_item_names(goal_key, options=None):
     locks = quest_locks
     if options is not None:
         locks = [i for i in quest_locks if group_enabled(options, i.get('group'))]
-    return [i['name'] for i in quest_items + locks if i['goal'] == goal_key]
+    names = [i['name'] for i in quest_items + locks if i['goal'] == goal_key]
+    # The faction's Requirements item is also needed to complete its goal.
+    if goal_key in FACTION_REQUIREMENT_NAMES:
+        names.append(FACTION_REQUIREMENT_NAMES[goal_key])
+    return names
 
 
 item_name_groups = {
     "Filler": ["Gold (100)", "Healing Potion", "Soul Gem", "Arrow (30)"],
+    "Faction Requirements": list(FACTION_REQUIREMENT_NAMES.values()),
 }
