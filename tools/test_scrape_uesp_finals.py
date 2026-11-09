@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+"""Test for tools/scrape_uesp_finals.py (no network: synthetic stage tables).
+
+From the repository root:
+    python3 tools/test_scrape_uesp_finals.py
+"""
+import pathlib
+import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import scrape_uesp_finals as uesp  # noqa: E402
+
+fails = 0
+
+
+def check(name, got, want):
+    global fails
+    if got != want:
+        fails += 1
+        print(f'FAIL {name}: got {got!r}, want {want!r}')
+    else:
+        print(f'ok   {name}')
+
+
+def analyse(quests, now):
+    cur = {'STAGES_OVERRIDES': {}, 'FAIL_STAGES': {}}
+    return uesp.analyse(quests, cur, now, None)
+
+
+# IC17_Witch: UESP finishes at 50 ("made sure she was dead" is a success); the
+# refusal is the separate IC17_Witch_not journal, stage 1.
+witch = {
+    'ic17_witch': {
+        1: (False, 'Kaye has asked me to hunt the witch.'),
+        5: (False, "I told Kaye I wasn't going to hunt the witch."),
+        50: (True, 'I found the witch and made sure she was dead.'),
+    },
+    'ic17_witch_not': {
+        1: (True, "I told Kaye I wasn't going to hunt the witch."),
+    },
+}
+diffs, _, matches, targets = analyse(witch, {'ic17_witch': [50], 'ic17_witch_not': [1]})
+check('ic17_witch already matches', [d['quest'] for d in diffs], [])
+check('both journals match', matches, 2)
+check('matched journals stay in the complete block', targets,
+      {'ic17_witch': [50], 'ic17_witch_not': [1]})
+
+# A "_not" journal is a failure completion, never a FAIL_STAGE suggestion.
+not_only = {'ic15_missing_not': {1: (True, 'I told Kaye I would not be able to retrieve the bowl.')}}
+diffs, _, _, _ = analyse(not_only, {'ic15_missing_not': [1]})
+check('_not journal is not a failure', [d['quest'] for d in diffs], [])
+
+# A large gap between finishing stages must not hold the update back.
+diffs = [{
+    'quest': 'ic17_witch', 'now': [50], 'overridden': False, 'known_fail': [],
+    'uesp': [1, 50], 'success': [1, 50], 'suspects': [], 'texts': {},
+}]
+check('large stage gap is applied', uesp.uesp_updates(diffs), {'ic17_witch': [1, 50]})
+
+# A "_not" journal that differs from the current value is still updated.
+diffs = [{
+    'quest': 'ic12_dinner_not', 'now': [1], 'overridden': False, 'known_fail': [],
+    'uesp': [5], 'success': [5], 'suspects': [], 'texts': {},
+}]
+check('_not journal stages are applied', uesp.uesp_updates(diffs), {'ic12_dinner_not': [5]})
+
+# The complete block keeps journals that already match (so a re-apply cannot
+# wipe them) and still skips hand-written STAGES_OVERRIDES.
+full = {'a_quest': {1: (True, 'done')}, 'b_quest': {5: (True, 'done')}}
+cur = {'STAGES_OVERRIDES': {'b_quest': [5]}, 'FAIL_STAGES': {}}
+diffs, _, _, targets = uesp.analyse(full, cur, {'a_quest': [1], 'b_quest': [5]}, None)
+check('complete block keeps matches and skips manual overrides',
+      uesp.uesp_updates(diffs, targets), {'a_quest': [1]})
+
+# Refusals that the old FAIL_HINTS missed.
+check('refusal: decided not to',
+      bool(uesp.FAIL_HINTS.search('I have decided not to help Lucan deliver his shipment.')), True)
+check('refusal: no time to',
+      bool(uesp.FAIL_HINTS.search('I have no time to help Lucan, guildmate or not.')), True)
+check('refusal: decided not to attempt / no time for',
+      bool(uesp.FAIL_HINTS.search("I've decided not to attempt to find Nelos. I have no time for this.")), True)
+check('success text is not a refusal',
+      bool(uesp.FAIL_HINTS.search('I delivered the shipment to Yak gro-Skandar.')), False)
+
+if fails:
+    print(f'{fails} failure(s)')
+    sys.exit(1)
+print('all UESP scraper tests passed')

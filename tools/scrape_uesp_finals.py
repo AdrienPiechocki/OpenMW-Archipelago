@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Scrapes UESP quest pages and suggests values for STAGES_OVERRIDES.
 
-Sources (crawled from the two index pages):
-  https://en.uesp.net/wiki/Morrowind:Quests
-  https://en.uesp.net/wiki/Tamriel_Rebuilt:Quests
+Sources (the two UESP quest categories):
+  https://en.uesp.net/wiki/Category:Morrowind-Quests
+  https://en.uesp.net/wiki/Category:Tamriel_Rebuilt-Quests
 
 Every quest page has "Quest Stages" tables (one per journal id):
 
@@ -27,7 +27,7 @@ Usage:
       --script tools/gen_quest_finals.py \\
       --finals data/quest_finals.yaml \\
       --qc data/quest_completions.yaml
-  # high-confidence entries only (no suspected failure, not already overridden):
+  # write every non-overridden difference (large stage gaps included):
   python tools/scrape_uesp_finals.py ... --apply
 
 --qc restricts the report to journals your quest_completions.yaml uses;
@@ -49,10 +49,12 @@ from bs4 import BeautifulSoup
 BASE = 'https://en.uesp.net/w/api.php'
 UA = 'quest-finals-scraper/1.0 (personal Archipelago apworld; polite, cached)'
 
-# (index page, namespace prefix of the quest pages)
-ROOTS = [
-    ('Morrowind:Quests', 'Morrowind:'),
-    ('Tamriel Rebuilt:Quests', 'Tamriel Rebuilt:'),
+# (category, namespace prefix of the quest pages). The index pages are not
+# enough: quests linked only from a faction/city sub-index ("Miscellaneous
+# Quests", "House Hlaalu"...) were never reached. The categories list them all.
+CATEGORIES = [
+    ('Category:Morrowind-Quests', 'Morrowind:'),
+    ('Category:Tamriel Rebuilt-Quests', 'Tamriel Rebuilt:'),
 ]
 
 # Page suffixes that are never quests.
@@ -64,8 +66,11 @@ SKIP_PARTS = ('Special:', 'File:', 'Category:', 'Template:', 'Talk:', 'User:', '
 # Only a hint: everything flagged is listed for manual review.
 FAIL_HINTS = re.compile(
     r"\b(failed|fail(?:ure)?|refus(?:ed|al)|declin(?:ed|e)|would not be able|"
-    r"will not be able|unable to|too late|ran out of time|time (?:ran|is) out|"
-    r"gave up|abandon(?:ed)?|no longer (?:need|require|want)|"
+    r"wouldn't be able|will not be able|won't be able|unable to|too late|"
+    r"ran out of time|time (?:ran|is) out|gave up|abandon(?:ed)?|"
+    r"decid(?:ed|e|ing) (?:not to|to not)|chosen not to|elected not to|"
+    r"no time (?:to|for)|(?:wasn't|not) going to|"
+    r"no longer (?:need|require|want)|"
     r"is dead|was dead|has died|have died|had died|died before|was killed before|"
     r"dead before|lost the|lost my chance|never (?:be able|got|found)|"
     r"does not need|doesn't need|no longer interested)\b", re.I)
@@ -79,6 +84,38 @@ class Wiki:
         self.cache.mkdir(parents=True, exist_ok=True)
         self.delay = delay
         self.refresh = refresh
+
+    def category_members(self, cat):
+        """Page titles listed in a MediaWiki category (cached)."""
+        key = re.sub(r'[^A-Za-z0-9_.-]+', '_', 'category_' + cat)[:150]
+        f = self.cache / f'{key}.json'
+        if f.exists() and not self.refresh:
+            return json.loads(f.read_text(encoding='utf-8')).get('members') or []
+        members, cont = [], {}
+        while True:
+            params = {'action': 'query', 'list': 'categorymembers', 'cmtitle': cat,
+                      'cmlimit': '500', 'cmtype': 'page', 'format': 'json'}
+            params.update(cont)
+            data = None
+            for attempt in range(4):
+                try:
+                    r = self.s.get(BASE, params=params, timeout=30)
+                    r.raise_for_status()
+                    data = r.json()
+                    break
+                except (requests.RequestException, ValueError) as e:
+                    print(f'  retry {cat}: {e}', file=sys.stderr)
+                    time.sleep(2 * (attempt + 1))
+            if data is None:
+                break
+            members += [m['title'] for m in data.get('query', {}).get('categorymembers', [])]
+            if 'continue' not in data:
+                break
+            cont = data['continue']
+            time.sleep(self.delay)
+        f.write_text(json.dumps({'members': members}), encoding='utf-8')
+        time.sleep(self.delay)
+        return members
 
     def html(self, title):
         """Rendered HTML of a page (None if missing)."""
@@ -129,24 +166,14 @@ def is_quest_candidate(title, prefix):
 
 
 def crawl(wiki, limit=None):
-    """All candidate quest pages reachable from the two index pages."""
+    """All candidate quest pages listed in the two UESP quest categories."""
     pages = {}
-    for root, prefix in ROOTS:
-        seen, todo = set(), [(root, 0)]
-        while todo:
-            title, depth = todo.pop(0)
-            if title in seen:
-                continue
-            seen.add(title)
-            html = wiki.html(title)
-            if not html:
-                continue
-            print(f'index {title}', file=sys.stderr)
-            for t in wiki_links(html):
-                if t.startswith(prefix + 'Quests') and depth < 3:
-                    todo.append((t, depth + 1))
-                elif is_quest_candidate(t, prefix):
-                    pages.setdefault(t, prefix)
+    for cat, prefix in CATEGORIES:
+        members = wiki.category_members(cat)
+        print(f'category {cat}: {len(members)} pages', file=sys.stderr)
+        for title in members:
+            if is_quest_candidate(title, prefix):
+                pages.setdefault(title, prefix)
     titles = sorted(pages)
     return titles[:limit] if limit else titles
 
@@ -236,8 +263,16 @@ def snippet(text, n=110):
 
 
 def analyse(quests, cur, finals_stages, wanted):
-    """quests: {qid: {stage: (fin, text)}} -> (diffs, no_finish, matches)."""
-    diffs, no_finish, matches = [], [], 0
+    """quests: {qid: {stage: (fin, text)}} -> (diffs, no_finish, matches, targets).
+
+    `targets` is the COMPLETE generated override block: every wanted journal
+    that has a UESP "Finishes quest" list, with manual STAGES_OVERRIDES
+    excluded (they always win). Journals that already match keep their value;
+    the others get the full UESP list minus known FAIL_STAGES. Writing the
+    complete set makes --apply idempotent: a run that only sees a few
+    differences can no longer wipe the entries that already match.
+    """
+    diffs, no_finish, matches, targets = [], [], 0, {}
     for qid in sorted(quests):
         if wanted is not None and qid not in wanted:
             continue
@@ -246,13 +281,34 @@ def analyse(quests, cur, finals_stages, wanted):
         if not fin:
             no_finish.append(qid)
             continue
-        success = [s for s in fin if not FAIL_HINTS.search(stages[s][1])]
-        suspects = [s for s in fin if s not in success]
+        # A "_not" journal is the failure variant of another quest: failing is
+        # a completion of its own (the apworld gives it a check), so its stages
+        # are successes. For the matching success journal (ic17_witch /
+        # ic17_witch_not), the failure is already represented by that "_not"
+        # journal: do not turn its "Finishes quest" stages into FAIL_STAGES
+        # just because the text mentions a death (e.g. "made sure she was dead").
+        failure_variant = qid.endswith('_not')
+        has_failure_variant = (qid + '_not') in quests
+        if failure_variant or has_failure_variant:
+            success = list(fin)
+            suspects = []
+        else:
+            success = [s for s in fin if not FAIL_HINTS.search(stages[s][1])]
+            suspects = [s for s in fin if s not in success]
         now = cur['STAGES_OVERRIDES'].get(qid) or finals_stages.get(qid)
         known_fail = set(cur['FAIL_STAGES'].get(qid, []))
         success = [s for s in success if s not in known_fail]
         suspects = sorted(set(suspects) | (set(fin) & known_fail))
-        if now is not None and sorted(now) == success:
+        matched = now is not None and sorted(now) == success
+        if qid not in cur['STAGES_OVERRIDES']:
+            # Matched journals keep their (already UESP-consistent) value:
+            # re-deriving them from all UESP finishes would re-add the
+            # failure/refusal stages that FAIL_HINTS deliberately dropped.
+            # Differing journals get the full UESP list (old apply rule).
+            target = list(success) if matched else sorted(set(fin) - known_fail)
+            if target:
+                targets[qid] = target
+        if matched:
             matches += 1
             continue
         diffs.append({
@@ -261,7 +317,7 @@ def analyse(quests, cur, finals_stages, wanted):
             'uesp': fin, 'success': success, 'suspects': suspects,
             'texts': {s: stages[s][1] for s in fin},
         })
-    return diffs, no_finish, matches
+    return diffs, no_finish, matches, targets
 
 
 def write_outputs(outdir, diffs, no_finish, matches, scanned):
@@ -309,7 +365,7 @@ BEGIN_MIXED = '# BEGIN UESP MIXED OVERRIDES (tools/scrape_uesp_finals.py)'
 END_MIXED = '# END UESP MIXED OVERRIDES'
 
 
-def uesp_updates(diffs, early=0.5):
+def uesp_updates(diffs, targets=None):
     """What to write for every journal whose stages differ from UESP.
 
     Once the tables are parsed per journal id, UESP is the reference: the
@@ -318,14 +374,19 @@ def uesp_updates(diffs, early=0.5):
     still give its check; only the FAIL_STAGES known to the generator are
     left out). The current stages are NOT merged in: they may come from the
     generator's guess ("highest stage") or from an earlier, mis-parsed run,
-    and would keep early stages that fire the check when the quest starts.
+    so UESP is the only reference.
 
-    A journal with a UESP stage far below its own last one (< early * max) is
-    not written: UESP sometimes flags an early stage by mistake and the check
-    would fire as soon as the quest starts. It is returned in `review`.
+    Every difference is applied, even when a stage is far below the journal's
+    last one (some quests really finish at both stage 1 and stage 50).
     Hand-written STAGES_OVERRIDES (d['overridden']) are never touched.
+
+    `targets` (returned by analyse) is the COMPLETE block, matches included.
+    When it is given, it is written as-is: this keeps --apply idempotent and
+    prevents a small diff set from wiping the entries that already match.
     """
-    out, review = {}, {}
+    if targets is not None:
+        return dict(targets)
+    out = {}
     for d in diffs:
         if d['overridden']:
             continue
@@ -333,18 +394,18 @@ def uesp_updates(diffs, early=0.5):
         target = sorted(set(d['uesp']) - known)
         if not target or target == sorted(d['now'] or []):
             continue
-        top = max(target)
-        if any(st < early * top for st in target):
-            review[d['quest']] = target
-        else:
-            out[d['quest']] = target
-    return out, review
+        out[d['quest']] = target
+    return out
 
 
 def _drop_block(lines, begin, end):
     if any(l.strip() == begin for l in lines):
         a = next(i for i, l in enumerate(lines) if l.strip() == begin)
         b = next(i for i, l in enumerate(lines) if l.strip() == end)
+        # apply_to_script inserts a blank line before the block: drop it too,
+        # otherwise every --apply run accumulates one more blank line.
+        if a > 0 and lines[a - 1].strip() == '':
+            a -= 1
         del lines[a:b + 1]
     return lines
 
@@ -407,17 +468,15 @@ def main():
             print(f'  {i}/{len(titles)} pages, {len(quests)} journal ids', file=sys.stderr)
 
     cur, finals_stages, wanted = load_current(args.script, args.finals, args.qc)
-    diffs, no_finish, matches = analyse(quests, cur, finals_stages, wanted)
+    diffs, no_finish, matches, targets = analyse(quests, cur, finals_stages, wanted)
     sure = write_outputs(args.outdir, diffs, no_finish, matches, len(quests))
     print(f'{len(quests)} journal ids on UESP, {matches} match, {len(diffs)} differ '
           f'({len(sure)} high-confidence). See {args.outdir}/uesp_finals_report.txt')
-    updates, review = uesp_updates(diffs)
-    if review:
-        (pathlib.Path(args.outdir) / 'uesp_to_review.txt').write_text(
-            'Not applied (a UESP finishing stage is far below the last one):\n'
-            + '\n'.join(f'{q}: {v}' for q, v in sorted(review.items())) + '\n', encoding='utf-8')
-    print(f'{len(updates)} journal(s) to write, {len(review)} to review by hand '
-          f'(see {args.outdir}/uesp_to_review.txt)')
+    updates = uesp_updates(diffs, targets)
+    stale = pathlib.Path(args.outdir) / 'uesp_to_review.txt'
+    if stale.exists():
+        stale.unlink()   # older runs held back large gaps; every stage is applied now
+    print(f'{len(updates)} journal(s) in the complete override block')
     if args.apply and updates:
         apply_to_script(args.script, updates)
 
