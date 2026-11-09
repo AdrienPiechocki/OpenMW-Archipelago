@@ -10,13 +10,13 @@ Morrowind OpenMW:
   main_quest: true
   great_house: none     # none | hlaalu | redoran | telvanni | indoril (Tamriel Rebuilt)
   guild: none           # none | fighters_guild | mages_guild | thieves_guild
-  faction: none         # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company (Bloodmoon.esm) | ja_natta_syndicate (Tamriel Rebuilt)
+  faction: none         # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company (Bloodmoon) | ja_natta_syndicate (Tamriel Rebuilt)
 
   # Adds the 7 Daedric quests to the objective. Each one is locked until its
   # Archipelago item ("Daedric Quest: <prince>") is received.
   daedric_quests: false
 
-  # Trap items (Disease, Bounty, Summon Scamp, Steal Gold) in the item pool.
+  # Trap items (Damage, Bounty, Summon Scamp, Steal Gold) in the item pool.
   # false = no traps (replaced by filler).
   traps: true
 
@@ -87,6 +87,6 @@ Morrowind OpenMW:
   # and not needed for progression become checks; their items go into the pool.
   # The vanilla reward is removed from your inventory when you would receive it.
   # Gold and consumables are ignored. Only quests whose checks are enabled are affected.
-  quest_rewards: false
+  quest_rewards: true
 
   death_link: true
