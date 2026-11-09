@@ -72,6 +72,23 @@ diffs, _, _, targets = uesp.analyse(full, cur, {'a_quest': [1], 'b_quest': [5]},
 check('complete block keeps matches and skips manual overrides',
       uesp.uesp_updates(diffs, targets), {'a_quest': [1]})
 
+# Known failure stages are subtracted from UESP's "Finishes quest" list, even
+# when FAIL_HINTS does not recognise the text. Dreugh1: stage 110 (the priest
+# is jailed after reporting the body) is a failure, the success is stage 100.
+dreugh = {'tr_m3_aim_dreugh1': {
+    100: (True, 'Ivon Seloth was glad to hear that I believe he is innocent.'),
+    110: (True, 'I told a guard about the body. The guard told me the priest is going to jail.'),
+}}
+cur = {'STAGES_OVERRIDES': {}, 'FAIL_STAGES': {'tr_m3_aim_dreugh1': [110]}}
+diffs, _, _, targets = uesp.analyse(dreugh, cur, {'tr_m3_aim_dreugh1': [100, 110]}, None)
+check('known failure stage is subtracted', targets, {'tr_m3_aim_dreugh1': [100]})
+check('journal with a known failure stage differs', [d['quest'] for d in diffs],
+      ['tr_m3_aim_dreugh1'])
+# Once the current value is the success list, it matches and stays in the block.
+diffs, _, matches, targets = uesp.analyse(dreugh, cur, {'tr_m3_aim_dreugh1': [100]}, None)
+check('success-only value matches UESP minus failures', [d['quest'] for d in diffs], [])
+check('success-only value stays in the block', targets, {'tr_m3_aim_dreugh1': [100]})
+
 # Refusals that the old FAIL_HINTS missed.
 check('refusal: decided not to',
       bool(uesp.FAIL_HINTS.search('I have decided not to help Lucan deliver his shipment.')), True)
