@@ -51,7 +51,7 @@ PREFIX_RULES = [
     ('faction_rules',   r'^rules_'),
     ('temple',          r'^tt_'),
     ('morag_tong',      r'^mt_'),
-    ('vampire',         r'^va_'),
+    ('vampire',         r'^(va|m4_Bal|m4_VA)_'),
     ('daedric',         r'^da_'),
     ('tamriel_rebuilt', r'^tr_m\d+[a-z]?_'),   # TR journals (TR_m3_..): BEFORE the Tribunal rule
     ('tribunal',        r'^tr_'),
