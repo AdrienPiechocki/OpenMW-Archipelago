@@ -46,7 +46,6 @@ PREFIX_RULES = [
     ('thieves_guild',   r'^tg_'),
     ('imperial_legion', r'^il_'),
     ('imperial_cult',   r'^ic(\d+)?_'),   # ic_*, but also ic0_ to ic30_
-    ('east_empire',     r'^eb_'),
     ('non_quest',       r'^(book|romance)_'),   # not real quests
     ('faction_rules',   r'^rules_'),
     ('temple',          r'^tt_'),
