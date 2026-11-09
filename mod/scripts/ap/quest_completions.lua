@@ -527,7 +527,7 @@ return {
   ['ms_thief'] = { 90, {  }, { 7720525 }, 'tribunal_side', {  } },
   ['ms_trerayna_bounty'] = { 50, {  }, { 7720526 }, 'misc', {  } },
   ['ms_umbra'] = { 60, {  }, { 7720527 }, 'misc', { 50 } },
-  ['ms_vampirecure'] = { 50, {  }, { 7720528 }, 'misc', {  } },
+  ['ms_vampirecure'] = { 50, {  }, { 7720528 }, 'vampire', {  } },
   ['ms_vassirdidanat'] = { 120, {  }, { 7720529 }, 'misc', {  } },
   ['ms_warlords'] = { 120, {  }, { 7720530 }, 'tribunal_side', {  } },
   ['ms_warlords_a'] = { 40, {  }, { 7720531 }, 'tribunal_side', {  } },

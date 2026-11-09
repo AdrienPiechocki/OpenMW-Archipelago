@@ -40,7 +40,7 @@ return {
   { item = 7704037, loc = 7730037, record = 'mehrunes\'_razor_unique', count = 1, quest = 'da_mehrunes', stage = 30, group = 'daedric', name = 'Reward: Mehrunes\' Razor' },
   { item = 7704038, loc = 7730038, record = 'ring_khajiit_unique', count = 1, quest = 'da_mephala', stage = 60, group = 'daedric', name = 'Reward: Ring of Khajiit' },
   { item = 7704039, loc = 7730039, record = 'spear_mercy_unique', count = 1, quest = 'da_sheogorath', stage = 10, group = 'daedric', name = 'Reward: Spear of Bitter Mercy' },
-  { item = 7704040, loc = 7730040, record = 'bk_leaflet_false', count = 1, quest = 'eb_false', stage = 10, group = 'east_empire', name = 'Reward: A Leaflet' },
+  { item = 7704040, loc = 7730040, record = 'bk_leaflet_false', count = 1, quest = 'eb_false', stage = 10, group = 'misc', name = 'Reward: A Leaflet' },
   { item = 7704041, loc = 7730041, record = 'bk_hospitality_papers', count = 1, quest = 'hospitality_papers', stage = 50, group = 'non_quest', name = 'Reward: Hospitality Papers' },
   { item = 7704042, loc = 7730042, record = 'exquisite_amulet_arobar1', count = 1, quest = 'hr_arobarkidnap', stage = 100, group = 'redoran', name = 'Reward: Arobar\'s Amulet' },
   { item = 7704043, loc = 7730043, record = 'daedric_cuirass_htab', count = 1, quest = 'ht_aurielbow', stage = 100, group = 'telvanni', name = 'Reward: Daedric Cuirass' },
