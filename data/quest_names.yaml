@@ -2001,3 +2001,57 @@ tr_necmq_madman: "The Madman's Ringlet"
 tr_necmq_outcast: "The Outcast's Ringlet"
 tr_necmq_schemer: "The Schemer's Ringlet"
 tr_tt_q1: "Temple: Initiation"
+
+# Tribunal (journals TR_* main quest, MS_* miscellaneous)
+tr_dbattack: Dark Brotherhood Attacks
+tr_dbhunt: Hunt the Dark Brotherhood
+tr05_people: Speak to the People
+tr06_temple: A Temple Informant
+tr07_guard: Disloyalty Among the Guards
+tr08_hlaalu: Evidence of Conspiracy
+tr09_journalist: Muckraking Journalist
+tr_barenziah: Queen Barenziah
+tr_killgoblins: The Goblin Army
+tr_shrinedead: The Shrine of the Dead
+tr_mazedband: Barilzar's Mazed Band
+tr_mhattack: An Attack on Mournhold
+tr_bamz: Investigate Bamz-Amschend
+tr_assassins: An Assassination Attempt
+tr_champion: Helseth's Champion
+tr_showpower: A Show of Power
+tr_missinghand_02: The Missing Hand
+tr_blade: The Blade of Nerevar
+tr_sothasil: The Mad God
+ms_barbarianbook: The Barbarian and the Book
+ms_bouncer: Bouncer
+ms_cluttercollector: The Champion of Clutter
+ms_battlebots1: Dwemer Warbots
+ms_estatesale: Estate Sale
+ms_adulterer: Infidelities
+ms_blackdart: The Black Dart Gang
+ms_matchmaker: The MatchMaker
+ms_scrollsales: Scroll Sales
+ms_crimsonplague: Crimson Plague
+ms_natural: The Natural
+
+# Bloodmoon main quest and miscellaneous (journals BM_*; East Empire Company CO_* already listed above)
+bm_rumors: An Island to the North
+bm_morale: Rebellion at Frostmoth
+bm_smugglers: The Frostmoth Smugglers
+bm_cariusgone: The Disappearance of Captain Carius
+bm_stones: The Skaal Test of Loyalty
+bm_trial: The Skaal Test of Wisdom
+bm_draugr: The Skaal Test of Strength
+bm_skaalattack: The Siege of the Skaal Village
+bm_ceremony1: The Totem of Claw and Fang
+bm_bearhunt1: The Ristaag
+bm_frostgiant1: The Castle Karstaag
+bm_wildhunt: Hircine's Hunt
+bm_wolfgiver: Rite of the Wolf Giver
+bm_moonsugar: The Moon Sugar Mystery
+bm_falmer: In Search of the Falmer
+bm_meadhall: The Mead Hall Massacre
+bm_brodirgrove: Betrayal at Brodir Grove
+bm_sadseer: The Sad Seer
+bm_cursedcaptain: The Cursed Captain
+bm_ingmar: Ingmar in a Bind

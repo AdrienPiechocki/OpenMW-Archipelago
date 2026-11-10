@@ -49,4 +49,28 @@ blades_surane2: non_quest
 blades_tyermaillin: non_quest
 blades_tyermaillin2: non_quest
 
+merc_calvus: non_quest
+ms_armor_crafter: non_quest
+ms_badpets: non_quest
+
 ms_vampirecure: vampire
+bm_wolfgiver: non_quest
+
+bm_moonsugar: bloodmoon_side
+bm_falmer: bloodmoon_side
+bm_missionary: bloodmoon_side
+bm_tmvaul: bloodmoon_side
+bm_sadseer: bloodmoon_side
+bm_cursedcaptain: bloodmoon_side
+bm_cursedcaptain_a: bloodmoon_side
+bm_ingmar: bloodmoon_side
+bm_meadhall: bloodmoon_side
+bm_meadhall_a: bloodmoon_side
+bm_meadhall_b: bloodmoon_side
+bm_meadhall_c: bloodmoon_side
+bm_brodirgrove: bloodmoon_side
+bm_womanscorned: bloodmoon_side
+bm_airship: bloodmoon_side
+bm_airship_a: bloodmoon_side
+bm_airship_c: bloodmoon_side
+bm_retribution: bloodmoon_side

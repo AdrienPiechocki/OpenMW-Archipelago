@@ -53,7 +53,7 @@ PREFIX_RULES = [
     ('vampire',         r'^va_'),
     ('daedric',         r'^da_'),
     ('tamriel_rebuilt', r'^tr_m\d+[a-z]?_'),   # TR journals (TR_m3_..): BEFORE the Tribunal rule
-    ('tribunal',        r'^tr_'),
+    ('tribunal',        r'^(tr_|tr0[5-9])'),
     ('bloodmoon',       r'^bm_'),
 ]
 PREFIX_RULES = [(g, re.compile(p)) for g, p in PREFIX_RULES]
@@ -155,9 +155,11 @@ def expansion_group(origin, qid, cats=None):
     else '<origin>_main' or '<origin>_side'."""
     q = str(qid).strip().lower()
     cats = cats if cats is not None else load_categories()
-    if origin == 'bloodmoon' and (q in cats['east_empire_company'] or q.startswith(cats['eec_prefixes'])):
+    if origin == 'bloodmoon' and (q in cats['east_empire_company']
+                                  or q.startswith(tuple(cats['eec_prefixes']))):
         return 'east_empire_company'
-    return f'{origin}_main' if q in cats['main'] else f'{origin}_side'
+    # cats['main'] is a set from load_categories(); startswith needs str/tuple.
+    return f'{origin}_main' if q.startswith(tuple(cats['main'])) else f'{origin}_side'
 
 
 def load_overrides(path=None):
