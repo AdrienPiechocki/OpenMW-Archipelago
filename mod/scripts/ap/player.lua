@@ -282,7 +282,7 @@ local function pollRewards(quests)
             rewardBase[r.record] = cnt - n
             core.sendGlobalEvent('AP_RemoveReward', { record = r.record, count = n })
             check(r.loc)
-            print('AP: quest reward randomized: ' .. tostring(r.record) .. ' (' .. tostring(r.quest) .. ')')
+            print('AP: quest reward randomized: ' .. tostring(r.record) .. ' (' .. tostring(r.quest_name) .. ')')
             pcall(function()
               ui.showMessage('Archipelago: reward sent (' .. tostring(r.name):gsub('^Reward: ', '') .. ')')
             end)

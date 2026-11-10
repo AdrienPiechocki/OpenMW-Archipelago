@@ -140,7 +140,7 @@ except Exception:
 
 if yaml is not None and _qr_text:
     for _r in yaml.safe_load(_qr_text) or []:
-        _qid = str(_r['quest']).lower()
+        _qid = str(_r['quest_name']).lower()
         if _qid in no_completion_quests:
             continue
         # Location names must be unique: item name + quest.
