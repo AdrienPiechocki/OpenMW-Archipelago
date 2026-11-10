@@ -348,7 +348,7 @@ local function pollQuests()
 end
 
 local function deathlinkEnabled()
-  local ok, sec = pcall(function() return storage.globalSection('SettingsArchipelago') end)
+  local ok, sec = pcall(function() return storage.globalSection('ArchipelagoRuntime') end)
   if ok and sec then
     local v = sec:get('deathlink')
     if v ~= nil then return v end
@@ -392,7 +392,7 @@ local function notificationsEnabled()
     local v = txt:match('\n%s*notifications%s*=%s*(%a+)')
     if v then return v:lower() == 'true' end
   end
-  local ok, sec = pcall(function() return storage.globalSection('SettingsArchipelago') end)
+  local ok, sec = pcall(function() return storage.globalSection('ArchipelagoRuntime') end)
   if ok and sec then
     local v = sec:get('notifications')
     if v ~= nil then return v end

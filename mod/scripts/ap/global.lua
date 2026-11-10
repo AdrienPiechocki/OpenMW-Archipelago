@@ -14,7 +14,9 @@ local config = require('scripts.ap.config')
 local liveness = require('scripts.ap.liveness')
 local notify = require('scripts.ap.notify')
 
-local SETTINGS_KEY = 'SettingsArchipelago'
+-- Runtime channel only (NOT a settings group: the group is registered by the
+-- MENU script alone). Must not start with 'Settings'.
+local SETTINGS_KEY = 'ArchipelagoRuntime'
 -- Connection settings (host / port / slot / password) are read from a
 -- plain text file in the bridge data dir (connection.cfg), NOT from OpenMW's
 -- settings storage: the storage kept a stale copy (old port) that overrode
@@ -70,17 +72,6 @@ local function setting(key, fallback)
     if v ~= nil then return v end
   end
   return fallback
-end
-
--- Register the settings group in global storage (so the global script can
--- read the values at startup).
-local regOk, regErr = pcall(function()
-  if not I.Settings then error('I.Settings is nil') end
-  if not I.Settings.registerGroup then error('registerGroup missing') end
-  I.Settings.registerGroup(require('scripts.ap.settings_def').group())
-end)
-if not regOk then
-  -- silent in production; uncomment for debugging
 end
 
 -- Index of the last applied item. -1 = no item (the Archipelago index
@@ -581,13 +572,6 @@ return {
     end,
 
     onInit = function()
-      -- (Re)register the group in case loading at module level did not
-      -- happen (interface unavailable at startup).
-      pcall(function()
-        if I.Settings and I.Settings.registerGroup then
-          I.Settings.registerGroup(require('scripts.ap.settings_def').group())
-        end
-      end)
       startBridge()
       ensureActivationHandler()
     end,

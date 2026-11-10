@@ -82,7 +82,7 @@ local function step()
 
   local ap = mirror.ap
   local pl, perr = readSection('player')
-  local gl, gerr = readSection('global')
+  local gl, gerr = nil, 'not used'  -- global storage is not readable from MENU
   local src, kind = nil, nil
   if pl and pl.any then src, kind = pl.values, 'player'
   elseif gl and gl.any then src, kind = gl.values, 'global' end
