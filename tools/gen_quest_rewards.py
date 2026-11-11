@@ -16,6 +16,19 @@ Each reward produces ONE Archipelago location (sent when the vanilla item
 reaches the player's inventory: the mod then removes it) and ONE item of the
 pool (which gives the item when received). Gold and consumables are ignored.
 
+FIX (canonical case): the reward 'record' field is written with the exact
+case used by the ESM engine, so the mod can resolve it without relying on
+a case-insensitive lookup.
+
+FIX (whitelist): an item is only excluded from the reward candidates if it
+is actually *required* by the quest (RemoveItem / GetItemCount / Item
+filter) — i.e. present in `needed`. The progression whitelist of
+gen_quest_items.py (QUEST_ITEMS_BY_GOAL / QUEST_ITEM_PATTERNS_BY_GOAL) is
+too broad for this check (patterns like ^bk_.*note.*, ^misc_dwrv_.*, ...
+match many legitimate rewards). The whitelist is only used here to exclude
+keys: keys are always progression items (handed over) even if they were
+whitelisted by a broad pattern.
+
 Usage:
   python tools/gen_quest_rewards.py morrowind.json [tribunal.json] [bloodmoon.json] [tr.json] [--apply]
 
@@ -32,27 +45,25 @@ import yaml
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import gen_quest_items as gqi  # noqa: E402
 
-REWARD_ITEM_BASE, REWARD_ITEM_LIMIT = 7704000, 7705000
+REWARD_ITEM_BASE, REWARD_ITEM_LIMIT = 7705000, 7706000
 REWARD_LOC_BASE, REWARD_LOC_LIMIT = 7730000, 7740000
 
-# Journal command WITH its stage: Journal "quest", 40  /  Journal quest 40
 PAT_JOURNAL_STAGE = re.compile(
     r'(?<![A-Za-z])Journal[ \t]*,?[ \t]*(?:"([^"\r\n]+)"|([A-Za-z_][A-Za-z0-9_\-]*))[ \t]*,?[ \t]*(\d+)',
     re.I)
 
-# Reward items: unique non-consumable item types only.
+KEY_PATTERN = re.compile(r'(^|_)key(_|$)', re.I)
+
 REWARD_TYPES = set(gqi.ITEM_TYPES) - set(gqi.CONSUMABLE_TYPES)
 
 
 def whitelisted_any(item, name):
-    """True if the item is a progression item of ANY goal (whitelist / patterns)."""
-    goals = set(gqi.QUEST_ITEMS_BY_GOAL) | set(gqi.QUEST_ITEM_PATTERNS_BY_GOAL) - {None}
+    goals = set(gqi.QUEST_ITEMS_BY_GOAL) | (set(gqi.QUEST_ITEM_PATTERNS_BY_GOAL) - {None})
     return gqi.is_whitelisted(None, item, name) or any(
         gqi.is_whitelisted(g, item, name) for g in goals)
 
 
 def journal_stages(text):
-    """List of (quest, stage) set by Journal commands, in order of appearance."""
     out = []
     for m in PAT_JOURNAL_STAGE.finditer(text or ''):
         q = (m.group(1) or m.group(2)).strip().lower()
@@ -61,8 +72,6 @@ def journal_stages(text):
 
 
 def _strings(entry):
-    """All lowercase strings of an inventory / reference / leveled-list entry
-    (the export format varies: [count, id], [id, level], {'id': ...})."""
     out = []
     if isinstance(entry, str):
         out.append(entry.lower())
@@ -78,7 +87,6 @@ def _strings(entry):
 
 
 def load_completions(path):
-    """quest (lowercase) -> {group, region, name} from quest_completions.yaml."""
     data = yaml.safe_load(pathlib.Path(path).read_text(encoding='utf-8')) or []
     out = {}
     for q in data:
@@ -91,25 +99,27 @@ def load_completions(path):
 
 
 def scan(records, completions, known_progression):
-    """Returns (rewards, stats). `records`: ESM records (list of dicts)."""
+    # FIX: keep the canonical ID (case-sensitive) from the ESM.
     item_rec = {}
     journal_ids = set()
     for r in records:
         t = str(r.get('type', '')).lower()
         if t in gqi.ITEM_TYPES and r.get('id'):
-            item_rec[str(r['id']).lower()] = (t, r.get('name') or r['id'])
+            rid = str(r['id'])
+            key = rid.lower()
+            if key not in item_rec:
+                item_rec[key] = (t, r.get('name') or rid, rid)
         elif t == 'dialogue' and str(r.get('dialogue_type', '')).lower() == 'journal':
             journal_ids.add(str(r.get('id', '')).lower())
 
-    needed = set(known_progression)   # progression items (never rewards)
-    cands = {}                        # (quest, item) -> {stage, count}
+    needed = set(known_progression)
+    cands = {}
 
     def handle(text, info, qs_extra=()):
         stages = [(q, s) for q, s in journal_stages(text) if not journal_ids or q in journal_ids]
         quests = [q for q, _ in stages] + [q for q in qs_extra if q not in {x for x, _ in stages}]
         if not quests:
             return
-        # Progression: handed over / required / counted by a quest.
         for m in gqi.PAT_REMOVE.finditer(text or ''):
             needed.add(m.group(1).lower())
         for m in gqi.PAT_COUNT.finditer(text or ''):
@@ -117,7 +127,6 @@ def scan(records, completions, known_progression):
         if info is not None:
             for it in gqi.filter_items(info):
                 needed.add(it)
-        # Rewards: AddItem in the result of a dialogue that sets a stage.
         if not stages:
             return
         quest, stage = stages[0]
@@ -129,7 +138,9 @@ def scan(records, completions, known_progression):
             if rec is None or rec[0] not in REWARD_TYPES:
                 continue
             count = int(m.group(2) or 1)
-            key = (quest, item)
+            # FIX: store canonical ID as the key
+            canonical_item = rec[2]
+            key = (quest, canonical_item)
             e = cands.setdefault(key, {'stage': stage, 'count': count})
             e['stage'] = min(e['stage'], stage)
             e['count'] = max(e['count'], count)
@@ -141,9 +152,7 @@ def scan(records, completions, known_progression):
         elif t == 'Script':
             handle(r.get('script_text') or r.get('text') or '', None)
 
-    # Items obtainable outside the quest: inventories, containers, leveled
-    # lists, cell references.
-    wanted = {item for (_, item) in cands}
+    wanted = {item.lower() for (_, item) in cands}
     elsewhere = set()
     for r in records:
         for field in ('inventory', 'items', 'leveled_items', 'list', 'references'):
@@ -155,37 +164,44 @@ def scan(records, completions, known_progression):
     rewards, stats = [], {'candidates': len(cands), 'progression': 0, 'not_unique': 0,
                           'no_completion': 0}
     for (quest, item), e in sorted(cands.items()):
-        if item in needed or whitelisted_any(item, item_rec[item][1]):
+        # FIX: item is canonical; look up the lowercased key for the records
+        rec = item_rec.get(item.lower())
+        if rec is None:
+            continue
+        # FIX: only items *actually required* by a quest are progression
+        # items. The progression whitelist is too broad (patterns like
+        # ^bk_.*note.*, ^misc_dwrv_.* match many legitimate rewards): it is
+        # only used to exclude KEYS, which are always handed over even when
+        # whitelisted by a broad pattern.
+        if item.lower() in needed:
             stats['progression'] += 1
             continue
-        if item in elsewhere:
+        if KEY_PATTERN.search(item.lower()) and whitelisted_any(item.lower(), rec[1]):
+            stats['progression'] += 1
+            continue
+        if item.lower() in elsewhere:
             stats['not_unique'] += 1
             continue
         comp = completions.get(quest)
         if comp is None:
             stats['no_completion'] += 1
             continue
-        rewards.append({'quest': quest, 'record': item, 'item_name': item_rec[item][1],
+        rewards.append({'quest': quest, 'record': item, 'item_name': rec[1],
                         'count': e['count'], 'stage': e['stage'],
                         'group': comp['group'], 'region': comp['region']})
     return rewards, stats
 
 
 def assign(rewards, existing):
-    """Item / location ids and unique names (ids of the existing file are kept)."""
     by_key = {(str(e['quest']).lower(), str(e['record']).lower()): e for e in existing}
     next_item = max([REWARD_ITEM_BASE - 1] + [e['item_id'] for e in existing]) + 1
     next_loc = max([REWARD_LOC_BASE - 1] + [e['loc_id'] for e in existing]) + 1
     names_used = {e['name'] for e in existing}
     out = []
     for r in rewards:
-        key = (r['quest'], r['record'])
+        key = (r['quest'], r['record'].lower())
         old = by_key.get(key)
         if old:
-            # Keep the stable ids / item name, but refresh the metadata from
-            # the current scan: a quest reclassification must move its reward
-            # to the new group (otherwise the reward location stays enabled
-            # while the quest check is disabled).
             updated = dict(old)
             for field in ('record', 'count', 'quest', 'stage', 'group', 'region'):
                 updated[field] = r[field]
@@ -204,13 +220,14 @@ def assign(rewards, existing):
         next_loc += 1
     return out
 
+
 def _load_quest_names(path):
-    """journal ID (lowercase) -> readable quest name (data/quest_names.yaml)."""
     src = pathlib.Path(path)
     if not src.exists():
         return {}
     data = yaml.safe_load(src.read_text(encoding='utf-8')) or {}
     return {str(k).lower(): str(v) for k, v in data.items()}
+
 
 def dump(entries, names_path='data/quest_names.yaml'):
     names = _load_quest_names(names_path)
@@ -231,7 +248,6 @@ def dump(entries, names_path='data/quest_names.yaml'):
 
 
 def known_progression_records(data):
-    """Records already managed as progression items (quest_items.yaml)."""
     path = data / 'quest_items.yaml'
     out = set()
     if path.exists():

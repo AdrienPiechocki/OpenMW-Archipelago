@@ -1,5 +1,6 @@
 *.json
 data/*
+!data/quest_tree.json
 !data/quest_locks.yaml
 !data/goals.yaml
 !data/quest_names.yaml

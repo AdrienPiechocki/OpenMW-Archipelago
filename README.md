@@ -50,7 +50,9 @@ python tools/gen_quest_finals.py morrowind.json tribunal.json bloodmoon.json
 python tools/gen_quest_items.py morrowind.json bloodmoon.json --apply
 # 3. groups (main / factions / daedric / misc ...) + report data/quest_groups_report.txt
 python tools/classify_quests.py
-# 4. Lua tables (quest_completions.lua, goals.lua, ...)
+# 3b. canonical quest tree (see the section below): update it with the new extraction
+python tools/rebase_quest_tree.py
+# 4. Lua tables (quest_completions.lua, goals.lua, ...) + data/*.yaml from the tree
 python tools/gen_lua.py
 # 5. apworld
 python tools/install_apworld.py
@@ -61,6 +63,50 @@ UESP page titles). Quests missing from the table get a name derived from their I
 
 Location IDs are stable: re-running extraction breaks neither seeds nor
 existing Lua tables. Remember to regenerate the seed after updating.
+
+## Canonical quest tree (`data/quest_tree.json`)
+
+`data/quest_tree.json` is the single source of truth for the quests, their
+faction/group, their **successful and failing** endings, and the quest items /
+unique rewards. It is built from the UESP quest tree
+(`tools/scrape_uesp_quest_tree.py`) and enriched with the ESM extraction
+(`data/*.yaml`) plus the manual `data/quest_groups_override.yaml`.
+
+```sh
+# 1. rebuild the canonical tree from a raw UESP scrape (first time / new scrape)
+python tools/rebase_quest_tree.py --from-raw
+#    ... or update it in place after a new ESM extraction (default when
+#    data/quest_tree.json exists)
+python tools/rebase_quest_tree.py
+# 2. derive data/*.yaml and the Lua tables from the canonical tree
+python tools/gen_lua.py --tree data/quest_tree.json --tree-sync-yaml
+# 3. apworld
+python tools/install_apworld.py
+```
+
+`tools/gen_lua.py` defaults to `data/quest_tree.json` when it exists
+(`--no-tree` restores the legacy YAML-only pipeline). `--tree-sync-yaml` writes
+`quest_completions.yaml`, `quest_finals.yaml`, `quest_items.yaml` and
+`quest_rewards.yaml` from the tree, so the apworld and the Lua always agree.
+The readable names stay in the curated `data/quest_names.yaml` (they are copied
+into the tree as `loc_names`). `python tools/gen_data_from_tree.py --check`
+validates the tree without writing anything.
+
+| Tree field | Meaning |
+|---|---|
+| `ids` | journals attached to a UESP page |
+| `completion_stages[journal]` | successful ending stages (UESP; the tree wins) |
+| `fail[journal]` | failing stages (ESM, `quest_finals.yaml`) |
+| `groups[journal]` | faction / group: override > UESP faction line > journal prefix |
+| `loc_ids`, `loc_names`, `regions` | stable Archipelago location identity |
+| `needs_item_meta` | progression item rows (all goal variants of a record) |
+| `rewards_meta` | unique reward rows (one per quest using a shared record) |
+
+Journals known to the ESM but absent from UESP are stored under the
+`_esm_only` line, so no existing check disappears when switching to the tree.
+The generated `quest_completions/finals/items/rewards.yaml` are not committed;
+`quest_tree.json` and the curated files (`quest_names.yaml`, goals, locks,
+overrides) are. Archipelago ids stay stable across re-runs.
 
 ## Objective and checks
 
