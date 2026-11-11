@@ -96,7 +96,7 @@ STAGES_OVERRIDES = {
     'ht_stronghold': [300],
 }
 
-# BEGIN UESP OVERRIDES (tools/scrape_uesp_finals.py)
+# BEGIN UESP OVERRIDES (kept from the former tools/scrape_uesp_finals.py)
 # Completion stages = every UESP "Finishes quest" stage of the journal.
 # Not overridden by hand. Delete a line here and move it up to keep a manual value.
 STAGES_OVERRIDES.update({
