@@ -13,9 +13,6 @@
 #   TR_DATA        dossier contenant TR_Mainland.esm (défaut : MW_DATA), facultatif ; 2e argument équivalent
 #   TES3CONV       commande tes3conv (défaut : tes3conv)
 #   PYTHON         interpréteur Python (défaut : python3)
-#   QUEST_TREE     arbre UESP brut (scrape_uesp_quest_tree.py) utilisé pour
-#                  reconstruire data/quest_tree.json ; par défaut l'arbre
-#                  canonique data/quest_tree.json est mis à jour en place
 #   AP_DATA_DIR    dossier de données du bridge (défaut : ~/.local/share/openmw/ap)
 
 set -euo pipefail
@@ -116,28 +113,9 @@ step "3/5 Classification des quêtes"
 "$PYTHON" tools/classify_quests.py
 echo "-> rapport : data/quest_groups_report.txt"
 
-# --- 3b. Arbre de quêtes canonique -------------------------------------------
-step "3b Arbre de quêtes canonique"
-if [ -n "${QUEST_TREE:-}" ]; then
-  # Nouvel arbre UESP brut : reconstruit entièrement l'arbre canonique.
-  "$PYTHON" tools/rebase_quest_tree.py --tree "$QUEST_TREE" --from-raw
-elif [ -f data/quest_tree.json ]; then
-  # Met à jour l'arbre canonique avec les données ESM fraîchement extraites.
-  "$PYTHON" tools/rebase_quest_tree.py
-elif [ -f uesp_tree_out/quest_tree.json ]; then
-  "$PYTHON" tools/rebase_quest_tree.py --from-raw
-else
-  echo "(aucun arbre de quêtes : pipeline YAML historique)"
-fi
-
 # --- 4. Tables Lua -----------------------------------------------------------
 step "4/5 Génération des tables Lua"
-if [ -f data/quest_tree.json ]; then
-  # data/quest_tree.json est la source : Lua + data/*.yaml dérivés.
-  "$PYTHON" tools/gen_lua.py --tree data/quest_tree.json --tree-sync-yaml
-else
-  "$PYTHON" tools/gen_lua.py --no-tree
-fi
+"$PYTHON" tools/gen_lua.py
 
 # --- 5. apworld --------------------------------------------------------------
 step "5/5 Installation de l'apworld"
