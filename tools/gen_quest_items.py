@@ -24,6 +24,7 @@ import yaml
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from quest_groups import classify, load_overrides  # noqa: E402
+from script_effects import parse_script, is_quest_item, _resolve_journal  # noqa: E402
 
 PAT_JOURNAL_Q = re.compile(r'(?<![A-Za-z])Journal[ \t]*,?[ \t]*"([^"\r\n]+)"[ \t]*,?[ \t]*\d+', re.I)
 PAT_JOURNAL_B = re.compile(r'(?<![A-Za-z])Journal[ \t]*,?[ \t]*([A-Za-z_][A-Za-z0-9_\-]*)[ \t]*,?[ \t]*\d+', re.I)
@@ -58,6 +59,7 @@ QUEST_ITEMS_BY_GOAL = {
         'bk_thelostprophecy', 'wraithguard', 'keening', 'sunder',
         'bk_a1_2_antabolistocosades', 'bk_a1_4_sharnsnotes', 'bk_a1_7_huleeyainformant',
         'bk_a1_11_zainsubaninotes', 'bk_a1_v_vivecinformants', 'bk_progressoftruth',
+        'misc_dwrv_ark_key00',
     },
     'hlaalu': {
         'bk_ordersfromneminda', 'bk_nemindasorders', 'bk_alchemicalformulas',
@@ -175,7 +177,6 @@ QUEST_ITEM_PATTERNS_BY_GOAL = {
         re.compile(r'^bk_.*note.*', re.I),
         re.compile(r'^bk_.*writ.*', re.I),
         re.compile(r'^bk_.*report.*', re.I),
-        re.compile(r'.*stronghold.*', re.I),
     ],
     'morag_tong': [  # execution writs
         re.compile(r'^bk_.*writ.*', re.I),
@@ -183,9 +184,9 @@ QUEST_ITEM_PATTERNS_BY_GOAL = {
     'thieves_guild': [
         re.compile(r'^ingred_diamond_.*', re.I),
     ],
-    'main_quest': [
-        re.compile(r'^misc_dwrv_.*', re.I),
-    ],
+    'hlaalu': [re.compile(r'.*stronghold.*', re.I)],
+    'redoran': [re.compile(r'.*stronghold.*', re.I)],
+    'telvanni': [re.compile(r'.*stronghold.*', re.I)],
     'temple': [
         re.compile(r'^ring_sanguine_.*', re.I),
         re.compile(r'^belt_sanguine_.*', re.I),
@@ -278,8 +279,30 @@ def filter_journals(info):
     return out
 
 
-def scan(paths, overrides, include_consumables, strict_mode=True):
+MAX_PLACEMENTS = 3   # a non-whitelisted record placed more often than this is stock, not a quest item
+
+
+def count_placements(records):
+    """record id -> number of placements in cells (references) + NPC / container inventories.
+    A quest item is placed once or twice; `steel shortsword` or `sc_divineintervention`
+    are everywhere. Suppressing such a record would remove EVERY copy in the world."""
+    n = collections.Counter()
+    for r in records:
+        for ref in _records_field(r, 'references'):
+            rid = ref.get('id') if isinstance(ref, dict) else None
+            if rid:
+                n[str(rid).lower()] += 1
+        for e in _records_field(r, 'inventory'):
+            if isinstance(e, (list, tuple)) and len(e) >= 2:
+                n[str(e[1]).lower()] += 1
+            elif isinstance(e, dict) and e.get('id'):
+                n[str(e['id']).lower()] += 1
+    return n
+
+
+def scan(paths, overrides, include_consumables, strict_mode=True, max_placements=MAX_PLACEMENTS):
     records = list(load(paths))
+    placements = count_placements(records)
     item_rec = {}
     journal_ids = set()
     for r in records:
@@ -304,11 +327,19 @@ def scan(paths, overrides, include_consumables, strict_mode=True):
                 return
 
         # Strict mode: an AddItem is only kept if it is whitelisted for this
-        # faction (progression item). RemoveItem / Item filter / GetItemCount
-        # are ALWAYS items required by the quest: they pass without whitelist.
-        if strict_mode and via == 'AddItem':
-            item_name = rec[1] if rec else ""
-            if not is_whitelisted(goal, item, item_name):
+        # faction (progression item).
+        item_name = rec[1] if rec else ""
+        wl = is_whitelisted(goal, item, item_name)
+        if strict_mode and via == 'AddItem' and not wl:
+            return
+        # Items REQUIRED by a quest (RemoveItem / Item filter / GetItemCount) used to pass
+        # unfiltered. Generic stock (sc_*, ingred_*, misc_de_*, ...) or a record placed all
+        # over the world is not a progression item: any copy would do, and suppressing the
+        # record would delete every one of them.
+        if via != 'AddItem' and not wl:
+            if not is_quest_item(item):
+                return
+            if placements.get(item, 0) > max_placements:
                 return
 
         e = found[(goal, item)]
@@ -316,42 +347,45 @@ def scan(paths, overrides, include_consumables, strict_mode=True):
         e['via'].add(via)
         e['count'] = max(e['count'], count)
 
+    # --- script effects, attributed to the journal changed in the SAME if/elseif/else block
+    known_up = {j.upper() for j in journal_ids}
+    sorted_known = sorted(known_up, key=len, reverse=True)
+
+    def journal_of(j):
+        if not j:
+            return None
+        res = _resolve_journal(j.upper(), known_up, {}, sorted_known)
+        return res.lower() if res else None
+
+    def add_effects(effects, fallback_journals, quest_extra=()):
+        for kind, item, qty, j in effects:
+            item = item.lower()
+            js = {journal_of(j)} if j else {journal_of(x) for x in fallback_journals}
+            for q in js - {None}:
+                goal = GOAL_OF_GROUP.get(classify(q, overrides))
+                if not goal:
+                    continue
+                if kind == 'needed':
+                    add(goal, item, q, 'needed (Player->RemoveItem/GetItemCount)', qty)
+                else:
+                    add(goal, item, q, 'AddItem', qty)
+
     for r in records:
         t = str(r.get('type', ''))
         if t == 'DialogueInfo':
             text = r.get('script_text') or ''
-            # quests set by a Journal command OR by a JournalType filter
-            qs = journal_quests(text) | filter_journals(r)
-            qs = {q for q in qs if not journal_ids or q in journal_ids}
-            if not qs:
-                continue
+            fj = filter_journals(r)
+            add_effects(parse_script('info:' + str(r.get('id', '')), text), fj)
+            # items required by the dialogue filter itself (Item filter) count for the
+            # journals the info sets (Journal command) or filters on
+            qs = {journal_of(q) for q in journal_quests(text) | fj} - {None}
             for q in qs:
                 goal = GOAL_OF_GROUP.get(classify(q, overrides))
-                if not goal:
-                    continue
-
-                for m in PAT_REMOVE.finditer(text):
-                    add(goal, m.group(1).lower(), q, 'RemoveItem (Quest)', int(m.group(2) or 1))
-                for it in filter_items(r):
-                    add(goal, it, q, 'required (Item filter)')
-                for m in PAT_COUNT.finditer(text):
-                    add(goal, m.group(1).lower(), q, 'GetItemCount')
-                for m in PAT_ADD.finditer(text):
-                    add(goal, m.group(1).lower(), q, 'AddItem', int(m.group(2) or 1))
-
+                if goal:
+                    for it in filter_items(r):
+                        add(goal, it, q, 'required (Item filter)')
         elif t == 'Script':
-            text = r.get('script_text') or r.get('text') or ''
-            qs = {q for q in journal_quests(text) if not journal_ids or q in journal_ids}
-            for q in qs:
-                goal = GOAL_OF_GROUP.get(classify(q, overrides))
-                if not goal:
-                    continue
-                for m in PAT_REMOVE.finditer(text):
-                    add(goal, m.group(1).lower(), q, 'RemoveItem (Quest)', int(m.group(2) or 1))
-                for m in PAT_COUNT.finditer(text):
-                    add(goal, m.group(1).lower(), q, 'GetItemCount')
-                for m in PAT_ADD.finditer(text):
-                    add(goal, m.group(1).lower(), q, 'AddItem', int(m.group(2) or 1))
+            add_effects(parse_script(str(r.get('id', '')), r.get('script_text') or r.get('text') or ''), ())
 
     return found, item_rec, records
 
@@ -362,6 +396,10 @@ def main():
     ap.add_argument('--data', default='data')
     ap.add_argument('--apply', action='store_true', help='adds the candidates to quest_items.yaml')
     ap.add_argument('--include-consumables', action='store_true')
+    ap.add_argument('--max-placements', type=int, default=MAX_PLACEMENTS,
+                    help='a non-whitelisted required item placed more often than this is stock (default %(default)s)')
+    ap.add_argument('--prune', action='store_true',
+                    help='lists (with --apply: removes) entries of quest_items.yaml that are generic stock')
     ap.add_argument('--no-strict', action='store_true', help='Disables Whitelist/RemoveItem filtering')
     ap.add_argument('--goal', action='append',
                     help='limits generation to these goals (repeat the option), e.g. --goal hlaalu')
@@ -369,7 +407,8 @@ def main():
     data = pathlib.Path(args.data)
 
     overrides = load_overrides(data / 'quest_groups_override.yaml')
-    found, item_rec, records = scan(args.esm_json, overrides, args.include_consumables, strict_mode=not args.no_strict)
+    found, item_rec, records = scan(args.esm_json, overrides, args.include_consumables, strict_mode=not args.no_strict,
+                                       max_placements=args.max_placements)
 
     qi_path = data / 'quest_items.yaml'
     existing = yaml.safe_load(qi_path.read_text(encoding='utf-8')) if qi_path.exists() else []
@@ -380,6 +419,41 @@ def main():
         known_records |= {str(x).lower() for x in e.get('suppress', [])}
         if e.get('give'):
             known_records.add(str(e['give'][0]).lower())
+    if args.prune:
+        placements = count_placements(records)
+        flagged = []
+        for e in existing:
+            if not e.get('give'):
+                continue
+            rec = str(e['give'][0]).lower()
+            name = item_rec.get(rec, ('', e['name']))[1]
+            if is_whitelisted(e.get('goal'), rec, name) or rec in QUEST_ITEM_ALIASES:
+                continue
+            why = None
+            if item_rec and rec not in item_rec:
+                why = 'absent from the ESM'
+            elif not is_quest_item(rec):
+                why = 'generic stock (prefix)'
+            elif placements.get(rec, 0) > args.max_placements:
+                why = f'placed {placements[rec]}x in the world'
+            if why:
+                flagged.append((e, why))
+        for e, why in flagged:
+            print(f"  PRUNE {e['goal']:16} {e['id']} {e['give'][0]!r:40} {why}")
+        print(f'{len(flagged)} entries are not quest items')
+        if args.apply and flagged:
+            kill = {(e['goal'], e['id']) for e, _ in flagged}
+            keep = []
+            for line in qi_path.read_text(encoding='utf-8').splitlines():
+                m = re.search(r'goal: (\w+),', line)
+                i = re.search(r'\bid: (\d+)', line)
+                if m and i and (m.group(1), int(i.group(1))) in kill:
+                    continue
+                keep.append(line)
+            qi_path.write_text('\n'.join(keep) + '\n', encoding='utf-8')
+            print(f'{len(flagged)} entries removed from {qi_path} (run gen_lua.py + install_apworld.py)')
+        return
+
     next_id = max([ITEMS_BASE] + [e['id'] for e in existing if ITEMS_BASE <= e['id'] < ITEMS_LIMIT])
 
     cands = []

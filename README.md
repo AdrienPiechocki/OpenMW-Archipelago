@@ -348,3 +348,18 @@ the environment variables `AP_HOST`, `AP_PORT`, `AP_SLOT`, `AP_PASSWORD`,
 3. Generate a seed with a player YAML `game: Morrowind OpenMW`.
 4. Start the Archipelago server with the generated multidata.
 5. Start OpenMW: the mod automatically starts the Python bridge.
+
+### Quest item detection (`tools/gen_quest_items.py`, `tools/script_effects.py`)
+
+Scripts and dialogue results are parsed **by block** (`if / elseif / else`): an item handed over
+in a branch is attributed to the journal changed in that same branch, and journal sub-ids
+(`TR_M3_AT_DEED_C`) resolve to their quest. Only `Player->RemoveItem` / `Player->GetItemCount`
+(also inside `if (...)` conditions) count: the same commands on an NPC do not. A required item
+that is generic stock (`sc_*`, `ingred_*`, `misc_de_*`...) or placed more than `--max-placements`
+times in the world is **not** a quest item (any copy would do, and suppressing the record would
+remove all of them). `python tools/gen_quest_items.py morrowind.json --prune [--apply]` lists /
+removes the existing entries of `data/quest_items.yaml` that fail this test.
+
+Exclusive branches: `tools/gen_variant_exclusive.py` (`_a/_b` naming). UESP pages that list
+several journals are usually multi-part quests (all parts complete), NOT branches: the quest
+tree cannot be used to derive exclusive groups.
