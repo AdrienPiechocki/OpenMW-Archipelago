@@ -38,9 +38,9 @@ the canonical ID as it appears in the ESM, so the game / mod can resolve
 the item without relying on a case-insensitive lookup. Matching against
 script text / dialogue filters stays case-insensitive.
 
-The 'via' field is preserved in the final YAML so the canonical tree
-(tools/rebase_quest_tree.py) can distinguish real progression items from
-GetItemCount-only false positives.
+The 'via' field is preserved in the final YAML so downstream tools
+(merge_quest_items_into_tree.py) can distinguish real progression items
+from GetItemCount-only false positives.
 
 Usage:
   python tools/gen_quest_items.py build/morrowind.json build/bloodmoon.json --apply
