@@ -67,6 +67,12 @@ FACTION_REQUIREMENTS = {
     "east_empire_company": (BASE_ITEM + 511, "East Empire Company"),
     "ja_natta_syndicate": (BASE_ITEM + 512, "Ja-Natta Syndicate"),
     "ordinators": (BASE_ITEM + 513, "Ordinators"),
+    # Project Cyrodiil (Cyr_Main.esm)
+    "kingdom_of_anvil": (BASE_ITEM + 514, "Kingdom of Anvil"),
+    "itinerant_priests": (BASE_ITEM + 515, "Itinerant Priests"),
+    "cyrodiil_fighters_guild": (BASE_ITEM + 516, "Cyrodiil Fighters Guild"),
+    "cyrodiil_mages_guild": (BASE_ITEM + 517, "Cyrodiil Mages Guild"),
+    "cyrodiil_thieves_guild": (BASE_ITEM + 518, "Cyrodiil Thieves Guild"),
 }
 FACTION_REQUIREMENT_NAMES = {
     goal: f"{label} Requirements added" for goal, (_code, label) in FACTION_REQUIREMENTS.items()

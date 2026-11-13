@@ -6,7 +6,7 @@ from .locations import MorrowindLocation, location_table
 from .regions import region_table
 from .options import (MorrowindOptions, selected_goals, goal_of_group, is_free_group, selected_expansions,
                       selected_expansion_groups, selected_tr_groups, selected_category_groups, TR_MAIN_GOAL,
-                      UNVERIFIED_GOALS,
+                      UNVERIFIED_GOALS, PC_FACTION_KEYS, PC_SIDE_GROUP, selected_pc_groups,
                       start_bonuses, start_option_groups)
 from .rules import set_rules
 from typing import Dict, Any
@@ -54,11 +54,24 @@ class MorrowindWorld(World):
                 f"Morrowind OpenMW ({self.player_name}): tamriel_rebuilt_main_quest is enabled "
                 "but the apworld contains no Tamriel Rebuilt main quest data. Generate it first "
                 "(README, section Tamriel Rebuilt) or disable tamriel_rebuilt_main_quest.")
+        # Project Cyrodiil: its goals / side quests need data extracted from Cyr_Main.esm.
+        for g in goals:
+            if g in PC_FACTION_KEYS and not any(d.group == g for d in location_table.values()):
+                raise OptionError(
+                    f"Morrowind OpenMW ({self.player_name}): the goal {g} (Project Cyrodiil) is selected "
+                    "but the apworld contains no quest data for it. Generate it first (README, section "
+                    "Project Cyrodiil) or choose another guild / faction.")
+        if selected_pc_groups(self.options) and not any(d.group == PC_SIDE_GROUP for d in location_table.values()):
+            raise OptionError(
+                f"Morrowind OpenMW ({self.player_name}): project_cyrodiil_side_quests is enabled but the "
+                "apworld contains no Project Cyrodiil quest data. Generate it first (README, section "
+                "Project Cyrodiil) or disable project_cyrodiil_side_quests.")
         unverified = [g for g in goals if g in UNVERIFIED_GOALS]
         if unverified:
             logging.warning(
                 "Morrowind OpenMW (%s): goal(s) %s use faction id / rank not yet confirmed "
-                "against TR_Mainland.esm (python tools/list_tr.py --factions); if they are "
+                "against the ESM (TR_Mainland.esm / Cyr_Main.esm: python tools/list_tr.py --factions, then "
+                "tools/set_goal_faction.py); if they are "
                 "wrong, the seed cannot be completed in game.", self.player_name, ", ".join(unverified))
 
     def create_item(self, name: str) -> MorrowindItem:
@@ -179,7 +192,7 @@ class MorrowindWorld(World):
                 # Tamriel Rebuilt groups (tr_main, tr_side, tr_<faction>...) are
                 # sent through the same channel: the mod checks only enabled groups.
                 "expansion_groups": (selected_expansion_groups(self.options) + selected_tr_groups(self.options)
-                                 + selected_category_groups(self.options)),
+                                 + selected_category_groups(self.options) + selected_pc_groups(self.options)),
                 # Expansions with at least one enabled group (informational).
                 "expansions": selected_expansions(self.options),
                 "tamriel_rebuilt": {
@@ -187,6 +200,9 @@ class MorrowindWorld(World):
                     "side_quests": bool(self.options.tamriel_rebuilt_side_quests.value),
                     "factions": bool(self.options.tamriel_rebuilt_factions.value),
                     "daedric_quests": bool(self.options.tamriel_rebuilt_daedric_quests.value),
+                },
+                "project_cyrodiil": {
+                    "side_quests": bool(self.options.project_cyrodiil_side_quests.value),
                 },
                 "death_link": bool(getattr(self.options.death_link, "value", self.options.death_link)),
                 "goal_quest_checks": 1,

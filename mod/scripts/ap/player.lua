@@ -32,7 +32,8 @@ local goalChecks = {
     if group == nil or group == 'misc' then return true end
     -- Tamriel Rebuilt groups (tr_main, tr_side, tr_daedric, tr_<faction>) are enabled by the
     -- server the same way (slot_data.options.expansion_groups).
-    if EXPANSION_GROUPS[group] or group:sub(1, 3) == 'tr_' then
+    -- Project Cyrodiil: only `pc_side` goes through this channel (its faction groups carry the goal key).
+    if EXPANSION_GROUPS[group] or group:sub(1, 3) == 'tr_' or group == 'pc_side' then
       if type(expansionGroups) ~= 'table' then return false end
       for _, k in ipairs(expansionGroups) do
         if k == group then return true end

@@ -4,13 +4,14 @@
 # dans ~/.local/share/openmw/ap/.
 #
 # Usage :
-#   ./install.sh /chemin/vers/Data\ Files [/dossier/TR [/dossier/Tamriel_Data]]
+#   ./install.sh /chemin/vers/Data\ Files [/dossier/TR [/dossier/Tamriel_Data [/dossier/Cyr_Main]]]
 #   MW_DATA="/chemin/vers/Data Files" ./install.sh
 #
 # Variables optionnelles :
 #   MW_DATA        dossier contenant Morrowind.esm (Tribunal.esm / Bloodmoon.esm facultatifs)
 #   TD_DATA        dossier contenant Tamriel_Data.esm (défaut : TR_DATA puis MW_DATA), facultatif ; 3e argument équivalent
 #   TR_DATA        dossier contenant TR_Mainland.esm (défaut : MW_DATA), facultatif ; 2e argument équivalent
+#   PC_DATA        dossier contenant Cyr_Main.esm (Project Cyrodiil, défaut : MW_DATA), facultatif ; 4e argument équivalent
 #   TES3CONV       commande tes3conv (défaut : tes3conv)
 #   PYTHON         interpréteur Python (défaut : python3)
 #   AP_DATA_DIR    dossier de données du bridge (défaut : ~/.local/share/openmw/ap)
@@ -23,6 +24,10 @@ cd "$ROOT"
 MW_DATA="${1:-${MW_DATA:-}}"
 TR_DATA="${2:-${TR_DATA:-$MW_DATA}}"
 TD_DATA="${3:-${TD_DATA:-}}"
+PC_DATA="${4:-${PC_DATA:-$MW_DATA}}"   # Project Cyrodiil (Cyr_Main.esm), 4e argument facultatif
+
+# Cherche un ESM sans tenir compte de la casse (Cyr_Main.ESM, cyr_main.esm...) ; affiche le chemin.
+find_esm() { find "$1" -maxdepth 1 -iname "$2" -print -quit 2>/dev/null; }
 TES3CONV="${TES3CONV:-tes3conv}"
 PYTHON="${PYTHON:-python3}"
 AP_DATA_DIR="${AP_DATA_DIR:-$HOME/.local/share/openmw/ap}"
@@ -55,6 +60,7 @@ JSONS=("$WORK/morrowind.json")
 HAS_TRIBUNAL=0
 HAS_BLOODMOON=0
 HAS_TR=0
+HAS_PC=0
 if [ -f "$MW_DATA/Tribunal.esm" ]; then
   "$TES3CONV" "$MW_DATA/Tribunal.esm" "$WORK/tribunal.json"
   JSONS+=("$WORK/tribunal.json")
@@ -69,21 +75,43 @@ if [ -f "$MW_DATA/Bloodmoon.esm" ]; then
 else
   echo "(Bloodmoon.esm absent : options bloodmoon_* et East Empire Company inutilisables)"
 fi
-if [ -f "$TR_DATA/TR_Mainland.esm" ]; then
-  "$TES3CONV" "$TR_DATA/TR_Mainland.esm" "$WORK/tr_mainland.json"
+TR_ESM="$(find_esm "$TR_DATA" TR_Mainland.esm)"
+if [ -n "$TR_ESM" ]; then
+  "$TES3CONV" "$TR_ESM" "$WORK/tr_mainland.json"
   JSONS+=("$WORK/tr_mainland.json")
   HAS_TR=1
   # Les factions TR (Indoril, Ja-Natta...) sont définies dans Tamriel_Data.esm : JSON à part,
   # utilisé seulement par tools/list_tr.py (il ne doit pas être passé à extract.py).
   for d in "${TD_DATA:-}" "$TR_DATA" "$MW_DATA"; do
-    if [ -n "$d" ] && [ -f "$d/Tamriel_Data.esm" ]; then
-      "$TES3CONV" "$d/Tamriel_Data.esm" "$WORK/tamriel_data.json"
+    TD_ESM="$([ -n "$d" ] && find_esm "$d" Tamriel_Data.esm)"
+    if [ -n "$TD_ESM" ]; then
+      "$TES3CONV" "$TD_ESM" "$WORK/tamriel_data.json"
       break
     fi
   done
   [ -f "$WORK/tamriel_data.json" ] || echo "(Tamriel_Data.esm introuvable : définir TD_DATA pour lister les factions TR)"
 else
   echo "(TR_Mainland.esm absent : options tamriel_rebuilt_*, great_house: indoril et faction: ja_natta_syndicate inutilisables)"
+fi
+
+# Project Cyrodiil (Cyr_Main.esm, nécessite Tamriel_Data.esm) : JSON dont le nom contient « cyr_main ».
+PC_ESM="$(find_esm "$PC_DATA" Cyr_Main.esm)"
+if [ -n "$PC_ESM" ]; then
+  "$TES3CONV" "$PC_ESM" "$WORK/cyr_main.json"
+  JSONS+=("$WORK/cyr_main.json")
+  HAS_PC=1
+  # Les factions PC peuvent être définies dans Tamriel_Data.esm (JSON à part, voir ci-dessus).
+  if [ ! -f "$WORK/tamriel_data.json" ]; then
+    for d in "${TD_DATA:-}" "$PC_DATA" "$MW_DATA"; do
+      TD_ESM="$([ -n "$d" ] && find_esm "$d" Tamriel_Data.esm)"
+      if [ -n "$TD_ESM" ]; then
+        "$TES3CONV" "$TD_ESM" "$WORK/tamriel_data.json"
+        break
+      fi
+    done
+  fi
+else
+  echo "(Cyr_Main.esm absent : options project_cyrodiil_*, guild: cyrodiil_* et faction: kingdom_of_anvil / itinerant_priests inutilisables)"
 fi
 
 # --- 1. Quêtes ---------------------------------------------------------------
@@ -132,6 +160,14 @@ echo "Installation terminée."
 if [ "$HAS_TR" -eq 1 ]; then
   echo "Tamriel Rebuilt : compléter data/tr_categories.yaml (Foul Murder, quêtes daedriques),"
   echo "puis vérifier les factions : $PYTHON tools/list_tr.py $WORK/tamriel_data.json $WORK/tr_mainland.json --factions --grep indoril"
+fi
+if [ "$HAS_PC" -eq 1 ]; then
+  echo "Project Cyrodiil : vérifier les jetons de faction (data/pc_categories.yaml) :"
+  echo "  $PYTHON tools/list_tr.py $WORK/cyr_main.json --pc --journals"
+  echo "puis lire les factions PC et renseigner chaque goal (placeholders dans data/goals.yaml) :"
+  echo "  $PYTHON tools/list_tr.py $WORK/cyr_main.json ${WORK}/tamriel_data.json --factions --grep cyr"
+  echo "  $PYTHON tools/set_goal_faction.py kingdom_of_anvil $WORK/cyr_main.json $WORK/tamriel_data.json   # idem pour les 4 autres"
+  echo "  $PYTHON tools/gen_lua.py && $PYTHON tools/install_apworld.py"
 fi
 echo "Pense à copier mod/ dans les mods OpenMW, activer archipelago.omwscripts,"
 echo "et à régénérer la seed après mise à jour des données."

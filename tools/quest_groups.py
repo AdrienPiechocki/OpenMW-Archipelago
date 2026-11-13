@@ -6,7 +6,8 @@ thieves_guild, imperial_legion, imperial_cult, temple, morag_tong, vampire,
 daedric, east_empire, faction_rules, non_quest, misc, plus the
 expansion groups <expansion>_<category> (tribunal_main, tribunal_side,
 bloodmoon_main, bloodmoon_side), the Tamriel Rebuilt groups (tr_main, tr_side,
-tr_daedric, tr_<faction>) and east_empire_company (the only Bloodmoon
+tr_daedric, tr_<faction>), the Project Cyrodiil groups (pc_side + one per PC faction, named after
+its goal key) and east_empire_company (the only Bloodmoon
 faction: goal group of the `faction` option).
 
 Only 'misc' (Miscellaneous) quests give checks (Archipelago locations), plus
@@ -54,6 +55,7 @@ PREFIX_RULES = [
     ('vampire',         r'^va_'),
     ('daedric',         r'^da_'),
     ('tamriel_rebuilt', r'^tr_m\d+[a-z]?_'),   # TR journals (TR_m3_..): BEFORE the Tribunal rule
+    ('project_cyrodiil', r'^pc_m\d+[a-z]?_'),  # Project Cyrodiil journals (PC_m1_IP_Lki4...)
     ('tribunal',        r'^(tr_|tr0[5-9])'),
     ('bloodmoon',       r'^bm_'),
 ]
@@ -97,17 +99,70 @@ TR_NUMBERED_TOKEN = re.compile(r'^([a-z]+)\d+[a-z]?$')
 TR_BALUATH = re.compile(r'^tr_m4_bal[0-5]?_')   # clan Baluath questline
 TR_ORLUKH = re.compile(r'^tr_m4_va_')            # clan Orlukh questline
 
+# Project Cyrodiil (Cyr_Main.esm + Tamriel_Data.esm). Its factions are NOT the vanilla ones (Cyrodiil
+# Fighters / Mages / Thieves Guilds, Kingdom of Anvil, Order of Itinerant Priests): a PC faction
+# quest gets the group named after its goal key (the same key as the `guild` / `faction` option
+# choice), so it follows the usual goal logic. Everything else is 'pc_side' (free checks, option
+# project_cyrodiil_side_quests). Keep in sync with apworld/.../options.py.
+PC_FACTION_KEYS = (
+    'kingdom_of_anvil', 'itinerant_priests',
+    'cyrodiil_fighters_guild', 'cyrodiil_mages_guild', 'cyrodiil_thieves_guild',
+)
+PC_SIDE_GROUP = 'pc_side'
+PC_GROUPS = (PC_SIDE_GROUP,) + PC_FACTION_KEYS
+# Faction token of a PC journal id (PC_m<N>_[<place>_]<TOKEN>_...). CONFIRMED on UESP:
+# ip (PC_m1_IP_Lki4, Order of Itinerant Priests), k<N> (PC_m1_K1_MC1, Kingdom of Anvil),
+# mg (PC_m1_MG_Anv6, Cyrodiil Mages Guild). fg / tg are ASSUMED (same naming): check with
+# tools/list_tr.py --pc. data/pc_categories.yaml (faction_tokens) completes / overrides this table.
+DEFAULT_PC_TOKENS = {
+    'ip': 'itinerant_priests', 'k': 'kingdom_of_anvil',
+    'fg': 'cyrodiil_fighters_guild', 'mg': 'cyrodiil_mages_guild', 'tg': 'cyrodiil_thieves_guild',
+}
+
 EXPANSIONS = ('tribunal', 'bloodmoon')
-ORIGINS = EXPANSIONS + ('tamriel_rebuilt',)
+ORIGINS = EXPANSIONS + ('tamriel_rebuilt', 'project_cyrodiil')
 EXPANSION_CATEGORIES = ('main', 'side')
 EXPANSION_GROUPS = tuple(f'{e}_{c}' for e in EXPANSIONS for c in EXPANSION_CATEGORIES)
 VALID_GROUPS = ({g for g, _ in PREFIX_RULES} | set(VAMPIRE_GROUPS) | {'misc', 'east_empire_company'} | set(EXPANSIONS) | set(EXPANSION_GROUPS)
-                | set(TR_GROUPS) | {'tamriel_rebuilt'})
+                | set(TR_GROUPS) | {'tamriel_rebuilt'}
+                | set(PC_GROUPS) | {'project_cyrodiil'})
 
 _DATA = pathlib.Path(__file__).resolve().parent.parent / 'data'
 DEFAULT_OVERRIDES = _DATA / 'quest_groups_override.yaml'
 DEFAULT_CATEGORIES = _DATA / 'expansion_categories.yaml'
 DEFAULT_TR_CATEGORIES = _DATA / 'tr_categories.yaml'
+DEFAULT_PC_CATEGORIES = _DATA / 'pc_categories.yaml'
+
+
+def load_pc_categories(path=None):
+    """data/pc_categories.yaml: {'side': ids forced to pc_side, 'tokens': {token: faction key}}."""
+    p = pathlib.Path(path or DEFAULT_PC_CATEGORIES)
+    d = (yaml.safe_load(p.read_text(encoding='utf-8')) or {}) if p.exists() else {}
+    tokens = dict(DEFAULT_PC_TOKENS)
+    for tok, key in (d.get('faction_tokens') or {}).items():
+        if key not in PC_FACTION_KEYS:
+            raise SystemExit(f'unknown faction in {p}: {tok}: {key} (valid: {list(PC_FACTION_KEYS)})')
+        tokens[str(tok).lower()] = key
+    return {'side': {str(q).lower() for q in (d.get('side') or [])}, 'tokens': tokens}
+
+
+def pc_group(qid, pc_cats=None):
+    """Group of a Project Cyrodiil journal: a PC faction key (goal group) or 'pc_side'."""
+    q = str(qid).strip().lower()
+    c = pc_cats if pc_cats is not None else load_pc_categories()
+    if q in c['side']:
+        return PC_SIDE_GROUP
+    # PC_m<N>_<TOKEN>_... or PC_m<N>_<place>_<TOKEN>_...: the token is one of the 2 parts after mN.
+    # Tokens may carry a number and an optional variant letter (K1).
+    for part in q.split('_')[2:4]:
+        key = c['tokens'].get(part)
+        if key is None:
+            m = TR_NUMBERED_TOKEN.match(part)
+            if m:
+                key = c['tokens'].get(m.group(1))
+        if key:
+            return key
+    return PC_SIDE_GROUP
 
 
 def load_tr_categories(path=None):
@@ -198,7 +253,7 @@ def load_overrides(path=None):
     return out
 
 
-def classify(qid, overrides=None, cats=None, tr_cats=None):
+def classify(qid, overrides=None, cats=None, tr_cats=None, pc_cats=None):
     q = str(qid).strip().lower()
     group = None
     if overrides and q in overrides:
@@ -212,4 +267,6 @@ def classify(qid, overrides=None, cats=None, tr_cats=None):
         return expansion_group(group, q, cats)
     if group == 'tamriel_rebuilt':       # origin only -> faction / main / daedric / side
         return tr_group(q, tr_cats)
+    if group == 'project_cyrodiil':      # origin only -> PC faction / pc_side
+        return pc_group(q, pc_cats)
     return group or 'misc'

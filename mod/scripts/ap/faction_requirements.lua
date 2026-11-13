@@ -25,6 +25,9 @@ M.ITEM_IDS = {
   imperial_cult = 7701507, imperial_legion = 7701508, temple = 7701509,
   morag_tong = 7701510, east_empire_company = 7701511, ja_natta_syndicate = 7701512,
   ordinators = 7701513,
+  -- Project Cyrodiil
+  kingdom_of_anvil = 7701514, itinerant_priests = 7701515,
+  cyrodiil_fighters_guild = 7701516, cyrodiil_mages_guild = 7701517, cyrodiil_thieves_guild = 7701518,
 }
 
 M.GOAL_BY_ITEM = {}

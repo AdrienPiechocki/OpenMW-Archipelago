@@ -8,7 +8,7 @@ from BaseClasses import Location
 from typing import NamedTuple, Callable, Dict
 from .options import (MorrowindOptions, selected_goals, goal_of_group, selected_expansion_groups,
                       selected_tr_groups, EXPANSION_GROUPS, TR_GROUPS, quest_rewards_enabled, group_active,
-                      CATEGORY_GROUPS, selected_category_groups)
+                      CATEGORY_GROUPS, selected_category_groups, PC_SIDE_GROUP, selected_pc_groups)
 
 
 class MorrowindLocation(Location):
@@ -123,6 +123,15 @@ if yaml is not None and _qc_text:
             location_table[name] = MorrowindLocationData(
                 region=region, code=code, group=group,
                 can_create=lambda options, g=group: g in selected_tr_groups(options),
+                excluded=lambda options, r=risky: r,
+            )
+        elif group == PC_SIDE_GROUP:
+            # Project Cyrodiil quests outside its factions: checks only if
+            # project_cyrodiil_side_quests is enabled; never gating. Same safety rule.
+            # (The PC faction groups are goal groups: they use the branch below.)
+            location_table[name] = MorrowindLocationData(
+                region=region, code=code, group=group,
+                can_create=lambda options: PC_SIDE_GROUP in selected_pc_groups(options),
                 excluded=lambda options, r=risky: r,
             )
         else:

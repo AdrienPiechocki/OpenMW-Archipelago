@@ -98,3 +98,23 @@ vampire_baluath:
 vampire_orlukh:
   quests:
     - {quest: tr_m4_va_namira, stage: 225, complete: true}      # Orlukh: Namira's Shroud
+# Project Cyrodiil (Cyr_Main.esm + Tamriel_Data.esm required). Its factions are separate from the vanilla
+# ones: the goal key is the option choice (guild: cyrodiil_*_guild, faction: kingdom_of_anvil /
+# itinerant_priests). No main quest, no Daedric quest: only these 5 faction goals.
+# Faction ids / ranks verified in Tamriel_Data.esm (list_tr.py --factions --grep cyr): 10 ranks each, rank 10 = leader
+# (Queen Regent, Wayfarer, Master, Arch-Mage, Master Thief).
+kingdom_of_anvil:
+  faction: T_Cyr_KingdomAnvil
+  rank: 10
+itinerant_priests:
+  faction: T_Cyr_ItinerantPriests
+  rank: 10
+cyrodiil_fighters_guild:
+  faction: T_Cyr_FightersGuild
+  rank: 10
+cyrodiil_mages_guild:
+  faction: T_Cyr_MagesGuild
+  rank: 10
+cyrodiil_thieves_guild:
+  faction: T_Cyr_ThievesGuild
+  rank: 10

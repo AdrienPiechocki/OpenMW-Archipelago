@@ -33,6 +33,10 @@ class Guild(Choice):
     option_fighters_guild = 1
     option_mages_guild = 2
     option_thieves_guild = 3
+    # Project Cyrodiil guilds (Cyr_Main.esm + Tamriel_Data.esm required), separate from the vanilla ones.
+    option_cyrodiil_fighters_guild = 4
+    option_cyrodiil_mages_guild = 5
+    option_cyrodiil_thieves_guild = 6
     default = 0
 
 
@@ -43,7 +47,9 @@ class Faction(Choice):
     Bloodmoon faction (rank Factor): it requires Bloodmoon.esm in OpenMW.
     With tamriel_rebuilt_factions it also enables the Tamriel Rebuilt East
     Empire Company questline. ja_natta_syndicate and ordinators are Tamriel
-    Rebuilt factions (TR_Mainland.esm; the Ordinators come with Poison Song)."""
+    Rebuilt factions (TR_Mainland.esm; the Ordinators come with Poison Song).
+    kingdom_of_anvil and itinerant_priests are Project Cyrodiil factions
+    (Cyr_Main.esm + Tamriel_Data.esm)."""
     display_name = "Faction"
     option_none = 0
     option_imperial_cult = 1
@@ -55,6 +61,9 @@ class Faction(Choice):
     option_ja_natta_syndicate = 6
     # Tamriel Rebuilt faction added by Poison Song (the three Orders: Watch, War, Doctrine).
     option_ordinators = 7
+    # Project Cyrodiil factions (Cyr_Main.esm + Tamriel_Data.esm required).
+    option_kingdom_of_anvil = 8
+    option_itinerant_priests = 9
     # Accepted spelling in player YAMLs: `faction: ja-natta_syndicate`.
     locals()["alias_ja-natta_syndicate"] = 6
     default = 0
@@ -348,6 +357,16 @@ class TamrielRebuiltDaedricQuests(Toggle):
     default = False
 
 
+class ProjectCyrodiilSideQuests(Toggle):
+    """Project Cyrodiil: the quests of the mod that belong to none of its
+    factions (Kingdom of Anvil, Itinerant Priests, Cyrodiil guilds) give a
+    check. Never a goal. The quests of a Project Cyrodiil guild / faction
+    chosen in `guild` / `faction` are always part of that goal's checks.
+    Requires Cyr_Main.esm and Tamriel_Data.esm in OpenMW."""
+    display_name = "Project Cyrodiil: Side Quests"
+    default = False
+
+
 class VampireClan(Choice):
     """Vampire clans (Aundae, Berne, Quarra): a category of its own, not a house, a guild or a
     faction. A player belongs to ONE clan only (the one of the vampire that infected them), so
@@ -454,6 +473,7 @@ class MorrowindOptions(PerGameCommonOptions):
     tamriel_rebuilt_daedric_quests: TamrielRebuiltDaedricQuests = TamrielRebuiltDaedricQuests.default
     vampire_clan: VampireClan = VampireClan.default
     tamriel_rebuilt_vampire_clan: TamrielRebuiltVampireClan = TamrielRebuiltVampireClan.default
+    project_cyrodiil_side_quests: ProjectCyrodiilSideQuests = ProjectCyrodiilSideQuests.default
     traps: Traps = Traps.default
     quest_rewards: QuestRewards = QuestRewards.default
     death_link: DeathLink = DeathLink.default
@@ -549,6 +569,19 @@ TR_GROUPS = ("tr_main", "tr_side", "tr_daedric") + TR_VAMPIRE_GROUPS + tuple(f"t
 UNVERIFIED_GOALS = ("ordinators",)
 
 
+# Project Cyrodiil (Cyr_Main.esm). Its factions are goals like the vanilla ones: the quests of a
+# PC faction carry the group named after the goal key (PC_FACTION_KEYS, same as the guild / faction
+# option choices), so they follow the usual goal logic (checks only if that faction is chosen).
+# Every other PC quest is in the free group `pc_side` (option project_cyrodiil_side_quests).
+# Must stay in sync with tools/quest_groups.py (checked by tools/test_project_cyrodiil.py).
+PC_SIDE_GROUP = "pc_side"
+PC_FACTION_KEYS = (
+    "kingdom_of_anvil", "itinerant_priests",
+    "cyrodiil_fighters_guild", "cyrodiil_mages_guild", "cyrodiil_thieves_guild",
+)
+PC_GROUPS = (PC_SIDE_GROUP,) + PC_FACTION_KEYS
+
+
 # Expansions and their quest categories (the East Empire Company faction is not
 # here: it is the `faction` option). Each expansion quest belongs to ONE
 # group "<expansion>_<category>" (tools/quest_groups.py); each group is
@@ -566,7 +599,7 @@ EXPANSION_GROUPS = tuple(f"{e}_{c}" for e in EXPANSIONS for c in EXPANSION_CATEG
 VAMPIRE_CLANS = ("aundae", "berne", "quarra")
 CATEGORY_GROUPS = ("vampire",) + tuple(f"vampire_{c}" for c in VAMPIRE_CLANS)
 
-FREE_GROUPS = (("misc", "tr_side") + TR_VAMPIRE_GROUPS + CATEGORY_GROUPS + EXPANSION_GROUPS)
+FREE_GROUPS = (("misc", "tr_side", PC_SIDE_GROUP) + TR_VAMPIRE_GROUPS + CATEGORY_GROUPS + EXPANSION_GROUPS)
 
 
 def _enabled(options, name) -> bool:
@@ -624,6 +657,11 @@ def selected_tr_groups(options) -> list:
     return out
 
 
+def selected_pc_groups(options) -> list:
+    """Enabled Project Cyrodiil groups that are NOT goal groups: ["pc_side"] or []."""
+    return [PC_SIDE_GROUP] if _enabled(options, "project_cyrodiil_side_quests") else []
+
+
 def group_enabled(options, group) -> bool:
     """True if a quest group is enabled in the seed.
 
@@ -634,7 +672,7 @@ def group_enabled(options, group) -> bool:
     if not group:
         return True
     return (group in selected_expansion_groups(options) or group in selected_tr_groups(options)
-            or group in selected_category_groups(options))
+            or group in selected_category_groups(options) or group in selected_pc_groups(options))
 
 
 def quest_rewards_enabled(options) -> bool:
@@ -646,7 +684,7 @@ def group_active(options, group) -> bool:
     enabled expansion / Tamriel Rebuilt group, or selected goal)."""
     if group == "misc":
         return True
-    if group in EXPANSION_GROUPS or group in TR_GROUPS or group in CATEGORY_GROUPS:
+    if group in EXPANSION_GROUPS or group in TR_GROUPS or group in CATEGORY_GROUPS or group == PC_SIDE_GROUP:
         return group_enabled(options, group)
     return goal_of_group(group) in selected_goals(options)
 

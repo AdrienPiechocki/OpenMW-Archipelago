@@ -9,8 +9,8 @@ Morrowind OpenMW:
   # one house, one guild, one faction or daedric_quests: true is required).
   main_quest: true
   great_house: none     # none | hlaalu | redoran | telvanni | indoril (Tamriel Rebuilt)
-  guild: none           # none | fighters_guild | mages_guild | thieves_guild
-  faction: none         # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company (Bloodmoon) | ja_natta_syndicate | ordinators (Tamriel Rebuilt)
+  guild: none           # none | fighters_guild | mages_guild | thieves_guild | cyrodiil_fighters_guild | cyrodiil_mages_guild | cyrodiil_thieves_guild (Project Cyrodiil)
+  faction: none         # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company (Bloodmoon) | ja_natta_syndicate | ordinators (Tamriel Rebuilt) | kingdom_of_anvil | itinerant_priests (Project Cyrodiil)
 
   # Adds the 7 Daedric quests to the objective. Each one is locked until its
   # Archipelago item ("Daedric Quest: <prince>") is received.
@@ -91,6 +91,11 @@ Morrowind OpenMW:
   #   tamriel_rebuilt_vampire_clan: none | unaligned | baluath | orlukh; the final quest of the clan
   #                                  is a goal (Baluath: Slay Orlukh Ancient, Orlukh: Namira's Shroud)
   tamriel_rebuilt_vampire_clan: none
+
+  # Project Cyrodiil (Cyr_Main.esm + Tamriel_Data.esm required in openmw.cfg).
+  # Its guilds / factions are chosen above (guild: cyrodiil_*, faction: kingdom_of_anvil | itinerant_priests).
+  #   project_cyrodiil_side_quests: checks for the other Project Cyrodiil quests (never a goal)
+  project_cyrodiil_side_quests: false
 
   # Quest rewards: the UNIQUE items (named weapons, armor, rings, books...) given by quests
   # and not needed for progression become checks; their items go into the pool.

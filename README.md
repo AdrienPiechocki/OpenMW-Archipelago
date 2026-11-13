@@ -17,6 +17,8 @@ Archipelago mod to play Morrowind under OpenMW as an Archipelago world.
   changes the ending of an existing quest can prevent the corresponding check from triggering
   or skew the objective.
 - **Tamriel Rebuilt: optional** (`tamriel_rebuilt_*` options, see below).
+- **Project Cyrodiil: optional** (`project_cyrodiil_side_quests` option, `guild: cyrodiil_*` and
+  `faction: kingdom_of_anvil` / `itinerant_priests`, see *Project Cyrodiil* below).
 - **Tribunal / Bloodmoon: optional** (`tribunal_*` / `bloodmoon_*` options, see below).
 - **Mods that modify gameplay: compatible**, as long as they do not touch the quest journal
   (balancing, items, magic, travel, UI, etc.). For example
@@ -71,8 +73,8 @@ The default objective is the **main quest** (death of Dagoth Ur). In the player 
 Morrowind OpenMW:
   main_quest: true             # false = the main quest is no longer an objective
   great_house: hlaalu          # none | hlaalu | redoran | telvanni | indoril (Tamriel Rebuilt)
-  guild: mages_guild           # none | fighters_guild | mages_guild | thieves_guild
-  faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company | ja_natta_syndicate | ordinators
+  guild: mages_guild           # none | fighters_guild | mages_guild | thieves_guild | cyrodiil_fighters_guild | cyrodiil_mages_guild | cyrodiil_thieves_guild (Project Cyrodiil)
+  faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company | ja_natta_syndicate | ordinators | kingdom_of_anvil | itinerant_priests (Project Cyrodiil)
   daedric_quests: true         # adds the 7 vanilla Daedric quests to the objective
   traps: true                  # false = no trap items in the pool
   attribute_strength: 0        # 0-100: starting bonus per attribute (see below)
@@ -81,6 +83,7 @@ Morrowind OpenMW:
   tribunal_side_quests: false      # true = other Tribunal quests give checks
   bloodmoon_main_quest: false      # same two options for Bloodmoon
   bloodmoon_side_quests: false
+  project_cyrodiil_side_quests: false   # true = Project Cyrodiil quests outside its factions give checks
 ```
 
 Victory requires the main quest (if `main_quest` is enabled) **and** each chosen house / guild /
@@ -191,6 +194,56 @@ A quest's group is determined by its prefix
 (`tools/quest_groups.py`); exceptions go in `data/quest_groups_override.yaml`.
 Daedric quests only contribute to the objective and checks when `daedric_quests` is enabled.
 
+## Project Cyrodiil (`project_cyrodiil_side_quests`, `guild: cyrodiil_*`, `faction: kingdom_of_anvil | itinerant_priests`)
+
+Requires `Tamriel_Data.esm` and `Cyr_Main.esm` in `openmw.cfg` (Project Cyrodiil needs Tribunal and
+Bloodmoon, and OpenMW 0.49+). Everything is disabled by default; a disabled option means no location,
+no goal, and the mod ignores those quests. Project Cyrodiil is **not** an extension of Tamriel Rebuilt:
+it has its own journals (`PC_m<N>_<TOKEN>_...`), its own factions and **no main quest and no Daedric
+quest**, hence a different integration from `tamriel_rebuilt_*`.
+
+| Option / choice | Effect |
+|---|---|
+| `guild: cyrodiil_fighters_guild` / `cyrodiil_mages_guild` / `cyrodiil_thieves_guild` | The Cyrodiil guild becomes a goal (rank 10 = leader) and its quests give checks. Separate from the vanilla guilds: `guild` still holds ONE choice |
+| `faction: kingdom_of_anvil` / `itinerant_priests` | Same for the Kingdom of Anvil and the Order of Itinerant Priests |
+| `project_cyrodiil_side_quests` | Checks for every other Project Cyrodiil quest (never a goal) |
+
+The quests of a Project Cyrodiil faction are always part of the checks of that faction once it is chosen
+(like a vanilla faction): there is no `project_cyrodiil_factions` toggle, because these factions have no
+vanilla counterpart to extend. Each chosen faction adds its `<faction> Requirements added` item
+(ids 7701514-7701518), like the other faction goals. The goals have no quest items.
+
+**Status: run the data generation below.** Project Cyrodiil quests are not shipped in `data/`: IDs come from the ESM.
+
+```sh
+tes3conv Cyr_Main.esm cyr_main.json            # the file name must contain "cyr_main"
+tes3conv Tamriel_Data.esm tamriel_data.json    # if not done yet (faction records may live there)
+python tools/extract.py morrowind.json tribunal.json bloodmoon.json tr_mainland.json cyr_main.json --out data/
+# then gen_quest_finals.py / classify_quests.py / gen_lua.py / install_apworld.py as above
+python tools/list_tr.py cyr_main.json --pc --journals                        # check the groups and tokens
+python tools/list_tr.py cyr_main.json tamriel_data.json --factions --grep cyr # faction ids + ranks
+```
+
+(`install.sh` does the conversion automatically when `Cyr_Main.esm` is found: `PC_DATA=... ./install.sh`.)
+
+1. **Classification** (`tools/quest_groups.py`, `data/pc_categories.yaml`). A journal `PC_m<N>_...` is a
+   Project Cyrodiil quest. The faction token (one of the 2 parts after `m<N>`) gives its group, named after
+   the goal key: `ip` -> `itinerant_priests`, `k<N>` -> `kingdom_of_anvil`, `mg` -> `cyrodiil_mages_guild`
+   (confirmed on UESP: `PC_m1_IP_Lki4`, `PC_m1_K1_MC1`, `PC_m1_MG_Anv6`), `fg` -> `cyrodiil_fighters_guild`
+   and `tg` -> `cyrodiil_thieves_guild` (assumed, same naming). Anything else (place tokens such as
+   `PC_m1_Anv_WellMet`) is `pc_side`. Complete `faction_tokens` in `data/pc_categories.yaml` with the tokens
+   that `list_tr.py --pc --journals` leaves in `pc_side`.
+2. **Goals.** The 5 faction ids in `data/goals.yaml` are verified against `Tamriel_Data.esm` (`T_Cyr_KingdomAnvil`,
+   `T_Cyr_ItinerantPriests`, `T_Cyr_FightersGuild`, `T_Cyr_MagesGuild`, `T_Cyr_ThievesGuild`, 10 ranks each, rank 10 = leader).
+3. **Generation guard.** Selecting a Project Cyrodiil goal or `project_cyrodiil_side_quests` while the apworld
+   holds no quest data for it stops generation with an explicit message.
+4. **Mods.** Project Cyrodiil adds quests: like Tamriel Rebuilt, a patch that edits them is not supported.
+   Sub-journals sharing one UESP page (`PC_m1_IP_Run1LE`, `..._Run1LV`, `..._Run1TT`...) are separate
+   journals: `gen_quest_finals.py` / `data/quest_review.txt` decide which one completes the quest, and
+   mutually exclusive branches go in `data/quest_exclusive.yaml`.
+   The contract of *Culture Shock* has two ids in the game files (`..._Als2_LoanBuy` / `..._LoanSteal`): check them in
+   `quest_review.txt`.
+
 ## Daedric quests (option `daedric_quests`)
 
 When the option is enabled, the 7 vanilla Daedric quests (`da_azura`, `da_boethiah`,
@@ -230,7 +283,7 @@ are mutually exclusive branches; requiring them all, as the old `tr_main` group 
 goal impossible. Stage 200 is the only successful ending: stages 190/195 are the Simine/Alvu-death
 softlocks. All the `tr_main` quests still give checks.
 
-**Status: data still to generate.** TR quests are not shipped in `data/`: IDs come from the ESM.
+**Status: run the data generation below.** TR quests are not shipped in `data/`: IDs come from the ESM.
 
 ```sh
 tes3conv Tamriel_Data.esm tamriel_data.json

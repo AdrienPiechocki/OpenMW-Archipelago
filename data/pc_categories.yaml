@@ -1,0 +1,17 @@
+# Category of the Project Cyrodiil quests (journal IDs, lowercase). Used by
+# tools/quest_groups.py for every journal DEFINED by Cyr_Main.esm (data/quest_sources.yaml)
+# or whose ID matches ^pc_m<N>_ .
+#   1. listed under side                          -> pc_side
+#   2. a faction token in PC_m<N>_[<place>_]<TOKEN>_* -> the goal key of that PC faction
+#      (kingdom_of_anvil, itinerant_priests, cyrodiil_fighters_guild, ...)
+#   3. everything else                            -> pc_side
+# Tokens confirmed on UESP: ip (Order of Itinerant Priests: PC_m1_IP_Lki4, PC_m1_IP_Run3...),
+# k<N> (Kingdom of Anvil: PC_m1_K1_MC1), mg (Cyrodiil Mages Guild: PC_m1_MG_Anv6).
+# ASSUMED (same naming, NOT confirmed): fg (Fighters Guild), tg (Thieves Guild).
+# Misc quests use a place token (PC_m1_Anv_WellMet, PC_m1_Anv_CallTribe) and stay in pc_side.
+# TO CHECK after extraction: python tools/list_tr.py cyr_main.json --pc --journals
+# (the tokens left in pc_side are the candidates for faction_tokens).
+# After editing: python tools/classify_quests.py && python tools/gen_lua.py
+side: []
+faction_tokens: {}
+# faction_tokens example:  tgs: cyrodiil_thieves_guild

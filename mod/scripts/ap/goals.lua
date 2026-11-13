@@ -24,4 +24,9 @@ return {
   vampire_quarra = { quests = { { quest = 'va_vampamulet', stage = 50, complete = true } } },
   vampire_baluath = { quests = { { quest = 'tr_m4_bal_killorlukh', stage = 100, complete = true } } },
   vampire_orlukh = { quests = { { quest = 'tr_m4_va_namira', stage = 225, complete = true } } },
+  kingdom_of_anvil = { faction = 't_cyr_kingdomanvil', rank = 10 },
+  itinerant_priests = { faction = 't_cyr_itinerantpriests', rank = 10 },
+  cyrodiil_fighters_guild = { faction = 't_cyr_fightersguild', rank = 10 },
+  cyrodiil_mages_guild = { faction = 't_cyr_magesguild', rank = 10 },
+  cyrodiil_thieves_guild = { faction = 't_cyr_thievesguild', rank = 10 },
 }
