@@ -66,6 +66,7 @@ FACTION_REQUIREMENTS = {
     "morag_tong": (BASE_ITEM + 510, "Morag Tong"),
     "east_empire_company": (BASE_ITEM + 511, "East Empire Company"),
     "ja_natta_syndicate": (BASE_ITEM + 512, "Ja-Natta Syndicate"),
+    "ordinators": (BASE_ITEM + 513, "Ordinators"),
 }
 FACTION_REQUIREMENT_NAMES = {
     goal: f"{label} Requirements added" for goal, (_code, label) in FACTION_REQUIREMENTS.items()

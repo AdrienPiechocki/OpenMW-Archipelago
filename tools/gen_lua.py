@@ -58,7 +58,8 @@ def gen_goals(goals_path, out_path):
         if g.get('group'):
             parts.append("group = '%s'" % g['group'])
         if g.get('quests'):
-            qs = ', '.join("{ quest = '%s', stage = %d }" % (str(e['quest']).lower(), int(e['stage']))
+            qs = ', '.join("{ quest = '%s', stage = %d%s }" % (str(e['quest']).lower(), int(e['stage']),
+                                                              ', complete = true' if e.get('complete') else '')
                            for e in g['quests'])
             parts.append('quests = { %s }' % qs)
         lines.append('  %s = { %s },' % (name, ', '.join(parts)))

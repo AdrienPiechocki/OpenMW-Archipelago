@@ -24,6 +24,7 @@ M.ITEM_IDS = {
   fighters_guild = 7701504, mages_guild = 7701505, thieves_guild = 7701506,
   imperial_cult = 7701507, imperial_legion = 7701508, temple = 7701509,
   morag_tong = 7701510, east_empire_company = 7701511, ja_natta_syndicate = 7701512,
+  ordinators = 7701513,
 }
 
 M.GOAL_BY_ITEM = {}

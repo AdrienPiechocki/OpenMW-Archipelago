@@ -18,6 +18,8 @@ local factionReq = require('scripts.ap.faction_requirements')
 local EXPANSION_GROUPS = {
   tribunal_main = true, tribunal_side = true,
   bloodmoon_main = true, bloodmoon_side = true,
+  -- vanilla vampire clans: a category of its own (option vampire_clan: the common group + the chosen clan's)
+  vampire = true, vampire_aundae = true, vampire_berne = true, vampire_quarra = true,
 }
 local goalChecks = {
   GROUP_GOALS = { main = 'main_quest', daedric = 'daedric_quests' },
@@ -145,7 +147,13 @@ local function keyReached(key, quests)
 
   if g.quests then
     for _, e in ipairs(g.quests) do
-      if questStage(quests, e.quest) >= e.stage then ok = true end
+      local st = questStage(quests, e.quest)
+      if e.complete then
+        -- same condition as the quest's check (alternative endings, never a failure branch)
+        if questComplete(e.quest, st) then ok = true end
+      elseif st >= e.stage then
+        ok = true
+      end
     end
   end
 

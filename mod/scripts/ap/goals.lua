@@ -18,4 +18,10 @@ return {
   tamriel_rebuilt_main = { quests = { { quest = 'tr_necmq_3', stage = 200 } } },
   indoril = { faction = 't_mw_houseindoril', rank = 10 },
   ja_natta_syndicate = { faction = 't_mw_janattasyndicate', rank = 10 },
+  ordinators = { faction = 't_mw_ordinators', rank = 10 },
+  vampire_aundae = { quests = { { quest = 'va_vamphunter', stage = 110, complete = true } } },
+  vampire_berne = { quests = { { quest = 'va_vampcountess', stage = 70, complete = true } } },
+  vampire_quarra = { quests = { { quest = 'va_vampamulet', stage = 50, complete = true } } },
+  vampire_baluath = { quests = { { quest = 'tr_m4_bal_killorlukh', stage = 100, complete = true } } },
+  vampire_orlukh = { quests = { { quest = 'tr_m4_va_namira', stage = 225, complete = true } } },
 }

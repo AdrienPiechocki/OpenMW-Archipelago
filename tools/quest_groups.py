@@ -17,8 +17,9 @@ The Blades quests (blades_*, Caius Cosades' agents) are counted in the 'main'
 group: filler checks of the main quest, only active if the main quest goal is
 selected.
 The main, faction and daedric groups are used for goals ('daedric' if the
-Daedric Quests option is enabled); 'vampire' is ignored (neither goal nor
-check).
+Daedric Quests option is enabled); the vampire clans are a category of their own (options vampire_clan /
+tamriel_rebuilt_vampire_clan): checks, plus the final quest of the chosen clan as a goal (data/goals.yaml). A player belongs to ONE clan: 'vampire' / 'tr_vampire'
+hold the quests open to any bloodline, 'vampire_<clan>' / 'tr_vampire_<clan>' those of one clan.
 
 The expansion (tribunal / bloodmoon) comes from the ESM that DEFINES the
 journal (data/quest_sources.yaml, written by tools/extract.py). The tr_ / bm_
@@ -63,9 +64,17 @@ TR_FACTION_KEYS = (
     'hlaalu', 'redoran', 'telvanni', 'indoril',
     'fighters_guild', 'mages_guild', 'thieves_guild',
     'imperial_cult', 'imperial_legion', 'temple', 'morag_tong',
-    'ja_natta_syndicate', 'east_empire_company',
+    'ja_natta_syndicate', 'east_empire_company', 'ordinators',
 )
-TR_GROUPS = ('tr_main', 'tr_side', 'tr_daedric') + tuple(f'tr_{k}' for k in TR_FACTION_KEYS)
+# Vampire clans: a player belongs to ONE clan (the one of the vampire that infected them), so the
+# quests of the other clans are out of reach. Each clan has its own group, enabled only if it is
+# the chosen clan; the quests open to any bloodline stay in 'vampire' / 'tr_vampire'.
+VAMPIRE_CLANS = ('aundae', 'berne', 'quarra')
+TR_VAMPIRE_CLANS = ('baluath', 'orlukh')
+VAMPIRE_GROUPS = ('vampire',) + tuple(f'vampire_{c}' for c in VAMPIRE_CLANS)
+TR_VAMPIRE_GROUPS = ('tr_vampire',) + tuple(f'tr_vampire_{c}' for c in TR_VAMPIRE_CLANS)
+TR_GROUPS = (('tr_main', 'tr_side', 'tr_daedric') + TR_VAMPIRE_GROUPS
+             + tuple(f'tr_{k}' for k in TR_FACTION_KEYS))
 # Faction token of a TR journal id (TR_m<N>_[<place>_]<TOKEN>_...). CONFIRMED on UESP:
 # hh (TR_m4_HH_Ulvo4), ht (TR_m2_HT_Vaerin_q2), tt (TR_m3_TT_Lloris1), jns (TR_m7_Ns_JNS_7),
 # eec (TR_m1_EEC_Lora / TR_m3_EEC_*, the East Empire Company questline).
@@ -76,19 +85,23 @@ DEFAULT_TR_TOKENS = {
     'hr': 'redoran', 'fg': 'fighters_guild', 'mg': 'mages_guild', 'tg': 'thieves_guild',
     'il': 'imperial_legion', 'ic': 'imperial_cult', 'mt': 'morag_tong',
     'eec': 'east_empire_company',
+    # Ordinators questlines (Poison Song): TR_m3_Ord_Watch1..4 / _War1..4 / _Doc1..5, TR_m4_Ord_Rite
+    'ord': 'ordinators',
 }
 # Faction tokens followed by a number and an optional variant letter:
 # IC1, MG01, TG1, MG07a (the vanilla convention is ^ic(\d+)?_).
 TR_NUMBERED_TOKEN = re.compile(r'^([a-z]+)\d+[a-z]?$')
-# TR vampire quests: TR_m4_Bal_* / Bal0..Bal5 and TR_m4_VA_* -> 'vampire',
-# like the vanilla va_* journals (ignored: neither goal nor check).
-TR_VAMPIRE = re.compile(r'^(tr_m4_bal[0-5]?|tr_m4_va)_')
+# TR vampire clan quests (Baluath: TR_m4_Bal_* / Bal0..Bal5, Orlukh: TR_m4_VA_*) -> 'tr_vampire'.
+# The vanilla va_* journals are the group 'vampire'. Both are a category of their own (options
+# vampire_clan / tamriel_rebuilt_vampire_clan): checks + the final quest of the chosen clan as a goal; not a faction.
+TR_BALUATH = re.compile(r'^tr_m4_bal[0-5]?_')   # clan Baluath questline
+TR_ORLUKH = re.compile(r'^tr_m4_va_')            # clan Orlukh questline
 
 EXPANSIONS = ('tribunal', 'bloodmoon')
 ORIGINS = EXPANSIONS + ('tamriel_rebuilt',)
 EXPANSION_CATEGORIES = ('main', 'side')
 EXPANSION_GROUPS = tuple(f'{e}_{c}' for e in EXPANSIONS for c in EXPANSION_CATEGORIES)
-VALID_GROUPS = ({g for g, _ in PREFIX_RULES} | {'misc', 'east_empire_company'} | set(EXPANSIONS) | set(EXPANSION_GROUPS)
+VALID_GROUPS = ({g for g, _ in PREFIX_RULES} | set(VAMPIRE_GROUPS) | {'misc', 'east_empire_company'} | set(EXPANSIONS) | set(EXPANSION_GROUPS)
                 | set(TR_GROUPS) | {'tamriel_rebuilt'})
 
 _DATA = pathlib.Path(__file__).resolve().parent.parent / 'data'
@@ -124,8 +137,10 @@ def tr_group(qid, tr_cats=None):
         return 'tr_main'
     if q in c['daedric'] or (c['daedric_prefixes'] and q.startswith(c['daedric_prefixes'])):
         return 'tr_daedric'
-    if TR_VAMPIRE.match(q):            # TR_m4_Bal* / TR_m4_VA_* (see the yaml)
-        return 'vampire'
+    if TR_BALUATH.match(q):            # TR_m4_Bal* : clan Baluath
+        return 'tr_vampire_baluath'
+    if TR_ORLUKH.match(q):             # TR_m4_VA_* : clan Orlukh
+        return 'tr_vampire_orlukh'
     # TR_m<N>_<TOKEN>_... or TR_m<N>_<place>_<TOKEN>_...: the token is one of the 2 parts after mN.
     # Faction tokens may carry a number and an optional variant letter: IC1, MG01, TG1, MG07a.
     for part in q.split('_')[2:4]:

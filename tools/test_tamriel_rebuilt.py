@@ -113,7 +113,19 @@ check('indoril faction id', goals['indoril'].get('faction'), 'T_Mw_HouseIndoril'
 check('indoril rank', goals['indoril'].get('rank'), 10)
 check('ja_natta faction id', goals['ja_natta_syndicate'].get('faction'), 'T_Mw_JaNattaSyndicate')
 check('ja_natta rank', goals['ja_natta_syndicate'].get('rank'), 10)
-check('no unverified TR goal', opts.UNVERIFIED_GOALS, ())
+# the Ordinators faction id / rank are still a placeholder until set_goal_faction.py is run
+check('only the Ordinators goal is unverified', opts.UNVERIFIED_GOALS, ('ordinators',))
+check('ordinators option value', getattr(opts.Faction, 'option_ordinators', None), 7)
+check('ordinators goal', opts.selected_goals(make(faction='ordinators')), ['main_quest', 'ordinators'])
+check('ordinators group enabled with TR factions',
+      opts.selected_tr_groups(make(faction='ordinators', tamriel_rebuilt_factions=True)), ['tr_ordinators'])
+check('ordinators group off without TR factions',
+      opts.selected_tr_groups(make(faction='ordinators')), [])
+import re as _re
+_items_src = (pathlib.Path(__file__).resolve().parent.parent / 'apworld/morrowind_openmw/items.py').read_text(encoding='utf-8')
+check('ordinators requirement item', bool(_re.search(r'"ordinators": \(BASE_ITEM \+ 513,', _items_src)), True)
+_lua = (pathlib.Path(__file__).resolve().parent.parent / 'mod/scripts/ap/faction_requirements.lua').read_text(encoding='utf-8')
+check('ordinators requirement id in Lua', 'ordinators = 7701513' in _lua, True)
 check('TR main completion stage 200', gqf.STAGE_OVERRIDES.get('tr_necmq_3'), 200)
 check('TR main only success stage', gqf.STAGES_OVERRIDES.get('tr_necmq_3'), [200])
 check('TR main softlocks are failures', gqf.FAIL_STAGES.get('tr_necmq_3'), [190, 195, 199])
@@ -176,6 +188,8 @@ cats = {'main': {'tr_m1_fm_x'}, 'main_prefixes': (), 'daedric': {'tr_m1_da_y'}, 
 for q, want in {
     'TR_m4_HH_Ulvo4': 'tr_hlaalu', 'TR_m2_HT_Vaerin_q2': 'tr_telvanni', 'TR_m3_TT_Lloris1c': 'tr_temple',
     'TR_m7_Ns_JNS_7': 'tr_ja_natta_syndicate', 'TR_m3_Kha_UndyingRivalry': 'tr_side',
+    'TR_m3_Ord_Watch1': 'tr_ordinators', 'TR_m3_Ord_War4': 'tr_ordinators',
+    'TR_m3_Ord_Doc4_wm': 'tr_ordinators', 'TR_m4_Ord_Rite': 'tr_ordinators',
     'TR_m1_EEC_Lora': 'tr_east_empire_company', 'TR_m3_EEC_Cano1': 'tr_east_empire_company',
     'TR_m1_FW_IC2_Taxes': 'tr_imperial_cult', 'TR_m1_FW_MG01': 'tr_mages_guild',
     'TR_m1_FW_MG07a': 'tr_mages_guild', 'TR_m2_He_TG1': 'tr_thieves_guild',

@@ -23,5 +23,6 @@ daedric_prefixes: [tr_m1_da_, tr_m7_da_]
 faction_tokens:
   hi: indoril           # TR_m3_HI_* (Gorne, Beroth, Nanaav, Roa Dyr, Ilvi, Sandil, MQ1)
   eec: east_empire_company  # TR_m1_EEC_Lora, TR_m3_EEC_*, TR_m7_EEC_*: EEC faction questline
+  ord: ordinators       # TR_m3_Ord_Watch1..4, _War1..4, _Doc1..5, TR_m4_Ord_Rite (Poison Song)
 # A token may be followed by a number (and an optional variant letter):
 # IC1/IC2, MG01, TG1, MG07a. tools/quest_groups.py matches these variants.

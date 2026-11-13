@@ -74,3 +74,41 @@ bm_airship: bloodmoon_side
 bm_airship_a: bloodmoon_side
 bm_airship_c: bloodmoon_side
 bm_retribution: bloodmoon_side
+
+# --- TR faction quests that the token rules left in tr_side (UESP faction page, quest_tree_enriched.json) ---
+tr_m1_rr_mq_1: tr_telvanni
+tr_m1_rr_mq_10: tr_telvanni
+tr_m1_rr_mq_2: tr_telvanni
+tr_m1_rr_mq_2.5: tr_telvanni
+tr_m1_rr_mq_3: tr_telvanni
+tr_m1_rr_mq_4: tr_telvanni
+tr_m1_rr_mq_5: tr_telvanni
+tr_m1_rr_mq_6: tr_telvanni
+tr_m1_rr_mq_6.5: tr_telvanni
+tr_m1_rr_mq_7: tr_telvanni
+tr_m1_rr_mq_8: tr_telvanni
+tr_m1_rr_mq_9: tr_telvanni
+tr_m3_at_mgbonus: tr_mages_guild
+tr_m4_and_missingmerchant: tr_hlaalu
+tr_m4_and_missingmerchant2: tr_hlaalu
+tr_m7_db_special1: tr_morag_tong
+tr_tt_q1: tr_temple
+tr_m7_hh_gm_8: tr_temple              # journal name: "Temple: Pilgrimage of the Saint's Rescue" (hh token = Hlaalu Great Marsh)
+tr_m3_va_raenor: tr_vampire          # UESP: Tamriel Rebuilt vampire page
+tr_m4_va_barendrethprotection: tr_vampire
+tr_m4_va_ibinai: tr_vampire
+tr_m4_va_vrashmind: tr_vampire
+TR_m3_VA_ScrollDomination: tr_vampire
+TR_m1_FW_VA_BloodSample: tr_vampire
+TR_m3_VA_Merihayan: tr_vampire
+TR_m7_VA_DaedricOrigin: tr_vampire
+TR_m7_VA_AniVamp: tr_vampire
+
+# vampire clan quests offered only to the members of ONE clan (UESP Morrowind vampire guide)
+va_vampblood: vampire_berne       # Quarra vampire blood (Raxle Berne)
+va_vampcountess: vampire_berne    # Kill Merta (Raxle Berne)
+va_vampchild: vampire_aundae      # Find Dhaunayne's son (Dhaunayne Aundae)
+va_vamphunter: vampire_aundae     # Kill the vampire hunter (Dhaunayne Aundae)
+va_vampcult: vampire_quarra       # Kill Irarak (Volrina Quarra)
+va_vampamulet: vampire_quarra     # Ingredient hunt (Volrina Quarra)
+

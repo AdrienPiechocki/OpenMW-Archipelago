@@ -73,3 +73,28 @@ indoril:
 ja_natta_syndicate:
   faction: T_Mw_JaNattaSyndicate
   rank: 10                                        # Boss
+# Ordinators (Tamriel Rebuilt, Poison Song): three Orders (Watch / War / Doctrine).
+# UNVERIFIED placeholder: the faction id and the number of ranks must be read from
+# Tamriel_Data.esm: python tools/set_goal_faction.py ordinators tamriel_data.json
+ordinators:
+  faction: T_Mw_Ordinators
+  rank: 10
+
+# Vampire clans: the goal is the completion of the clan's final quest (same condition as its
+# check: `complete: true` accepts the alternative endings and never a failure branch). A player
+# belongs to ONE clan, so only the clan chosen in vampire_clan / tamriel_rebuilt_vampire_clan counts.
+vampire_aundae:
+  quests:
+    - {quest: va_vamphunter, stage: 110, complete: true}        # The Vampire Hunter
+vampire_berne:
+  quests:
+    - {quest: va_vampcountess, stage: 70, complete: true}       # The Vampire Merta
+vampire_quarra:
+  quests:
+    - {quest: va_vampamulet, stage: 50, complete: true}         # The Quarra Amulet
+vampire_baluath:
+  quests:
+    - {quest: tr_m4_bal_killorlukh, stage: 100, complete: true} # Baluath: Slay Orlukh Ancient
+vampire_orlukh:
+  quests:
+    - {quest: tr_m4_va_namira, stage: 225, complete: true}      # Orlukh: Namira's Shroud

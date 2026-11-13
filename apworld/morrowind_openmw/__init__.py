@@ -5,7 +5,8 @@ from .items import MorrowindItem, item_table, item_name_groups, quest_item_names
 from .locations import MorrowindLocation, location_table
 from .regions import region_table
 from .options import (MorrowindOptions, selected_goals, goal_of_group, is_free_group, selected_expansions,
-                      selected_expansion_groups, selected_tr_groups, TR_MAIN_GOAL, UNVERIFIED_GOALS,
+                      selected_expansion_groups, selected_tr_groups, selected_category_groups, TR_MAIN_GOAL,
+                      UNVERIFIED_GOALS,
                       start_bonuses, start_option_groups)
 from .rules import set_rules
 from typing import Dict, Any
@@ -41,8 +42,9 @@ class MorrowindWorld(World):
             raise OptionError(
                 f"Morrowind OpenMW ({self.player_name}): no goals selected. "
                 "main_quest is disabled: choose at least one great house, a "
-                "guild, a faction, daedric_quests: true, tribunal_main_quest: true or "
-                "bloodmoon_main_quest: true (or re-enable main_quest).")
+                "guild, a faction, daedric_quests: true, tribunal_main_quest: true, "
+                "bloodmoon_main_quest: true or a vampire clan (vampire_clan / "
+                "tamriel_rebuilt_vampire_clan) (or re-enable main_quest).")
         goals = selected_goals(self.options)
         # TR main quest goal = TR_NecMQ_3 stage 200 (see data/goals.yaml). The
         # tr_main group still supplies the checks: without that data the goal
@@ -176,7 +178,8 @@ class MorrowindWorld(World):
                 # mod only sends the checks of the quests in these groups.
                 # Tamriel Rebuilt groups (tr_main, tr_side, tr_<faction>...) are
                 # sent through the same channel: the mod checks only enabled groups.
-                "expansion_groups": selected_expansion_groups(self.options) + selected_tr_groups(self.options),
+                "expansion_groups": (selected_expansion_groups(self.options) + selected_tr_groups(self.options)
+                                 + selected_category_groups(self.options)),
                 # Expansions with at least one enabled group (informational).
                 "expansions": selected_expansions(self.options),
                 "tamriel_rebuilt": {

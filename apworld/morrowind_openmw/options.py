@@ -42,8 +42,8 @@ class Faction(Choice):
     Its quest items are provided by Archipelago. east_empire_company is the
     Bloodmoon faction (rank Factor): it requires Bloodmoon.esm in OpenMW.
     With tamriel_rebuilt_factions it also enables the Tamriel Rebuilt East
-    Empire Company questline. ja_natta_syndicate is a Tamriel Rebuilt faction
-    (TR_Mainland.esm)."""
+    Empire Company questline. ja_natta_syndicate and ordinators are Tamriel
+    Rebuilt factions (TR_Mainland.esm; the Ordinators come with Poison Song)."""
     display_name = "Faction"
     option_none = 0
     option_imperial_cult = 1
@@ -53,6 +53,8 @@ class Faction(Choice):
     option_east_empire_company = 5
     # Tamriel Rebuilt faction (TR_Mainland.esm + Tamriel_Data.esm required).
     option_ja_natta_syndicate = 6
+    # Tamriel Rebuilt faction added by Poison Song (the three Orders: Watch, War, Doctrine).
+    option_ordinators = 7
     # Accepted spelling in player YAMLs: `faction: ja-natta_syndicate`.
     locals()["alias_ja-natta_syndicate"] = 6
     default = 0
@@ -346,6 +348,37 @@ class TamrielRebuiltDaedricQuests(Toggle):
     default = False
 
 
+class VampireClan(Choice):
+    """Vampire clans (Aundae, Berne, Quarra): a category of its own, not a house, a guild or a
+    faction. A player belongs to ONE clan only (the one of the vampire that infected them), so
+    you choose it: you get a check for each quest open to any bloodline (8, A Cure for
+    Vampirism included) and for the quests of your clan (2), and the final quest of your clan
+    becomes a goal (Aundae: The Vampire Hunter, Berne: The Vampire Merta, Quarra: The Quarra
+    Amulet). none = no check; unaligned = only the quests open to any bloodline, no goal. You
+    must really join that clan in game."""
+    display_name = "Vampire Clan"
+    option_none = 0
+    option_unaligned = 1
+    option_aundae = 2
+    option_berne = 3
+    option_quarra = 4
+    default = 0
+
+
+class TamrielRebuiltVampireClan(Choice):
+    """Tamriel Rebuilt vampire clans: Baluath and Orlukh are enemies, you can only side with one.
+    Checks for the quests open to both (Raenor's Revenge) and for those of the chosen clan, and
+    the final quest of the chosen clan becomes a goal (Baluath: Slay Orlukh Ancient, Orlukh:
+    Namira's Shroud). A category of its own. none = no check; unaligned = only the common
+    quests, no goal. Requires TR_Mainland.esm and Tamriel_Data.esm in OpenMW."""
+    display_name = "Tamriel Rebuilt: Vampire Clan"
+    option_none = 0
+    option_unaligned = 1
+    option_baluath = 2
+    option_orlukh = 3
+    default = 0
+
+
 class Traps(DefaultOnToggle):
     """Include trap items (Damage, Bounty, Summon Scamp, Steal Gold) in the
     item pool. Disabled: no trap is generated, they are replaced by filler."""
@@ -419,6 +452,8 @@ class MorrowindOptions(PerGameCommonOptions):
     tamriel_rebuilt_side_quests: TamrielRebuiltSideQuests = TamrielRebuiltSideQuests.default
     tamriel_rebuilt_factions: TamrielRebuiltFactions = TamrielRebuiltFactions.default
     tamriel_rebuilt_daedric_quests: TamrielRebuiltDaedricQuests = TamrielRebuiltDaedricQuests.default
+    vampire_clan: VampireClan = VampireClan.default
+    tamriel_rebuilt_vampire_clan: TamrielRebuiltVampireClan = TamrielRebuiltVampireClan.default
     traps: Traps = Traps.default
     quest_rewards: QuestRewards = QuestRewards.default
     death_link: DeathLink = DeathLink.default
@@ -473,6 +508,13 @@ def selected_goals(options) -> list:
     # Tamriel Rebuilt main quest: only integrated into the main quest goal.
     if "main_quest" in goals and _enabled(options, "tamriel_rebuilt_main_quest"):
         goals.append(TR_MAIN_GOAL)
+    # Vampire clans: a player belongs to ONE clan; its final quest is a goal (unaligned: none).
+    clan = _clan_key(options, "vampire_clan")
+    if clan in VAMPIRE_CLANS:
+        goals.append(f"vampire_{clan}")
+    tr_clan = _clan_key(options, "tamriel_rebuilt_vampire_clan")
+    if tr_clan in TR_VAMPIRE_CLANS:
+        goals.append(f"vampire_{tr_clan}")
     return goals
 
 
@@ -493,15 +535,18 @@ TR_FACTION_KEYS = (
     "hlaalu", "redoran", "telvanni", "indoril",
     "fighters_guild", "mages_guild", "thieves_guild",
     "imperial_cult", "imperial_legion", "temple", "morag_tong",
-    "ja_natta_syndicate", "east_empire_company",
+    "ja_natta_syndicate", "east_empire_company", "ordinators",
 )
-TR_GROUPS = ("tr_main", "tr_side", "tr_daedric") + tuple(f"tr_{k}" for k in TR_FACTION_KEYS)
+TR_VAMPIRE_CLANS = ("baluath", "orlukh")
+TR_VAMPIRE_GROUPS = ("tr_vampire",) + tuple(f"tr_vampire_{c}" for c in TR_VAMPIRE_CLANS)
+TR_GROUPS = ("tr_main", "tr_side", "tr_daedric") + TR_VAMPIRE_GROUPS + tuple(f"tr_{k}" for k in TR_FACTION_KEYS)
 
 # Goals whose game data (faction id / rank) are not confirmed against the TR ESM:
 # generation logs a warning (tools/list_tr.py --factions to check them).
-# Both TR faction goals are verified: T_Mw_HouseIndoril / T_Mw_JaNattaSyndicate
-# exist in Tamriel_Data.esm with 10 ranks each. Keep the hook for future goals.
-UNVERIFIED_GOALS = ()
+# T_Mw_HouseIndoril / T_Mw_JaNattaSyndicate are verified (10 ranks each). The Ordinators
+# faction id / rank count are NOT: run `python tools/set_goal_faction.py ordinators
+# tamriel_data.json`, which reads them from the ESM and clears this line.
+UNVERIFIED_GOALS = ("ordinators",)
 
 
 # Expansions and their quest categories (the East Empire Company faction is not
@@ -514,7 +559,14 @@ EXPANSION_GROUPS = tuple(f"{e}_{c}" for e in EXPANSIONS for c in EXPANSION_CATEG
 
 # Quest groups that give checks without being a goal: Miscellaneous quests
 # (always) and expansion quests (if the option of their group is enabled).
-FREE_GROUPS = ("misc", "tr_side") + EXPANSION_GROUPS
+# Standalone quest category (not a goal, not a faction): the vanilla vampire clans. A player belongs
+# to ONE clan, so each clan has its own group (enabled only if it is the chosen clan) next to the
+# group of the quests open to any bloodline. The TR counterpart (tr_vampire*) is a TR group enabled
+# by tamriel_rebuilt_vampire_clan.
+VAMPIRE_CLANS = ("aundae", "berne", "quarra")
+CATEGORY_GROUPS = ("vampire",) + tuple(f"vampire_{c}" for c in VAMPIRE_CLANS)
+
+FREE_GROUPS = (("misc", "tr_side") + TR_VAMPIRE_GROUPS + CATEGORY_GROUPS + EXPANSION_GROUPS)
 
 
 def _enabled(options, name) -> bool:
@@ -538,6 +590,20 @@ def selected_expansions(options) -> list:
     return [e for e in EXPANSIONS if any(g.startswith(e + "_") for g in groups)]
 
 
+def _clan_key(options, name) -> str:
+    opt = getattr(options, name, None)
+    return str(getattr(opt, "current_key", "none") or "none")
+
+
+def selected_category_groups(options) -> list:
+    """Enabled vanilla vampire groups: the common one + the chosen clan's, e.g.
+    ["vampire", "vampire_berne"]. Nothing if vampire_clan is none."""
+    key = _clan_key(options, "vampire_clan")
+    if key == "none":
+        return []
+    return ["vampire"] + ([f"vampire_{key}"] if key in VAMPIRE_CLANS else [])
+
+
 def selected_tr_groups(options) -> list:
     """Enabled Tamriel Rebuilt groups, e.g. ["tr_side", "tr_hlaalu"]."""
     goals = selected_goals(options)
@@ -548,6 +614,11 @@ def selected_tr_groups(options) -> list:
         out.append("tr_main")
     if "daedric_quests" in goals and _enabled(options, "tamriel_rebuilt_daedric_quests"):
         out.append("tr_daedric")
+    clan = _clan_key(options, "tamriel_rebuilt_vampire_clan")
+    if clan != "none":
+        out.append("tr_vampire")
+        if clan in TR_VAMPIRE_CLANS:
+            out.append(f"tr_vampire_{clan}")
     if _enabled(options, "tamriel_rebuilt_factions"):
         out += [f"tr_{g}" for g in goals if g in TR_FACTION_KEYS]
     return out
@@ -562,7 +633,8 @@ def group_enabled(options, group) -> bool:
     enabled (its goal alone gates it)."""
     if not group:
         return True
-    return group in selected_expansion_groups(options) or group in selected_tr_groups(options)
+    return (group in selected_expansion_groups(options) or group in selected_tr_groups(options)
+            or group in selected_category_groups(options))
 
 
 def quest_rewards_enabled(options) -> bool:
@@ -574,7 +646,7 @@ def group_active(options, group) -> bool:
     enabled expansion / Tamriel Rebuilt group, or selected goal)."""
     if group == "misc":
         return True
-    if group in EXPANSION_GROUPS or group in TR_GROUPS:
+    if group in EXPANSION_GROUPS or group in TR_GROUPS or group in CATEGORY_GROUPS:
         return group_enabled(options, group)
     return goal_of_group(group) in selected_goals(options)
 

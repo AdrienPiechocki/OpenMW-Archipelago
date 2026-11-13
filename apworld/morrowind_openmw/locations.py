@@ -7,7 +7,8 @@ except Exception:
 from BaseClasses import Location
 from typing import NamedTuple, Callable, Dict
 from .options import (MorrowindOptions, selected_goals, goal_of_group, selected_expansion_groups,
-                      selected_tr_groups, EXPANSION_GROUPS, TR_GROUPS, quest_rewards_enabled, group_active)
+                      selected_tr_groups, EXPANSION_GROUPS, TR_GROUPS, quest_rewards_enabled, group_active,
+                      CATEGORY_GROUPS, selected_category_groups)
 
 
 class MorrowindLocation(Location):
@@ -103,6 +104,14 @@ if yaml is not None and _qc_text:
             location_table[name] = MorrowindLocationData(
                 region=region, code=code, group=group,
                 can_create=lambda options, g=group: g in selected_expansion_groups(options),
+                excluded=lambda options, r=risky: r,
+            )
+        elif group in CATEGORY_GROUPS:
+            # Standalone categories (vampire clans): checks only if their own option is
+            # enabled; never gating. Same safety rule as misc quests.
+            location_table[name] = MorrowindLocationData(
+                region=region, code=code, group=group,
+                can_create=lambda options, g=group: g in selected_category_groups(options),
                 excluded=lambda options, r=risky: r,
             )
         elif group in TR_GROUPS:

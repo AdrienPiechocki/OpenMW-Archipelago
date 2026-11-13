@@ -72,7 +72,7 @@ Morrowind OpenMW:
   main_quest: true             # false = the main quest is no longer an objective
   great_house: hlaalu          # none | hlaalu | redoran | telvanni | indoril (Tamriel Rebuilt)
   guild: mages_guild           # none | fighters_guild | mages_guild | thieves_guild
-  faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company | ja_natta_syndicate
+  faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company | ja_natta_syndicate | ordinators
   daedric_quests: true         # adds the 7 vanilla Daedric quests to the objective
   traps: true                  # false = no trap items in the pool
   attribute_strength: 0        # 0-100: starting bonus per attribute (see below)
@@ -218,6 +218,7 @@ default; a disabled option means no location, no goal, and the mod ignores those
 | `tamriel_rebuilt_side_quests` | Checks for the TR miscellaneous quests (never a goal) |
 | `tamriel_rebuilt_factions` | Checks for the TR quests of the `great_house` / `guild` / `faction` you chose (unchosen ones are ignored). They require the quest items of that goal, like the vanilla quests of the same faction |
 | `tamriel_rebuilt_daedric_quests` | Checks for the TR Daedric quests, added to the Daedric goal. Ignored if `daedric_quests: false`. Each prince is **locked by an AP item** (`Daedric Quest: <prince>`) when both options are enabled |
+| `tamriel_rebuilt_vampire_clan` | Vampire clan of Tamriel Rebuilt (`none` / `unaligned` / `baluath` / `orlukh`): checks for the quests open to both and those of the chosen clan; the final quest of the clan is a goal. Independent of `tamriel_rebuilt_factions` (see *Vampire clans*) |
 
 New choices: `great_house: indoril` and `faction: ja_natta_syndicate` (`ja-natta_syndicate` is also
 accepted). Goal: rank 10 (`data/goals.yaml`). The faction IDs are verified in `Tamriel_Data.esm`:
@@ -256,6 +257,49 @@ python tools/list_tr.py tr_mainland.json --journals                  # check the
    (stage 0, no completion stage) and produce **no check**: a location that can never fire is
    dropped by `locations.py` and `gen_lua.py` skips them. `TR_m4_Bal0_Troubles_A` (*Troubles on the
    Road*) is a real alternate ending (stage 200) and is treated as a normal completion.
+
+## Vampire clans (options `vampire_clan` / `tamriel_rebuilt_vampire_clan`)
+
+The vampire clans are a **category of their own**: not a house, a guild or a faction. Each quest gives
+a check, like the side quests of an expansion (a quest with a failure branch never holds an important
+item), and **the final quest of your clan is a goal**.
+
+**You belong to ONE clan only** (in vanilla: the clan of the vampire that infected you; in Tamriel
+Rebuilt, Baluath and Orlukh are enemies). The quests of the other clans are out of reach, so they
+give no check and are never a goal: you choose your clan, and only the quests open to any bloodline
+plus the quests of your clan exist in the seed. You must really join that clan in game.
+
+| Option | Values | Checks | Goal (final quest of the clan) |
+|---|---|---|---|
+| `vampire_clan` | `none` (default) / `unaligned` / `aundae` / `berne` / `quarra` | `vampire`: 8 quests open to any bloodline (`va_vampdust`, `va_shashev`, `va_rimintil`, `va_vampblood2`, `va_vamprich`, `va_vampmarara`, `va_vampcurse` + *A Cure for Vampirism*); `vampire_<clan>`: 2 quests of the chosen clan (Berne `va_vampblood`, `va_vampcountess`; Aundae `va_vampchild`, `va_vamphunter`; Quarra `va_vampcult`, `va_vampamulet`) | Aundae *The Vampire Hunter* (`va_vamphunter`), Berne *The Vampire Merta* (`va_vampcountess`), Quarra *The Quarra Amulet* (`va_vampamulet`) |
+| `tamriel_rebuilt_vampire_clan` | Vampire clan of Tamriel Rebuilt (`none` / `unaligned` / `baluath` / `orlukh`): checks for the quests open to both and those of the chosen clan; the final quest of the clan is a goal. Independent of `tamriel_rebuilt_factions` (see *Vampire clans*) |
+
+`unaligned` keeps only the quests open to any bloodline and adds **no goal**; `none` disables the
+category. A clan goal counts as an objective (a seed with `main_quest: false` and only a clan is
+valid) and is added to the other goals: **all** the chosen goals must be completed. A goal is
+reached under the same condition as the check of its quest (alternative endings accepted, never a
+failure branch). The quest rewards of the enabled quests (Quarra / Berne / Aundae amulets, Orlukh
+Amulet...) follow the same groups when `quest_rewards` is on.
+
+`TR_m4_VA_BarendrethProtection`, `_IbiNai` and `_VrashMind` are plain miscellaneous TR quests: they
+are in `tr_side`, not in a clan. Tests: `python3 tools/test_vampire_options.py`.
+
+### Ordinators (`faction: ordinators`, Tamriel Rebuilt / Poison Song)
+
+The Ordinators are a joinable Tamriel Rebuilt faction with three questlines (Orders of the Watch,
+War and Doctrine, journals `TR_m3_Ord_Watch1-4`, `_War1-4`, `_Doc1-5`, `TR_m4_Ord_Rite`). They are the
+group `tr_ordinators` (faction token `ord` in `data/tr_categories.yaml`): checks only with
+`tamriel_rebuilt_factions`, goal = leader rank, requirement item `Ordinators Requirements added`
+(id 7701513). Their quest rewards follow the same group (no longer free `tr_side` checks).
+
+**The faction id and the number of ranks are not confirmed** (Tamriel_Data.esm of Poison Song). The
+goal ships as a placeholder and generation logs a warning until you run:
+
+```sh
+python tools/list_tr.py tamriel_data.json --factions --grep ordinator
+python tools/set_goal_faction.py ordinators tamriel_data.json [--pick <faction id>]
+python tools/gen_lua.py && python tools/install_apworld.py
+```
 
 Tests: `python3 tools/test_tamriel_rebuilt.py`.
 
