@@ -18,8 +18,7 @@ The Blades quests (blades_*, Caius Cosades' agents) are counted in the 'main'
 group: filler checks of the main quest, only active if the main quest goal is
 selected.
 The main, faction and daedric groups are used for goals ('daedric' if the
-Daedric Quests option is enabled); the vampire clans are a category of their own (options vampire_clan /
-tamriel_rebuilt_vampire_clan): checks, plus the final quest of the chosen clan as a goal (data/goals.yaml). A player belongs to ONE clan: 'vampire' / 'tr_vampire'
+Daedric Quests option is enabled); the vampire clans are a category of their own (options vampire_clan): checks, plus the final quest of the chosen clan as a goal (data/goals.yaml). A player belongs to ONE clan: 'vampire' / 'tr_vampire'
 hold the quests open to any bloodline, 'vampire_<clan>' / 'tr_vampire_<clan>' those of one clan.
 
 The expansion (tribunal / bloodmoon) comes from the ESM that DEFINES the
@@ -96,7 +95,7 @@ DEFAULT_TR_TOKENS = {
 TR_NUMBERED_TOKEN = re.compile(r'^([a-z]+)\d+[a-z]?$')
 # TR vampire clan quests (Baluath: TR_m4_Bal_* / Bal0..Bal5, Orlukh: TR_m4_VA_*) -> 'tr_vampire'.
 # The vanilla va_* journals are the group 'vampire'. Both are a category of their own (options
-# vampire_clan / tamriel_rebuilt_vampire_clan): checks + the final quest of the chosen clan as a goal; not a faction.
+# vampire_clan): checks + the final quest of the chosen clan as a goal; not a faction.
 TR_BALUATH = re.compile(r'^tr_m4_bal[0-5]?_')   # clan Baluath questline
 TR_ORLUKH = re.compile(r'^tr_m4_va_')            # clan Orlukh questline
 

@@ -12,6 +12,8 @@ fake = types.ModuleType('Options')
 for name, default in (('Toggle', 0), ('Choice', 0), ('DefaultOnToggle', 1),
                       ('PerGameCommonOptions', None), ('Range', 0)):
     setattr(fake, name, type(name, (), {'default': default}))
+fake.OptionSet = type('OptionSet', (), {'default': frozenset(), 'valid_keys': frozenset(),
+                                          '__init__': lambda self, value: setattr(self, 'value', set(value))})
 sys.modules['Options'] = fake
 
 root = pathlib.Path(__file__).resolve().parent.parent
@@ -28,10 +30,15 @@ class Val:
 class Key:
     def __init__(self, k): self.current_key = k
 
+class Set:
+    """Fake OptionSet value (guild / faction): 'none' -> empty, a key -> {key}, a list -> set."""
+    def __init__(self, k):
+        self.value = set() if k in ('none', None) else ({k} if isinstance(k, str) else set(k))
+
 
 def make(main=True, **exp):
-    o = types.SimpleNamespace(main_quest=Val(main), great_house=Key('none'), guild=Key('none'),
-                              faction=Key('none'), daedric_quests=Val(False))
+    o = types.SimpleNamespace(main_quest=Val(main), great_house=Key('none'), guild=Set('none'),
+                              faction=Set('none'), daedric_quests=Val(False))
     for k, v in exp.items():
         setattr(o, k, Val(v))
     return o
@@ -62,7 +69,7 @@ check('groups are free groups', all(opts.is_free_group(g) for g in opts.EXPANSIO
 check('same groups as quest_groups.py', opts.EXPANSION_GROUPS, qg.EXPANSION_GROUPS)
 
 check('no faction toggle', hasattr(opts, 'TribunalFactionQuests') or hasattr(opts, 'BloodmoonFactionQuests'), False)
-check('EEC is a faction choice', getattr(opts.Faction, 'option_east_empire_company', None), 5)
+check('EEC is a faction choice', 'east_empire_company' in opts.Faction.valid_keys, True)
 
 cats = {'main': {'tr_sothasil'}, 'side': set(), 'east_empire_company': {'bm_eec_x'}, 'eec_prefixes': ('co_',)}
 ov = {'tr_sothasil': 'tribunal', 'tr_misc': 'tribunal', 'co_1': 'bloodmoon', 'bm_eec_x': 'bloodmoon',

@@ -101,18 +101,33 @@ FACTION_REQUIREMENTS = {
     "east_empire_company": (BASE_ITEM + 511, "East Empire Company"),
     "ja_natta_syndicate": (BASE_ITEM + 512, "Ja-Natta Syndicate"),
     "ordinators": (BASE_ITEM + 513, "Ordinators"),
-    # Project Cyrodiil (Cyr_Main.esm)
+    # Project Cyrodiil factions (Cyr_Main.esm). Their guilds / the Skyrim guilds have no item of their own:
+    # see SHARED_REQUIREMENT_GOAL.
     "kingdom_of_anvil": (BASE_ITEM + 514, "Kingdom of Anvil"),
     "itinerant_priests": (BASE_ITEM + 515, "Itinerant Priests"),
-    "cyrodiil_fighters_guild": (BASE_ITEM + 516, "Cyrodiil Fighters Guild"),
-    "cyrodiil_mages_guild": (BASE_ITEM + 517, "Cyrodiil Mages Guild"),
-    "cyrodiil_thieves_guild": (BASE_ITEM + 518, "Cyrodiil Thieves Guild"),
-    # Skyrim: Home of the Nords (Sky_Main.esm)
-    "skyrim_fighters_guild": (BASE_ITEM + 519, "Skyrim Fighters Guild"),
-    "skyrim_mages_guild": (BASE_ITEM + 520, "Skyrim Mages Guild"),
-    "hammerfell_mages_guild": (BASE_ITEM + 521, "Hammerfell Mages Guild"),
-    "skyrim_thieves_guild": (BASE_ITEM + 522, "Skyrim Thieves Guild"),
 }
+
+# Guilds of the same type have the same requirements whatever the region: the regional guilds
+# (Project Cyrodiil, Skyrim: Home of the Nords) share the item of the vanilla guild of their type
+# (one "Mages Guild Requirements added" for mages_guild + cyrodiil_mages_guild + skyrim_mages_guild +
+# hammerfell_mages_guild...). The mod then applies the requirements of the vanilla guild record
+# (mod/scripts/ap/faction_requirements.lua, SHARED). Codes BASE_ITEM + 516..522 are no longer used.
+SHARED_REQUIREMENT_GOAL = {
+    "cyrodiil_fighters_guild": "fighters_guild",
+    "cyrodiil_mages_guild": "mages_guild",
+    "cyrodiil_thieves_guild": "thieves_guild",
+    "skyrim_fighters_guild": "fighters_guild",
+    "skyrim_mages_guild": "mages_guild",
+    "hammerfell_mages_guild": "mages_guild",
+    "skyrim_thieves_guild": "thieves_guild",
+}
+
+
+def requirement_goal(goal_key):
+    """Goal whose "Requirements added" item serves `goal_key` (itself, or its vanilla guild type)."""
+    return SHARED_REQUIREMENT_GOAL.get(goal_key, goal_key)
+
+
 FACTION_REQUIREMENT_NAMES = {
     goal: f"{label} Requirements added" for goal, (_code, label) in FACTION_REQUIREMENTS.items()
 }
@@ -121,7 +136,7 @@ for _goal, (_code, _label) in FACTION_REQUIREMENTS.items():
     item_table[FACTION_REQUIREMENT_NAMES[_goal]] = MorrowindItemData(
         code=_code,
         classification=ItemClassification.progression,
-        can_create=lambda options, g=_goal: g in selected_goals(options),
+        can_create=lambda options, g=_goal: any(requirement_goal(x) == g for x in selected_goals(options)),
     )
 
 
@@ -196,8 +211,10 @@ def quest_item_names(goal_key, options=None):
         locks = [i for i in quest_locks if group_enabled(options, i.get('group'))]
     names = [i['name'] for i in quest_items + locks if i['goal'] == goal_key]
     # The faction's Requirements item is also needed to complete its goal.
-    if goal_key in FACTION_REQUIREMENT_NAMES:
-        names.append(FACTION_REQUIREMENT_NAMES[goal_key])
+    # (regional guilds share the item of their vanilla guild type).
+    req_goal = requirement_goal(goal_key)
+    if req_goal in FACTION_REQUIREMENT_NAMES:
+        names.append(FACTION_REQUIREMENT_NAMES[req_goal])
     return names
 
 

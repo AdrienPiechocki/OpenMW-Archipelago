@@ -9,7 +9,7 @@ from .options import (MorrowindOptions, selected_goals, goal_of_group, is_free_g
                       selected_expansion_groups, selected_tr_groups, selected_category_groups, TR_MAIN_GOAL,
                       UNVERIFIED_GOALS, PC_FACTION_KEYS, PC_SIDE_GROUP, selected_pc_groups,
                       SKY_FACTION_KEYS, SKY_SIDE_GROUP, selected_sky_groups,
-                      start_bonuses, start_option_groups)
+                      start_bonuses, start_option_groups, _selected_keys, GUILD_KEYS, FACTION_KEYS)
 from .rules import set_rules
 from typing import Dict, Any
 import logging
@@ -46,8 +46,8 @@ class MorrowindWorld(World):
                 f"Morrowind OpenMW ({self.player_name}): no goals selected. "
                 "main_quest is disabled: choose at least one great house, a "
                 "guild, a faction, daedric_quests: true, tribunal_main_quest: true, "
-                "bloodmoon_main_quest: true or a vampire clan (vampire_clan / "
-                "tamriel_rebuilt_vampire_clan) (or re-enable main_quest).")
+                "bloodmoon_main_quest: true or a vampire clan (vampire_clan) "
+                "(or re-enable main_quest).")
         goals = selected_goals(self.options)
         # TR main quest goal = TR_NecMQ_3 stage 200 (see data/goals.yaml). The
         # tr_main group still supplies the checks: without that data the goal
@@ -63,7 +63,7 @@ class MorrowindWorld(World):
                 raise OptionError(
                     f"Morrowind OpenMW ({self.player_name}): the goal {g} (Project Cyrodiil) is selected "
                     "but the apworld contains no quest data for it. Generate it first (README, section "
-                    "Project Cyrodiil) or choose another guild / faction.")
+                    "Project Cyrodiil) or remove it from `guild` / `faction`.")
         if selected_pc_groups(self.options) and not any(d.group == PC_SIDE_GROUP for d in location_table.values()):
             raise OptionError(
                 f"Morrowind OpenMW ({self.player_name}): project_cyrodiil_side_quests is enabled but the "
@@ -75,7 +75,7 @@ class MorrowindWorld(World):
                 raise OptionError(
                     f"Morrowind OpenMW ({self.player_name}): the goal {g} (Skyrim: Home of the Nords) is selected "
                     "but the apworld contains no quest data for it. Generate it first (README, section "
-                    "Skyrim: Home of the Nords) or choose another guild.")
+                    "Skyrim: Home of the Nords) or remove it from `guild`.")
         if selected_sky_groups(self.options) and not any(d.group == SKY_SIDE_GROUP for d in location_table.values()):
             raise OptionError(
                 f"Morrowind OpenMW ({self.player_name}): skyrim_side_quests is enabled but the apworld contains "
@@ -203,8 +203,10 @@ class MorrowindWorld(World):
                 "goals": goals,
                 "main_quest": "main_quest" in goals,
                 "great_house": self.options.great_house.current_key,
-                "guild": self.options.guild.current_key,
-                "faction": self.options.faction.current_key,
+                # Lists (several guilds / factions allowed), in the order of the goals.
+                "guild": _selected_keys(self.options, "guild", GUILD_KEYS),
+                "faction": _selected_keys(self.options, "faction", FACTION_KEYS),
+                "vampire_clan": self.options.vampire_clan.current_key,
                 "daedric_quests": bool(self.options.daedric_quests.value),
                 "traps": bool(self.options.traps.value),
                 "quest_rewards": bool(self.options.quest_rewards.value),

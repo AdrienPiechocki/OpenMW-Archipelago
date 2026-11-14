@@ -14,6 +14,8 @@ fake = types.ModuleType('Options')
 for name, default in (('Toggle', 0), ('Choice', 0), ('DefaultOnToggle', 1),
                       ('PerGameCommonOptions', None), ('Range', 0)):
     setattr(fake, name, type(name, (), {'default': default}))
+fake.OptionSet = type('OptionSet', (), {'default': frozenset(), 'valid_keys': frozenset(),
+                                          '__init__': lambda self, value: setattr(self, 'value', set(value))})
 sys.modules['Options'] = fake
 
 path = pathlib.Path(__file__).resolve().parent.parent / 'apworld/morrowind_openmw/options.py'
@@ -31,10 +33,15 @@ class Key:
     def __init__(self, key):
         self.current_key = key
 
+class Set:
+    """Fake OptionSet value (guild / faction): 'none' -> empty, a key -> {key}, a list -> set."""
+    def __init__(self, k):
+        self.value = set() if k in ('none', None) else ({k} if isinstance(k, str) else set(k))
+
 
 def make(main=True, house='none', guild='none', faction='none', daedric=False, with_main=True,
          gqc=None):
-    o = types.SimpleNamespace(great_house=Key(house), guild=Key(guild), faction=Key(faction),
+    o = types.SimpleNamespace(great_house=Key(house), guild=Set(guild), faction=Set(faction),
                               daedric_quests=Val(daedric))
     if gqc is not None:
         o.goal_quest_checks = Val(gqc)
@@ -62,6 +69,9 @@ check('main off + daedric', opts.selected_goals(make(main=False, daedric=True)),
 check('main off + several', opts.selected_goals(
     make(main=False, house='redoran', guild='mages_guild', faction='temple', daedric=True)),
     ['redoran', 'mages_guild', 'temple', 'daedric_quests'])
+check('several guilds and factions', opts.selected_goals(
+    make(main=False, guild=['hammerfell_mages_guild', 'skyrim_mages_guild'], faction=['ordinators', 'temple'])),
+    ['skyrim_mages_guild', 'hammerfell_mages_guild', 'temple', 'ordinators'])
 check('main on + house', opts.selected_goals(make(house='hlaalu')), ['main_quest', 'hlaalu'])
 # With no goal: empty list (generate_early then raises an OptionError).
 check('nothing selected', opts.selected_goals(make(main=False)), [])

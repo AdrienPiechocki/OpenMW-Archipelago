@@ -13,6 +13,8 @@ fake = types.ModuleType('Options')
 for name, default in (('Toggle', 0), ('Choice', 0), ('DefaultOnToggle', 1),
                       ('PerGameCommonOptions', None), ('Range', 0)):
     setattr(fake, name, type(name, (), {'default': default}))
+fake.OptionSet = type('OptionSet', (), {'default': frozenset(), 'valid_keys': frozenset(),
+                                          '__init__': lambda self, value: setattr(self, 'value', set(value))})
 sys.modules['Options'] = fake
 
 root = pathlib.Path(__file__).resolve().parent.parent
@@ -31,10 +33,15 @@ class Val:
 class Key:
     def __init__(self, k): self.current_key = k
 
+class Set:
+    """Fake OptionSet value (guild / faction): 'none' -> empty, a key -> {key}, a list -> set."""
+    def __init__(self, k):
+        self.value = set() if k in ('none', None) else ({k} if isinstance(k, str) else set(k))
+
 
 def make(main=True, house='none', guild='none', faction='none', daedric=False, **tr):
-    o = types.SimpleNamespace(main_quest=Val(main), great_house=Key(house), guild=Key(guild),
-                              faction=Key(faction), daedric_quests=Val(daedric))
+    o = types.SimpleNamespace(main_quest=Val(main), great_house=Key(house), guild=Set(guild),
+                              faction=Set(faction), daedric_quests=Val(daedric))
     for k, v in tr.items():
         setattr(o, k, Val(v))
     return o
@@ -89,7 +96,8 @@ check('expansion lock group enabled',
 check('indoril goal', opts.selected_goals(make(house='indoril')), ['main_quest', 'indoril'])
 check('ja_natta goal', opts.selected_goals(make(faction='ja_natta_syndicate')), ['main_quest', 'ja_natta_syndicate'])
 check('indoril option value', getattr(opts.GreatHouse, 'option_indoril', None), 4)
-check('ja_natta option value', getattr(opts.Faction, 'option_ja_natta_syndicate', None), 6)
+check('ja_natta is a faction key', 'ja_natta_syndicate' in opts.Faction.valid_keys, True)
+check('ja-natta_syndicate spelling accepted', opts.Faction(['ja-natta_syndicate']).value, {'ja_natta_syndicate'})
 
 # ---- groups ------------------------------------------------------------------
 check('goal of tr_main', opts.goal_of_group('tr_main'), 'tamriel_rebuilt_main')
@@ -115,7 +123,8 @@ check('ja_natta faction id', goals['ja_natta_syndicate'].get('faction'), 'T_Mw_J
 check('ja_natta rank', goals['ja_natta_syndicate'].get('rank'), 10)
 # the Ordinators faction id / rank are still a placeholder until set_goal_faction.py is run
 check('only the Ordinators goal is unverified', opts.UNVERIFIED_GOALS, ('ordinators',))
-check('ordinators option value', getattr(opts.Faction, 'option_ordinators', None), 7)
+check('ordinators is a faction key', 'ordinators' in opts.Faction.valid_keys, True)
+check('none = empty set', (opts.Faction('none').value, opts.Guild([]).value), (set(), set()))
 check('ordinators goal', opts.selected_goals(make(faction='ordinators')), ['main_quest', 'ordinators'])
 check('ordinators group enabled with TR factions',
       opts.selected_tr_groups(make(faction='ordinators', tamriel_rebuilt_factions=True)), ['tr_ordinators'])

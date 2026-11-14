@@ -14,7 +14,7 @@ quest items, levels, faction requirements, filler and traps come from the multiw
 - [Gameplay features](#gameplay-features): [starting bonuses](#starting-attribute-and-skill-bonuses) ·
   [filler and traps](#filler-and-traps) · [quest items](#quest-items-given-by-archipelago) ·
   [quest rewards](#quest-rewards-option-quest_rewards) · [Daedric quests](#daedric-quests-option-daedric_quests) ·
-  [vampire clans](#vampire-clans-options-vampire_clan--tamriel_rebuilt_vampire_clan) ·
+  [vampire clans](#vampire-clans-option-vampire_clan) ·
   [notifications](#in-game-notifications)
 - [Content packs](#content-packs): [Tribunal / Bloodmoon](#tribunal-and-bloodmoon) ·
   [Tamriel Rebuilt](#tamriel-rebuilt) · [Project Cyrodiil](#project-cyrodiil) ·
@@ -65,18 +65,23 @@ Remember to **regenerate the seed** after updating the data or the apworld.
 
 ## Player options
 
+`guild` and `faction` are **lists**: you can pick several (e.g. the three regional Mages Guilds). Each chosen one is a goal
+(rank 10) and all of them must be completed. `faction: none` / `guild: none` are still accepted (= empty list).
+`vampire_clan` stays a **single** choice.
+
 ```yaml
 Morrowind OpenMW:
   # Objectives (see "Objectives and checks")
   main_quest: true             # false = the main quest is no longer an objective
   great_house: hlaalu          # none | hlaalu | redoran | telvanni | indoril (Tamriel Rebuilt)
-  guild: mages_guild           # none | fighters_guild | mages_guild | thieves_guild
+  guild: [mages_guild, skyrim_mages_guild]   # LIST (several allowed, [] = none): fighters_guild | mages_guild | thieves_guild
                                #      | cyrodiil_fighters_guild | cyrodiil_mages_guild | cyrodiil_thieves_guild (Project Cyrodiil)
                                #      | skyrim_fighters_guild | skyrim_mages_guild | hammerfell_mages_guild | skyrim_thieves_guild (Skyrim)
-  faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company (Bloodmoon)
+  faction: [temple, ordinators]  # LIST (several allowed, [] = none): imperial_cult | imperial_legion | temple | morag_tong | east_empire_company (Bloodmoon)
                                #      | ja_natta_syndicate | ordinators (Tamriel Rebuilt) | kingdom_of_anvil | itinerant_priests (Project Cyrodiil)
   daedric_quests: true         # adds the 7 vanilla Daedric quests to the objective
-  vampire_clan: none           # none | unaligned | aundae | berne | quarra
+  vampire_clan: none           # ONE clan: none | unaligned | aundae | berne | quarra
+                               #   | baluath | orlukh | tamriel_rebuilt_unaligned (Tamriel Rebuilt)
 
   # Expansions
   tribunal_main_quest: false   # Tribunal main quest: checks + goal
@@ -89,7 +94,6 @@ Morrowind OpenMW:
   tamriel_rebuilt_side_quests: false
   tamriel_rebuilt_factions: false
   tamriel_rebuilt_daedric_quests: false
-  tamriel_rebuilt_vampire_clan: none   # none | unaligned | baluath | orlukh
 
   # Other content packs
   project_cyrodiil_side_quests: false
@@ -116,7 +120,7 @@ expansion main quest, a vampire clan.
 `main_quest: false`, at least one other objective is required, otherwise generation stops with an error;
 the main quest then stays freely playable, without Archipelago items or checks.
 
-- **House / guild / faction**: reach rank 10 (leader). The mod prints `AP: rank <faction> = N` in the OpenMW
+- **House / guild / faction**: reach rank 10 (leader). *Exception, Project Cyrodiil and Skyrim: Home of the Nords (early access, questlines incomplete): the goal is reached when rank 10 is reached **or** when every quest of that guild / faction known to the apworld is completed (mutually exclusive branches count once).* The mod prints `AP: rank <faction> = N` in the OpenMW
   log on every rank change.
 - **Daedric quests**: the 7 vanilla quests (see [below](#daedric-quests-option-daedric_quests)).
 - A completed objective stays completed (remembered in the save).
@@ -251,21 +255,23 @@ locked the same way (`Clavicus Vile`, `Sanguine`, `Meridia`, `Namira`; group `tr
 items only exist when **both** options are enabled. The Namira sub-journals (`tr_m7_da_nam_*`) are not locked
 separately: the sanctuary script gates them behind `tr_m7_da_namira`.
 
-### Vampire clans (options `vampire_clan` / `tamriel_rebuilt_vampire_clan`)
+### Vampire clans (option `vampire_clan`)
 
 The vampire clans are a **category of their own** (not a house, guild or faction). Each quest gives a check
 (a quest with a failure branch never holds an important item) and **the final quest of your clan is a goal**.
 
 You belong to **ONE clan only** (vanilla: the clan of the vampire that infected you; Tamriel Rebuilt: Baluath
 and Orlukh are enemies). The quests of the other clans are out of reach, so they give no check and are never
-a goal. You choose your clan, and you must really join it in game.
+a goal. You choose your clan with the single option `vampire_clan` (vanilla **or** Tamriel Rebuilt), and you
+must really join it in game.
 
 | Option | Values | Checks | Goal (final quest) |
 |---|---|---|---|
 | `vampire_clan` | `none` (default), `unaligned`, `aundae`, `berne`, `quarra` | `vampire`: 7 quests open to any bloodline (`va_vampdust`, `va_shashev`, `va_rimintil`, `va_vampblood2`, `va_vamprich`, `va_vampmarara`, `va_vampcurse`); `vampire_<clan>`: 2 quests of the clan (Berne `va_vampblood`, `va_vampcountess`; Aundae `va_vampchild`, `va_vamphunter`; Quarra `va_vampcult`, `va_vampamulet`) | Aundae *The Vampire Hunter* (`va_vamphunter`), Berne *The Vampire Merta* (`va_vampcountess`), Quarra *The Quarra Amulet* (`va_vampamulet`) |
-| `tamriel_rebuilt_vampire_clan` | `none` (default), `unaligned`, `baluath`, `orlukh` | `tr_vampire`: quests open to both (*Raenor's Revenge*); `tr_vampire_<clan>`: quests of the chosen clan | Baluath *Slay Orlukh Ancient* (`tr_m4_bal_killorlukh`), Orlukh *Namira's Shroud* (`tr_m4_va_namira`) |
+| `vampire_clan` (Tamriel Rebuilt, needs `TR_Mainland.esm`) | `tamriel_rebuilt_unaligned`, `baluath`, `orlukh` | `tr_vampire`: quests open to both (*Raenor's Revenge*); `tr_vampire_<clan>`: quests of the chosen clan | Baluath *Slay Orlukh Ancient* (`tr_m4_bal_killorlukh`), Orlukh *Namira's Shroud* (`tr_m4_va_namira`) |
 
-- `unaligned` keeps only the common quests and adds **no goal**; `none` disables the category.
+- `unaligned` keeps only the vanilla common quests and `tamriel_rebuilt_unaligned` only the TR common ones; both add **no goal**. `none` disables the category.
+- Only one clan can be chosen: `vampire_clan` replaces the former `vampire_clan` + `tamriel_rebuilt_vampire_clan` pair.
 - A clan goal counts as an objective (`main_quest: false` with only a clan is valid) and is added to the
   other goals: **all** chosen goals must be completed. It is reached under the same condition as the check of
   its quest (alternative endings accepted, never a failure branch).
@@ -348,7 +354,7 @@ Requires `Tamriel_Data.esm` and `TR_Mainland.esm`.
 | `tamriel_rebuilt_side_quests` | Checks for the TR miscellaneous quests (never a goal) |
 | `tamriel_rebuilt_factions` | Checks for the TR quests of the `great_house` / `guild` / `faction` you chose (others ignored). They require the quest items of that goal, like the vanilla quests of the same faction |
 | `tamriel_rebuilt_daedric_quests` | Checks for the TR Daedric quests, added to the Daedric goal. Ignored if `daedric_quests: false`. Each prince is locked by an AP item |
-| `tamriel_rebuilt_vampire_clan` | See [Vampire clans](#vampire-clans-options-vampire_clan--tamriel_rebuilt_vampire_clan) |
+| *(vampire clans)* | The TR clans (`baluath`, `orlukh`, `tamriel_rebuilt_unaligned`) are values of `vampire_clan`, see [Vampire clans](#vampire-clans-option-vampire_clan) |
 
 New choices: `great_house: indoril` and `faction: ja_natta_syndicate` (`ja-natta_syndicate` is also accepted).
 Goal: rank 10. Faction ids are verified in `Tamriel_Data.esm`: `T_Mw_HouseIndoril` (High Councilor) and
@@ -394,12 +400,12 @@ It is **not** an extension of Tamriel Rebuilt: its own journals (`PC_m<N>_<TOKEN
 
 | Option / choice | Effect |
 |---|---|
-| `guild: cyrodiil_fighters_guild` / `cyrodiil_mages_guild` / `cyrodiil_thieves_guild` | The guild becomes a goal (rank 10) and its quests give checks. Separate from the vanilla guilds: `guild` still holds ONE choice |
+| `guild: cyrodiil_fighters_guild` / `cyrodiil_mages_guild` / `cyrodiil_thieves_guild` | The guild becomes a goal (rank 10, **or** all its quests completed: the mod is in early access) and its quests give checks. Separate from the vanilla guilds: they can be combined in the `guild` list |
 | `faction: kingdom_of_anvil` / `itinerant_priests` | Same for the Kingdom of Anvil and the Order of Itinerant Priests |
 | `project_cyrodiil_side_quests` | Checks for every other Project Cyrodiil quest (never a goal) |
 
 A chosen PC faction always contributes its quests as checks (no `project_cyrodiil_factions` toggle: these
-factions have no vanilla counterpart). Each adds its `<faction> Requirements added` item (ids 7701514-7701518).
+factions have no vanilla counterpart). The two factions add their `<faction> Requirements added` item (ids 7701514-7701515); the Cyrodiil guilds share the item of the vanilla guild of their type (see below).
 The goals have no quest items.
 
 - **Classification** (`data/pc_categories.yaml`): the faction token (2nd or 3rd part after `m<N>`) gives the
@@ -437,10 +443,10 @@ classified by the token after the place (`KW` Karthwasten, `DS` / `DSE` / `DSW` 
 
 | Option / choice | Effect |
 |---|---|
-| `guild: skyrim_fighters_guild` / `skyrim_mages_guild` / `hammerfell_mages_guild` / `skyrim_thieves_guild` | The guild becomes a goal (rank 10) and its quests give checks. Separate from the vanilla guilds. `hammerfell_mages_guild` is the Dragonstar branch (`DSMG`), `skyrim_mages_guild` the Karthwasten one (`KWMG`) |
+| `guild: skyrim_fighters_guild` / `skyrim_mages_guild` / `hammerfell_mages_guild` / `skyrim_thieves_guild` | The guild becomes a goal (rank 10, **or** all its quests completed: the mod is in early access) and its quests give checks. Separate from the vanilla guilds. `hammerfell_mages_guild` is the Dragonstar branch (`DSMG`), `skyrim_mages_guild` the Karthwasten one (`KWMG`) |
 | `skyrim_side_quests` | Checks for every other quest: bounties (`KW_B04`, `KWB03`...), the Dragonstar arena (`DSE4`), miscellaneous quests (`KW1`, `KW2`, `KW8`, `DSW2`...) |
 
-Each chosen guild adds its `<guild> Requirements added` item (ids 7701519-7701522).
+Guilds of the same type have the same requirements whatever the region, so the Skyrim / Hammerfell guilds do not add an item of their own: they share the vanilla `Fighters / Mages / Thieves Guild Requirements added` item (ids 7701504-7701506). Choosing `skyrim_mages_guild` and `hammerfell_mages_guild` together therefore adds a single `Mages Guild Requirements added` item, and the requirements applied are those of the vanilla guild. Same for the Project Cyrodiil guilds.
 
 - **Classification** (`data/sky_categories.yaml`): `^sky_qre_kwmg` -> Skyrim Mages Guild, `^sky_qre_dsmg` ->
   Hammerfell Mages Guild, `^sky_qre_(kw|ds[ew]?)tg` -> Thieves Guild, `^sky_qre_(kw|ds[ew]?)fg` -> Fighters

@@ -2055,3 +2055,362 @@ bm_brodirgrove: Betrayal at Brodir Grove
 bm_sadseer: The Sad Seer
 bm_cursedcaptain: The Cursed Captain
 bm_ingmar: Ingmar in a Bind
+
+# Project Cyrodiil (journals PC_*)
+# Source: UESP quest pages (Project Tamriel:Cyrodiil/*)
+
+# Skyrim: Home of the Nords (journals Sky_*)
+# Source: UESP quest pages (Project Tamriel:Skyrim/*)
+PC_m0_Vva_TropVac: Agrippina Herennia's Tropical Vacation
+PC_m0_Vva_TropVacB: Agrippina Herennia's Tropical Vacation
+PC_m1_AFP01: Making a Name
+PC_m1_AFP02: Unbitten?
+PC_m1_AFP03: Saint
+PC_m1_AFP04: Snake
+PC_m1_AFP05: The Large
+PC_m1_AFP06: Knight of Cups
+PC_m1_AFP07: Rough Boarding
+PC_m1_AFP08: Less Than Buoyant
+PC_m1_AFP09: A Thousand Hands and Two
+PC_m1_AFP10: Warlord Wartgog
+PC_m1_AFP11: Takhur The Terrible
+PC_m1_AFP12: Simulacrum
+PC_m1_Anv_AdvRead: Advanced Reading
+PC_m1_Anv_AdvReadB: Advanced Reading
+PC_m1_Anv_AppBorg: An Apprentice for Borgush
+PC_m1_Anv_BeNeigh: Being Neighborly
+PC_m1_Anv_BlkView: Blocking the View
+PC_m1_Anv_BookClub: Book Club
+PC_m1_Anv_BookClubA: Book Club
+PC_m1_Anv_BookClubB: Book Club
+PC_m1_Anv_BookClubG: Book Club
+PC_m1_Anv_BookClubM: Book Club
+PC_m1_Anv_Bounty_Annka: "Bounty: Annka Stone-Sides"
+PC_m1_Anv_Bounty_Catius: "Bounty: Catius Rilo"
+PC_m1_Anv_Bounty_Firas: "Bounty: Firas"
+PC_m1_Anv_Bounty_Jarus: "Bounty: Jarus Trasius (Anvil)"
+PC_m1_Anv_Bounty_MC: "Bounty: The Masqued Captain"
+PC_m1_Anv_Bounty_Rue: "Bounty: Rue Vaneria"
+PC_m1_Anv_Bounty_Rycima: "Bounty: Rycima"
+PC_m1_Anv_Bounty_SDato: "Bounty: S'Dato"
+PC_m1_Anv_CallTribe: Call for a Tribe
+PC_m1_Anv_CrabBuck: Crab Bucket
+PC_m1_Anv_DauMarks: Daughter of a Marksman
+PC_m1_Anv_DownWithShip: Down With the Ship
+PC_m1_Anv_FeedSal: Feed Sal
+PC_m1_Anv_Glimpse: A Glimpse of Beauty
+PC_m1_Anv_Goldenrod: Goldenrod House
+PC_m1_Anv_GoldenrodBR: Goldenrod House
+PC_m1_Anv_GoldenrodDR: Goldenrod House
+PC_m1_Anv_GoldenrodEH: Goldenrod House
+PC_m1_Anv_GoldenrodLI: Goldenrod House
+PC_m1_Anv_GoldenrodPA: Goldenrod House
+PC_m1_Anv_GoldenrodSM: Goldenrod House
+PC_m1_Anv_GoldenrodST: Goldenrod House
+PC_m1_Anv_GrimFortune: A Grim Fortune
+PC_m1_Anv_HeriHadr: Heritage of the Hadrachs
+PC_m1_Anv_ImpCause: Improbable Cause
+PC_m1_Anv_MidLife: Mid-Life Crisis
+PC_m1_Anv_NakedNard: The Naked 'Nard
+PC_m1_Anv_NakedNardGloves: The Naked 'Nard
+PC_m1_Anv_NakedNardHat: The Naked 'Nard
+PC_m1_Anv_NakedNardPants: The Naked 'Nard
+PC_m1_Anv_NakedNardShirt: The Naked 'Nard
+PC_m1_Anv_NakedNardShoes: The Naked 'Nard
+PC_m1_Anv_OceanBlue: The Ocean Blue
+PC_m1_Anv_OceanBlueDate: The Ocean Blue
+PC_m1_Anv_OceanBlueFood: The Ocean Blue
+PC_m1_Anv_OceanBlueRoute: The Ocean Blue
+PC_m1_Anv_OceanBlueShip: The Ocean Blue
+PC_m1_Anv_PickPilg: The Picky Pilgrim
+PC_m1_Anv_PirRev: A Pirate's Revenge
+PC_m1_Anv_PorMug: Portrait of a Mugger
+PC_m1_Anv_Recluse: The Recluse
+PC_m1_Anv_StrokeFort: Stroke of Fortune
+PC_m1_Anv_TakingTax: Taking Care of Taxes
+PC_m1_Anv_TakingTaxKra: Taking Care of Taxes
+PC_m1_Anv_TakingTaxSle: Taking Care of Taxes
+PC_m1_Anv_ThreeStrang: Three Perfect Strangers
+PC_m1_Anv_WarmWtr: Warm Water
+PC_m1_Anv_WellMet: Well Met By Moonlight
+PC_m1_Anv_WorkOrc: Work for an Orc
+PC_m1_Anv_WorkOrcFG: Work for an Orc
+PC_m1_Anv_WorkOrcFish: Work for an Orc
+PC_m1_Anv_WorkOrcIAS: Work for an Orc
+PC_m1_Anv_WorkOrcKarrel: Work for an Orc
+PC_m1_Anv_WorkOrcNavy: Work for an Orc
+PC_m1_Anv_WorkOrcRG: Work for an Orc
+PC_m1_Anv_WorkOrcSmith: Work for an Orc
+PC_m1_Anv_WorkOrcSW: Work for an Orc
+PC_m1_Arc_AloeThere: Aloe There
+PC_m1_Arc_Snakebit: Snakebitten
+PC_m1_BC_MurdCross: Murder on the Crossroads
+PC_m1_BC_MurdCrossBrescius: Murder on the Crossroads
+PC_m1_BC_MurdCrossGosha: Murder on the Crossroads
+PC_m1_BC_MurdCrossMedina: Murder on the Crossroads
+PC_m1_BC_MurdCrossRamus: Murder on the Crossroads
+PC_m1_BC_MurdCrossWound: Murder on the Crossroads
+PC_m1_BC_WomPetri: A Woman Named Petri
+PC_m1_BC_WomPetriLegion: A Woman Named Petri
+PC_m1_BC_WomPetriLetter: A Woman Named Petri
+PC_m1_Cha_Cassynder: Wreck of the Cassynder
+PC_m1_Cha_FigSpeech: Fig-ure of Speech
+PC_m1_Cha_GhastOrd: The Ghastly Ordeal of Saverius Albuttian
+PC_m1_Cha_GoldNets: Gold in the Nets
+PC_m1_Cha_MGTinySeadrake: Tiny Seadrake
+PC_m1_Cha_PelLeg: The Pelladia Legacy
+PC_m1_Cha_PlaDand: Plants for Dandryn Arethyn
+PC_m1_Cha_Selkies: Selkies
+PC_m1_DM_AdosusAdun: Adosu's Adun
+PC_m1_FG_Anv1: Wet Feet
+PC_m1_FG_Anv2: Khofar's Debt
+PC_m1_FG_Anv3: Lost in the Lowlands
+PC_m1_FG_Anv4: Cinduin's Bounty
+PC_m1_FG_Anv5: Repossess and Return
+PC_m1_FG_Anv6: Perils of Thesigir
+PC_m1_FG_Anv7: Growing Up
+PC_m1_FG_Anv8: Goblin Trouble on the Strident Coast
+PC_m1_Gld_LetterIn: Letter In
+PC_m1_Gld_LunarIntox: Lunar Intoxication
+PC_m1_IP_Als1: Changing Seasons
+PC_m1_IP_Als2: Culture Shock
+PC_m1_IP_Als2_LoanBuy: Culture Shock
+PC_m1_IP_Als2_LoanSteal: Culture Shock
+PC_m1_IP_Als3: Lost Stars
+PC_m1_IP_Als4: Sinweaver
+PC_m1_IP_GS1: The Old Man and the Sea
+PC_m1_IP_GS2: The Blind Share
+PC_m1_IP_GS3: Drowned Memory
+PC_m1_IP_GS4: The Broken Shrine
+PC_m1_IP_HY1: The Monk and the Missing
+PC_m1_IP_HY2: Parvo's Problem
+PC_m1_IP_HY4: A Place to Serve
+PC_m1_IP_Lki1: Coal for the Furnaces
+PC_m1_IP_Lki2: Dye Me a River
+PC_m1_IP_Lki3: Meat-Cute
+PC_m1_IP_Lki4: The Drowned
+PC_m1_IP_Run1: Alms for the Hostel of Saint Rosunius
+PC_m1_IP_Run2: Bluepox
+PC_m1_IP_Run3: Persarine Contract
+PC_m1_IP_Run4: Recruit Vurila
+PC_m1_K1_HT1: By Right of Blood
+PC_m1_K1_HT2: Destabilization
+PC_m1_K1_HT3: An Imperial Bargain
+PC_m1_K1_HT4: Last Salute to the Admiral
+PC_m1_K1_HT5: Battle for Goldstone
+PC_m1_K1_MC1: Ashes of the Missing
+PC_m1_K1_MC2: State Charity
+PC_m1_K1_MC3: The Rumor Mill
+PC_m1_K1_MC4: Soap Surplus
+PC_m1_K1_MC5: Foreign Aid
+PC_m1_K1_MC6: Mergers and Acquisitions
+PC_m1_K1_MC7: An Imperial Hangover
+PC_m1_K1_MC8: Prevent the Coup
+PC_m1_K1_RP1: Rancher's Curse
+PC_m1_K1_RP2: Sewer Noises
+PC_m1_K1_RP3: Bridge Repair
+PC_m1_K1_RP4: Unfair Trade
+PC_m1_K1_RP5: Breaking Good
+PC_m1_K1_RP6: Voiceless Harmony
+PC_m1_K1_TH1: Collect Call
+PC_m1_K1_TH2: Good to the Last Drop
+PC_m1_K1_TH3: Liquidity Crisis
+PC_m1_K1_TH4: Bandits in Talgiana Crypt
+PC_m1_K1_TH5: The Blade of Kenes
+PC_m1_K1_VT1: The Marshal's Message
+PC_m1_K1_VT2: Arresting Advice
+PC_m1_K1_VT3: Downed and Drowned
+PC_m1_K1_VT4: Naval Leverage
+PC_m1_K1_VT5: Unjust Confinement
+PC_m1_K1_VT6: Smugglers' Ruin
+PC_m1_MG_Anv1: Delivery to Fort Heath
+PC_m1_MG_Anv2: Books from Benirus Manor
+PC_m1_MG_Anv3: Kill Aeril
+PC_m1_MG_Anv4: Escort Anaryan
+PC_m1_MG_Anv5: Extermination at Strand
+PC_m1_MG_Anv6: Staff of Banishing Light
+PC_m1_MG_Anv7: Soul for Baeralorn
+PC_m1_MG_Anv8: Slay Edroth
+PC_m1_MG_BC1: A Shocking Experience
+PC_m1_MG_BC2: The Spoiled Swordsman
+PC_m1_MG_BC3: An Unshielded Soul
+PC_m1_MG_BC4: The Animating Principle
+PC_m1_MG_Cha1: Five Types of Pearls
+PC_m1_MG_Cha2: Welcome Basket
+PC_m1_MG_Cha3: Unwanted Advances
+PC_m1_MG_Cha4: And Stay Out!
+PC_m1_MG_Cha5: Rescue Divides-To-Iron
+PC_m1_Mrv_ReevesKey: Needle in a Haystack
+PC_m1_Naharine: The Broken Shrine
+PC_m1_SC_Bounty_Jarus: "Bounty: Jarus Trasius (Strident Coast)"
+PC_m1_SC_GarlasAgea: Into Ugly Obscurity
+PC_m1_SC_GarlasAgeaAuroran: Into Ugly Obscurity
+PC_m1_SC_GarlasAgeaNotes: Into Ugly Obscurity
+PC_m1_SC_GoatTrbls: Calvus' Goat Troubles
+PC_m1_SC_ManuMaraud: Manuscript Marauders
+PC_m1_SC_SweetTooth: Pintra's Sweet Tooth
+PC_m1_SC_TravelMerch: Fortune of a Traveling Merchant
+PC_m1_SC_WineMasons: Battlewine for Brickmasons
+PC_m1_Sdk_HermDag: The Hermontar Dagger
+PC_m1_TG_Anv1: Stolen Valor
+PC_m1_TG_Anv2: Saint Emmelia
+PC_m1_TG_Anv3: Intercepted Inspiration
+PC_m1_TG_Anv4: The Fix is In
+PC_m1_TG_Anv4B: The Fix is In
+PC_m1_TG_Anv5: The Black Isle Company
+PC_m1_TG_Anv6: The Black Isle Bounty
+PC_m1_TG_Anv6C: The Black Isle Bounty
+PC_m1_TG_Anv6M: The Black Isle Bounty
+PC_m1_TG_Anv6V: The Black Isle Bounty
+PC_m1_TG_Anv7: The Black Isle Bubble
+PC_m1_TG_Cap: The Captain
+PC_m1_TG_Cha1: Vintage Isquel
+PC_m1_TG_Cha3: Brass Astrolabe
+PC_m1_TG_Cha4: Spring Vida Light-Foot
+PC_m1_TG_Cha5: Flashgrit
+PC_m1_Tvy_NobleDebt: A Noble Debt
+PC_m1_Tvy_NobleDebt1: A Noble Debt
+PC_m1_Tvy_NobleDebt2: A Noble Debt
+PC_m1_Tvy_NobleDebt3: A Noble Debt
+PC_m1_Tvy_ThresvyDef: Thresvy's Defender
+PC_q1_Str01_Journal: Atmospheric Dictative
+Sky_qRe_BAI1_Journal: The Tinkerer's Wife
+Sky_qRe_BAI2_Journal: The Ritual at the Standing Stones
+Sky_qRe_BM1_Journal: Murder in Merduibh
+Sky_qRe_BM1a_Journal: Murder in Merduibh
+Sky_qRe_BM1b_Journal: Murder in Merduibh
+Sky_qRe_BM1c_Journal: Murder in Merduibh
+Sky_qRe_BM2_Journal: Just Asking Questions
+Sky_qRe_BM2a_Journal: Just Asking Questions
+Sky_qRe_BM3_Journal: A Promise Kept
+Sky_qRe_BM4_Journal: Chthonic Secrets
+Sky_qRe_BM4a_Journal: Chthonic Secrets
+Sky_qRe_BM4b_Journal: Chthonic Secrets
+Sky_qRe_BM4c_Journal: Chthonic Secrets
+Sky_qRe_BM5_Journal: Between a Hag and a Boar
+Sky_qRe_CK1_Journal: "Clan Khulari: Cattle Rustling"
+Sky_qRe_DH1_Journal: An Unreasonable Request
+Sky_qRe_DH2_Journal: Facing a Chicken Menace
+Sky_qRe_DH4_Journal: Hunting with Larrik
+Sky_qRe_DH5_Journal: Head in the Game
+Sky_qRe_DS1_Journal: Dragonstar Travel Papers
+Sky_qRe_DSB1_Journal: "Bounty: Cacitus Suspilus"
+Sky_qRe_DSB2_Journal: "Bounty: Cegoraec"
+Sky_qRe_DSB3_Journal: "Bounty: Lovi the Gut"
+Sky_qRe_DSB4_Journal: "Bounty: Iztara"
+Sky_qRe_DSB5_Journal: "Bounty: Bogakh gro-Durz"
+Sky_qRe_DSE1_Journal: Alms for Mara
+Sky_qRe_DSE2_Journal: That Pig of a Nord
+Sky_qRe_DSE3_Journal: Illness in the Alehouse
+Sky_qRe_DSE4_Journal: The Dragonstar Arena
+Sky_qRe_DSE5_Journal: The Fateful Guest
+Sky_qRe_DSMG03_Journal: An Acolyte in the Arena
+Sky_qRe_DSMG03a_Journal: An Acolyte in the Arena
+Sky_qRe_DSMG03b_Journal: An Acolyte in the Arena
+Sky_qRe_DSMG04_Journal: Public Perception
+Sky_qRe_DSMG04a_Journal: Public Perception
+Sky_qRe_DSMG04b_Journal: Public Perception
+Sky_qRe_DSMG04c_Journal: Public Perception
+Sky_qRe_DSMG1_Journal: Regulated Research
+Sky_qRe_DSMG2_Journal: Mesa Medicine
+Sky_qRe_DSMG3_Journal: An Acolyte in the Arena
+Sky_qRe_DSMG3a_Journal: An Acolyte in the Arena
+Sky_qRe_DSMG3b_Journal: An Acolyte in the Arena
+Sky_qRe_DSMG4_Journal: Public Perception
+Sky_qRe_DSMG4a_Journal: Public Perception
+Sky_qRe_DSMG4b_Journal: Public Perception
+Sky_qRe_DSMG4c_Journal: Public Perception
+Sky_qRe_DSMG5_Journal: Angturiel
+Sky_qRe_DSTG1_Journal: Census and Excess
+Sky_qRe_DSTG2_Journal: How to Rob Oneself
+Sky_qRe_DSTG3_Journal: Networking
+Sky_qRe_DSTG3a_Journal: Networking
+Sky_qRe_DSTG4_Journal: "Papers, please!"
+Sky_qRe_DSTG5_Journal: Distractions
+Sky_qRe_DSTG6_Journal: Eye-Spy
+Sky_qRe_DSTG7_Journal: The Dragon Heist
+Sky_qRe_DSW1_Journal: Nahassar's Love Letter
+Sky_qRe_DSW2_Journal: The Missing Skull
+Sky_qRe_DSW3_Journal: Seeking a Supplier
+Sky_qRe_DSW4_Journal: The Baker and the Bread Thief
+Sky_qRe_DSW6_Journal: Out of Practice
+Sky_qRe_HA1a_Journal: Ghoul Hunt
+Sky_qRe_HA1b_Journal: Ghoul Hunt
+Sky_qRe_HA1c_Journal: Ghoul Hunt
+Sky_qRe_HA2_Journal: The Spell Unreached
+Sky_qRe_HA3_Journal: Don't Eat the Wheat
+Sky_qRe_KG1_Journal: Mining for Worms
+Sky_qRe_KG2_Journal: Karthgad Manhunters
+Sky_qRe_KG3_Journal: Blocked From Worship
+Sky_qRe_KG4_Journal: A Forlorn Barrow
+Sky_qRe_KG5_Journal: S'Viir's Hoard
+Sky_qRe_KW10_Journal: A Bard in Trouble
+Sky_qRe_KW13_Journal: Muladansa's Debt
+Sky_qRe_KW1_Journal: Direnni Registers
+Sky_qRe_KW1a_Journal: Direnni Registers
+Sky_qRe_KW1b_Journal: Direnni Registers
+Sky_qRe_KW1c_Journal: Direnni Registers
+Sky_qRe_KW1d_Journal: Direnni Registers
+Sky_qRe_KW2_Journal: A Lost Sister
+Sky_qRe_KW3_Journal: Hjalmar's Captives
+Sky_qRe_KW3a_Journal: Hjalmar's Captives
+Sky_qRe_KW4a_Journal: Lost in the Reach
+Sky_qRe_KW4b_Journal: Lost in the Reach
+Sky_qRe_KW5_Journal: Pursuit of Knowledge
+Sky_qRe_KW6_Journal: A Beggar in Need
+Sky_qRe_KW7_Journal: Unwelcome in Karthwasten
+Sky_qRe_KW8_Journal: Brokk's Bundles of Barley
+Sky_qRe_KW9_Journal: Hide and Seek
+Sky_qRe_KWB01_Journal: "Bounty: Hjalmar Bear-Eye"
+Sky_qRe_KWB02_Journal: "Bounty: Dovica"
+Sky_qRe_KWB03_Journal: "Bounty: Uldar Ember-Seeker"
+Sky_qRe_KWB04_Journal: "Bounty: Meshif and Tharag gro-Kul"
+Sky_qRe_KWB04a_Journal: "Bounty: Meshif and Tharag gro-Kul"
+Sky_qRe_KWB05_JournalA: "Bounty: Emfrid"
+Sky_qRe_KWB06_Journal: "Bounty: Herkja"
+Sky_qRe_KWB07_Journal: "Bounty: Azzam"
+Sky_qRe_KWB08_Journal: "Bounty: Beloth"
+Sky_qRe_KWB09_Journal: "Bounty: Jaghren"
+Sky_qRe_KWB10_Journal: "Bounty: Rakan"
+Sky_qRe_KWFG1_Journal: Wormmouth Problem
+Sky_qRe_KWFG2_Journal: Kill Orc Bandits
+Sky_qRe_KWFG3_Journal: Ildos Norvor's Caravan
+Sky_qRe_KWFG4_Journal: Geod's Vendetta
+Sky_qRe_KWMG1_Journal: Optimistic Outreach
+Sky_qRe_KWMG2_Journal: Out for a Spell
+Sky_qRe_KWMG3_Journal: A Case for Concern
+Sky_qRe_KWMG4_Journal: A Crisis of Character
+Sky_qRe_KWMG5_Journal: Turbulent Teleporting
+Sky_qRe_KWMG5a_Journal: Turbulent Teleporting
+Sky_qRe_KWMG5b_Journal: Turbulent Teleporting
+Sky_qRe_KWMG5c_Journal: Turbulent Teleporting
+Sky_qRe_KWMG6_Journal: The Penumbra
+Sky_qRe_KWTG0_Journal: To Right a Wrong
+Sky_qRe_KWTG1_Journal: A Dancing Distraction
+Sky_qRe_KWTG2_Journal: Doing a Cat's Job
+Sky_qRe_KWTG2a_Journal: Doing a Cat's Job
+Sky_qRe_KWTG2b_Journal: Doing a Cat's Job
+Sky_qRe_KWTG2c_Journal: Doing a Cat's Job
+Sky_qRe_KWTG3_Journal: Bumbling Competition
+Sky_qRe_KWTG4_Journal: Top-Shelf Theft
+Sky_qRe_KWTG5_Journal: A Curious Concoction
+Sky_qRe_KWTG6_Journal: Dilemma for Disarray
+Sky_qRe_KWTG7_Journal: Looting the Lost Heirloom
+Sky_qRe_KWTG8_Journal: Playing All Sides
+Sky_qRe_LH02_Journal: Bandits at Iron-Mane Farm
+Sky_qRe_LH1_Journal: A Mine Out of Time
+Sky_qRe_MAI2_Journal: Reaching For Love
+Sky_qRe_MAI3_Journal: Reaching For Answers
+Sky_qRe_MAI4_Journal: Gylghi's Goats
+Sky_qRe_NAR1_Journal: The Beast of Nargozh Camp
+Sky_qRe_NAR2_Journal: The Alovach and the Nargozh
+Sky_qRe_URA1_Journal: Misguided Kin
+Sky_qRe_VF1_Hazel: Curses and Horses
+Sky_qRe_VF1_Journal: Curses and Horses
+Sky_qRe_VF1_Whisper: Curses and Horses
+Sky_qRe_VF2_Journal: Divided Loyalties
+Sky_qRe_VF2a_Journal: Divided Loyalties
+Sky_qRe_VF2b_Journal: Divided Loyalties
+Sky_qRe_VF2c_Journal: Divided Loyalties
+Sky_qRe_VF2d_Journal: Divided Loyalties
+Sky_qRe_VF3_Journal: Aland Remyon's Treasure

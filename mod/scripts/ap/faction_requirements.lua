@@ -25,13 +25,25 @@ M.ITEM_IDS = {
   imperial_cult = 7701507, imperial_legion = 7701508, temple = 7701509,
   morag_tong = 7701510, east_empire_company = 7701511, ja_natta_syndicate = 7701512,
   ordinators = 7701513,
-  -- Project Cyrodiil
+  -- Project Cyrodiil factions
   kingdom_of_anvil = 7701514, itinerant_priests = 7701515,
-  cyrodiil_fighters_guild = 7701516, cyrodiil_mages_guild = 7701517, cyrodiil_thieves_guild = 7701518,
-  -- Skyrim: Home of the Nords
-  skyrim_fighters_guild = 7701519, skyrim_mages_guild = 7701520,
-  hammerfell_mages_guild = 7701521, skyrim_thieves_guild = 7701522,
 }
+
+-- Guilds of the same type have the same requirements whatever the region: the Project Cyrodiil and
+-- Skyrim guilds have no item of their own, they use the one of the vanilla guild of their type
+-- (and so the requirements of the vanilla faction record). Keep in sync with items.py
+-- (SHARED_REQUIREMENT_GOAL).
+M.SHARED = {
+  cyrodiil_fighters_guild = 'fighters_guild', cyrodiil_mages_guild = 'mages_guild',
+  cyrodiil_thieves_guild = 'thieves_guild',
+  skyrim_fighters_guild = 'fighters_guild', skyrim_mages_guild = 'mages_guild',
+  hammerfell_mages_guild = 'mages_guild', skyrim_thieves_guild = 'thieves_guild',
+}
+
+-- AP item id of the Requirements item that serves goal `key` (nil if none).
+function M.itemId(key)
+  return M.ITEM_IDS[M.SHARED[key] or key]
+end
 
 M.GOAL_BY_ITEM = {}
 for goal, id in pairs(M.ITEM_IDS) do M.GOAL_BY_ITEM[id] = goal end

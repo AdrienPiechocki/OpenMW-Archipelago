@@ -13,6 +13,8 @@ fake = types.ModuleType('Options')
 for name, default in (('Toggle', 0), ('Choice', 0), ('DefaultOnToggle', 1),
                       ('PerGameCommonOptions', None), ('Range', 0)):
     setattr(fake, name, type(name, (), {'default': default}))
+fake.OptionSet = type('OptionSet', (), {'default': frozenset(), 'valid_keys': frozenset(),
+                                          '__init__': lambda self, value: setattr(self, 'value', set(value))})
 sys.modules['Options'] = fake
 
 root = pathlib.Path(__file__).resolve().parent.parent
@@ -30,10 +32,15 @@ class Val:
 class Key:
     def __init__(self, k): self.current_key = k
 
+class Set:
+    """Fake OptionSet value (guild / faction): 'none' -> empty, a key -> {key}, a list -> set."""
+    def __init__(self, k):
+        self.value = set() if k in ('none', None) else ({k} if isinstance(k, str) else set(k))
+
 
 def make(main=True, house='none', guild='none', faction='none', daedric=False, **kw):
-    o = types.SimpleNamespace(main_quest=Val(main), great_house=Key(house), guild=Key(guild),
-                              faction=Key(faction), daedric_quests=Val(daedric))
+    o = types.SimpleNamespace(main_quest=Val(main), great_house=Key(house), guild=Set(guild),
+                              faction=Set(faction), daedric_quests=Val(daedric))
     for k, v in kw.items():
         setattr(o, k, Val(v))
     return o
@@ -61,9 +68,11 @@ for k, fid in (('skyrim_fighters_guild', 'T_Sky_FightersGuild'), ('skyrim_mages_
     check(f'{k} faction id', (goals[k]['faction'], goals[k]['rank']), (fid, 10))
 _items = (root / 'apworld/morrowind_openmw/items.py').read_text(encoding='utf-8')
 _lua = (root / 'mod/scripts/ap/faction_requirements.lua').read_text(encoding='utf-8')
-for i, k in enumerate(opts.SKY_FACTION_KEYS):
-    check(f'{k} requirement item in items.py', bool(re.search(rf'"{k}": \(BASE_ITEM \+ {519 + i},', _items)), True)
-    check(f'{k} requirement id in Lua', f'{k} = {7701519 + i}' in _lua, True)
+for k, base in (('skyrim_fighters_guild', 'fighters_guild'), ('skyrim_mages_guild', 'mages_guild'),
+                ('hammerfell_mages_guild', 'mages_guild'), ('skyrim_thieves_guild', 'thieves_guild')):
+    check(f'{k} shares the {base} requirement item (items.py)', f'"{k}": "{base}"' in _items, True)
+    check(f'{k} shares the {base} requirement item (Lua)', f"{k} = '{base}'" in _lua, True)
+    check(f'{k} has no item of its own', f'"{k}": (BASE_ITEM' in _items, False)
 check('goals.lua knows the Sky goals', all(k + ' = {' in (root / 'mod/scripts/ap/goals.lua').read_text() for k in opts.SKY_FACTION_KEYS), True)
 check('player.lua lets sky_side through', "group == 'sky_side'" in (root / 'mod/scripts/ap/player.lua').read_text(), True)
 
@@ -78,8 +87,25 @@ check('Sky guild goal', opts.selected_goals(make(guild='skyrim_thieves_guild')),
 check('Sky guild group active when chosen', opts.group_active(make(guild='hammerfell_mages_guild'), 'hammerfell_mages_guild'), True)
 check('Sky guild distinct from the vanilla one', opts.group_active(make(guild='mages_guild'), 'skyrim_mages_guild'), False)
 check('Sky guild distinct from the PC one', opts.group_active(make(guild='cyrodiil_mages_guild'), 'skyrim_mages_guild'), False)
-check('Guild option values', (opts.Guild.option_skyrim_fighters_guild, opts.Guild.option_skyrim_mages_guild,
-                              opts.Guild.option_hammerfell_mages_guild, opts.Guild.option_skyrim_thieves_guild), (7, 8, 9, 10))
+check('Guild option keys', {'skyrim_fighters_guild', 'skyrim_mages_guild', 'hammerfell_mages_guild',
+                            'skyrim_thieves_guild'} <= set(opts.Guild.valid_keys), True)
+check('several guilds across regions',
+      opts.selected_goals(make(guild=['hammerfell_mages_guild', 'skyrim_mages_guild', 'mages_guild'])),
+      ['main_quest', 'mages_guild', 'skyrim_mages_guild', 'hammerfell_mages_guild'])
+
+
+# ---- early-access mods: the goal also accepts "every quest of the group completed" ----------
+import pathlib as _pl, yaml as _yaml
+_root = _pl.Path(__file__).resolve().parent.parent
+_goals = _yaml.safe_load((_root / 'data/goals.yaml').read_text(encoding='utf-8'))
+_cp = next(p for p in (_root / 'data/quest_completions.yaml', _root / 'apworld/morrowind_openmw/data/quest_completions.yaml') if p.exists())
+_rows = _yaml.safe_load(_cp.read_text(encoding='utf-8'))
+for _k in ('skyrim_fighters_guild', 'skyrim_mages_guild', 'hammerfell_mages_guild', 'skyrim_thieves_guild'):
+    check(f'{_k}: goal has a group condition', _goals[_k].get('group'), _k)
+    check(f'{_k}: goal keeps the rank condition', _goals[_k].get('rank'), 10)
+    check(f'{_k}: group has quests', any(r.get('group') == _k for r in _rows), True)
+_lua = (_root / 'mod/scripts/ap/goals.lua').read_text(encoding='utf-8')
+check('goals.lua carries the group', all(f"group = '{_k}'" in _lua for _k in ('skyrim_fighters_guild', 'skyrim_mages_guild', 'hammerfell_mages_guild', 'skyrim_thieves_guild')), True)
 
 # ---- classification (journal IDs seen on UESP) -----------------------------------------
 cases = {

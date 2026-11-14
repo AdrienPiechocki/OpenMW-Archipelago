@@ -1,4 +1,4 @@
-"""Test of the vampire clan category (options vampire_clan / tamriel_rebuilt_vampire_clan).
+"""Test of the vampire clan category (option vampire_clan).
 
 A player belongs to ONE clan, so only the quests open to any bloodline + the chosen clan's give checks,
 and the final quest of the chosen clan is a goal.
@@ -11,6 +11,8 @@ fake = types.ModuleType('Options')
 for name, default in (('Toggle', 0), ('Choice', 0), ('DefaultOnToggle', 1),
                       ('PerGameCommonOptions', None), ('Range', 0)):
     setattr(fake, name, type(name, (), {'default': default}))
+fake.OptionSet = type('OptionSet', (), {'default': frozenset(), 'valid_keys': frozenset(),
+                                          '__init__': lambda self, value: setattr(self, 'value', set(value))})
 sys.modules['Options'] = fake
 root = pathlib.Path(__file__).resolve().parent.parent
 spec = importlib.util.spec_from_file_location('mw_options', root / 'apworld/morrowind_openmw/options.py')
@@ -23,10 +25,15 @@ class Val:
 class Key:
     def __init__(self, k): self.current_key = k
 
-def make(vampire_clan='none', tr_clan='none', **kw):
-    o = types.SimpleNamespace(main_quest=Val(True), great_house=Key('none'), guild=Key('none'),
-                              faction=Key('none'), daedric_quests=Val(False),
-                              vampire_clan=Key(vampire_clan), tamriel_rebuilt_vampire_clan=Key(tr_clan))
+class Set:
+    """Fake OptionSet value (guild / faction): 'none' -> empty, a key -> {key}, a list -> set."""
+    def __init__(self, k):
+        self.value = set() if k in ('none', None) else ({k} if isinstance(k, str) else set(k))
+
+def make(vampire_clan='none', **kw):
+    o = types.SimpleNamespace(main_quest=Val(True), great_house=Key('none'), guild=Set('none'),
+                              faction=Set('none'), daedric_quests=Val(False),
+                              vampire_clan=Key(vampire_clan))
     for k, v in kw.items():
         setattr(o, k, Val(v))
     return o
@@ -51,18 +58,22 @@ for c in ('aundae', 'berne', 'quarra'):
     check(f'goal of clan {c}', opts.selected_goals(make(c)), ['main_quest', f'vampire_{c}'])
 check('unaligned: no goal', opts.selected_goals(make('unaligned')), ['main_quest'])
 check('none: no goal', opts.selected_goals(make()), ['main_quest'])
-check('TR baluath goal', opts.selected_goals(make(tr_clan='baluath')), ['main_quest', 'vampire_baluath'])
-check('TR orlukh goal', opts.selected_goals(make(tr_clan='orlukh')), ['main_quest', 'vampire_orlukh'])
-check('TR unaligned: no goal', opts.selected_goals(make(tr_clan='unaligned')), ['main_quest'])
-check('both clans', opts.selected_goals(make('berne', 'orlukh')), ['main_quest', 'vampire_berne', 'vampire_orlukh'])
+check('TR baluath goal', opts.selected_goals(make('baluath')), ['main_quest', 'vampire_baluath'])
+check('TR orlukh goal', opts.selected_goals(make('orlukh')), ['main_quest', 'vampire_orlukh'])
+check('TR unaligned: no goal', opts.selected_goals(make('tamriel_rebuilt_unaligned')), ['main_quest'])
+check('one clan only (vanilla clan: no TR goal)', opts.selected_goals(make('berne')), ['main_quest', 'vampire_berne'])
+check('TR unaligned: no goal', opts.selected_goals(make('tamriel_rebuilt_unaligned')), ['main_quest'])
+check('TR unaligned: no vanilla group', opts.selected_category_groups(make('tamriel_rebuilt_unaligned')), [])
+check('TR clan: no vanilla group', opts.selected_category_groups(make('orlukh')), [])
+check('vanilla unaligned: no TR group', [g for g in opts.selected_tr_groups(make('unaligned')) if 'vampire' in g], [])
 
 # TR
 check('TR default: nothing', [g for g in opts.selected_tr_groups(make()) if 'vampire' in g], [])
-check('TR unaligned', opts.selected_tr_groups(make(tr_clan='unaligned')), ['tr_vampire'])
-check('TR baluath', opts.selected_tr_groups(make(tr_clan='baluath')), ['tr_vampire', 'tr_vampire_baluath'])
-check('TR orlukh', opts.selected_tr_groups(make(tr_clan='orlukh')), ['tr_vampire', 'tr_vampire_orlukh'])
+check('TR unaligned', opts.selected_tr_groups(make('tamriel_rebuilt_unaligned')), ['tr_vampire'])
+check('TR baluath', opts.selected_tr_groups(make('baluath')), ['tr_vampire', 'tr_vampire_baluath'])
+check('TR orlukh', opts.selected_tr_groups(make('orlukh')), ['tr_vampire', 'tr_vampire_orlukh'])
 check('TR clan independent of tamriel_rebuilt_factions',
-      'tr_vampire_orlukh' in opts.selected_tr_groups(make(tr_clan='orlukh', tamriel_rebuilt_factions=False)), True)
+      'tr_vampire_orlukh' in opts.selected_tr_groups(make('orlukh', tamriel_rebuilt_factions=False)), True)
 check('vanilla clan does not enable TR groups',
       [g for g in opts.selected_tr_groups(make('berne')) if 'vampire' in g], [])
 # groups
@@ -70,11 +81,11 @@ allv = opts.CATEGORY_GROUPS + opts.TR_VAMPIRE_GROUPS
 check('all vampire groups are free groups', all(opts.is_free_group(g) for g in allv), True)
 check('group_enabled own clan', opts.group_enabled(make('berne'), 'vampire_berne'), True)
 check('group_enabled other clan', opts.group_enabled(make('berne'), 'vampire_quarra'), False)
-check('group_active TR clan', opts.group_active(make(tr_clan='baluath'), 'tr_vampire_baluath'), True)
-check('group_active TR other clan', opts.group_active(make(tr_clan='baluath'), 'tr_vampire_orlukh'), False)
+check('group_active TR clan', opts.group_active(make('baluath'), 'tr_vampire_baluath'), True)
+check('group_active TR other clan', opts.group_active(make('baluath'), 'tr_vampire_orlukh'), False)
 check('apworld groups in sync with quest_groups.py', (opts.TR_GROUPS, opts.CATEGORY_GROUPS),
       (qg.TR_GROUPS, qg.VAMPIRE_GROUPS))
-check('Choice values', (opts.VampireClan.option_quarra, opts.TamrielRebuiltVampireClan.option_orlukh), (4, 3))
+check('Choice values', (opts.VampireClan.option_quarra, opts.VampireClan.option_baluath, opts.VampireClan.option_orlukh), (4, 5, 6))
 
 # classification and generated data: UESP guide = 7 quests open to any bloodline + 2 per clan
 ov = qg.load_overrides(root / 'data/quest_groups_override.yaml')

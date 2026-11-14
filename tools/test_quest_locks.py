@@ -17,6 +17,8 @@ fake = types.ModuleType('Options')
 for name, default in (('Toggle', 0), ('Choice', 0), ('DefaultOnToggle', 1),
                       ('PerGameCommonOptions', None), ('Range', 0)):
     setattr(fake, name, type(name, (), {'default': default}))
+fake.OptionSet = type('OptionSet', (), {'default': frozenset(), 'valid_keys': frozenset(),
+                                          '__init__': lambda self, value: setattr(self, 'value', set(value))})
 sys.modules['Options'] = fake
 
 # Fake BaseClasses: only Item and ItemClassification are used by items.py.
@@ -55,11 +57,16 @@ class Val:
 class Key:
     def __init__(self, k): self.current_key = k
 
+class Set:
+    """Fake OptionSet value (guild / faction): 'none' -> empty, a key -> {key}, a list -> set."""
+    def __init__(self, k):
+        self.value = set() if k in ('none', None) else ({k} if isinstance(k, str) else set(k))
+
 
 def make(daedric, tr_daedric, **extra):
     o = types.SimpleNamespace(
-        main_quest=Val(True), great_house=Key('none'), guild=Key('none'),
-        faction=Key('none'), daedric_quests=Val(daedric),
+        main_quest=Val(True), great_house=Key('none'), guild=Set('none'),
+        faction=Set('none'), daedric_quests=Val(daedric),
         tamriel_rebuilt_daedric_quests=Val(tr_daedric))
     for k, v in extra.items():
         setattr(o, k, Val(v))

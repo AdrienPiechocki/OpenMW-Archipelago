@@ -7,6 +7,8 @@ import importlib.util, pathlib, re, sys, types, random, collections
 fake = types.ModuleType('Options')
 for name, default in (('Toggle', 0), ('Choice', 0), ('DefaultOnToggle', 1), ('PerGameCommonOptions', None), ('Range', 0)):
     setattr(fake, name, type(name, (), {'default': default}))
+fake.OptionSet = type('OptionSet', (), {'default': frozenset(), 'valid_keys': frozenset(),
+                                          '__init__': lambda self, value: setattr(self, 'value', set(value))})
 sys.modules['Options'] = fake
 base = types.ModuleType('BaseClasses')
 base.Item = type('Item', (), {})
@@ -54,5 +56,31 @@ summons = {int(x) for x in re.findall(r"\[(7701\d{3})\]\s*=\s*\{\s*'[^']+',\s*\d
 drains = {int(x) for x in re.findall(r"\[(7701\d{3})\]\s*=\s*'(?:fatigue|magicka)'", lua)}
 handled = summons | drains | {7701200, 7701201, 7701203}
 check('Lua handles every trap', {c for c, _w in items.TRAPS.values()} <= handled, True)
+
+# ---- Requirements items: guilds of the same type share one item whatever the region ------------
+import types as _t
+class _V:
+    def __init__(self, v): self.value = v
+class _K:
+    def __init__(self, k): self.current_key = k
+def _o(guild=(), faction=()):
+    return _t.SimpleNamespace(main_quest=_V(True), great_house=_K('none'), guild=_V(set(guild)),
+                              faction=_V(set(faction)), daedric_quests=_V(False))
+_names = items.FACTION_REQUIREMENT_NAMES
+check('no item of its own for regional guilds',
+      [k for k in items.SHARED_REQUIREMENT_GOAL if k in _names or any(k in n.lower().replace(' ', '_') for n in items.item_table if 'Requirements' in n)], [])
+_item = lambda g: items.item_table[_names[g]]
+_o2 = _o(guild=['skyrim_mages_guild', 'hammerfell_mages_guild', 'cyrodiil_mages_guild', 'skyrim_fighters_guild'])
+check('Mages Guild item created for the regional mages guilds', _item('mages_guild').can_create(_o2), True)
+check('Fighters Guild item created for skyrim_fighters_guild', _item('fighters_guild').can_create(_o2), True)
+check('Thieves Guild item not created', _item('thieves_guild').can_create(_o2), False)
+check('vanilla guild alone still creates its item', _item('mages_guild').can_create(_o(guild=['mages_guild'])), True)
+check('nothing selected: no item', _item('mages_guild').can_create(_o()), False)
+_n = items.quest_item_names('hammerfell_mages_guild', _o2)
+check('hammerfell needs the shared Mages Guild item', _names['mages_guild'] in _n, True)
+check('shared item listed once per goal', _n.count(_names['mages_guild']), 1)
+check('anvil keeps its own item', items.quest_item_names('kingdom_of_anvil', _o(faction=['kingdom_of_anvil'])).count(_names['kingdom_of_anvil']), 1)
+check('requirement_goal', (items.requirement_goal('skyrim_thieves_guild'), items.requirement_goal('temple')), ('thieves_guild', 'temple'))
+
 print('FAILED' if fails else 'all filler / trap tests passed')
 sys.exit(1 if fails else 0)

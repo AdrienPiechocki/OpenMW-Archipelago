@@ -168,7 +168,7 @@ local function keyReached(key, quests)
     end
     -- The goal only counts once the "<faction> Requirements added" item has
     -- been received (progression item of the apworld).
-    local reqId = factionReq.ITEM_IDS[key]
+    local reqId = factionReq.itemId(key)
     if r >= (g.rank or 10) then
       if not reqId or ownedIds[reqId] then
         ok = true
@@ -184,7 +184,14 @@ local function keyReached(key, quests)
     for qkey, info in pairs(QUEST_COMPLETE_LOOKUP) do
       if info[4] == g.group then
         n = n + 1
-        if questComplete(qkey, questStage(quests, qkey)) then done = done + 1 end
+        local isDone = questComplete(qkey, questStage(quests, qkey))
+        -- mutually exclusive branches: ONE completed member validates the whole set
+        if not isDone then
+          for _, m in ipairs(EXCLUSIVE[qkey] or {}) do
+            if questComplete(m, questStage(quests, m)) then isDone = true; break end
+          end
+        end
+        if isDone then done = done + 1 end
       end
     end
     if n > 0 and done == n then ok = true end

@@ -82,7 +82,7 @@ ordinators:
 
 # Vampire clans: the goal is the completion of the clan's final quest (same condition as its
 # check: `complete: true` accepts the alternative endings and never a failure branch). A player
-# belongs to ONE clan, so only the clan chosen in vampire_clan / tamriel_rebuilt_vampire_clan counts.
+# belongs to ONE clan, so only the clan chosen in vampire_clan counts.
 vampire_aundae:
   quests:
     - {quest: va_vamphunter, stage: 110, complete: true}        # The Vampire Hunter
@@ -98,6 +98,11 @@ vampire_baluath:
 vampire_orlukh:
   quests:
     - {quest: tr_m4_va_namira, stage: 225, complete: true}      # Orlukh: Namira's Shroud
+# Project Cyrodiil and Skyrim: Home of the Nords are in EARLY ACCESS: only part of the guild / faction questlines
+# exists, so rank 10 (leader) may be out of reach. Their goals therefore have TWO alternative conditions
+# (the goal is reached as soon as ONE is met): `group` = every quest of the guild / faction present in
+# data/quest_completions.yaml is completed (mutually exclusive branches count once), or `faction` rank 10
+# (kept for when the mods are finished). Regenerate the data after a mod update and the goal follows.
 # Project Cyrodiil (Cyr_Main.esm + Tamriel_Data.esm required). Its factions are separate from the vanilla
 # ones: the goal key is the option choice (guild: cyrodiil_*_guild, faction: kingdom_of_anvil /
 # itinerant_priests). No main quest, no Daedric quest: only these 5 faction goals.
@@ -106,30 +111,39 @@ vampire_orlukh:
 kingdom_of_anvil:
   faction: T_Cyr_KingdomAnvil
   rank: 10
+  group: kingdom_of_anvil
 itinerant_priests:
   faction: T_Cyr_ItinerantPriests
   rank: 10
+  group: itinerant_priests
 cyrodiil_fighters_guild:
   faction: T_Cyr_FightersGuild
   rank: 10
+  group: cyrodiil_fighters_guild
 cyrodiil_mages_guild:
   faction: T_Cyr_MagesGuild
   rank: 10
+  group: cyrodiil_mages_guild
 cyrodiil_thieves_guild:
   faction: T_Cyr_ThievesGuild
   rank: 10
+  group: cyrodiil_thieves_guild
 # Skyrim: Home of the Nords (Sky_Main.esm + Tamriel_Data.esm required). Only guild goals (no main / Daedric quest).
 # Faction ids and ranks verified in Tamriel_Data.esm (10 ranks each, rank 10 = leader). The Dragonstar guild uses
 # t_ham_magesguild (Hammerfell Mages Guild), not a t_sky_* faction.
 skyrim_fighters_guild:
   faction: T_Sky_FightersGuild
   rank: 10
+  group: skyrim_fighters_guild
 skyrim_mages_guild:
   faction: T_Sky_MagesGuild
   rank: 10
+  group: skyrim_mages_guild
 hammerfell_mages_guild:
   faction: T_Ham_MagesGuild
   rank: 10
+  group: hammerfell_mages_guild
 skyrim_thieves_guild:
   faction: T_Sky_ThievesGuild
   rank: 10
+  group: skyrim_thieves_guild
