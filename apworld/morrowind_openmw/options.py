@@ -414,9 +414,20 @@ class TamrielRebuiltVampireClan(Choice):
 
 
 class Traps(DefaultOnToggle):
-    """Include trap items (Damage, Bounty, Summon Scamp, Steal Gold) in the
-    item pool. Disabled: no trap is generated, they are replaced by filler."""
+    """Include trap items (Damage, Bounty, Steal Gold, Drain Fatigue / Magicka, summoned
+    Scamp / Flame Atronach / Clannfear / Cliff Racers) in the item pool. Disabled: no trap is
+    generated, the slots are filled with the regular filler."""
     display_name = "Traps"
+
+
+class TrapPercentage(Range):
+    """Percentage of the filler slots replaced by traps (only if `traps` is enabled).
+    The rest of the filler is a varied mix (gold, potions, soul gems, arrows, lockpicks,
+    probes, food, drinks) instead of gold only."""
+    display_name = "Trap Percentage"
+    range_start = 0
+    range_end = 100
+    default = 10
 
 
 class QuestRewards(Toggle):
@@ -491,6 +502,7 @@ class MorrowindOptions(PerGameCommonOptions):
     project_cyrodiil_side_quests: ProjectCyrodiilSideQuests = ProjectCyrodiilSideQuests.default
     skyrim_side_quests: SkyrimSideQuests = SkyrimSideQuests.default
     traps: Traps = Traps.default
+    trap_percentage: TrapPercentage = TrapPercentage.default
     quest_rewards: QuestRewards = QuestRewards.default
     death_link: DeathLink = DeathLink.default
 

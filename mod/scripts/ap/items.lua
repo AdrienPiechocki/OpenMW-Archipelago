@@ -14,6 +14,33 @@ local GIVE = {
   [7701002] = { 'p_restore_health_s', 1 },
   [7701003] = { 'misc_soulgem_common', 1 },
   [7701004] = { 'chitin arrow', 30 },
+  -- Varied filler (apworld/items.py FILLER). Record ids: tools/check_filler_records.py
+  [7701005] = { 'gold_001', 250 },
+  [7701006] = { 'p_restore_health_q', 1 },
+  [7701007] = { 'p_restore_magicka_s', 1 },
+  [7701008] = { 'p_restore_fatigue_s', 1 },
+  [7701009] = { 'misc_soulgem_greater', 1 },
+  [7701010] = { 'steel arrow', 30 },
+  [7701011] = { 'pick_apprentice_01', 3 },
+  [7701012] = { 'probe_apprentice_01', 3 },
+  [7701013] = { 'ingred_bread_01', 5 },
+  [7701014] = { 'ingred_scrib_jelly_01', 3 },
+  [7701015] = { 'potion_comberry_wine_01', 1 },
+  [7701016] = { 'potion_local_brew_01', 1 },
+}
+
+-- Hostile creatures summoned next to the player by the summon traps: AP id -> { record, count }.
+local SUMMONS = {
+  [7701202] = { 'scamp', 1 },
+  [7701204] = { 'atronach_flame', 1 },
+  [7701205] = { 'clannfear', 1 },
+  [7701206] = { 'cliff racer', 3 },
+}
+
+-- Drain traps (stats are only writable from openmw.self: relayed to player.lua): AP id -> stat.
+local DRAINS = {
+  [7701207] = 'fatigue',
+  [7701208] = 'magicka',
 }
 
 -- Spells added to the player.
@@ -95,10 +122,33 @@ end
 local function giveObject(player, recordId, count)
   local world = require('openmw.world')
   local types = require('openmw.types')
-  local obj = world.createObject(recordId, count or 1)
-  if not obj then return false end
+  -- pcall: an unknown record id must not break the whole item processing.
+  local ok, obj = pcall(world.createObject, recordId, count or 1)
+  if not ok or not obj then
+    print('AP: createObject(' .. tostring(recordId) .. ') failed: ' .. tostring(obj))
+    return false
+  end
   obj:moveInto(types.Actor.inventory(player))
   return true
+end
+
+-- Spawn `count` hostile creatures in front of the player (spread sideways).
+local function summon(player, record, count)
+  local world = require('openmw.world')
+  local util = require('openmw.util')
+  for i = 1, count do
+    local ok, err = pcall(function()
+      local side = (i - (count + 1) / 2) * 120
+      local offset = player.rotation:apply(util.vector3(side, 150, 0))
+      local c = world.createObject(record, 1)
+      if not c then error('createObject(' .. record .. ') returned nil') end
+      c:teleport(player.cell, player.position + offset)
+      -- Hostile on arrival (handled in actor.lua, attached to creatures).
+      c:sendEvent('AP_Attack', { target = player })
+      print('AP: summon trap spawned ' .. record)
+    end)
+    if not ok then print('AP: summon trap failed: ' .. tostring(err)) end
+  end
 end
 
 local function giveSpells(player, ids)
@@ -151,24 +201,16 @@ function M.apply(player, itemId, idx)
     return true
   end
 
-  -- Trap: summon a hostile scamp next to the player
-  if itemId == 7701202 then
-    local ok, err = pcall(function()
-      local world = require('openmw.world')
-      local util = require('openmw.util')
-      -- Position: 150 units in front of the player (teleport needs a
-      -- util.vector3, not a plain table).
-      local offset = player.rotation:apply(util.vector3(0, 150, 0))
-      local pos = player.position + offset
-      local c = world.createObject('scamp', 1)
-      if not c then error('createObject(scamp) returned nil') end
-      c:teleport(player.cell, pos)
-      -- Hostile on arrival (handled in actor.lua, attached to creatures).
-      c:sendEvent('AP_Attack', { target = player })
-      print('AP: scamp trap spawned')
-    end)
-    if not ok then print('AP: scamp trap failed: ' .. tostring(err)) end
+  -- Traps: summon hostile creatures next to the player
+  local sm = SUMMONS[itemId]
+  if sm then
+    summon(player, sm[1], sm[2])
     return true
+  end
+
+  -- Traps: drain fatigue / magicka to zero (applied by player.lua)
+  if DRAINS[itemId] then
+    return true, { type = 'drain', stat = DRAINS[itemId] }
   end
 
   -- Trap: gold theft

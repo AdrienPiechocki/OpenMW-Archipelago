@@ -243,6 +243,10 @@ local function applyItem(msg)
       pcall(function()
         player:sendEvent('AP_Damage', { amount = effect.amount, fraction = effect.fraction })
       end)
+    elseif applied and effect and effect.type == 'drain' then
+      pcall(function()
+        player:sendEvent('AP_Drain', { stat = effect.stat })
+      end)
     elseif applied and effect and effect.type == 'faction_requirements' then
       pcall(function()
         player:sendEvent('AP_FactionRequirements', { faction = effect.faction, goal = effect.goal })

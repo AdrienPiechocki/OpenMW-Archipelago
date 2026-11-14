@@ -699,6 +699,16 @@ local function onDamage(data)
   end)
 end
 
+-- Trap drain (relayed by global.lua): fatigue or magicka set to zero (never touches health).
+local function onDrain(data)
+  local stat = type(data) == 'table' and data.stat or nil
+  if stat ~= 'fatigue' and stat ~= 'magicka' then return end
+  pcall(function()
+    local dyn = types.Actor.stats.dynamic[stat](self)
+    dyn.current = 0
+  end)
+end
+
 -- Daedric shrine activation blocked by global.lua (missing AP item).
 local function onLockedActivation(data)
   local name = 'daedric shrine'
@@ -731,6 +741,7 @@ return {
     AP_LevelUp = onLevelUp,
     AP_FactionRequirements = onFactionRequirements,
     AP_Damage = onDamage,
+    AP_Drain = onDrain,
     AP_LockedActivation = onLockedActivation,
     AP_Notify = onNotify,
     AP_DagothDead = onDagothDead,

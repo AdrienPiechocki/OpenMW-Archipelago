@@ -1,7 +1,8 @@
 from worlds.AutoWorld import World, WebWorld
 from BaseClasses import Region, Tutorial, LocationProgressType
 from Options import OptionError
-from .items import MorrowindItem, item_table, item_name_groups, quest_item_names
+from .items import (MorrowindItem, item_table, item_name_groups, quest_item_names, _traps_enabled,
+                    FILLER_WEIGHTS, TRAP_WEIGHTS)
 from .locations import MorrowindLocation, location_table
 from .regions import region_table
 from .options import (MorrowindOptions, selected_goals, goal_of_group, is_free_group, selected_expansions,
@@ -34,7 +35,8 @@ class MorrowindWorld(World):
     filler_item_name = "Gold (100)"
 
     def get_filler_item_name(self):
-        return "Gold (100)"
+        # Weighted draw (seeded by the multiworld): see FILLER in items.py.
+        return self.random.choices(list(FILLER_WEIGHTS), weights=list(FILLER_WEIGHTS.values()))[0]
 
     def generate_early(self):
         # Without the main quest, at least one other goal is required: otherwise
@@ -128,7 +130,16 @@ class MorrowindWorld(World):
         useful = [x for x in itempool if x.useful and not x.advancement]
         for it in useful[max(room, 0):]:
             itempool.remove(it)
-        itempool += [self.create_filler() for _ in range(total_locations - len(itempool))]
+        # Remaining slots: `trap_percentage` % of traps (weighted), the rest varied filler (weighted).
+        n_fill = max(0, total_locations - len(itempool))
+        n_trap = 0
+        if _traps_enabled(self.options):
+            pct = getattr(self.options, "trap_percentage", None)
+            n_trap = round(n_fill * int(getattr(pct, "value", 10 if pct is None else pct)) / 100)
+        if n_trap:
+            names = self.random.choices(list(TRAP_WEIGHTS), weights=list(TRAP_WEIGHTS.values()), k=n_trap)
+            itempool += [self.create_item(n) for n in names]
+        itempool += [self.create_filler() for _ in range(n_fill - n_trap)]
         self.multiworld.itempool += itempool
 
     def _check_progression_capacity(self, itempool, open_locs):

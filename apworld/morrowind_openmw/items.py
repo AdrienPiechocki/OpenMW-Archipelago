@@ -29,22 +29,56 @@ def _traps_enabled(options) -> bool:
     t = getattr(options, "traps", None)
     return bool(getattr(t, "value", True if t is None else t))
 
+# Filler: the slots left once the real items are placed are filled by a WEIGHTED draw in this table
+# (name: (AP code, weight)), so a seed is not 90% gold. Codes must stay in sync with GIVE in
+# mod/scripts/ap/items.lua (tools/check_filler_records.py checks the record ids against the ESMs).
+FILLER = {
+    "Gold (100)": (BASE_ITEM + 1, 4),
+    "Gold (250)": (BASE_ITEM + 5, 1),
+    "Healing Potion": (BASE_ITEM + 2, 3),
+    "Quality Healing Potion": (BASE_ITEM + 6, 1),
+    "Magicka Potion": (BASE_ITEM + 7, 2),
+    "Fatigue Potion": (BASE_ITEM + 8, 2),
+    "Soul Gem": (BASE_ITEM + 3, 2),
+    "Soul Gem (Greater)": (BASE_ITEM + 9, 1),
+    "Arrow (30)": (BASE_ITEM + 4, 2),
+    "Steel Arrow (30)": (BASE_ITEM + 10, 1),
+    "Lockpicks (3)": (BASE_ITEM + 11, 2),
+    "Probes (3)": (BASE_ITEM + 12, 1),
+    "Bread (5)": (BASE_ITEM + 13, 1),
+    "Scrib Jelly (3)": (BASE_ITEM + 14, 1),
+    "Comberry Wine": (BASE_ITEM + 15, 1),
+    "Local Brew": (BASE_ITEM + 16, 1),
+}
+
+# Traps: converted from filler by the `trap_percentage` option (only if `traps` is on).
+TRAPS = {
+    "Trap: Damage": (BASE_ITEM + 200, 3),
+    "Trap: Bounty": (BASE_ITEM + 201, 2),
+    "Trap: Summon Scamp": (BASE_ITEM + 202, 3),
+    "Trap: Steal Gold": (BASE_ITEM + 203, 3),
+    "Trap: Summon Flame Atronach": (BASE_ITEM + 204, 1),
+    "Trap: Summon Clannfear": (BASE_ITEM + 205, 1),
+    "Trap: Summon Cliff Racers": (BASE_ITEM + 206, 1),
+    "Trap: Drain Fatigue": (BASE_ITEM + 207, 2),
+    "Trap: Drain Magicka": (BASE_ITEM + 208, 2),
+}
+FILLER_WEIGHTS = {name: w for name, (_c, w) in FILLER.items()}
+TRAP_WEIGHTS = {name: w for name, (_c, w) in TRAPS.items()}
+
 item_table: Dict[str, MorrowindItemData] = {
-    "Gold (100)": MorrowindItemData(code=BASE_ITEM + 1, classification=ItemClassification.filler),
-    "Healing Potion": MorrowindItemData(code=BASE_ITEM + 2, classification=ItemClassification.filler),
-    "Soul Gem": MorrowindItemData(code=BASE_ITEM + 3, classification=ItemClassification.filler),
-    "Arrow (30)": MorrowindItemData(code=BASE_ITEM + 4, classification=ItemClassification.filler),
     # +10 levels: adds the progression of 10 vanilla level-ups.
     # The player sleeps to choose attributes (see mod/scripts/ap/level_up.lua).
     "Level Up (+10)": MorrowindItemData(
         code=BASE_ITEM + 2000, classification=ItemClassification.progression, frequency=4
     ),
-    # "Levitation Level" and "Strength Bonus" removed
-    "Trap: Damage": MorrowindItemData(code=BASE_ITEM + 200, classification=ItemClassification.trap, can_create=_traps_enabled),
-    "Trap: Bounty": MorrowindItemData(code=BASE_ITEM + 201, classification=ItemClassification.trap, can_create=_traps_enabled),
-    "Trap: Summon Scamp": MorrowindItemData(code=BASE_ITEM + 202, classification=ItemClassification.trap, can_create=_traps_enabled),
-    "Trap: Steal Gold": MorrowindItemData(code=BASE_ITEM + 203, classification=ItemClassification.trap, can_create=_traps_enabled),
 }
+# frequency=0: never added one by one, only through the weighted draws of create_items.
+for _name, (_code, _w) in FILLER.items():
+    item_table[_name] = MorrowindItemData(code=_code, classification=ItemClassification.filler, frequency=0)
+for _name, (_code, _w) in TRAPS.items():
+    item_table[_name] = MorrowindItemData(code=_code, classification=ItemClassification.trap, frequency=0,
+                                          can_create=_traps_enabled)
 
 # "<faction> Requirements added": one progression item per faction goal
 # (great house / guild / faction). In game it raises the player's attributes
@@ -168,6 +202,7 @@ def quest_item_names(goal_key, options=None):
 
 
 item_name_groups = {
-    "Filler": ["Gold (100)", "Healing Potion", "Soul Gem", "Arrow (30)"],
+    "Filler": list(FILLER),
+    "Traps": list(TRAPS),
     "Faction Requirements": list(FACTION_REQUIREMENT_NAMES.values()),
 }

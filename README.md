@@ -79,6 +79,7 @@ Morrowind OpenMW:
   faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company | ja_natta_syndicate | ordinators | kingdom_of_anvil | itinerant_priests (Project Cyrodiil)
   daedric_quests: true         # adds the 7 vanilla Daedric quests to the objective
   traps: true                  # false = no trap items in the pool
+  trap_percentage: 10          # 0-100: % of the filler slots turned into traps (if traps: true)
   attribute_strength: 0        # 0-100: starting bonus per attribute (see below)
   skill_longblade: 0           # 0-100: starting bonus per skill (see below)
   tribunal_main_quest: false       # true = Tribunal main quest: checks + goal
@@ -347,6 +348,22 @@ python tools/list_tr.py tr_mainland.json --journals                  # check the
    (stage 0, no completion stage) and produce **no check**: a location that can never fire is
    dropped by `locations.py` and `gen_lua.py` skips them. `TR_m4_Bal0_Troubles_A` (*Troubles on the
    Road*) is a real alternate ending (stage 200) and is treated as a normal completion.
+
+## Filler and traps
+
+The slots left once the real items are placed are filled by a **weighted random draw** (seeded by
+the multiworld), not by gold only: Gold (100 / 250), healing / quality healing / magicka / fatigue
+potions, soul gems (common / greater), chitin / steel arrows, lockpicks, probes, bread, scrib jelly,
+comberry wine, local brew (`FILLER` in `apworld/morrowind_openmw/items.py`, weights included).
+
+If `traps` is on, `trap_percentage` % of those slots (default 10) become traps, drawn with weights
+(`TRAPS`): Damage (90 % of the max health, never lethal), Bounty (+1000), Steal Gold (up to 250),
+Drain Fatigue / Drain Magicka (set to 0), and hostile summons next to the player: Scamp, Flame
+Atronach, Clannfear, 3 Cliff Racers. To add an item: a line in `FILLER` / `TRAPS`, the matching entry
+in `GIVE` / `SUMMONS` / `DRAINS` (`mod/scripts/ap/items.lua`, same AP id), then
+`python3 tools/check_filler_records.py morrowind.json tribunal.json bloodmoon.json` (the record ids
+must exist in the ESMs). Tests: `python3 tools/test_filler_traps.py`, and from `mod/`
+`lua ../tools/test_filler_traps.lua`.
 
 ## Vampire clans (options `vampire_clan` / `tamriel_rebuilt_vampire_clan`)
 
