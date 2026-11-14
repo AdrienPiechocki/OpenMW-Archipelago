@@ -58,6 +58,7 @@ local EXCLUSIVE = require('scripts.ap.quest_exclusive') -- ['quest'] = { members
 local GOALS = require('scripts.ap.goals')
 local REWARDS = require('scripts.ap.quest_rewards') -- list of { item, loc, record, count, quest, stage, group, name }
 local LOCKS = require('scripts.ap.quest_locks')   -- goal -> { {id = AP item, quest} }
+local FORBIDDEN = require('scripts.ap.quest_forbidden') -- quests held at stage 0 while one of their goals is selected
 
 local sent = {}
 local goalSent = false
@@ -69,6 +70,7 @@ local goalList = nil        -- GOALS keys to complete (main quest + house/guild/
 local reachedGoals = {}     -- key -> true, remembered once reached
 local ownedIds = {}         -- received AP item ids (relayed by global.lua)
 local lockWarned = {}
+local forbiddenWarned = {}
 local reqWarned = {}
 local rewardsOn = false     -- quest_rewards option (YAML), received from the server
 local rewardBase = {}       -- reward record -> inventory count already accounted for
@@ -241,6 +243,30 @@ local function enforceLocks(quests)
   end
 end
 
+-- Forbidden quests: they would break a selected goal (e.g. "A Cure for Vampirism" removes the
+-- vampirism needed by the vampire clan goals), so their journal is reset to zero on every check and
+-- they can never reach the stage that applies the effect. The player is told once.
+local function enforceForbidden(quests)
+  if not goalList then return end
+  for _, fb in ipairs(FORBIDDEN.QUESTS) do
+    if FORBIDDEN.applies(fb, goalActive) and questStage(quests, fb.quest) > 0 then
+      local ok = pcall(function() quests[fb.quest].stage = 0 end)
+      if ok then
+        print('AP: forbidden quest reset to zero: ' .. fb.quest)
+        if not forbiddenWarned[fb.quest] then
+          forbiddenWarned[fb.quest] = true
+          pcall(function()
+            ui.showMessage(('Archipelago: "%s" is disabled (it would break your goal)'):format(fb.name))
+          end)
+        end
+      elseif not forbiddenWarned[fb.quest] then
+        forbiddenWarned[fb.quest] = true
+        print('AP: cannot block quest ' .. fb.quest .. ' (stage API not writable?)')
+      end
+    end
+  end
+end
+
 -- Starting bonuses: applied once, as soon as the tutorial is over.
 local function applyStartBoost(quests)
   if startBoostDone or not startAttributes or not startSkills then return end
@@ -322,6 +348,7 @@ local function pollQuests()
   local quests = types.Player.quests(self)
   if not quests then return end
   enforceLocks(quests)
+  enforceForbidden(quests)
   applyStartBoost(quests)
   pollRewards(quests)
   for qkey in pairs(allQuests) do

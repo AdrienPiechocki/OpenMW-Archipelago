@@ -361,7 +361,7 @@ plus the quests of your clan exist in the seed. You must really join that clan i
 
 | Option | Values | Checks | Goal (final quest of the clan) |
 |---|---|---|---|
-| `vampire_clan` | `none` (default) / `unaligned` / `aundae` / `berne` / `quarra` | `vampire`: 8 quests open to any bloodline (`va_vampdust`, `va_shashev`, `va_rimintil`, `va_vampblood2`, `va_vamprich`, `va_vampmarara`, `va_vampcurse` + *A Cure for Vampirism*); `vampire_<clan>`: 2 quests of the chosen clan (Berne `va_vampblood`, `va_vampcountess`; Aundae `va_vampchild`, `va_vamphunter`; Quarra `va_vampcult`, `va_vampamulet`) | Aundae *The Vampire Hunter* (`va_vamphunter`), Berne *The Vampire Merta* (`va_vampcountess`), Quarra *The Quarra Amulet* (`va_vampamulet`) |
+| `vampire_clan` | `none` (default) / `unaligned` / `aundae` / `berne` / `quarra` | `vampire`: 7 quests open to any bloodline (`va_vampdust`, `va_shashev`, `va_rimintil`, `va_vampblood2`, `va_vamprich`, `va_vampmarara`, `va_vampcurse`); `vampire_<clan>`: 2 quests of the chosen clan (Berne `va_vampblood`, `va_vampcountess`; Aundae `va_vampchild`, `va_vamphunter`; Quarra `va_vampcult`, `va_vampamulet`) | Aundae *The Vampire Hunter* (`va_vamphunter`), Berne *The Vampire Merta* (`va_vampcountess`), Quarra *The Quarra Amulet* (`va_vampamulet`) |
 | `tamriel_rebuilt_vampire_clan` | Vampire clan of Tamriel Rebuilt (`none` / `unaligned` / `baluath` / `orlukh`): checks for the quests open to both and those of the chosen clan; the final quest of the clan is a goal. Independent of `tamriel_rebuilt_factions` (see *Vampire clans*) |
 
 `unaligned` keeps only the quests open to any bloodline and adds **no goal**; `none` disables the
@@ -370,6 +370,12 @@ valid) and is added to the other goals: **all** the chosen goals must be complet
 reached under the same condition as the check of its quest (alternative endings accepted, never a
 failure branch). The quest rewards of the enabled quests (Quarra / Berne / Aundae amulets, Orlukh
 Amulet...) follow the same groups when `quest_rewards` is on.
+
+**A Cure for Vampirism (`ms_vampirecure`) is disabled** as soon as a clan goal is selected (vanilla or
+Tamriel Rebuilt): the cure removes the vampirism for good, which would make the final quest of your clan
+impossible. The mod holds the quest at stage 0 (journal reset on every check, like a locked Daedric
+quest) and shows a message once; it is classified `non_quest` (no check). With `unaligned` and no TR clan the quest stays available.
+The list lives in `mod/scripts/ap/quest_forbidden.lua`.
 
 `TR_m4_VA_BarendrethProtection`, `_IbiNai` and `_VrashMind` are plain miscellaneous TR quests: they
 are in `tr_side`, not in a clan. Tests: `python3 tools/test_vampire_options.py`.

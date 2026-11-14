@@ -53,7 +53,7 @@ merc_calvus: non_quest
 ms_armor_crafter: non_quest
 ms_badpets: non_quest
 
-ms_vampirecure: vampire
+ms_vampirecure: non_quest
 bm_wolfgiver: non_quest
 
 bm_moonsugar: bloodmoon_side

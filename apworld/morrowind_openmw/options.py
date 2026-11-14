@@ -385,11 +385,11 @@ class SkyrimSideQuests(Toggle):
 class VampireClan(Choice):
     """Vampire clans (Aundae, Berne, Quarra): a category of its own, not a house, a guild or a
     faction. A player belongs to ONE clan only (the one of the vampire that infected them), so
-    you choose it: you get a check for each quest open to any bloodline (8, A Cure for
-    Vampirism included) and for the quests of your clan (2), and the final quest of your clan
+    you choose it: you get a check for each quest open to any bloodline (7) and for the quests of your clan (2), and the final quest of your clan
     becomes a goal (Aundae: The Vampire Hunter, Berne: The Vampire Merta, Quarra: The Quarra
     Amulet). none = no check; unaligned = only the quests open to any bloodline, no goal. You
-    must really join that clan in game."""
+    must really join that clan in game. A Cure for Vampirism is not a check and is disabled in game as
+    soon as a clan goal is selected (curing yourself would make the final quest of your clan impossible)."""
     display_name = "Vampire Clan"
     option_none = 0
     option_unaligned = 1

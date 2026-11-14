@@ -76,14 +76,14 @@ check('apworld groups in sync with quest_groups.py', (opts.TR_GROUPS, opts.CATEG
       (qg.TR_GROUPS, qg.VAMPIRE_GROUPS))
 check('Choice values', (opts.VampireClan.option_quarra, opts.TamrielRebuiltVampireClan.option_orlukh), (4, 3))
 
-# classification and generated data: UESP guide = 8 quests open to any bloodline + 2 per clan
+# classification and generated data: UESP guide = 7 quests open to any bloodline + 2 per clan
 ov = qg.load_overrides(root / 'data/quest_groups_override.yaml')
 for q, g in (('va_vampblood', 'vampire_berne'), ('va_vampcountess', 'vampire_berne'),
              ('va_vampchild', 'vampire_aundae'), ('va_vamphunter', 'vampire_aundae'),
              ('va_vampcult', 'vampire_quarra'), ('va_vampamulet', 'vampire_quarra'),
              ('va_vamprich', 'vampire'), ('va_vampmarara', 'vampire'), ('va_vampcurse', 'vampire'),
              ('va_shashev', 'vampire'), ('va_vampdust', 'vampire'), ('va_rimintil', 'vampire'),
-             ('va_vampblood2', 'vampire'), ('ms_vampirecure', 'vampire'),
+             ('va_vampblood2', 'vampire'), ('ms_vampirecure', 'non_quest'),
              ('tr_m4_bal1_hunter', 'tr_vampire_baluath'), ('tr_m4_va_invasion', 'tr_vampire_orlukh'),
              ('tr_m3_va_raenor', 'tr_vampire'), ('tr_m7_va_anivamp', 'tr_side'),
              ('tr_m4_va_barendrethprotection', 'tr_side'), ('tr_m4_va_ibinai', 'tr_side'),
@@ -93,7 +93,7 @@ rows = yaml.safe_load((root / 'data/quest_completions.yaml').read_text(encoding=
 count = {}
 for r in rows:
     count[r.get('group')] = count.get(r.get('group'), 0) + 1
-check('quest_completions: vanilla groups', [count.get(g) for g in qg.VAMPIRE_GROUPS], [8, 2, 2, 2])
+check('quest_completions: vanilla groups', [count.get(g) for g in qg.VAMPIRE_GROUPS], [7, 2, 2, 2])
 check('quest_completions: TR groups', [count.get(g) for g in qg.TR_VAMPIRE_GROUPS], [1, 10, 11])
 lua = (root / 'mod/scripts/ap/player.lua').read_text(encoding='utf-8')
 check('Lua: clan groups enabled by expansion_groups',
@@ -117,5 +117,14 @@ check('player.lua honours complete', 'if e.complete then' in lua, True)
 rew = yaml.safe_load((root / 'data/quest_rewards.yaml').read_text(encoding='utf-8'))
 bad = [r['name'] for r in rew if 'vampire' in r['group'] and r['group'] != qg.classify(str(r['quest']).lower(), ov)]
 check('reward groups follow their quest', bad, [])
+
+# A Cure for Vampirism: no check (non_quest) + held at stage 0 by the mod while a clan goal is selected
+cure = 'ms_vampirecure'
+check('cure: no check in any group', [r for r in rows if str((r.get('trigger') or {}).get('quest', '')).lower() == cure
+                                      and r.get('group') != 'non_quest'], [])
+fb = (root / 'mod/scripts/ap/quest_forbidden.lua').read_text(encoding='utf-8')
+check('Lua forbidden: every clan goal (vanilla + TR)',
+      all(f"'vampire_{c}'" in fb for c in qg.VAMPIRE_CLANS + ('baluath', 'orlukh')) and f"quest = '{cure}'" in fb, True)
+check('player.lua enforces forbidden quests', 'enforceForbidden(quests)' in lua, True)
 print('FAILED' if fails else 'all vampire tests passed')
 sys.exit(1 if fails else 0)
