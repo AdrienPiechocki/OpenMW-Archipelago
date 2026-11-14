@@ -7,7 +7,8 @@ Usage:
   tes3conv Bloodmoon.esm bloodmoon.json    # optional
   tes3conv TR_Mainland.esm tr_mainland.json  # optional (Tamriel Rebuilt)
   tes3conv Cyr_Main.esm cyr_main.json        # optional (Project Cyrodiil)
-  python tools/extract.py morrowind.json [tribunal.json bloodmoon.json tr_mainland.json cyr_main.json] --out data/
+  tes3conv Sky_Main.esm sky_main.json        # optional (Skyrim: Home of the Nords)
+  python tools/extract.py morrowind.json [tribunal.json bloodmoon.json tr_mainland.json cyr_main.json sky_main.json] --out data/
 
 Fixes:
   * Journal calls WITHOUT quotes (`Journal MG_Apprentice 10`) are now
@@ -29,7 +30,7 @@ import sys
 import yaml
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from quest_groups import classify, load_overrides, TR_GROUPS, PC_GROUPS  # noqa: E402
+from quest_groups import classify, load_overrides, TR_GROUPS, PC_GROUPS, SKY_GROUPS  # noqa: E402
 from quest_names import load_names, quest_name, unique_names  # noqa: E402
 
 PAT_QUOTED = re.compile(r'(?<![A-Za-z])Journal[ \t]*,?[ \t]*"([^"\r\n]+)"[ \t]*,?[ \t]*(\d+)', re.I)
@@ -71,7 +72,7 @@ def load_records(paths):
 
 
 def origin_of(path):
-    """ESM a JSON dump comes from: morrowind | tribunal | bloodmoon | tamriel_rebuilt | project_cyrodiil."""
+    """ESM a JSON dump comes from: morrowind | tribunal | bloodmoon | tamriel_rebuilt | project_cyrodiil | skyrim_hotn."""
     name = pathlib.Path(path).name.lower()
     for key in ('tribunal', 'bloodmoon'):
         if key in name:
@@ -80,6 +81,8 @@ def origin_of(path):
         return 'tamriel_rebuilt'
     if 'cyr_main' in name or 'project_cyrodiil' in name:
         return 'project_cyrodiil'
+    if 'sky_main' in name or 'skyrim_home' in name:
+        return 'skyrim_hotn'
     return 'morrowind'
 
 
@@ -166,7 +169,7 @@ def main():
         print('quest origins: ' + ', '.join(f'{n} {o}' for o, n in counts.items()) + ' -> quest_sources.yaml')
     elif len(args.esm_json) > 1:
         print('WARNING: no journal defined by an expansion found '
-              '(the JSON file names must contain "tribunal" / "bloodmoon" / "tr_mainland" / "cyr_main")')
+              '(the JSON file names must contain "tribunal" / "bloodmoon" / "tr_mainland" / "cyr_main" / "sky_main")')
 
     # ---- factions ---------------------------------------------------------
     factions, seen = [], set()
@@ -193,7 +196,7 @@ def main():
             display = names[qid]
             # quests.yaml (one row per stage) is a legacy file used by neither the apworld nor
             # the mod. Tamriel Rebuilt has too many stages for its 10000-ID range: skipped.
-            if classify(display, overrides) in TR_GROUPS + PC_GROUPS:
+            if classify(display, overrides) in TR_GROUPS + PC_GROUPS + SKY_GROUPS:
                 n_tr_skipped += 1
                 continue
             quests.append({

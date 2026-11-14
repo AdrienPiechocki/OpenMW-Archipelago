@@ -1,0 +1,15 @@
+# Category of the Skyrim: Home of the Nords quests (journal IDs, lowercase). Used by tools/quest_groups.py
+# for every journal DEFINED by Sky_Main.esm (data/quest_sources.yaml) or whose ID matches ^sky_q..._ .
+#   1. listed under side                      -> sky_side
+#   2. a regex of faction_patterns (yours first, then the built-in ones) matching the ID -> that guild's goal key
+#        built-in:  ^sky_qre_kwmg -> skyrim_mages_guild      ^sky_qre_dsmg -> hammerfell_mages_guild
+#                   ^sky_qre_(kw|ds[ew]?)tg -> skyrim_thieves_guild
+#                   ^sky_qre_(kw|ds[ew]?)fg -> skyrim_fighters_guild   ^sky_mg_ -> skyrim_mages_guild (Sky_MG_Advancement)
+#   (all verified on the extracted Sky_Main.esm)
+#   3. everything else                        -> sky_side  (bounties KW_B04, arena DSE4, miscellaneous KW8...)
+# CHECK after extraction:  python tools/list_tr.py sky_main.json --sky --journals
+# (the IDs left in sky_side that belong to a guild are the candidates for faction_patterns).
+# After editing: python tools/classify_quests.py && python tools/gen_lua.py
+side: []
+faction_patterns: {}
+# faction_patterns example:  '^sky_qre_kwfighters': skyrim_fighters_guild

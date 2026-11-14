@@ -56,6 +56,7 @@ PREFIX_RULES = [
     ('daedric',         r'^da_'),
     ('tamriel_rebuilt', r'^tr_m\d+[a-z]?_'),   # TR journals (TR_m3_..): BEFORE the Tribunal rule
     ('project_cyrodiil', r'^pc_m\d+[a-z]?_'),  # Project Cyrodiil journals (PC_m1_IP_Lki4...)
+    ('skyrim_hotn', r'^sky_(?:q[a-z]{2}|mg)_'),        # Skyrim: Home of the Nords journals (Sky_qRe_KWMG5_Journal...)
     ('tribunal',        r'^(tr_|tr0[5-9])'),
     ('bloodmoon',       r'^bm_'),
 ]
@@ -112,26 +113,70 @@ PC_SIDE_GROUP = 'pc_side'
 PC_GROUPS = (PC_SIDE_GROUP,) + PC_FACTION_KEYS
 # Faction token of a PC journal id (PC_m<N>_[<place>_]<TOKEN>_...). CONFIRMED on UESP:
 # ip (PC_m1_IP_Lki4, Order of Itinerant Priests), k<N> (PC_m1_K1_MC1, Kingdom of Anvil),
-# mg (PC_m1_MG_Anv6, Cyrodiil Mages Guild). fg / tg are ASSUMED (same naming): check with
-# tools/list_tr.py --pc. data/pc_categories.yaml (faction_tokens) completes / overrides this table.
+# mg (PC_m1_MG_Anv6, Cyrodiil Mages Guild); fg / tg verified on the extracted ESM (list_tr.py --pc). data/pc_categories.yaml (faction_tokens) completes / overrides this table.
 DEFAULT_PC_TOKENS = {
     'ip': 'itinerant_priests', 'k': 'kingdom_of_anvil',
     'fg': 'cyrodiil_fighters_guild', 'mg': 'cyrodiil_mages_guild', 'tg': 'cyrodiil_thieves_guild',
 }
 
+# Skyrim: Home of the Nords (Sky_Main.esm + Tamriel_Data.esm). Like Project Cyrodiil: no main quest and no
+# Daedric quest; the quests of a Skyrim guild carry the group named after its goal key (the `guild`
+# option choice); every other quest is `sky_side` (option skyrim_side_quests, free checks).
+# Journal ids: Sky_qRe_<place><token><n>[a-d]_Journal (place KW = Karthwasten, DS/DSE/DSW = Dragonstar;
+# token MG = guild of mages, TG = thieves guild, FG = fighters guild). CONFIRMED on UESP:
+# KWMG5 (Skyrim Mages Guild), DSMG4 (Hammerfell Mages Guild), DSTG1 / KWTG5 (Skyrim Thieves Guild).
+# Keep in sync with apworld/.../options.py (tools/test_skyrim.py checks it).
+SKY_FACTION_KEYS = ('skyrim_fighters_guild', 'skyrim_mages_guild', 'hammerfell_mages_guild', 'skyrim_thieves_guild')
+SKY_SIDE_GROUP = 'sky_side'
+SKY_GROUPS = (SKY_SIDE_GROUP,) + SKY_FACTION_KEYS
+DEFAULT_SKY_PATTERNS = (
+    (r'^sky_qre_kwmg', 'skyrim_mages_guild'),
+    (r'^sky_qre_dsmg', 'hammerfell_mages_guild'),
+    (r'^sky_qre_(?:kw|ds[ew]?)tg', 'skyrim_thieves_guild'),
+    (r'^sky_qre_(?:kw|ds[ew]?)fg', 'skyrim_fighters_guild'),   # confirmed: KWFG1-4 in Sky_Main.esm
+    (r'^sky_mg_', 'skyrim_mages_guild'),                      # Sky_MG_Advancement (counterpart of vanilla MG_Advancement)
+)
+
 EXPANSIONS = ('tribunal', 'bloodmoon')
-ORIGINS = EXPANSIONS + ('tamriel_rebuilt', 'project_cyrodiil')
+ORIGINS = EXPANSIONS + ('tamriel_rebuilt', 'project_cyrodiil', 'skyrim_hotn')
 EXPANSION_CATEGORIES = ('main', 'side')
 EXPANSION_GROUPS = tuple(f'{e}_{c}' for e in EXPANSIONS for c in EXPANSION_CATEGORIES)
 VALID_GROUPS = ({g for g, _ in PREFIX_RULES} | set(VAMPIRE_GROUPS) | {'misc', 'east_empire_company'} | set(EXPANSIONS) | set(EXPANSION_GROUPS)
                 | set(TR_GROUPS) | {'tamriel_rebuilt'}
-                | set(PC_GROUPS) | {'project_cyrodiil'})
+                | set(PC_GROUPS) | {'project_cyrodiil'}
+                | set(SKY_GROUPS) | {'skyrim_hotn'})
 
 _DATA = pathlib.Path(__file__).resolve().parent.parent / 'data'
 DEFAULT_OVERRIDES = _DATA / 'quest_groups_override.yaml'
 DEFAULT_CATEGORIES = _DATA / 'expansion_categories.yaml'
 DEFAULT_TR_CATEGORIES = _DATA / 'tr_categories.yaml'
 DEFAULT_PC_CATEGORIES = _DATA / 'pc_categories.yaml'
+DEFAULT_SKY_CATEGORIES = _DATA / 'sky_categories.yaml'
+
+
+def load_sky_categories(path=None):
+    """data/sky_categories.yaml: {'side': ids forced to sky_side, 'patterns': [(regex, faction key)]}."""
+    p = pathlib.Path(path or DEFAULT_SKY_CATEGORIES)
+    d = (yaml.safe_load(p.read_text(encoding='utf-8')) or {}) if p.exists() else {}
+    patterns = [(re.compile(rx), key) for rx, key in DEFAULT_SKY_PATTERNS]
+    extra = []
+    for rx, key in (d.get('faction_patterns') or {}).items():
+        if key not in SKY_FACTION_KEYS:
+            raise SystemExit(f'unknown faction in {p}: {rx}: {key} (valid: {list(SKY_FACTION_KEYS)})')
+        extra.append((re.compile(str(rx).lower()), key))
+    return {'side': {str(x).lower() for x in (d.get('side') or [])}, 'patterns': extra + patterns}
+
+
+def sky_group(qid, sky_cats=None):
+    """Group of a Skyrim: Home of the Nords journal: a Skyrim guild key (goal group) or 'sky_side'."""
+    q = str(qid).strip().lower()
+    c = sky_cats if sky_cats is not None else load_sky_categories()
+    if q in c['side']:
+        return SKY_SIDE_GROUP
+    for rx, key in c['patterns']:
+        if rx.search(q):
+            return key
+    return SKY_SIDE_GROUP
 
 
 def load_pc_categories(path=None):
@@ -253,7 +298,7 @@ def load_overrides(path=None):
     return out
 
 
-def classify(qid, overrides=None, cats=None, tr_cats=None, pc_cats=None):
+def classify(qid, overrides=None, cats=None, tr_cats=None, pc_cats=None, sky_cats=None):
     q = str(qid).strip().lower()
     group = None
     if overrides and q in overrides:
@@ -269,4 +314,6 @@ def classify(qid, overrides=None, cats=None, tr_cats=None, pc_cats=None):
         return tr_group(q, tr_cats)
     if group == 'project_cyrodiil':      # origin only -> PC faction / pc_side
         return pc_group(q, pc_cats)
+    if group == 'skyrim_hotn':           # origin only -> Skyrim guild / sky_side
+        return sky_group(q, sky_cats)
     return group or 'misc'

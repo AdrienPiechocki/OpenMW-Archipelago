@@ -7,6 +7,7 @@ from .regions import region_table
 from .options import (MorrowindOptions, selected_goals, goal_of_group, is_free_group, selected_expansions,
                       selected_expansion_groups, selected_tr_groups, selected_category_groups, TR_MAIN_GOAL,
                       UNVERIFIED_GOALS, PC_FACTION_KEYS, PC_SIDE_GROUP, selected_pc_groups,
+                      SKY_FACTION_KEYS, SKY_SIDE_GROUP, selected_sky_groups,
                       start_bonuses, start_option_groups)
 from .rules import set_rules
 from typing import Dict, Any
@@ -66,6 +67,18 @@ class MorrowindWorld(World):
                 f"Morrowind OpenMW ({self.player_name}): project_cyrodiil_side_quests is enabled but the "
                 "apworld contains no Project Cyrodiil quest data. Generate it first (README, section "
                 "Project Cyrodiil) or disable project_cyrodiil_side_quests.")
+        # Skyrim: Home of the Nords: same guards (data extracted from Sky_Main.esm).
+        for g in goals:
+            if g in SKY_FACTION_KEYS and not any(d.group == g for d in location_table.values()):
+                raise OptionError(
+                    f"Morrowind OpenMW ({self.player_name}): the goal {g} (Skyrim: Home of the Nords) is selected "
+                    "but the apworld contains no quest data for it. Generate it first (README, section "
+                    "Skyrim: Home of the Nords) or choose another guild.")
+        if selected_sky_groups(self.options) and not any(d.group == SKY_SIDE_GROUP for d in location_table.values()):
+            raise OptionError(
+                f"Morrowind OpenMW ({self.player_name}): skyrim_side_quests is enabled but the apworld contains "
+                "no Skyrim: Home of the Nords quest data. Generate it first (README, section Skyrim: Home of the "
+                "Nords) or disable skyrim_side_quests.")
         unverified = [g for g in goals if g in UNVERIFIED_GOALS]
         if unverified:
             logging.warning(
@@ -192,7 +205,8 @@ class MorrowindWorld(World):
                 # Tamriel Rebuilt groups (tr_main, tr_side, tr_<faction>...) are
                 # sent through the same channel: the mod checks only enabled groups.
                 "expansion_groups": (selected_expansion_groups(self.options) + selected_tr_groups(self.options)
-                                 + selected_category_groups(self.options) + selected_pc_groups(self.options)),
+                                 + selected_category_groups(self.options) + selected_pc_groups(self.options)
+                                 + selected_sky_groups(self.options)),
                 # Expansions with at least one enabled group (informational).
                 "expansions": selected_expansions(self.options),
                 "tamriel_rebuilt": {
@@ -203,6 +217,9 @@ class MorrowindWorld(World):
                 },
                 "project_cyrodiil": {
                     "side_quests": bool(self.options.project_cyrodiil_side_quests.value),
+                },
+                "skyrim_home_of_the_nords": {
+                    "side_quests": bool(self.options.skyrim_side_quests.value),
                 },
                 "death_link": bool(getattr(self.options.death_link, "value", self.options.death_link)),
                 "goal_quest_checks": 1,

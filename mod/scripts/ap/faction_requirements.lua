@@ -28,6 +28,9 @@ M.ITEM_IDS = {
   -- Project Cyrodiil
   kingdom_of_anvil = 7701514, itinerant_priests = 7701515,
   cyrodiil_fighters_guild = 7701516, cyrodiil_mages_guild = 7701517, cyrodiil_thieves_guild = 7701518,
+  -- Skyrim: Home of the Nords
+  skyrim_fighters_guild = 7701519, skyrim_mages_guild = 7701520,
+  hammerfell_mages_guild = 7701521, skyrim_thieves_guild = 7701522,
 }
 
 M.GOAL_BY_ITEM = {}

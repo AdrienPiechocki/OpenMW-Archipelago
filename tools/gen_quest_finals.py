@@ -96,6 +96,14 @@ STAGES_OVERRIDES = {
     'ht_stronghold': [300],
 }
 
+# Project Cyrodiil: these Goldenrod sub-journals only have the entry 100 (raw=[100]); the automatic
+# fallback picked stage 10, which does not exist -> the check could never be completed.
+STAGES_OVERRIDES.update({
+    'pc_m1_anv_goldenrodbr': [100], 'pc_m1_anv_goldenroddr': [100], 'pc_m1_anv_goldenrodeh': [100],
+    'pc_m1_anv_goldenrodli': [100], 'pc_m1_anv_goldenrodpa': [100], 'pc_m1_anv_goldenrodsm': [100],
+    'pc_m1_anv_goldenrodst': [100],
+})
+
 # BEGIN UESP OVERRIDES (tools/scrape_uesp_finals.py)
 # Completion stages = every UESP "Finishes quest" stage of the journal.
 # Not overridden by hand. Delete a line here and move it up to keep a manual value.

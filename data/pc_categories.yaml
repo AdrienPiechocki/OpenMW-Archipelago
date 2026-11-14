@@ -7,7 +7,7 @@
 #   3. everything else                            -> pc_side
 # Tokens confirmed on UESP: ip (Order of Itinerant Priests: PC_m1_IP_Lki4, PC_m1_IP_Run3...),
 # k<N> (Kingdom of Anvil: PC_m1_K1_MC1), mg (Cyrodiil Mages Guild: PC_m1_MG_Anv6).
-# ASSUMED (same naming, NOT confirmed): fg (Fighters Guild), tg (Thieves Guild).
+# fg (Fighters Guild) and tg (Thieves Guild): verified on the extracted Cyr_Main.esm.
 # Misc quests use a place token (PC_m1_Anv_WellMet, PC_m1_Anv_CallTribe) and stay in pc_side.
 # TO CHECK after extraction: python tools/list_tr.py cyr_main.json --pc --journals
 # (the tokens left in pc_side are the candidates for faction_tokens).

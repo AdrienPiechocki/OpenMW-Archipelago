@@ -5,6 +5,7 @@ data/tr_categories.yaml and the TR entries of data/goals.yaml.
   python tools/list_tr.py tamriel_data.json tr_mainland.json --factions   # faction ids, names, rank lists
   python tools/list_tr.py tr_mainland.json --journals   # journals by faction token + group
   python tools/list_tr.py cyr_main.json --pc --journals # same for Project Cyrodiil (data/pc_categories.yaml)
+  python tools/list_tr.py sky_main.json --sky --journals # same for Skyrim: Home of the Nords (data/sky_categories.yaml)
 """
 import argparse
 import collections
@@ -13,7 +14,7 @@ import pathlib
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from quest_groups import load_tr_categories, tr_group, load_pc_categories, pc_group  # noqa: E402
+from quest_groups import load_tr_categories, tr_group, load_pc_categories, pc_group, load_sky_categories, sky_group  # noqa: E402
 
 
 def main():
@@ -21,6 +22,8 @@ def main():
     ap.add_argument('esm_json', nargs='+', help='tamriel_data.json [tr_mainland.json]')
     ap.add_argument('--factions', action='store_true')
     ap.add_argument('--journals', action='store_true')
+    ap.add_argument('--sky', action='store_true',
+                    help='Skyrim: Home of the Nords dump (sky_main.json): classify journals with sky_group (data/sky_categories.yaml)')
     ap.add_argument('--pc', action='store_true',
                     help='Project Cyrodiil dump (cyr_main.json): classify journals with pc_group (data/pc_categories.yaml)')
     ap.add_argument('--grep', default='', help='filter faction ids / names (case-insensitive)')
@@ -43,9 +46,12 @@ def main():
                   ', '.join(f'{i + 1}:{n}' for i, n in enumerate(ranks)))
 
     if args.journals:
-        cats = load_pc_categories() if args.pc else load_tr_categories()
-        classify_q = pc_group if args.pc else tr_group
-        side_group = 'pc_side' if args.pc else 'tr_side'
+        if args.sky:
+            cats, classify_q, side_group = load_sky_categories(), sky_group, 'sky_side'
+        elif args.pc:
+            cats, classify_q, side_group = load_pc_categories(), pc_group, 'pc_side'
+        else:
+            cats, classify_q, side_group = load_tr_categories(), tr_group, 'tr_side'
         by_group = collections.defaultdict(list)
         for r in records:
             if r.get('type') == 'Dialogue' and str(r.get('dialogue_type', '')).lower() == 'journal' and r.get('id'):

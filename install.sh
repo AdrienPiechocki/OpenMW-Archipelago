@@ -11,6 +11,7 @@
 #   MW_DATA        dossier contenant Morrowind.esm (Tribunal.esm / Bloodmoon.esm facultatifs)
 #   TD_DATA        dossier contenant Tamriel_Data.esm (défaut : TR_DATA puis MW_DATA), facultatif ; 3e argument équivalent
 #   TR_DATA        dossier contenant TR_Mainland.esm (défaut : MW_DATA), facultatif ; 2e argument équivalent
+#   SKY_DATA       dossier contenant Sky_Main.esm (Skyrim: Home of the Nords, défaut : MW_DATA), facultatif ; 5e argument équivalent
 #   PC_DATA        dossier contenant Cyr_Main.esm (Project Cyrodiil, défaut : MW_DATA), facultatif ; 4e argument équivalent
 #   TES3CONV       commande tes3conv (défaut : tes3conv)
 #   PYTHON         interpréteur Python (défaut : python3)
@@ -25,6 +26,7 @@ MW_DATA="${1:-${MW_DATA:-}}"
 TR_DATA="${2:-${TR_DATA:-$MW_DATA}}"
 TD_DATA="${3:-${TD_DATA:-}}"
 PC_DATA="${4:-${PC_DATA:-$MW_DATA}}"   # Project Cyrodiil (Cyr_Main.esm), 4e argument facultatif
+SKY_DATA="${5:-${SKY_DATA:-$MW_DATA}}" # Skyrim: Home of the Nords (Sky_Main.esm), 5e argument facultatif
 
 # Cherche un ESM sans tenir compte de la casse (Cyr_Main.ESM, cyr_main.esm...) ; affiche le chemin.
 find_esm() { find "$1" -maxdepth 1 -iname "$2" -print -quit 2>/dev/null; }
@@ -61,6 +63,7 @@ HAS_TRIBUNAL=0
 HAS_BLOODMOON=0
 HAS_TR=0
 HAS_PC=0
+HAS_SKY=0
 if [ -f "$MW_DATA/Tribunal.esm" ]; then
   "$TES3CONV" "$MW_DATA/Tribunal.esm" "$WORK/tribunal.json"
   JSONS+=("$WORK/tribunal.json")
@@ -114,6 +117,25 @@ else
   echo "(Cyr_Main.esm absent : options project_cyrodiil_*, guild: cyrodiil_* et faction: kingdom_of_anvil / itinerant_priests inutilisables)"
 fi
 
+# Skyrim: Home of the Nords (Sky_Main.esm, nécessite Tamriel_Data.esm) : JSON dont le nom contient « sky_main ».
+SKY_ESM="$(find_esm "$SKY_DATA" Sky_Main.esm)"
+if [ -n "$SKY_ESM" ]; then
+  "$TES3CONV" "$SKY_ESM" "$WORK/sky_main.json"
+  JSONS+=("$WORK/sky_main.json")
+  HAS_SKY=1
+  if [ ! -f "$WORK/tamriel_data.json" ]; then
+    for d in "${TD_DATA:-}" "$SKY_DATA" "$MW_DATA"; do
+      TD_ESM="$([ -n "$d" ] && find_esm "$d" Tamriel_Data.esm)"
+      if [ -n "$TD_ESM" ]; then
+        "$TES3CONV" "$TD_ESM" "$WORK/tamriel_data.json"
+        break
+      fi
+    done
+  fi
+else
+  echo "(Sky_Main.esm absent : options skyrim_side_quests et guild: skyrim_* / hammerfell_mages_guild inutilisables)"
+fi
+
 # --- 1. Quêtes ---------------------------------------------------------------
 step "1/5 Extraction des quêtes"
 "$PYTHON" tools/extract.py "${JSONS[@]}" --out data/
@@ -160,6 +182,14 @@ echo "Installation terminée."
 if [ "$HAS_TR" -eq 1 ]; then
   echo "Tamriel Rebuilt : compléter data/tr_categories.yaml (Foul Murder, quêtes daedriques),"
   echo "puis vérifier les factions : $PYTHON tools/list_tr.py $WORK/tamriel_data.json $WORK/tr_mainland.json --factions --grep indoril"
+fi
+if [ "$HAS_SKY" -eq 1 ]; then
+  echo "Skyrim: Home of the Nords : vérifier les groupes (data/sky_categories.yaml) :"
+  echo "  $PYTHON tools/list_tr.py $WORK/sky_main.json --sky --journals"
+  echo "puis lire les factions Skyrim et renseigner les goals (placeholders dans data/goals.yaml) :"
+  echo "  $PYTHON tools/list_tr.py $WORK/sky_main.json ${WORK}/tamriel_data.json --factions --grep sky"
+  echo "  $PYTHON tools/set_goal_faction.py skyrim_mages_guild $WORK/sky_main.json $WORK/tamriel_data.json   # idem pour les autres"
+  echo "  $PYTHON tools/gen_lua.py && $PYTHON tools/install_apworld.py"
 fi
 if [ "$HAS_PC" -eq 1 ]; then
   echo "Project Cyrodiil : vérifier les jetons de faction (data/pc_categories.yaml) :"

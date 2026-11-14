@@ -29,4 +29,8 @@ return {
   cyrodiil_fighters_guild = { faction = 't_cyr_fightersguild', rank = 10 },
   cyrodiil_mages_guild = { faction = 't_cyr_magesguild', rank = 10 },
   cyrodiil_thieves_guild = { faction = 't_cyr_thievesguild', rank = 10 },
+  skyrim_fighters_guild = { faction = 't_sky_fightersguild', rank = 10 },
+  skyrim_mages_guild = { faction = 't_sky_magesguild', rank = 10 },
+  hammerfell_mages_guild = { faction = 't_ham_magesguild', rank = 10 },
+  skyrim_thieves_guild = { faction = 't_sky_thievesguild', rank = 10 },
 }

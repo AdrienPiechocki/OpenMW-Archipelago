@@ -8,7 +8,8 @@ from BaseClasses import Location
 from typing import NamedTuple, Callable, Dict
 from .options import (MorrowindOptions, selected_goals, goal_of_group, selected_expansion_groups,
                       selected_tr_groups, EXPANSION_GROUPS, TR_GROUPS, quest_rewards_enabled, group_active,
-                      CATEGORY_GROUPS, selected_category_groups, PC_SIDE_GROUP, selected_pc_groups)
+                      CATEGORY_GROUPS, selected_category_groups, PC_SIDE_GROUP, selected_pc_groups,
+                      SKY_SIDE_GROUP, selected_sky_groups)
 
 
 class MorrowindLocation(Location):
@@ -132,6 +133,14 @@ if yaml is not None and _qc_text:
             location_table[name] = MorrowindLocationData(
                 region=region, code=code, group=group,
                 can_create=lambda options: PC_SIDE_GROUP in selected_pc_groups(options),
+                excluded=lambda options, r=risky: r,
+            )
+        elif group == SKY_SIDE_GROUP:
+            # Skyrim: Home of the Nords quests outside its guilds: checks only if skyrim_side_quests
+            # is enabled; never gating. (The Skyrim guild groups are goal groups: branch below.)
+            location_table[name] = MorrowindLocationData(
+                region=region, code=code, group=group,
+                can_create=lambda options: SKY_SIDE_GROUP in selected_sky_groups(options),
                 excluded=lambda options, r=risky: r,
             )
         else:

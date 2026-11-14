@@ -185,3 +185,21 @@
 - [pc_m1_anv_bounty_jarus, pc_m1_sc_bounty_jarus]
 - [pc_m1_anv_goldenrodhirecospullo, pc_m1_anv_goldenrodhirefuran, pc_m1_anv_goldenrodhirelioprand, pc_m1_anv_goldenrodhireporthos, pc_m1_anv_goldenrodhiresarrar]
 - [pc_m1_anv_workorc, pc_m1_anv_workorcfg, pc_m1_anv_workorcfish, pc_m1_anv_workorcias, pc_m1_anv_workorckarrel, pc_m1_anv_workorcnavy, pc_m1_anv_workorcrg, pc_m1_anv_workorcsmith, pc_m1_anv_workorcsw]
+
+# --- Skyrim: Home of the Nords (Sky_qRe_*): branches / alternatives of the same quest ---
+# Chosen by journal naming (lettered sub-journals) + quest_review.txt; over-marking is safe (such a check only holds filler).
+# Not grouped: KW1/KW1a-d (Direnni codexes, all can be sold), the numbered chains (KWTG1, KWTG2...).
+- [sky_qre_kwmg5_journal, sky_qre_kwmg5a_journal, sky_qre_kwmg5b_journal, sky_qre_kwmg5c_journal]
+- [sky_qre_dsmg3_journal, sky_qre_dsmg3a_journal, sky_qre_dsmg3b_journal]
+- [sky_qre_dsmg4_journal, sky_qre_dsmg4a_journal, sky_qre_dsmg4b_journal, sky_qre_dsmg4c_journal]
+- [sky_qre_dstg3_journal, sky_qre_dstg3a_journal]
+- [sky_qre_kwtg2_journal, sky_qre_kwtg2a_journal, sky_qre_kwtg2b_journal, sky_qre_kwtg2c_journal]
+- [sky_qre_bm1_journal, sky_qre_bm1a_journal, sky_qre_bm1b_journal, sky_qre_bm1c_journal]
+- [sky_qre_bm2_journal, sky_qre_bm2a_journal]
+- [sky_qre_bm4_journal, sky_qre_bm4a_journal, sky_qre_bm4b_journal, sky_qre_bm4c_journal]
+- [sky_qre_bm5_journal, sky_qre_bm5a_journal, sky_qre_bm5b_journal]
+- [sky_qre_ha1a_journal, sky_qre_ha1b_journal, sky_qre_ha1c_journal]
+- [sky_qre_kw3_journal, sky_qre_kw3a_journal]
+- [sky_qre_kw4a_journal, sky_qre_kw4b_journal]
+- [sky_qre_kwb04_journal, sky_qre_kwb04a_journal]
+- [sky_qre_vf2_journal, sky_qre_vf2a_journal, sky_qre_vf2b_journal, sky_qre_vf2c_journal, sky_qre_vf2d_journal]

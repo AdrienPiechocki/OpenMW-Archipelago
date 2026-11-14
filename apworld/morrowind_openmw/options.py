@@ -37,6 +37,11 @@ class Guild(Choice):
     option_cyrodiil_fighters_guild = 4
     option_cyrodiil_mages_guild = 5
     option_cyrodiil_thieves_guild = 6
+    # Skyrim: Home of the Nords guilds (Sky_Main.esm + Tamriel_Data.esm required).
+    option_skyrim_fighters_guild = 7
+    option_skyrim_mages_guild = 8
+    option_hammerfell_mages_guild = 9
+    option_skyrim_thieves_guild = 10
     default = 0
 
 
@@ -367,6 +372,16 @@ class ProjectCyrodiilSideQuests(Toggle):
     default = False
 
 
+class SkyrimSideQuests(Toggle):
+    """Skyrim: Home of the Nords: the quests of the mod that belong to none of
+    its guilds (bounties, arena, miscellaneous quests of Karthwasten and
+    Dragonstar...) give a check. Never a goal. The quests of a Skyrim guild
+    chosen in `guild` are always part of that goal's checks.
+    Requires Sky_Main.esm and Tamriel_Data.esm in OpenMW."""
+    display_name = "Skyrim: Home of the Nords: Side Quests"
+    default = False
+
+
 class VampireClan(Choice):
     """Vampire clans (Aundae, Berne, Quarra): a category of its own, not a house, a guild or a
     faction. A player belongs to ONE clan only (the one of the vampire that infected them), so
@@ -474,6 +489,7 @@ class MorrowindOptions(PerGameCommonOptions):
     vampire_clan: VampireClan = VampireClan.default
     tamriel_rebuilt_vampire_clan: TamrielRebuiltVampireClan = TamrielRebuiltVampireClan.default
     project_cyrodiil_side_quests: ProjectCyrodiilSideQuests = ProjectCyrodiilSideQuests.default
+    skyrim_side_quests: SkyrimSideQuests = SkyrimSideQuests.default
     traps: Traps = Traps.default
     quest_rewards: QuestRewards = QuestRewards.default
     death_link: DeathLink = DeathLink.default
@@ -581,6 +597,12 @@ PC_FACTION_KEYS = (
 )
 PC_GROUPS = (PC_SIDE_GROUP,) + PC_FACTION_KEYS
 
+# Skyrim: Home of the Nords (Sky_Main.esm): same scheme as Project Cyrodiil (guild groups named after the
+# goal key, everything else in the free group `sky_side`). Keep in sync with tools/quest_groups.py.
+SKY_SIDE_GROUP = "sky_side"
+SKY_FACTION_KEYS = ("skyrim_fighters_guild", "skyrim_mages_guild", "hammerfell_mages_guild", "skyrim_thieves_guild")
+SKY_GROUPS = (SKY_SIDE_GROUP,) + SKY_FACTION_KEYS
+
 
 # Expansions and their quest categories (the East Empire Company faction is not
 # here: it is the `faction` option). Each expansion quest belongs to ONE
@@ -599,7 +621,7 @@ EXPANSION_GROUPS = tuple(f"{e}_{c}" for e in EXPANSIONS for c in EXPANSION_CATEG
 VAMPIRE_CLANS = ("aundae", "berne", "quarra")
 CATEGORY_GROUPS = ("vampire",) + tuple(f"vampire_{c}" for c in VAMPIRE_CLANS)
 
-FREE_GROUPS = (("misc", "tr_side", PC_SIDE_GROUP) + TR_VAMPIRE_GROUPS + CATEGORY_GROUPS + EXPANSION_GROUPS)
+FREE_GROUPS = (("misc", "tr_side", PC_SIDE_GROUP, SKY_SIDE_GROUP) + TR_VAMPIRE_GROUPS + CATEGORY_GROUPS + EXPANSION_GROUPS)
 
 
 def _enabled(options, name) -> bool:
@@ -662,6 +684,11 @@ def selected_pc_groups(options) -> list:
     return [PC_SIDE_GROUP] if _enabled(options, "project_cyrodiil_side_quests") else []
 
 
+def selected_sky_groups(options) -> list:
+    """Enabled Skyrim groups that are NOT goal groups: ["sky_side"] or []."""
+    return [SKY_SIDE_GROUP] if _enabled(options, "skyrim_side_quests") else []
+
+
 def group_enabled(options, group) -> bool:
     """True if a quest group is enabled in the seed.
 
@@ -672,7 +699,8 @@ def group_enabled(options, group) -> bool:
     if not group:
         return True
     return (group in selected_expansion_groups(options) or group in selected_tr_groups(options)
-            or group in selected_category_groups(options) or group in selected_pc_groups(options))
+            or group in selected_category_groups(options) or group in selected_pc_groups(options)
+            or group in selected_sky_groups(options))
 
 
 def quest_rewards_enabled(options) -> bool:
@@ -684,7 +712,7 @@ def group_active(options, group) -> bool:
     enabled expansion / Tamriel Rebuilt group, or selected goal)."""
     if group == "misc":
         return True
-    if group in EXPANSION_GROUPS or group in TR_GROUPS or group in CATEGORY_GROUPS or group == PC_SIDE_GROUP:
+    if group in EXPANSION_GROUPS or group in TR_GROUPS or group in CATEGORY_GROUPS or group in (PC_SIDE_GROUP, SKY_SIDE_GROUP):
         return group_enabled(options, group)
     return goal_of_group(group) in selected_goals(options)
 

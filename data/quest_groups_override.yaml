@@ -92,7 +92,6 @@ tr_m3_at_mgbonus: tr_mages_guild
 tr_m4_and_missingmerchant: tr_hlaalu
 tr_m4_and_missingmerchant2: tr_hlaalu
 tr_m7_db_special1: tr_morag_tong
-tr_m7_ic_maria6: tr_imperial_cult
 tr_tt_q1: tr_temple
 tr_m7_hh_gm_8: tr_temple              # journal name: "Temple: Pilgrimage of the Saint's Rescue" (hh token = Hlaalu Great Marsh)
 tr_m3_va_raenor: tr_vampire          # UESP: Tamriel Rebuilt vampire page (Raenor's Revenge)
@@ -107,3 +106,6 @@ va_vampamulet: vampire_quarra     # Ingredient hunt (Volrina Quarra)
 tr_m4_va_barendrethprotection: tr_side
 tr_m4_va_ibinai: tr_side
 tr_m4_va_vrashmind: tr_side
+
+# Skyrim: Home of the Nords: rank-advancement helper journal (entries 10/20/50 only, no ending): not a quest.
+sky_mg_advancement: non_quest

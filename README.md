@@ -17,6 +17,8 @@ Archipelago mod to play Morrowind under OpenMW as an Archipelago world.
   changes the ending of an existing quest can prevent the corresponding check from triggering
   or skew the objective.
 - **Tamriel Rebuilt: optional** (`tamriel_rebuilt_*` options, see below).
+- **Skyrim: Home of the Nords: optional** (`skyrim_side_quests` option and `guild: skyrim_*` / `hammerfell_mages_guild`,
+  see *Skyrim: Home of the Nords* below).
 - **Project Cyrodiil: optional** (`project_cyrodiil_side_quests` option, `guild: cyrodiil_*` and
   `faction: kingdom_of_anvil` / `itinerant_priests`, see *Project Cyrodiil* below).
 - **Tribunal / Bloodmoon: optional** (`tribunal_*` / `bloodmoon_*` options, see below).
@@ -73,7 +75,7 @@ The default objective is the **main quest** (death of Dagoth Ur). In the player 
 Morrowind OpenMW:
   main_quest: true             # false = the main quest is no longer an objective
   great_house: hlaalu          # none | hlaalu | redoran | telvanni | indoril (Tamriel Rebuilt)
-  guild: mages_guild           # none | fighters_guild | mages_guild | thieves_guild | cyrodiil_fighters_guild | cyrodiil_mages_guild | cyrodiil_thieves_guild (Project Cyrodiil)
+  guild: mages_guild           # none | fighters_guild | mages_guild | thieves_guild | cyrodiil_fighters_guild | cyrodiil_mages_guild | cyrodiil_thieves_guild (Project Cyrodiil) | skyrim_fighters_guild | skyrim_mages_guild | hammerfell_mages_guild | skyrim_thieves_guild (Skyrim: Home of the Nords)
   faction: temple              # none | imperial_cult | imperial_legion | temple | morag_tong | east_empire_company | ja_natta_syndicate | ordinators | kingdom_of_anvil | itinerant_priests (Project Cyrodiil)
   daedric_quests: true         # adds the 7 vanilla Daedric quests to the objective
   traps: true                  # false = no trap items in the pool
@@ -84,6 +86,7 @@ Morrowind OpenMW:
   bloodmoon_main_quest: false      # same two options for Bloodmoon
   bloodmoon_side_quests: false
   project_cyrodiil_side_quests: false   # true = Project Cyrodiil quests outside its factions give checks
+  skyrim_side_quests: false             # true = Skyrim: Home of the Nords quests outside its guilds give checks
 ```
 
 Victory requires the main quest (if `main_quest` is enabled) **and** each chosen house / guild /
@@ -194,6 +197,40 @@ A quest's group is determined by its prefix
 (`tools/quest_groups.py`); exceptions go in `data/quest_groups_override.yaml`.
 Daedric quests only contribute to the objective and checks when `daedric_quests` is enabled.
 
+## Skyrim: Home of the Nords (`skyrim_side_quests`, `guild: skyrim_* | hammerfell_mages_guild`)
+
+Requires `Tamriel_Data.esm` and `Sky_Main.esm` in `openmw.cfg` (version 23.02 or later). Same scheme as Project
+Cyrodiil: everything is disabled by default, the mod has **no main quest and no Daedric quest**, and its journals
+(`Sky_qRe_<place><token><n>[a-d]_Journal`) are classified by the token that follows the place (`KW` Karthwasten,
+`DS`/`DSE`/`DSW` Dragonstar).
+
+| Option / choice | Effect |
+|---|---|
+| `guild: skyrim_fighters_guild` / `skyrim_mages_guild` / `hammerfell_mages_guild` / `skyrim_thieves_guild` | The guild becomes a goal (rank 10 = leader) and its quests give checks. Separate from the vanilla guilds. `hammerfell_mages_guild` is the Dragonstar branch (`DSMG`), `skyrim_mages_guild` the Karthwasten one (`KWMG`) |
+| `skyrim_side_quests` | Checks for every other quest of the mod: bounties (`KW_B04`, `KWB03`...), the Dragonstar arena (`DSE4`), miscellaneous quests (`KW1`, `KW2`, `KW8`, `DSW2`...) |
+
+Each chosen guild adds its `<guild> Requirements added` item (ids 7701519-7701522).
+
+**Status: run the data generation.** Skyrim quests are not shipped in `data/`:
+
+```sh
+tes3conv Sky_Main.esm sky_main.json            # the file name must contain "sky_main"
+tes3conv Tamriel_Data.esm tamriel_data.json    # if not done yet
+python tools/extract.py morrowind.json tribunal.json bloodmoon.json tr_mainland.json cyr_main.json sky_main.json --out data/
+python tools/list_tr.py sky_main.json --sky --journals                         # check the groups
+python tools/list_tr.py sky_main.json tamriel_data.json --factions --grep sky  # faction ids + ranks
+```
+
+(`install.sh` converts `Sky_Main.esm` automatically: `SKY_DATA=... ./install.sh`, or 5th argument.)
+
+1. **Classification** (`tools/quest_groups.py`, `data/sky_categories.yaml`): `^sky_qre_kwmg` -> Skyrim Mages Guild,
+   `^sky_qre_dsmg` -> Hammerfell Mages Guild, `^sky_qre_(kw|ds[ew]?)tg` -> Skyrim Thieves Guild `^sky_qre_(kw|ds[ew]?)fg` -> Skyrim Fighters Guild, `^sky_mg_` -> Skyrim Mages Guild (`Sky_MG_Advancement`; all verified on the ESM). Everything else is `sky_side`. Add your own
+   patterns under `faction_patterns` for the IDs that `list_tr.py --sky --journals` leaves in `sky_side`.
+2. **Goals.** Verified in `Tamriel_Data.esm` (10 ranks each, rank 10 = leader): `T_Sky_FightersGuild`, `T_Sky_MagesGuild`,
+   `T_Sky_ThievesGuild`, and `T_Ham_MagesGuild` for `hammerfell_mages_guild` (the Dragonstar guild is a Hammerfell faction).
+3. **Branches.** Lettered sub-journals (`KWMG5a/b/c`, `DSMG4a/b/c`, `KWTG8a/b/c`, `KW1a-d`: Direnni codexes) are separate
+   journals: read `data/quest_review.txt` and put the real alternatives in `data/quest_exclusive.yaml`.
+
 ## Project Cyrodiil (`project_cyrodiil_side_quests`, `guild: cyrodiil_*`, `faction: kingdom_of_anvil | itinerant_priests`)
 
 Requires `Tamriel_Data.esm` and `Cyr_Main.esm` in `openmw.cfg` (Project Cyrodiil needs Tribunal and
@@ -230,7 +267,7 @@ python tools/list_tr.py cyr_main.json tamriel_data.json --factions --grep cyr # 
    Project Cyrodiil quest. The faction token (one of the 2 parts after `m<N>`) gives its group, named after
    the goal key: `ip` -> `itinerant_priests`, `k<N>` -> `kingdom_of_anvil`, `mg` -> `cyrodiil_mages_guild`
    (confirmed on UESP: `PC_m1_IP_Lki4`, `PC_m1_K1_MC1`, `PC_m1_MG_Anv6`), `fg` -> `cyrodiil_fighters_guild`
-   and `tg` -> `cyrodiil_thieves_guild` (assumed, same naming). Anything else (place tokens such as
+   and `tg` -> `cyrodiil_thieves_guild` (also verified on the extracted ESM). Anything else (place tokens such as
    `PC_m1_Anv_WellMet`) is `pc_side`. Complete `faction_tokens` in `data/pc_categories.yaml` with the tokens
    that `list_tr.py --pc --journals` leaves in `pc_side`.
 2. **Goals.** The 5 faction ids in `data/goals.yaml` are verified against `Tamriel_Data.esm` (`T_Cyr_KingdomAnvil`,

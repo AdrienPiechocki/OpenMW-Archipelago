@@ -73,6 +73,11 @@ FACTION_REQUIREMENTS = {
     "cyrodiil_fighters_guild": (BASE_ITEM + 516, "Cyrodiil Fighters Guild"),
     "cyrodiil_mages_guild": (BASE_ITEM + 517, "Cyrodiil Mages Guild"),
     "cyrodiil_thieves_guild": (BASE_ITEM + 518, "Cyrodiil Thieves Guild"),
+    # Skyrim: Home of the Nords (Sky_Main.esm)
+    "skyrim_fighters_guild": (BASE_ITEM + 519, "Skyrim Fighters Guild"),
+    "skyrim_mages_guild": (BASE_ITEM + 520, "Skyrim Mages Guild"),
+    "hammerfell_mages_guild": (BASE_ITEM + 521, "Hammerfell Mages Guild"),
+    "skyrim_thieves_guild": (BASE_ITEM + 522, "Skyrim Thieves Guild"),
 }
 FACTION_REQUIREMENT_NAMES = {
     goal: f"{label} Requirements added" for goal, (_code, label) in FACTION_REQUIREMENTS.items()
