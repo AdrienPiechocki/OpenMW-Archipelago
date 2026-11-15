@@ -51,6 +51,40 @@ def whitelisted_any(item, name):
         gqi.is_whitelisted(g, item, name) for g in goals)
 
 
+# Documents and tools handed out by a quest (notes, letters, orders, lists, writs, permits, keys, scrolls...).
+# The whitelist of gen_quest_items.py only recognises `bk_*` ids, so the Tamriel Rebuilt / Project Cyrodiil /
+# Skyrim ids (tr_m3_il_purloined_note, sky_qre_kw9_note2...) were never excluded.
+NOT_REWARD_WORDS = re.compile(
+    r'(note|letter|order|list|receipt|invit|permit|writ|cert|papers|recommend|map|key|token|scroll|'
+    r'skull|teeth|tooth|leaflet|message|package|directions)', re.I)
+NOT_REWARD_IDS = {'bk_a1_1_elone_to_balmora'}
+
+
+def is_quest_tool(item, name, reward_stage, complete_stage):
+    """True if the item looks like a quest document / tool (NOT_REWARD_WORDS) and the quest hands it out
+    BEFORE its completion stage: it is something to deliver or use, not the reward of the quest."""
+    if item in NOT_REWARD_IDS:
+        return True
+    if not complete_stage or reward_stage >= complete_stage:
+        return False
+    if 'reward' in item:      # e.g. tr_m7_ns_stagefright_amureward: named a reward by the mod author
+        return False
+    return bool(NOT_REWARD_WORDS.search(item) or NOT_REWARD_WORDS.search(name or ''))
+
+
+def load_completion_stages(path):
+    """quest (lowercase) -> lowest stage that finishes it (data/quest_finals.yaml)."""
+    p = pathlib.Path(path)
+    if not p.exists():
+        return {}
+    out = {}
+    for q in yaml.safe_load(p.read_text(encoding='utf-8')) or []:
+        stages = [int(s) for s in (q.get('stages') or [q.get('stage') or 0]) if int(s) > 0]
+        if stages:
+            out[str(q['quest']).lower()] = min(stages)
+    return out
+
+
 def journal_stages(text):
     """List of (quest, stage) set by Journal commands, in order of appearance."""
     out = []
@@ -90,7 +124,7 @@ def load_completions(path):
     return out
 
 
-def scan(records, completions, known_progression):
+def scan(records, completions, known_progression, finals=None):
     """Returns (rewards, stats). `records`: ESM records (list of dicts)."""
     item_rec = {}
     journal_ids = set()
@@ -107,9 +141,10 @@ def scan(records, completions, known_progression):
     def handle(text, info, qs_extra=()):
         stages = [(q, s) for q, s in journal_stages(text) if not journal_ids or q in journal_ids]
         quests = [q for q, _ in stages] + [q for q in qs_extra if q not in {x for x, _ in stages}]
-        if not quests:
-            return
-        # Progression: handed over / required / counted by a quest.
+        # Progression: handed over / required / counted by a quest. Collected for EVERY record, even
+        # one that sets no journal and has no journal filter (an activator script, a door script, an
+        # item-only dialogue filter...): before, such a consumer was skipped and the item it needs
+        # was classified as a reward, then randomized away.
         for m in gqi.PAT_REMOVE.finditer(text or ''):
             needed.add(m.group(1).lower())
         for m in gqi.PAT_COUNT.finditer(text or ''):
@@ -117,6 +152,8 @@ def scan(records, completions, known_progression):
         if info is not None:
             for it in gqi.filter_items(info):
                 needed.add(it)
+        if not quests:
+            return
         # Rewards: AddItem in the result of a dialogue that sets a stage.
         if not stages:
             return
@@ -153,13 +190,16 @@ def scan(records, completions, known_progression):
                         elsewhere.add(s)
 
     rewards, stats = [], {'candidates': len(cands), 'progression': 0, 'not_unique': 0,
-                          'no_completion': 0}
+                          'no_completion': 0, 'quest_tool': 0}
     for (quest, item), e in sorted(cands.items()):
         if item in needed or whitelisted_any(item, item_rec[item][1]):
             stats['progression'] += 1
             continue
         if item in elsewhere:
             stats['not_unique'] += 1
+            continue
+        if is_quest_tool(item, item_rec[item][1], e['stage'], (finals or {}).get(quest)):
+            stats['quest_tool'] += 1
             continue
         comp = completions.get(quest)
         if comp is None:
@@ -250,13 +290,15 @@ def main():
     ap.add_argument('esm_json', nargs='+')
     ap.add_argument('--data', default='data')
     ap.add_argument('--completions', default='apworld/morrowind_openmw/data/quest_completions.yaml')
+    ap.add_argument('--finals', default='apworld/morrowind_openmw/data/quest_finals.yaml')
     ap.add_argument('--apply', action='store_true', help='writes data/quest_rewards.yaml')
     args = ap.parse_args()
     data = pathlib.Path(args.data)
 
     records = list(gqi.load(args.esm_json))
     completions = load_completions(args.completions)
-    rewards, stats = scan(records, completions, known_progression_records(data))
+    rewards, stats = scan(records, completions, known_progression_records(data),
+                          load_completion_stages(args.finals))
     out_path = data / 'quest_rewards.yaml'
     existing = []
     if out_path.exists():
@@ -266,7 +308,8 @@ def main():
     for e in entries:
         print(f"{e['quest']:<32} stage>={e['stage']:<4} {e['record']:<32} x{e['count']}  [{e['group']}]")
     print(f"\n{len(entries)} rewards; ignored: {stats['progression']} progression, "
-          f"{stats['not_unique']} not unique, {stats['no_completion']} without completion check")
+          f"{stats['not_unique']} not unique, {stats['quest_tool']} quest documents / tools, "
+          f"{stats['no_completion']} without completion check")
     if args.apply:
         out_path.write_text(dump(entries), encoding='utf-8')
         print('written:', out_path)

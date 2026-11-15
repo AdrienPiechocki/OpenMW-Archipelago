@@ -109,6 +109,34 @@ main, stages = gqf.completion_stages('ms_lookout', [10, 20, 30, 40, 50, 100],
 check('ms_lookout completion excludes the refusal stage', stages, [100])
 check('ms_lookout main stage is 100', main, 100)
 
+# --- journals without any UESP ending become non_quest (MS_VassirDidanat) ---
+import tempfile
+vassir = {'ms_vassirdidanat': {100: (False, 'I found the mine.'), 110: (False, 'x'), 120: (False, 'y')}}
+cur = {'STAGES_OVERRIDES': {}, 'FAIL_STAGES': {}}
+_, nf, _, _ = uesp.analyse(vassir, cur, {}, None)
+check('vassir has no UESP ending', nf, ['ms_vassirdidanat'])
+check('vassir (misc) becomes non_quest', uesp.non_quest_updates(nf, cur, overrides={}), ['ms_vassirdidanat'])
+# goal groups, "_not" variants and hand-written overrides are left alone
+check('main quest is never non_quest',
+      uesp.non_quest_updates(['b5_lleranstronghold', 'ms_x_not'], cur, overrides={}), [])
+check('hand-written STAGES_OVERRIDES wins',
+      uesp.non_quest_updates(['ms_vassirdidanat'], {'STAGES_OVERRIDES': {'ms_vassirdidanat': [120]}, 'FAIL_STAGES': {}},
+                             overrides={}), [])
+# apply: idempotent managed block, base group ignores the block of a previous run
+with tempfile.TemporaryDirectory() as t:
+    f = pathlib.Path(t) / 'quest_groups_override.yaml'
+    f.write_text('a1_dreams: non_quest\n', encoding='utf-8')
+    uesp.apply_non_quest(f, ['ms_vassirdidanat'])
+    once = f.read_text(encoding='utf-8')
+    uesp.apply_non_quest(f, ['ms_vassirdidanat'])
+    check('apply_non_quest is idempotent', f.read_text(encoding='utf-8'), once)
+    check('block lists the quest', 'ms_vassirdidanat: non_quest' in once and 'a1_dreams: non_quest' in once, True)
+    check('re-run keeps the journal eligible',
+          uesp.non_quest_updates(['ms_vassirdidanat'], cur, f), ['ms_vassirdidanat'])
+    uesp.apply_non_quest(f, [])
+    check('empty list removes the block', f.read_text(encoding='utf-8'), 'a1_dreams: non_quest\n')
+
+
 if fails:
     print(f'{fails} failure(s)')
     sys.exit(1)

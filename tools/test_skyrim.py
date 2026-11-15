@@ -143,5 +143,40 @@ check('origin override: a journal defined by Sky_Main',
 check('user pattern in sky_categories.yaml wins', qg.sky_group('Sky_qRe_KWX1_Journal', {
     'side': set(), 'patterns': [(re.compile('^sky_qre_kwx'), 'skyrim_fighters_guild')] + sc['patterns']}), 'skyrim_fighters_guild')
 
+# Hammerfell Mages Guild (UESP "Finishes quest"): every real ending must complete its quest, otherwise the
+# guild goal (all quests of the group completed) is unreachable for the usual playthrough.
+import yaml
+_fin = {str(q['quest']).lower(): q for q in yaml.safe_load(
+    (root / 'apworld/morrowind_openmw/data/quest_finals.yaml').read_text(encoding='utf-8'))}
+for qid, want in {'sky_qre_dsmg1_journal': [100, 110], 'sky_qre_dsmg2_journal': [110, 120],
+                  'sky_qre_dsmg3_journal': [100, 110], 'sky_qre_dsmg4_journal': [100, 110],
+                  'sky_qre_dsmg5_journal': [100, 110]}.items():
+    check(f'DSMG endings {qid}', sorted(_fin[qid]['stages']), want)
+
+# Guild questlines (GUILD_FIXES, UESP): replay of questComplete() of player.lua on the written data.
+sys.path.insert(0, str(root / 'tools'))
+import gen_quest_finals as _gqf
+
+
+def _complete(row, stage):
+    if stage in (row.get('fail') or []):
+        return False
+    alts = sorted(set(row.get('stages') or []) - {row['stage']} - set(row.get('fail') or []))
+    if stage in alts:
+        return True
+    return row['stage'] > 0 and stage >= row['stage']
+
+
+for qid, (_m, _ok, _ko) in _gqf.GUILD_FIXES.items():
+    row = _fin[qid]
+    check(f'guild {qid}: success endings complete', [_complete(row, s) for s in _ok], [True] * len(_ok))
+    check(f'guild {qid}: failure endings do not', [_complete(row, s) for s in _ko], [False] * len(_ko))
+# Spot checks against UESP: the normal ending must count.
+check('Papers, Please! 100', _complete(_fin['sky_qre_dstg4_journal'], 100), True)
+check('Out for a Spell 100', _complete(_fin['sky_qre_kwmg2_journal'], 100), True)
+check('Out for a Spell 60 (mid-quest)', _complete(_fin['sky_qre_kwmg2_journal'], 60), False)
+check('Ildos Norvor 100', _complete(_fin['sky_qre_kwfg3_journal'], 100), True)
+check('Ildos Norvor 115 (angry Geod)', _complete(_fin['sky_qre_kwfg3_journal'], 115), False)
+
 print(f'\n{fails} failure(s)')
 sys.exit(1 if fails else 0)

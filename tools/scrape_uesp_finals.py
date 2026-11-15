@@ -30,6 +30,15 @@ Usage:
   # write every non-overridden difference (large stage gaps included):
   python tools/scrape_uesp_finals.py ... --apply
 
+Journals whose UESP tables flag NO stage as "Finishes quest" (MS_VassirDidanat...)
+have no real ending: instead of letting gen_quest_finals.py take the highest
+stage as the end, --apply classifies them `non_quest` (no check) in
+data/quest_groups_override.yaml (managed block, idempotent). Only journals of
+the free-check groups (misc, *_side) are touched: main / faction / daedric /
+vampire journals feed the goals and keep their stages. After --apply, rerun
+extract.py / gen_quest_finals.py so quest_completions.yaml and quest_finals.yaml
+pick up the new group.
+
 --qc restricts the report to journals your quest_completions.yaml uses;
 --finals / --script give the "current" values. Both are optional.
 """
@@ -38,13 +47,18 @@ import ast
 import json
 import pathlib
 import re
+import shutil
 import sys
+import tempfile
 import time
 import urllib.parse
 
 import requests
 import yaml
 from bs4 import BeautifulSoup
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from quest_groups import classify, load_overrides  # noqa: E402
 
 BASE = 'https://en.uesp.net/w/api.php'
 UA = 'quest-finals-scraper/1.0 (personal Archipelago apworld; polite, cached)'
@@ -320,7 +334,7 @@ def analyse(quests, cur, finals_stages, wanted):
     return diffs, no_finish, matches, targets
 
 
-def write_outputs(outdir, diffs, no_finish, matches, scanned):
+def write_outputs(outdir, diffs, no_finish, matches, scanned, non_quest=()):
     outdir = pathlib.Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     rep = [f'UESP quest pages scanned: {scanned} journal ids; {matches} already match; '
@@ -333,8 +347,8 @@ def write_outputs(outdir, diffs, no_finish, matches, scanned):
             mark = '? FAIL?' if s in d['suspects'] else '  ok   '
             rep.append(f"    {mark} {s}: {snippet(d['texts'][s])}")
     if no_finish:
-        rep += ['', 'No "Finishes quest" stage on UESP (check by hand):']
-        rep += [f'    {q}' for q in no_finish]
+        rep += ['', 'No "Finishes quest" stage on UESP (-> non_quest with --apply, marked *):']
+        rep += [f"    {'*' if q in non_quest else ' '} {q}" for q in no_finish]
     (outdir / 'uesp_finals_report.txt').write_text('\n'.join(rep) + '\n', encoding='utf-8')
 
     sure = [d for d in diffs if not d['overridden'] and d['success'] and not d['suspects']]
@@ -436,11 +450,80 @@ def apply_to_script(script, updates):
     print(f'{len(updates)} entries written into {script}')
 
 
+# Groups whose journals only give free checks: a journal of these groups that UESP
+# never flags as "Finishes quest" is not a quest. The goal groups (main, factions,
+# daedric, vampire clans, TR / PC / Skyrim guilds...) are never touched here.
+NON_QUEST_ELIGIBLE = {'misc', 'tribunal_side', 'bloodmoon_side', 'tr_side', 'pc_side', 'sky_side'}
+BEGIN_NQ = '# BEGIN UESP NON_QUEST (tools/scrape_uesp_finals.py)'
+END_NQ = '# END UESP NON_QUEST'
+DEFAULT_GROUPS_FILE = 'data/quest_groups_override.yaml'
+
+
+def _strip_block(text):
+    """Text of the override file without the block written by a previous run."""
+    lines = text.split('\n')
+    if any(l.strip() == BEGIN_NQ for l in lines):
+        a = next(i for i, l in enumerate(lines) if l.strip() == BEGIN_NQ)
+        b = next(i for i, l in enumerate(lines) if l.strip() == END_NQ)
+        if a > 0 and lines[a - 1].strip() == '':
+            a -= 1
+        del lines[a:b + 1]
+    return '\n'.join(lines)
+
+
+def base_overrides(path):
+    """quest_groups.load_overrides() of the override file WITHOUT the managed block, so the
+    group of a journal is the one it had before this script touched it (re-runs stay stable)."""
+    p = pathlib.Path(path)
+    with tempfile.TemporaryDirectory() as tmp:
+        t = pathlib.Path(tmp)
+        src = p.parent / 'quest_sources.yaml'
+        if src.exists():
+            shutil.copy(src, t / 'quest_sources.yaml')
+        if p.exists():
+            (t / p.name).write_text(_strip_block(p.read_text(encoding='utf-8')), encoding='utf-8')
+        return load_overrides(t / p.name)
+
+
+def non_quest_updates(no_finish, cur, groups_file=DEFAULT_GROUPS_FILE, overrides=None):
+    """Journals with no UESP "Finishes quest" stage that must become `non_quest`.
+
+    Skipped: "_not" journals (failure variant of another quest), journals with a hand-written
+    STAGES_OVERRIDES (an explicit decision), and journals outside NON_QUEST_ELIGIBLE (goal
+    groups). `overrides` (tests) replaces base_overrides(groups_file)."""
+    ov = overrides if overrides is not None else base_overrides(groups_file)
+    out = []
+    for qid in sorted(no_finish):
+        if qid.endswith('_not') or qid in cur['STAGES_OVERRIDES']:
+            continue
+        if classify(qid, ov) in NON_QUEST_ELIGIBLE:
+            out.append(qid)
+    return out
+
+
+def apply_non_quest(groups_file, qids):
+    """Writes `qid: non_quest` as ONE managed block at the end of the override file (idempotent)."""
+    path = pathlib.Path(groups_file)
+    text = _strip_block(path.read_text(encoding='utf-8')) if path.exists() else ''
+    text = text.rstrip('\n')
+    if qids:
+        block = [BEGIN_NQ,
+                 "# Pas de stage \"Finishes quest\" sur uesp.net : ce n'est pas une vraie quête (aucun check).",
+                 "# Supprimer une ligne ici et la mettre plus haut pour la garder comme quête."]
+        block += [f'{q}: non_quest' for q in qids]
+        block.append(END_NQ)
+        text += '\n\n' + '\n'.join(block)
+    path.write_text(text + '\n', encoding='utf-8')
+    print(f'{len(qids)} journal(s) classified non_quest in {groups_file}')
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument('--script', default='tools/gen_quest_finals.py')
     ap.add_argument('--finals', default='data/quest_finals.yaml')
     ap.add_argument('--qc', default='data/quest_completions.yaml')
+    ap.add_argument('--groups', default=DEFAULT_GROUPS_FILE,
+                    help='quest_groups_override.yaml (receives the non_quest block with --apply)')
     ap.add_argument('--outdir', default='uesp_out')
     ap.add_argument('--delay', type=float, default=0.3, help='seconds between requests')
     ap.add_argument('--refresh', action='store_true', help='ignore the cache')
@@ -469,7 +552,8 @@ def main():
 
     cur, finals_stages, wanted = load_current(args.script, args.finals, args.qc)
     diffs, no_finish, matches, targets = analyse(quests, cur, finals_stages, wanted)
-    sure = write_outputs(args.outdir, diffs, no_finish, matches, len(quests))
+    non_quest = non_quest_updates(no_finish, cur, args.groups)
+    sure = write_outputs(args.outdir, diffs, no_finish, matches, len(quests), non_quest)
     print(f'{len(quests)} journal ids on UESP, {matches} match, {len(diffs)} differ '
           f'({len(sure)} high-confidence). See {args.outdir}/uesp_finals_report.txt')
     updates = uesp_updates(diffs, targets)
@@ -477,8 +561,11 @@ def main():
     if stale.exists():
         stale.unlink()   # older runs held back large gaps; every stage is applied now
     print(f'{len(updates)} journal(s) in the complete override block')
+    print(f'{len(non_quest)} journal(s) without any UESP ending -> non_quest')
     if args.apply and updates:
         apply_to_script(args.script, updates)
+    if args.apply:
+        apply_non_quest(args.groups, non_quest)
 
 
 if __name__ == '__main__':

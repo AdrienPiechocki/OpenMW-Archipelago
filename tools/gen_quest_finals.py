@@ -96,14 +96,6 @@ STAGES_OVERRIDES = {
     'ht_stronghold': [300],
 }
 
-# Project Cyrodiil: these Goldenrod sub-journals only have the entry 100 (raw=[100]); the automatic
-# fallback picked stage 10, which does not exist -> the check could never be completed.
-STAGES_OVERRIDES.update({
-    'pc_m1_anv_goldenrodbr': [100], 'pc_m1_anv_goldenroddr': [100], 'pc_m1_anv_goldenrodeh': [100],
-    'pc_m1_anv_goldenrodli': [100], 'pc_m1_anv_goldenrodpa': [100], 'pc_m1_anv_goldenrodsm': [100],
-    'pc_m1_anv_goldenrodst': [100],
-})
-
 # BEGIN UESP OVERRIDES (tools/scrape_uesp_finals.py)
 # Completion stages = every UESP "Finishes quest" stage of the journal.
 # Not overridden by hand. Delete a line here and move it up to keep a manual value.
@@ -1604,6 +1596,71 @@ STAGES_OVERRIDES.update({
 })
 # END UESP OVERRIDES
 
+# Project Cyrodiil: these Goldenrod sub-journals only have the entry 100 (raw=[100]); the automatic
+# fallback picked stage 10, which does not exist -> the check could never be completed.
+STAGES_OVERRIDES.update({
+    'pc_m1_anv_goldenrodbr': [100], 'pc_m1_anv_goldenroddr': [100], 'pc_m1_anv_goldenrodeh': [100],
+    'pc_m1_anv_goldenrodli': [100], 'pc_m1_anv_goldenrodpa': [100], 'pc_m1_anv_goldenrodsm': [100],
+    'pc_m1_anv_goldenrodst': [100],
+})
+
+# Skyrim: Home of the Nords, Hammerfell Mages Guild (UESP "Finishes quest" stages). Stage 100 / 110 are
+# alternative endings of the same quest (e.g. DSMG3: 100 = Duncan alive, 110 = Duncan dead). The ESM
+# deduction dropped the lowest ones (a dialogue consumes them), so the "good" ending never completed the
+# quest and the guild goal could not be reached.
+STAGES_OVERRIDES.update({
+    'sky_qre_dsmg1_journal': [100, 110],   # Regulated Research: package (100) or six diamonds (110)
+    'sky_qre_dsmg2_journal': [110, 120],   # Mesa Medicine: sample returned (110) or drunk (120)
+    'sky_qre_dsmg3_journal': [100, 110],   # An Acolyte in the Arena
+    'sky_qre_dsmg4_journal': [100, 110],   # Public Perception
+    'sky_qre_dsmg5_journal': [100, 110],   # Angturiel
+})
+
+# Guild questlines of Skyrim: Home of the Nords / Project Cyrodiil, checked by hand against UESP
+# ("Finishes quest" column). quest -> (main stage, ALL success endings, failure endings).
+# The ESM deduction kept the highest terminal stage, which is often a FAILURE ending (e.g. Papers, Please!:
+# 100 = success, 110 = "Erald was killed"), or missed one of several success endings, so the normal
+# playthrough never completed the quest and the guild goal was unreachable.
+GUILD_FIXES = {
+    # Skyrim Fighters Guild
+    'sky_qre_kwfg1_journal': (100, [100], []),
+    'sky_qre_kwfg3_journal': (100, [100, 150], [110, 111, 112, 113, 115, 151]),
+    'sky_qre_kwfg4_journal': (110, [100, 110], []),
+    # Skyrim Mages Guild
+    'sky_qre_kwmg1_journal': (50, [40, 50], []),
+    'sky_qre_kwmg2_journal': (120, [35, 90, 100, 110, 120], []),
+    'sky_qre_kwmg3_journal': (110, [100, 105, 110], []),
+    'sky_qre_kwmg5_journal': (140, [130, 140], []),
+    # Skyrim Thieves Guild, Dragonstar (Anbod)
+    'sky_qre_dstg1_journal': (20, [20], [110]),
+    'sky_qre_dstg3_journal': (100, [100], [110]),
+    'sky_qre_dstg4_journal': (100, [100], [110]),
+    'sky_qre_dstg5_journal': (100, [100], [110]),
+    'sky_qre_dstg6_journal': (130, [130], [140, 150, 160]),
+    # Skyrim Thieves Guild, Karthwasten (Lorvacah / Boss Kanah)
+    'sky_qre_kwtg2_journal': (40, [40], [50]),
+    'sky_qre_kwtg3_journal': (30, [30], [40]),
+    'sky_qre_kwtg4_journal': (40, [40], [50, 60, 70]),
+    'sky_qre_kwtg5_journal': (20, [20], [30, 40, 50]),
+    'sky_qre_kwtg6_journal': (50, [50], [60, 70]),
+    'sky_qre_kwtg7_journal': (40, [30, 40], []),
+    'sky_qre_kwtg8_journal': (40, [40], [50]),
+    # Project Cyrodiil Fighters Guild (Anvil)
+    'pc_m1_fg_anv2': (160, [100, 150, 160], [200]),
+    'pc_m1_fg_anv5': (120, [110, 120], [130, 140, 200]),
+    # Project Cyrodiil Mages Guild
+    'pc_m1_mg_anv1': (100, [100], []),
+    'pc_m1_mg_anv4': (100, [100], [110]),
+    'pc_m1_mg_bc4': (110, [100, 110], []),
+    # Project Cyrodiil Thieves Guild (Anvil, The Arenthian)
+    'pc_m1_tg_anv1': (101, [100, 101], [102]),
+    'pc_m1_tg_anv2': (100, [100], [101]),
+    'pc_m1_tg_anv3': (100, [100], [101]),
+    'pc_m1_tg_anv4': (102, [100, 102], [103]),
+    'pc_m1_tg_anv6': (100, [100], [101]),
+    'pc_m1_tg_anv7': (102, [100, 101, 102], [103]),
+}
+
 # Stages to add to the automatic deduction (endings not flagged quest_finish).
 STAGES_EXTRA = {
     # 'quest_id': [stage, ...],
@@ -1768,6 +1825,13 @@ FAIL_STAGES = {
     'va_vampcult': [130],
     'va_vamprich': [90],
 }
+
+for _q, (_main, _stages, _fail) in GUILD_FIXES.items():
+    STAGE_OVERRIDES[_q] = _main
+    STAGES_OVERRIDES[_q] = list(_stages)
+    if _fail:
+        FAIL_STAGES[_q] = list(_fail)
+
 
 # Journals that only contain failure entries (no successful ending). They must
 # never become an Archipelago check: the mod would watch a journal that can

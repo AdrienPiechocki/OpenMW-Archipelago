@@ -7,7 +7,10 @@ Only items NEEDED FOR PROGRESSION are kept, faction by faction:
   - GetItemCount : item counted to validate a condition;
   - AddItem      : item given to the player DURING the quest, only if it is
                    validated by its faction's whitelist (otherwise it is a
-                   reward, not a progression item).
+                   reward, not a progression item), OR if it is a quest
+                   document / tool (is_quest_tool) handed out before the
+                   completion stage of its quest: this is the exact complement
+                   of the filter of gen_quest_rewards.py.
 
 Usage:
   python tools/gen_quest_items.py morrowind.json [bloodmoon.json] [--apply]
@@ -23,7 +26,8 @@ import sys
 import yaml
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from quest_groups import classify, load_overrides  # noqa: E402
+from quest_groups import (classify, load_overrides, TR_GROUPS, TR_VAMPIRE_GROUPS, PC_GROUPS,  # noqa: E402
+                          SKY_GROUPS, EXPANSION_GROUPS)
 from script_effects import parse_script, is_quest_item, _resolve_journal  # noqa: E402
 
 PAT_JOURNAL_Q = re.compile(r'(?<![A-Za-z])Journal[ \t]*,?[ \t]*"([^"\r\n]+)"[ \t]*,?[ \t]*\d+', re.I)
@@ -42,10 +46,28 @@ GOAL_OF_GROUP = {
     'misc': 'misc',
 }
 
+# Groups of the expansions / Tamriel Rebuilt / Project Cyrodiil / Skyrim: classify() returns them
+# (tr_hlaalu, tribunal_side, kingdom_of_anvil, skyrim_mages_guild, sky_side...). The goal of their items
+# is the group name itself (same convention as `group` in quest_completions.yaml and quest_rewards.yaml).
+# Before, GOAL_OF_GROUP.get(...) returned None for all of them and their items were silently dropped.
+# Vampire groups (vampire, vampire_<clan>, tr_vampire*) are NOT included: they are not a goal group.
+EXTRA_GOAL_GROUPS = (set(TR_GROUPS) - set(TR_VAMPIRE_GROUPS)) | set(PC_GROUPS) | set(SKY_GROUPS) \
+    | set(EXPANSION_GROUPS)
+
+
+def goal_of(group):
+    """Goal (faction) of a quest group, or None if its items must not be generated."""
+    return GOAL_OF_GROUP.get(group) or (group if group in EXTRA_GOAL_GROUPS else None)
+
+
 ITEM_TYPES = {'book', 'miscitem', 'misc', 'weapon', 'armor', 'clothing', 'apparatus',
               'lockpick', 'probe', 'repair', 'repairitem', 'light', 'alchemy', 'ingredient'}
 CONSUMABLE_TYPES = {'alchemy', 'ingredient', 'light'}
 ITEMS_BASE, ITEMS_LIMIT = 7702000, 7703000
+# Overflow range, used once the first one is full (the ids already assigned never change, so seeds stay stable).
+# 7703000 is the level-up item (mod/scripts/ap/level_up.lua) and 7704000..7704999 the quest rewards
+# (gen_quest_rewards.py): 7705000..7705999 follows the rewards. gen_lua.py / the apworld must know it.
+ITEMS_BASE2, ITEMS_LIMIT2 = 7705000, 7706000
 
 # ==============================================================================
 # WHITELIST PER FACTION - only PROGRESSION items
@@ -213,6 +235,56 @@ def is_whitelisted(goal, item_id, item_name):
                 return True
     return False
 
+# ==============================================================================
+# QUEST DOCUMENTS / TOOLS (notes, letters, orders, keys...)
+# ==============================================================================
+# Documents and tools handed out by a quest (notes, letters, orders, lists, writs, permits, keys, scrolls...).
+# The whitelist above only recognises `bk_*` ids, so the Tamriel Rebuilt / Project Cyrodiil / Skyrim ids
+# (tr_m3_il_purloined_note, sky_qre_kw9_note2...) were never kept. These items are PROGRESSION items here and
+# are excluded from the rewards by gen_quest_rewards.py (same words, same rule: keep both in sync).
+NOT_REWARD_WORDS = re.compile(
+    r'(note|letter|order|list|receipt|invit|permit|writ|cert|papers|recommend|map|key|token|scroll|'
+    r'skull|teeth|tooth|leaflet|message|package|directions)', re.I)
+NOT_REWARD_IDS = {'bk_a1_1_elone_to_balmora'}
+
+# Journal command WITH its stage: Journal "quest", 40  /  Journal quest 40
+PAT_JOURNAL_STAGE = re.compile(
+    r'(?<![A-Za-z])Journal[ \t]*,?[ \t]*(?:"([^"\r\n]+)"|([A-Za-z_][A-Za-z0-9_\-]*))[ \t]*,?[ \t]*(\d+)',
+    re.I)
+
+
+def journal_stages(text):
+    """List of (quest, stage) set by Journal commands, in order of appearance."""
+    out = []
+    for m in PAT_JOURNAL_STAGE.finditer(text or ''):
+        out.append(((m.group(1) or m.group(2)).strip().lower(), int(m.group(3))))
+    return out
+
+
+def is_quest_tool(item, name, reward_stage, complete_stage):
+    """True if the item looks like a quest document / tool (NOT_REWARD_WORDS) and the quest hands it out
+    BEFORE its completion stage: it is something to deliver or use, not the reward of the quest."""
+    if item in NOT_REWARD_IDS:
+        return True
+    if reward_stage is None or not complete_stage or reward_stage >= complete_stage:
+        return False
+    if 'reward' in item:      # e.g. tr_m7_ns_stagefright_amureward: named a reward by the mod author
+        return False
+    return bool(NOT_REWARD_WORDS.search(item) or NOT_REWARD_WORDS.search(name or ''))
+
+
+def load_completion_stages(path):
+    """quest (lowercase) -> lowest stage that finishes it (data/quest_finals.yaml)."""
+    p = pathlib.Path(path)
+    if not p.exists():
+        return {}
+    out = {}
+    for q in yaml.safe_load(p.read_text(encoding='utf-8')) or []:
+        stages = [int(s) for s in (q.get('stages') or [q.get('stage') or 0]) if int(s) > 0]
+        if stages:
+            out[str(q['quest']).lower()] = min(stages)
+    return out
+
 
 # ==============================================================================
 
@@ -300,7 +372,10 @@ def count_placements(records):
     return n
 
 
-def scan(paths, overrides, include_consumables, strict_mode=True, max_placements=MAX_PLACEMENTS):
+def scan(paths, overrides, include_consumables, strict_mode=True, max_placements=MAX_PLACEMENTS,
+         finals=None, quest_tools=None):
+    """`finals`: quest -> completion stage (load_completion_stages). `quest_tools`: optional set filled with
+    the records kept because they are quest documents / tools (used by --prune)."""
     records = list(load(paths))
     placements = count_placements(records)
     item_rec = {}
@@ -313,8 +388,9 @@ def scan(paths, overrides, include_consumables, strict_mode=True, max_placements
             journal_ids.add(str(r.get('id', '')).lower())
 
     found = collections.defaultdict(lambda: {'sources': set(), 'via': set(), 'count': 1})
+    tool_pending = {}   # (goal, item, quest) -> {'stage', 'count'}: non-whitelisted AddItem, judged after the scan
 
-    def add(goal, item, quest, via, count=1):
+    def add(goal, item, quest, via, count=1, stage=None):
         if not item or item.startswith('gold_'):
             return
         rec = item_rec.get(item)
@@ -331,6 +407,13 @@ def scan(paths, overrides, include_consumables, strict_mode=True, max_placements
         item_name = rec[1] if rec else ""
         wl = is_whitelisted(goal, item, item_name)
         if strict_mode and via == 'AddItem' and not wl:
+            # Not whitelisted: kept only if it is a quest document / tool handed out before the
+            # completion stage of the quest. Needs the MINIMUM stage over all occurrences (same as
+            # gen_quest_rewards.py), so it is decided after the scan.
+            pnd = tool_pending.setdefault((goal, item, quest), {'stage': stage, 'count': count})
+            if stage is not None:
+                pnd['stage'] = stage if pnd['stage'] is None else min(pnd['stage'], stage)
+            pnd['count'] = max(pnd['count'], count)
             return
         # Items REQUIRED by a quest (RemoveItem / Item filter / GetItemCount) used to pass
         # unfiltered. Generic stock (sc_*, ingred_*, misc_de_*, ...) or a record placed all
@@ -357,35 +440,58 @@ def scan(paths, overrides, include_consumables, strict_mode=True, max_placements
         res = _resolve_journal(j.upper(), known_up, {}, sorted_known)
         return res.lower() if res else None
 
-    def add_effects(effects, fallback_journals, quest_extra=()):
+    def add_effects(effects, fallback_journals, quest_extra=(), stages=None):
+        stages = stages or {}
         for kind, item, qty, j in effects:
             item = item.lower()
             js = {journal_of(j)} if j else {journal_of(x) for x in fallback_journals}
             for q in js - {None}:
-                goal = GOAL_OF_GROUP.get(classify(q, overrides))
+                goal = goal_of(classify(q, overrides))
                 if not goal:
                     continue
                 if kind == 'needed':
                     add(goal, item, q, 'needed (Player->RemoveItem/GetItemCount)', qty)
                 else:
-                    add(goal, item, q, 'AddItem', qty)
+                    # stage set by the same record for this quest (else the lowest one of the record)
+                    stage = stages.get(q, min(stages.values()) if stages else None)
+                    add(goal, item, q, 'AddItem', qty, stage=stage)
 
     for r in records:
         t = str(r.get('type', ''))
         if t == 'DialogueInfo':
             text = r.get('script_text') or ''
             fj = filter_journals(r)
-            add_effects(parse_script('info:' + str(r.get('id', '')), text), fj)
+            stages = {}
+            for jq, st in journal_stages(text):
+                jq = journal_of(jq)
+                if jq:
+                    stages[jq] = min(st, stages.get(jq, st))
+            add_effects(parse_script('info:' + str(r.get('id', '')), text), fj, stages=stages)
             # items required by the dialogue filter itself (Item filter) count for the
             # journals the info sets (Journal command) or filters on
             qs = {journal_of(q) for q in journal_quests(text) | fj} - {None}
             for q in qs:
-                goal = GOAL_OF_GROUP.get(classify(q, overrides))
+                goal = goal_of(classify(q, overrides))
                 if goal:
                     for it in filter_items(r):
                         add(goal, it, q, 'required (Item filter)')
         elif t == 'Script':
             add_effects(parse_script(str(r.get('id', '')), r.get('script_text') or r.get('text') or ''), ())
+
+    # --- quest documents / tools: the complement of the rewards (see is_quest_tool)
+    finals = finals or {}
+    for (goal, item, q), pnd in sorted(tool_pending.items()):
+        rec = item_rec.get(item)
+        if rec is None or placements.get(item, 0) > max_placements:
+            continue   # stock item: suppressing the record would remove every copy
+        if not is_quest_tool(item, rec[1], pnd['stage'], finals.get(q)):
+            continue
+        e = found[(goal, item)]
+        e['sources'].add(q)
+        e['via'].add('AddItem (quest document / tool)')
+        e['count'] = max(e['count'], pnd['count'])
+        if quest_tools is not None:
+            quest_tools.add(item)
 
     return found, item_rec, records
 
@@ -394,6 +500,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('esm_json', nargs='+')
     ap.add_argument('--data', default='data')
+    ap.add_argument('--finals', default='apworld/morrowind_openmw/data/quest_finals.yaml',
+                    help='quest completion stages, to tell quest documents / tools from rewards')
     ap.add_argument('--apply', action='store_true', help='adds the candidates to quest_items.yaml')
     ap.add_argument('--include-consumables', action='store_true')
     ap.add_argument('--max-placements', type=int, default=MAX_PLACEMENTS,
@@ -407,8 +515,10 @@ def main():
     data = pathlib.Path(args.data)
 
     overrides = load_overrides(data / 'quest_groups_override.yaml')
+    quest_tools = set()
     found, item_rec, records = scan(args.esm_json, overrides, args.include_consumables, strict_mode=not args.no_strict,
-                                       max_placements=args.max_placements)
+                                       max_placements=args.max_placements,
+                                       finals=load_completion_stages(args.finals), quest_tools=quest_tools)
 
     qi_path = data / 'quest_items.yaml'
     existing = yaml.safe_load(qi_path.read_text(encoding='utf-8')) if qi_path.exists() else []
@@ -427,7 +537,7 @@ def main():
                 continue
             rec = str(e['give'][0]).lower()
             name = item_rec.get(rec, ('', e['name']))[1]
-            if is_whitelisted(e.get('goal'), rec, name) or rec in QUEST_ITEM_ALIASES:
+            if is_whitelisted(e.get('goal'), rec, name) or rec in QUEST_ITEM_ALIASES or rec in quest_tools:
                 continue
             why = None
             if item_rec and rec not in item_rec:
@@ -455,6 +565,7 @@ def main():
         return
 
     next_id = max([ITEMS_BASE] + [e['id'] for e in existing if ITEMS_BASE <= e['id'] < ITEMS_LIMIT])
+    next_id2 = max([ITEMS_BASE2] + [e['id'] for e in existing if ITEMS_BASE2 <= e['id'] < ITEMS_LIMIT2])
 
     cands = []
     for (goal, item), e in sorted(found.items()):
@@ -586,10 +697,14 @@ def main():
                 # Duplicate: reuse the existing id, do not increment next_id.
                 item_id = record_to_id[rec_low]
             else:
-                next_id += 1
-                if next_id >= ITEMS_LIMIT:
-                    raise SystemExit('item ID range exhausted')
-                item_id = next_id
+                if next_id + 1 < ITEMS_LIMIT:
+                    next_id += 1
+                    item_id = next_id
+                else:                       # first range full: overflow range
+                    next_id2 += 1
+                    if next_id2 >= ITEMS_LIMIT2:
+                        raise SystemExit('item ID ranges exhausted')
+                    item_id = next_id2
                 record_to_id[rec_low] = item_id
             if name.lower() in known_names:
                 name = f"{name} ({c['goal']})"

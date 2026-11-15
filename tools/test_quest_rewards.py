@@ -76,6 +76,33 @@ check('progression ignored', stats['progression'], 1)
 check('not unique ignored', stats['not_unique'], 1)
 check('no completion ignored', stats['no_completion'], 1)
 
+# An item consumed by a script that sets no journal is still progression (it used to be a reward).
+recs2 = [
+    {'type': 'Dialogue', 'dialogue_type': 'Journal', 'id': 'mq_a'},
+    item('ring_hand', 'clothing', 'Hand-in Ring'),
+    info('Journal mq_a 50\nAddItem ring_hand 1'),
+    {'type': 'Script', 'script_text': 'if ( player->GetItemCount ring_hand > 0 )\n  player->RemoveItem ring_hand 1\nendif'},
+]
+rw2, st2 = g.scan(recs2, COMPLETIONS, set())
+check('script without journal: item is progression', (rw2, st2['progression']), ([], 1))
+
+# Documents / tools given BEFORE the quest ends are not rewards; the same item at the end is, and an early
+# non-document item stays a reward.
+recs3 = [
+    {'type': 'Dialogue', 'dialogue_type': 'Journal', 'id': 'mq_a'},
+    item('tr_m3_il_purloined_note', 'book', 'Purloined Note'),
+    item('tr_m3_final_note', 'book', 'Final Note'),
+    item('ring_early', 'clothing', 'Early Ring'),
+    info('Journal mq_a 10\nAddItem tr_m3_il_purloined_note 1'),
+    info('Journal mq_a 10\nAddItem ring_early 1'),
+    info('Journal mq_a 100\nAddItem tr_m3_final_note 1'),
+]
+rw3, st3 = g.scan(recs3, COMPLETIONS, set(), {'mq_a': 100})
+check('early document is a quest tool', sorted(r['record'] for r in rw3), ['ring_early', 'tr_m3_final_note'])
+check('quest tool counted', st3['quest_tool'], 1)
+check('no completion stage known: kept', sorted(r['record'] for r in g.scan(recs3, COMPLETIONS, set())[0]),
+      ['ring_early', 'tr_m3_final_note', 'tr_m3_il_purloined_note'])
+
 # Journal stages are parsed with and without quotes.
 check('journal stages', g.journal_stages('Journal "A_b", 40\nJournal c 5'), [('a_b', 40), ('c', 5)])
 

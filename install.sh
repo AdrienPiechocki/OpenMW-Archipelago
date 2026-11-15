@@ -15,6 +15,7 @@
 #   PC_DATA        dossier contenant Cyr_Main.esm (Project Cyrodiil, défaut : MW_DATA), facultatif ; 4e argument équivalent
 #   TES3CONV       commande tes3conv (défaut : tes3conv)
 #   PYTHON         interpréteur Python (défaut : python3)
+#   SKIP_UESP      1 = ne pas lancer tools/scrape_uesp_finals.py (étape 1b, réseau + requests/beautifulsoup4)
 #   AP_DATA_DIR    dossier de données du bridge (défaut : ~/.local/share/openmw/ap)
 
 set -euo pipefail
@@ -140,6 +141,21 @@ fi
 step "1/5 Extraction des quêtes"
 "$PYTHON" tools/extract.py "${JSONS[@]}" --out data/
 
+# --- 1b. Stages de fin selon uesp.net ----------------------------------------
+# Écrit dans tools/gen_quest_finals.py (STAGES_OVERRIDES) les stages « Finishes quest » d'UESP, et
+# classe non_quest (data/quest_groups_override.yaml) les quêtes sans fin marquée sur UESP.
+# Après l'étape 1 (a besoin de data/quest_completions.yaml), avant l'étape 2 et la classification (3).
+# Réseau requis au premier lancement (cache dans uesp_out/uesp_cache) ; SKIP_UESP=1 pour l'ignorer.
+step "1b Stages de fin d'après uesp.net"
+if [ "${SKIP_UESP:-0}" = "1" ]; then
+  echo "(SKIP_UESP=1 : scraping UESP ignoré)"
+elif ! "$PYTHON" -c 'import requests, bs4' 2>/dev/null; then
+  echo "(modules manquants : pip install requests beautifulsoup4 — scraping UESP ignoré)"
+else
+  "$PYTHON" tools/scrape_uesp_finals.py --apply \
+    || echo "(scraping UESP échoué : on continue avec les valeurs actuelles)"
+fi
+
 # --- 2. Stages de fin --------------------------------------------------------
 step "2/5 Stages de complétion"
 "$PYTHON" tools/gen_quest_finals.py "${JSONS[@]}"
@@ -147,16 +163,16 @@ echo "-> vérifier data/quest_review.txt (quêtes à fins multiples : overrides/
 
 # --- 2b. Objets de quête -----------------------------------------------------
 step "2b Objets de quête"
-ITEMS_JSONS=("$WORK/morrowind.json")
-[ "$HAS_BLOODMOON" -eq 1 ] && ITEMS_JSONS+=("$WORK/bloodmoon.json")
-"$PYTHON" tools/gen_quest_items.py "${ITEMS_JSONS[@]}" --apply
+# Tous les JSON (comme 2c) : sinon les items des quêtes TR / Cyrodiil / Skyrim / extensions ne sont jamais vus.
+# --finals : stades de fin générés à l'étape 2 (le défaut pointe vers l'apworld, pas encore installé ici).
+"$PYTHON" tools/gen_quest_items.py "${JSONS[@]}" --finals data/quest_finals.yaml --apply
 echo "-> candidats à relire : data/quest_items_candidates.yaml"
 
 # --- 2c. Récompenses de quêtes (option quest_rewards) -------------------------
 # Objets uniques donnés par les quêtes, hors objets de progression : après 2b
 # (quest_items.yaml fait partie des exclusions), tous les JSON (TR inclus).
 step "2c Récompenses de quêtes"
-"$PYTHON" tools/gen_quest_rewards.py "${JSONS[@]}" --completions data/quest_completions.yaml --apply
+"$PYTHON" tools/gen_quest_rewards.py "${JSONS[@]}" --completions data/quest_completions.yaml --finals data/quest_finals.yaml --apply
 
 # --- 3. Groupes --------------------------------------------------------------
 step "3/5 Classification des quêtes"
@@ -179,26 +195,6 @@ echo "$BRIDGE_SRC -> $BRIDGE_DST"
 
 echo
 echo "Installation terminée."
-if [ "$HAS_TR" -eq 1 ]; then
-  echo "Tamriel Rebuilt : compléter data/tr_categories.yaml (Foul Murder, quêtes daedriques),"
-  echo "puis vérifier les factions : $PYTHON tools/list_tr.py $WORK/tamriel_data.json $WORK/tr_mainland.json --factions --grep indoril"
-fi
-if [ "$HAS_SKY" -eq 1 ]; then
-  echo "Skyrim: Home of the Nords : vérifier les groupes (data/sky_categories.yaml) :"
-  echo "  $PYTHON tools/list_tr.py $WORK/sky_main.json --sky --journals"
-  echo "puis lire les factions Skyrim et renseigner les goals (placeholders dans data/goals.yaml) :"
-  echo "  $PYTHON tools/list_tr.py $WORK/sky_main.json ${WORK}/tamriel_data.json --factions --grep sky"
-  echo "  $PYTHON tools/set_goal_faction.py skyrim_mages_guild $WORK/sky_main.json $WORK/tamriel_data.json   # idem pour les autres"
-  echo "  $PYTHON tools/gen_lua.py && $PYTHON tools/install_apworld.py"
-fi
-if [ "$HAS_PC" -eq 1 ]; then
-  echo "Project Cyrodiil : vérifier les jetons de faction (data/pc_categories.yaml) :"
-  echo "  $PYTHON tools/list_tr.py $WORK/cyr_main.json --pc --journals"
-  echo "puis lire les factions PC et renseigner chaque goal (placeholders dans data/goals.yaml) :"
-  echo "  $PYTHON tools/list_tr.py $WORK/cyr_main.json ${WORK}/tamriel_data.json --factions --grep cyr"
-  echo "  $PYTHON tools/set_goal_faction.py kingdom_of_anvil $WORK/cyr_main.json $WORK/tamriel_data.json   # idem pour les 4 autres"
-  echo "  $PYTHON tools/gen_lua.py && $PYTHON tools/install_apworld.py"
-fi
 echo "Pense à copier mod/ dans les mods OpenMW, activer archipelago.omwscripts,"
 echo "et à régénérer la seed après mise à jour des données."
 echo "Récompenses de quêtes randomisées : quest_rewards: true dans le YAML (liste : data/quest_rewards.yaml)."
