@@ -31,7 +31,7 @@ Morrowind OpenMW:
   traps: true
   # 0-100: percentage of the filler slots replaced by traps (ignored if traps: false).
   # The rest of the filler is a varied mix (gold, potions, soul gems, arrows, lockpicks, food...).
-  trap_percentage: 10
+  trap_percentage: 5
 
   # Starting bonuses (0-100, 0 = vanilla). Each value is ADDED to the stat of your
   # character once the tutorial is over (capped at 100, never lowered).

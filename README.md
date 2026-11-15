@@ -50,12 +50,11 @@ quest items, levels, faction requirements, filler and traps come from the multiw
 
 ## Installation
 
-1. Extract the game data once (see [Data generation](#data-generation), or run `./install.sh`).
+1. Extract the game data once (run `./install.sh`, or see [Data generation](#data-generation) for manual instructions).
 2. Copy `mod/` into the OpenMW mods folder and enable `archipelago.omwscripts`.
-3. Install the apworld: `python3 tools/install_apworld.py`.
-4. Write a player YAML with `game: Morrowind OpenMW` (see `Morrowind-OpenMW.example.yaml`) and generate a seed.
-5. Start the Archipelago server with the generated multidata.
-6. Start OpenMW: the mod starts the Python bridge automatically.
+3. Write a player YAML with `game: Morrowind` (see `Morrowind.example.yaml`) and generate a seed.
+4. Start the Archipelago server with the generated multidata.
+5. Start OpenMW: the mod starts the Python bridge automatically, you just have to change the settings.
 
 **Connection settings** are in `mod/scripts/ap/config.lua` (host, port, slot, password, `data_dir`,
 `auto_start_bridge`, deathlink). The bridge also reads `AP_HOST`, `AP_PORT`, `AP_SLOT`, `AP_PASSWORD`,
@@ -102,7 +101,7 @@ Morrowind OpenMW:
   # Items
   quest_rewards: true          # unique quest rewards become locations + items
   traps: true                  # false = no trap items in the pool
-  trap_percentage: 10          # 0-100: % of the filler slots turned into traps (if traps: true)
+  trap_percentage: 5           # 0-100: % of the filler slots turned into traps (if traps: true)
   death_link: true
 
   # Starting bonuses, 0-100 each (0 = vanilla): attribute_<id> and skill_<id>
@@ -180,7 +179,7 @@ multiworld):
 | Ammunition / tools | chitin arrows, steel arrows, lockpicks, probes |
 | Food and drinks | bread, scrib jelly, comberry wine, local brew |
 
-If `traps` is on, `trap_percentage` % of those slots (default 10) become traps, also drawn with weights:
+If `traps` is on, `trap_percentage` % of those slots (default 5) become traps, also drawn with weights:
 
 | Trap | Effect |
 |---|---|
@@ -277,7 +276,6 @@ must really join it in game.
   its quest (alternative endings accepted, never a failure branch).
 - The quest rewards of the enabled quests (clan amulets, Orlukh Amulet...) follow the same groups when
   `quest_rewards` is on.
-- `TR_m4_VA_BarendrethProtection`, `_IbiNai` and `_VrashMind` are plain miscellaneous TR quests (`tr_side`).
 - Independent of `tamriel_rebuilt_factions`.
 
 **A Cure for Vampirism (`ms_vampirecure`) is disabled** as soon as a clan goal is selected (vanilla or Tamriel
