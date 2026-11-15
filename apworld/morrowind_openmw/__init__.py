@@ -20,7 +20,7 @@ class MorrowindWebWorld(WebWorld):
 
 
 class MorrowindWorld(World):
-    game = "Morrowind OpenMW"
+    game = "Morrowind"
     required_client_version = (0, 6, 0)
 
     item_name_to_id = {name: data.code for name, data in item_table.items() if data.code is not None}
@@ -43,7 +43,7 @@ class MorrowindWorld(World):
         # the seed would be won immediately and the mod would never send a victory.
         if not selected_goals(self.options):
             raise OptionError(
-                f"Morrowind OpenMW ({self.player_name}): no goals selected. "
+                f"Morrowind ({self.player_name}): no goals selected. "
                 "main_quest is disabled: choose at least one great house, a "
                 "guild, a faction, daedric_quests: true, tribunal_main_quest: true, "
                 "bloodmoon_main_quest: true or a vampire clan (vampire_clan) "
@@ -54,37 +54,37 @@ class MorrowindWorld(World):
         # and its checks could never be reached.
         if TR_MAIN_GOAL in goals and not any(d.group == "tr_main" for d in location_table.values()):
             raise OptionError(
-                f"Morrowind OpenMW ({self.player_name}): tamriel_rebuilt_main_quest is enabled "
+                f"Morrowind ({self.player_name}): tamriel_rebuilt_main_quest is enabled "
                 "but the apworld contains no Tamriel Rebuilt main quest data. Generate it first "
                 "(README, section Tamriel Rebuilt) or disable tamriel_rebuilt_main_quest.")
         # Project Cyrodiil: its goals / side quests need data extracted from Cyr_Main.esm.
         for g in goals:
             if g in PC_FACTION_KEYS and not any(d.group == g for d in location_table.values()):
                 raise OptionError(
-                    f"Morrowind OpenMW ({self.player_name}): the goal {g} (Project Cyrodiil) is selected "
+                    f"Morrowind ({self.player_name}): the goal {g} (Project Cyrodiil) is selected "
                     "but the apworld contains no quest data for it. Generate it first (README, section "
                     "Project Cyrodiil) or remove it from `guild` / `faction`.")
         if selected_pc_groups(self.options) and not any(d.group == PC_SIDE_GROUP for d in location_table.values()):
             raise OptionError(
-                f"Morrowind OpenMW ({self.player_name}): project_cyrodiil_side_quests is enabled but the "
+                f"Morrowind ({self.player_name}): project_cyrodiil_side_quests is enabled but the "
                 "apworld contains no Project Cyrodiil quest data. Generate it first (README, section "
                 "Project Cyrodiil) or disable project_cyrodiil_side_quests.")
         # Skyrim: Home of the Nords: same guards (data extracted from Sky_Main.esm).
         for g in goals:
             if g in SKY_FACTION_KEYS and not any(d.group == g for d in location_table.values()):
                 raise OptionError(
-                    f"Morrowind OpenMW ({self.player_name}): the goal {g} (Skyrim: Home of the Nords) is selected "
+                    f"Morrowind ({self.player_name}): the goal {g} (Skyrim: Home of the Nords) is selected "
                     "but the apworld contains no quest data for it. Generate it first (README, section "
                     "Skyrim: Home of the Nords) or remove it from `guild`.")
         if selected_sky_groups(self.options) and not any(d.group == SKY_SIDE_GROUP for d in location_table.values()):
             raise OptionError(
-                f"Morrowind OpenMW ({self.player_name}): skyrim_side_quests is enabled but the apworld contains "
+                f"Morrowind ({self.player_name}): skyrim_side_quests is enabled but the apworld contains "
                 "no Skyrim: Home of the Nords quest data. Generate it first (README, section Skyrim: Home of the "
                 "Nords) or disable skyrim_side_quests.")
         unverified = [g for g in goals if g in UNVERIFIED_GOALS]
         if unverified:
             logging.warning(
-                "Morrowind OpenMW (%s): goal(s) %s use faction id / rank not yet confirmed "
+                "Morrowind (%s): goal(s) %s use faction id / rank not yet confirmed "
                 "against the ESM (TR_Mainland.esm / Cyr_Main.esm: python tools/list_tr.py --factions, then "
                 "tools/set_goal_faction.py); if they are "
                 "wrong, the seed cannot be completed in game.", self.player_name, ", ".join(unverified))
@@ -152,7 +152,7 @@ class MorrowindWorld(World):
         n_prog = sum(1 for x in itempool if x.advancement)
         if n_prog > len(open_locs):
             raise OptionError(
-                f"Morrowind OpenMW ({self.player_name}): {n_prog} progression items "
+                f"Morrowind ({self.player_name}): {n_prog} progression items "
                 f"for only {len(open_locs)} locations that can hold them. "
                 "Enable goal_quest_checks (more locations for progression) or "
                 "remove some goals (great house / guild / faction / daedric_quests).")
@@ -167,7 +167,7 @@ class MorrowindWorld(World):
         for g in sorted(goals, key=lambda k: need[k]):
             if need[g] > free:
                 raise OptionError(
-                    f"Morrowind OpenMW ({self.player_name}): goal '{g}' needs "
+                    f"Morrowind ({self.player_name}): goal '{g}' needs "
                     f"{need[g]} free locations for its quest items but only "
                     f"{free} are available. Enable goal_quest_checks (quests of goals "
                     "already completed free up locations) or remove a goal.")
