@@ -553,7 +553,7 @@ async def run_once():
 
         await ws_send(ws, [{
             'cmd': 'Connect',
-            'game': 'Morrowind OpenMW',
+            'game': 'Morrowind',
             'name': SLOT,
             'password': PASSWORD,
             'uuid': str(uuid.uuid4()),
